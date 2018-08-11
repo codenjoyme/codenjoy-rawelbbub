@@ -35,11 +35,11 @@ import com.codenjoy.dojo.services.algs.DeikstraFindWay;
 
 import java.util.List;
 
-public class ApofigSolver implements Solver<Board> {
+public class AISolver implements Solver<Board> {
 
     private DeikstraFindWay way;
 
-    public ApofigSolver(Dice dice) {
+    public AISolver(Dice dice) {
         this.way = new DeikstraFindWay();
     }
 
@@ -103,7 +103,7 @@ public class ApofigSolver implements Solver<Board> {
 
     public static void start(String name, Dice dice) {
         WebSocketRunner.runAI(name,
-                new ApofigSolver(dice),
+                new AISolver(dice),
                 new Board());
     }
 

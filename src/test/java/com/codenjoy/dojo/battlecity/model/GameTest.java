@@ -50,7 +50,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-public class BattlecityTest {
+public class GameTest {
 
     protected Dice dice;
     public int size;
@@ -119,7 +119,7 @@ public class BattlecityTest {
 
             @Override
             protected GameSettings getGameSettings() {
-                return BattlecityTest.this.settings;
+                return GameTest.this.settings;
             }
         };
         game = (Battlecity) runner.createGame(0);

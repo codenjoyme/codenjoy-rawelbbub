@@ -40,7 +40,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SingleTest {
+public class MultiplayerTest {
 
     private int size = 5;
     private Battlecity game;

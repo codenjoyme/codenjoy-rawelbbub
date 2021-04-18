@@ -1,5 +1,6 @@
 package com.codenjoy.dojo.battlecity.model;
 
+import com.codenjoy.dojo.utils.EventsListenersAssert;
 import org.junit.Assert;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;

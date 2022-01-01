@@ -22,8 +22,8 @@ package com.codenjoy.dojo.rawelbbub.model;
  * #L%
  */
 
-import com.codenjoy.dojo.rawelbbub.model.items.AITank;
-import com.codenjoy.dojo.rawelbbub.model.items.AITankPrize;
+import com.codenjoy.dojo.rawelbbub.model.items.AI;
+import com.codenjoy.dojo.rawelbbub.model.items.AIPrize;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
@@ -89,11 +89,11 @@ public class AiGenerator {
         return findFreePosition(field.size() - 2, field.size());
     }
 
-    private AITank tank(Point pt) {
+    private AI tank(Point pt) {
         if (isPrizeTankTurn() && canDrop()) {
-            return new AITankPrize(pt, Direction.DOWN, dice);
+            return new AIPrize(pt, Direction.DOWN, dice);
         } else {
-            return new AITank(pt, Direction.DOWN, dice);
+            return new AI(pt, Direction.DOWN, dice);
         }
     }
 
@@ -104,16 +104,16 @@ public class AiGenerator {
         return spawn % settings.integer(SPAWN_AI_PRIZE) == 0;
     }
 
-    public AITank drop(Point pt) {
-        AITank tank = checkDropPt(pt);
+    public AI drop(Point pt) {
+        AI tank = checkDropPt(pt);
         tank.init(field);
         field.addAi(tank);
         newSpawn();
         return tank;
     }
 
-    private AITank checkDropPt(Point pt) {
-        AITank tank;
+    private AI checkDropPt(Point pt) {
+        AI tank;
         if (field.isRiver(pt)) {
             tank = tank(freePosition());
         } else {

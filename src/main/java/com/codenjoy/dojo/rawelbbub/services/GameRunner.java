@@ -62,7 +62,7 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
         game.addBorder(level.borders());
         game.addWall(level.walls());
-        game.addAiTanks(level.aiTanks());
+        game.addAiTanks(level.ais());
         game.addRiver(level.rivers());
         game.addTree(level.trees());
         game.addIce(level.ice());

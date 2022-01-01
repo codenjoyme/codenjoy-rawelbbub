@@ -45,7 +45,7 @@ import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_WALKING_ON_WATER;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.StateUtils.filterOne;
 
-public class Tank extends RoundPlayerHero<Field> implements State<Element, Player> {
+public class Hero extends RoundPlayerHero<Field> implements State<Element, Player> {
 
     protected Direction direction;
     protected boolean moving;
@@ -60,7 +60,7 @@ public class Tank extends RoundPlayerHero<Field> implements State<Element, Playe
 
     private Timer onWater;
 
-    public Tank(Point pt, Direction direction) {
+    public Hero(Point pt, Direction direction) {
         super(pt);
         score = 0;
         this.direction = direction;
@@ -225,7 +225,7 @@ public class Tank extends RoundPlayerHero<Field> implements State<Element, Playe
         }
     }
 
-    public Element treeState(Tank tank, Object[] alsoAtPoint) {
+    public Element treeState(Hero hero, Object[] alsoAtPoint) {
         Tree tree = filterOne(alsoAtPoint, Tree.class);
         if (tree == null) {
             return null;
@@ -235,7 +235,7 @@ public class Tank extends RoundPlayerHero<Field> implements State<Element, Playe
             return null;
         }
 
-        if (tank == this && settings().bool(SHOW_MY_TANK_UNDER_TREE)) {
+        if (hero == this && settings().bool(SHOW_MY_TANK_UNDER_TREE)) {
             return null;
         }
 
@@ -261,7 +261,7 @@ public class Tank extends RoundPlayerHero<Field> implements State<Element, Playe
         if (sliding.active(this) && !sliding.lastSlipperiness()) {
             bulletDirection = sliding.getPreviousDirection();
         }
-        Bullet bullet = new Bullet(field, bulletDirection, copy(), this, b -> Tank.this.bullets.remove(b));
+        Bullet bullet = new Bullet(field, bulletDirection, copy(), this, b -> Hero.this.bullets.remove(b));
 
         if (!bullets.contains(bullet)) {
             bullets.add(bullet);

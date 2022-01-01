@@ -25,8 +25,8 @@ package com.codenjoy.dojo.rawelbbub.model.items;
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
 import com.codenjoy.dojo.rawelbbub.model.Field;
+import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.model.Player;
-import com.codenjoy.dojo.rawelbbub.model.Tank;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.MovingObject;
 import com.codenjoy.dojo.services.Point;
@@ -39,13 +39,13 @@ import static com.codenjoy.dojo.services.StateUtils.filterOne;
 public class Bullet extends MovingObject implements State<Element, Player> {
 
     private final Field field;
-    private Tank owner;
+    private Hero owner;
     private Consumer<Object> onDestroy;
     private boolean heavy;
     private int tick;
 
     public Bullet(Field field, Direction tankDirection,
-                  Point from, Tank owner,
+                  Point from, Hero owner,
                   Consumer<Object> onDestroy)
     {
         super(from.getX(), from.getY(), tankDirection);
@@ -79,7 +79,7 @@ public class Bullet extends MovingObject implements State<Element, Player> {
         }
     }
 
-    public Tank getOwner() {
+    public Hero getOwner() {
         return owner;
     }
 

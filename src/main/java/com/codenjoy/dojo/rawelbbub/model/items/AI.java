@@ -23,8 +23,8 @@ package com.codenjoy.dojo.rawelbbub.model.items;
  */
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.model.Player;
-import com.codenjoy.dojo.rawelbbub.model.Tank;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
@@ -32,7 +32,7 @@ import com.codenjoy.dojo.services.Point;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.AI_TICKS_PER_SHOOT;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.TICKS_STUCK_BY_RIVER;
 
-public class AITank extends Tank {
+public class AI extends Hero {
 
     public static final int MAX = 10;
 
@@ -42,7 +42,7 @@ public class AITank extends Tank {
     private int act;
     private int count;
 
-    public AITank(Point pt, Direction direction, Dice dice) {
+    public AI(Point pt, Direction direction, Dice dice) {
         super(pt, direction);
         this.dice = dice;
         this.count = 0;

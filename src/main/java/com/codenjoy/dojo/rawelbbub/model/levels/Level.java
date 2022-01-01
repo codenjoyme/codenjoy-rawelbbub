@@ -23,7 +23,7 @@ package com.codenjoy.dojo.rawelbbub.model.levels;
  */
 
 
-import com.codenjoy.dojo.rawelbbub.model.Tank;
+import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.model.items.*;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
@@ -61,21 +61,21 @@ public class Level extends AbstractLevel {
         return find(Tree::new, TREE);
     }
 
-    public List<Tank> aiTanks() {
+    public List<Hero> ais() {
         return new LinkedList<>(){{
-            addAll(find((pt, el) -> new AITank(pt, DOWN, dice),  AI_TANK_DOWN));
-            addAll(find((pt, el) -> new AITank(pt, UP, dice),    AI_TANK_UP));
-            addAll(find((pt, el) -> new AITank(pt, LEFT, dice),  AI_TANK_LEFT));
-            addAll(find((pt, el) -> new AITank(pt, RIGHT, dice), AI_TANK_RIGHT));
+            addAll(find((pt, el) -> new AI(pt, DOWN, dice),  AI_TANK_DOWN));
+            addAll(find((pt, el) -> new AI(pt, UP, dice),    AI_TANK_UP));
+            addAll(find((pt, el) -> new AI(pt, LEFT, dice),  AI_TANK_LEFT));
+            addAll(find((pt, el) -> new AI(pt, RIGHT, dice), AI_TANK_RIGHT));
         }};
     }
 
-    public List<Tank> tanks() {
+    public List<Hero> heroes() {
         return new LinkedList<>(){{
-            addAll(find((pt, el) -> new Tank(pt, DOWN),  TANK_DOWN,  OTHER_TANK_DOWN));
-            addAll(find((pt, el) -> new Tank(pt, UP),    TANK_UP,    OTHER_TANK_UP));
-            addAll(find((pt, el) -> new Tank(pt, LEFT),  TANK_LEFT,  OTHER_TANK_LEFT));
-            addAll(find((pt, el) -> new Tank(pt, RIGHT), TANK_RIGHT, OTHER_TANK_RIGHT));
+            addAll(find((pt, el) -> new Hero(pt, DOWN),  TANK_DOWN,  OTHER_TANK_DOWN));
+            addAll(find((pt, el) -> new Hero(pt, UP),    TANK_UP,    OTHER_TANK_UP));
+            addAll(find((pt, el) -> new Hero(pt, LEFT),  TANK_LEFT,  OTHER_TANK_LEFT));
+            addAll(find((pt, el) -> new Hero(pt, RIGHT), TANK_RIGHT, OTHER_TANK_RIGHT));
         }};
     }
 
@@ -87,7 +87,7 @@ public class Level extends AbstractLevel {
     public void addAll(Consumer<Iterable<? extends Point>> processor) {
         processor.accept(borders());
         processor.accept(walls());
-        processor.accept(aiTanks());
+        processor.accept(ais());
         processor.accept(ice());
         processor.accept(rivers());
         processor.accept(trees());

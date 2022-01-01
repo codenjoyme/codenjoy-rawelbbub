@@ -196,12 +196,12 @@ public class MultiplayerTest {
         );
     }
 
-    public Tank hero2() {
-        return (Tank) tanks2.getPlayer().getHero();
+    public Hero hero2() {
+        return (Hero) tanks2.getPlayer().getHero();
     }
 
-    public Tank hero1() {
-        return (Tank) tanks1.getPlayer().getHero();
+    public Hero hero1() {
+        return (Hero) tanks1.getPlayer().getHero();
     }
 
     @Test

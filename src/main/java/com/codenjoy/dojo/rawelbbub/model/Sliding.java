@@ -67,10 +67,10 @@ public class Sliding {
         return before;
     }
 
-    public boolean active(Tank tank) {
-        return field.isIce(tank)
+    public boolean active(Hero hero) {
+        return field.isIce(hero)
                 && slipperiness() != 0
-                && !tank.prizes().contains(Element.PRIZE_NO_SLIDING);
+                && !hero.prizes().contains(Element.PRIZE_NO_SLIDING);
     }
 
     public void stop() {

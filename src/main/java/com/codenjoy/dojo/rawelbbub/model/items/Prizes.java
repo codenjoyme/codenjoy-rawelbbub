@@ -23,7 +23,7 @@ package com.codenjoy.dojo.rawelbbub.model.items;
  */
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
-import com.codenjoy.dojo.rawelbbub.model.Tank;
+import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.Tickable;
 
@@ -47,7 +47,7 @@ public class Prizes implements Tickable {
         }
     }
 
-    public void takeBy(Tank hero) {
+    public void takeBy(Hero hero) {
         int index = prizes.indexOf(hero);
         if (index == -1) {
             return;

@@ -31,7 +31,7 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.event.Calculator;
 import com.codenjoy.dojo.services.round.RoundGamePlayer;
 
-public class Player extends RoundGamePlayer<Tank, Field> {
+public class Player extends RoundGamePlayer<Hero, Field> {
 
     private Calculator<Integer> calculator;
     private int killed;
@@ -67,9 +67,9 @@ public class Player extends RoundGamePlayer<Tank, Field> {
     }
 
     @Override
-    public Tank createHero(Point pt) {
+    public Hero createHero(Point pt) {
         reset();
-        return new Tank(pt, Direction.UP);
+        return new Hero(pt, Direction.UP);
     }
 
     public int score() {

@@ -30,13 +30,13 @@ import com.codenjoy.dojo.services.Point;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.AI_PRIZE_SPRITE_CHANGE_TICKS;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.KILL_HITS_AI_PRIZE;
 
-public class AITankPrize extends AITank {
+public class AIPrize extends AI {
 
     private int damage;
     private int ticks;
     private boolean wounded;
 
-    public AITankPrize(Point pt, Direction direction, Dice dice) {
+    public AIPrize(Point pt, Direction direction, Dice dice) {
         super(pt, direction, dice);
         damage = 0;
         ticks = 0;

@@ -58,7 +58,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
     private List<Ice> ice;
     private List<River> rivers;
     private Prizes prizes;
-    private List<Tank> ais;
+    private List<Hero> ais;
 
     private GameSettings settings;
 
@@ -98,7 +98,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
     public void clearScore() {
         players.forEach(Player::reset);
         walls.forEach(Wall::reset);
-        allTanks().forEach(Tank::reset);
+        heroesAndAis().forEach(Hero::reset);
     }
 
     @Override
@@ -106,9 +106,9 @@ public class Rawelbbub extends RoundField<Player> implements Field {
         aiGen.allHave(withPrize());
         aiGen.dropAll();
 
-        List<Tank> tanks = allTanks();
+        List<Hero> tanks = heroesAndAis();
 
-        for (Tank tank : tanks) {
+        for (Hero tank : tanks) {
             tank.tick();
         }
 
@@ -118,7 +118,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
             }
         }
 
-        for (Tank tank : tanks) {
+        for (Hero tank : tanks) {
             if (tank.isAlive()) {
                 tank.tryFire();
             }
@@ -128,7 +128,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
             }
         }
 
-        for (Tank tank : tanks) {
+        for (Hero tank : tanks) {
             if (tank.isAlive()) {
                 tank.move();
 
@@ -169,12 +169,12 @@ public class Rawelbbub extends RoundField<Player> implements Field {
     }
 
     private void removeDeadAi() {
-        List<Tank> dead = ais.stream()
-                .filter(not(Tank::isAlive))
+        List<Hero> dead = ais.stream()
+                .filter(not(Hero::isAlive))
                 .collect(toList());
         ais.removeAll(dead);
         dead.stream()
-            .filter(Tank::withPrize)
+            .filter(Hero::withPrize)
             .forEach(tank -> prizeGen.drop(tank));
     }
 
@@ -185,9 +185,9 @@ public class Rawelbbub extends RoundField<Player> implements Field {
             return;
         }
 
-        if (allTanks().contains(bullet)) {
-            int index = allTanks().indexOf(bullet);
-            Tank tank = allTanks().get(index);
+        if (heroesAndAis().contains(bullet)) {
+            int index = heroesAndAis().indexOf(bullet);
+            Hero tank = heroesAndAis().get(index);
             if (tank == bullet.getOwner()) {
                 return;
             }
@@ -254,8 +254,8 @@ public class Rawelbbub extends RoundField<Player> implements Field {
     }
 
     @Override
-    public void addAi(Tank tank) {
-        ais.add(tank);
+    public void addAi(Hero hero) {
+        ais.add(hero);
     }
 
     private Wall getWallAt(Point pt) {
@@ -263,8 +263,8 @@ public class Rawelbbub extends RoundField<Player> implements Field {
         return walls.get(index);
     }
 
-    private void scoresForKill(Bullet killedBullet, Tank diedTank) {
-        Tank killerTank = killedBullet.getOwner();
+    private void scoresForKill(Bullet killedBullet, Hero diedTank) {
+        Hero killerTank = killedBullet.getOwner();
         Player killer = null;
         if (!ais.contains(killerTank)) {
             killer = player(killerTank);
@@ -280,7 +280,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
         }
     }
 
-    private Player player(Tank tank) {
+    private Player player(Hero tank) {
         return players.stream()
                 .filter(player -> player.getHero().equals(tank))
                 .findFirst()
@@ -288,9 +288,9 @@ public class Rawelbbub extends RoundField<Player> implements Field {
     }
 
     @Override
-    public boolean isBarrierFor(Tank tank, Point pt) {
+    public boolean isBarrierFor(Hero hero, Point pt) {
         return isBarrier(pt)
-                || (isRiver(pt) && !tank.canWalkOnWater());
+                || (isRiver(pt) && !hero.canWalkOnWater());
     }
 
     @Override
@@ -316,7 +316,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
             }
         }
 
-        for (Tank tank : allTanks()) {   //  TODO проверить как один танк не может проходить мимо другого танка игрока (не AI)
+        for (Hero tank : heroesAndAis()) {   //  TODO проверить как один танк не может проходить мимо другого танка игрока (не AI)
             if (tank.itsMe(pt)) {
                 return true;
             }
@@ -326,18 +326,18 @@ public class Rawelbbub extends RoundField<Player> implements Field {
     }
 
     private List<Bullet> bullets() {
-        return allTanks().stream()
+        return heroesAndAis().stream()
                 .flatMap(tank -> tank.getBullets().stream())
                 .collect(toList());
     }
 
     @Override
-    public List<Tank> aiTanks() {
+    public List<Hero> aiTanks() {
         return ais;
     }
 
-    public List<Tank> allTanks() {
-        List<Tank> result = new LinkedList<>(ais);
+    public List<Hero> heroesAndAis() {
+        List<Hero> result = new LinkedList<>(ais);
         for (Player player : players) {
             if (player.getHero() != null) {
                 result.add(player.getHero());
@@ -346,7 +346,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
         return result;
     }
 
-    public List<Tank> tanks() {
+    public List<Hero> heroes() {
         return players.stream()
                 .map(Player::getHero)
                 .collect(toList());
@@ -383,7 +383,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
             @Override
             public void addAll(Player player, Consumer<Iterable<? extends Point>> processor) {
                 processor.accept(borders());
-                processor.accept(allTanks());
+                processor.accept(heroesAndAis());
                 processor.accept(walls());
                 processor.accept(bullets());
                 processor.accept(prizes());
@@ -401,7 +401,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
     }
 
     private int withPrize() {
-        int withPrize = (int) allTanks().stream().filter(Tank::withPrize).count();
+        int withPrize = (int) heroesAndAis().stream().filter(Hero::withPrize).count();
         return prizes().size() + withPrize;
     }
 

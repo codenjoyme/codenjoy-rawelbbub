@@ -24,7 +24,7 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 
 import com.codenjoy.dojo.rawelbbub.TestGameSettings;
-import com.codenjoy.dojo.rawelbbub.model.items.AITank;
+import com.codenjoy.dojo.rawelbbub.model.items.AI;
 import com.codenjoy.dojo.rawelbbub.model.items.Bullet;
 import com.codenjoy.dojo.rawelbbub.model.items.Wall;
 import com.codenjoy.dojo.rawelbbub.services.Event;
@@ -62,7 +62,7 @@ public class GameTest {
     private List<Player> players;
     private PrinterFactory printerFactory;
     private GameSettings settings;
-    private List<Tank> heroes;
+    private List<Hero> heroes;
     private List<EventListener> listeners;
     private EventsListenersAssert events;
 
@@ -91,7 +91,7 @@ public class GameTest {
         verifyAllEvents("");
     }
 
-    private Tank hero(int index) {
+    private Hero hero(int index) {
         return heroes.get(index);
     }
 
@@ -111,21 +111,21 @@ public class GameTest {
         };
         game = (Rawelbbub) runner.createGame(0, settings);
 
-        settings.level(dice).tanks()
+        settings.level(dice).heroes()
                 .forEach(tank -> game.newGame(initPlayer(tank)));
         game.aiTanks().stream()
-                .filter(tank -> tank instanceof AITank)
-                .map(tank -> (AITank) tank)
+                .filter(tank -> tank instanceof AI)
+                .map(tank -> (AI) tank)
                 .forEach(tank -> {
                     tank.dontShoot = true;
                     tank.dontMove = true;
                 });
 
-        heroes = game.tanks();
+        heroes = game.heroes();
     }
 
-    private AITank dropAI(Point point) {
-        AITank aiTank = game.getAiGenerator().drop(point);
+    private AI dropAI(Point point) {
+        AI aiTank = game.getAiGenerator().drop(point);
         aiTank.dontMove = true;
         aiTank.dontShoot = true;
         return aiTank;
@@ -135,7 +135,7 @@ public class GameTest {
         assertEquals(expected, events.getEvents());
     }
     
-    private Player initPlayer(Tank tank) {
+    private Player initPlayer(Hero tank) {
         EventListener listener = mock(EventListener.class);
         listeners.add(listener);
         Player player = new Player(listener, settings);
@@ -145,8 +145,8 @@ public class GameTest {
     }
 
     private String getPrizesCount() {
-        List<Tank> tanks = game.allTanks();
-        long prizes = tanks.stream().filter(Tank::withPrize).count();
+        List<Hero> tanks = game.heroesAndAis();
+        long prizes = tanks.stream().filter(Hero::withPrize).count();
 
         return String.format("%s prizes with %s tanks", prizes, tanks.size());
     }
@@ -212,7 +212,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertNotNull(game.allTanks());
+        assertNotNull(game.heroesAndAis());
     }
 
     @Test
@@ -6164,8 +6164,8 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    private AITank ai(int index) {
-        return (AITank) game.aiTanks().get(index);
+    private AI ai(int index) {
+        return (AI) game.aiTanks().get(index);
     }
 
     @Test
@@ -7774,7 +7774,7 @@ public class GameTest {
 
     }
 
-    private void assertPrize(Tank hero, String expected) {
+    private void assertPrize(Hero hero, String expected) {
         assertEquals(expected, hero.prizes().toString());
     }
 

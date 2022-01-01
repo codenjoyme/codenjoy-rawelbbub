@@ -45,13 +45,13 @@ public interface Field extends RoundGameField<Player> {
 
     void add(Prize prize);
 
-    void addAi(Tank tank);
+    void addAi(Hero hero);
 
-    List<Tank> aiTanks();
+    List<Hero> aiTanks();
 
     int size();
 
-    boolean isBarrierFor(Tank tank, Point pt);
+    boolean isBarrierFor(Hero hero, Point pt);
 
     boolean isFree(Point pt);
 

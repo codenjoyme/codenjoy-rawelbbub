@@ -56,16 +56,6 @@ public class AbstractGameTest
         stopAllAis();
     }
 
-    private void stopAllAis() {
-        field().ais().stream()
-                .filter(ai -> ai instanceof AI)
-                .map(ai -> (AI) ai)
-                .forEach(ai -> {
-                    ai.dontShoot = true;
-                    ai.dontMove = true;
-                });
-    }
-
     @Override
     protected GameSettings setupSettings() {
         return new TestGameSettings();
@@ -89,6 +79,18 @@ public class AbstractGameTest
     @Override
     protected Class<?> eventClass() {
         return Event.class;
+    }
+
+    // other methods
+
+    private void stopAllAis() {
+        field().ais().stream()
+                .filter(ai -> ai instanceof AI)
+                .map(ai -> (AI) ai)
+                .forEach(ai -> {
+                    ai.dontShoot = true;
+                    ai.dontMove = true;
+                });
     }
 
     public AI dropAI(Point pt) {

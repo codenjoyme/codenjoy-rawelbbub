@@ -33,6 +33,8 @@ import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.joystick.Act;
+import com.codenjoy.dojo.services.joystick.RoundsDirectionActJoystick;
 import com.codenjoy.dojo.services.round.RoundPlayerHero;
 import com.codenjoy.dojo.services.round.Timer;
 
@@ -45,7 +47,8 @@ import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_WALKING_ON_WATER;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.StateUtils.filterOne;
 
-public class Hero extends RoundPlayerHero<Field> implements State<Element, Player> {
+public class Hero extends RoundPlayerHero<Field> 
+        implements RoundsDirectionActJoystick, State<Element, Player> {
 
     protected Direction direction;
     protected boolean moving;
@@ -69,40 +72,46 @@ public class Hero extends RoundPlayerHero<Field> implements State<Element, Playe
     }
 
     @Override
+    public void init(Field field) {
+        super.init(field);
+
+        gun = new Gun(settings());
+        sliding = new Sliding(field, direction, settings());
+
+        reset();
+        setAlive(true);
+    }
+
+    @Override
     public GameSettings settings() {
         return (GameSettings) field.settings();
     }
 
     @Override
-    public void up() {
-        if (!isActiveAndAlive()) return;
-
-        direction = Direction.UP;
+    public void change(Direction direction) {
+        this.direction = direction;
         moving = true;
     }
 
     @Override
-    public void down() {
-        if (!isActiveAndAlive()) return;
+    public void act(Act act) {
+        fire = true;
+    }
 
-        direction = Direction.DOWN;
-        moving = true;
+    void fire() {
+        act();
     }
 
     @Override
-    public void right() {
-        if (!isActiveAndAlive()) return;
+    public void tick() {
+        // TODO добавить проверку if (!isActiveAndAlive()) return;
 
-        direction = Direction.RIGHT;
-        moving = true;
-    }
+        gunType();
 
-    @Override
-    public void left() {
-        if (!isActiveAndAlive()) return;
+        gun.tick();
+        prizes.tick();
 
-        direction = Direction.LEFT;
-        moving = true;
+        checkOnWater();
     }
 
     public Direction getDirection() {
@@ -132,29 +141,12 @@ public class Hero extends RoundPlayerHero<Field> implements State<Element, Playe
     }
 
     @Override
-    public void act(int... p) {
-        if (!isActiveAndAlive()) return;
-
-        fire = true;
-    }
-
-    @Override
     public void die() {
         die(Event.KILL_YOUR_TANK);
     }
 
     public Collection<Bullet> getBullets() {
         return new LinkedList<>(bullets);
-    }
-
-    public void init(Field field) {
-        super.init(field);
-
-        gun = new Gun(settings());
-        sliding = new Sliding(field, direction, settings());
-
-        reset();
-        setAlive(true);
     }
 
     protected int ticksPerShoot() {
@@ -169,18 +161,6 @@ public class Hero extends RoundPlayerHero<Field> implements State<Element, Playe
 
     public void removeBullets() {
         bullets.clear();
-    }
-
-    @Override
-    public void tick() {
-        // TODO добавить проверку if (!isActiveAndAlive()) return;
-
-        gunType();
-
-        gun.tick();
-        prizes.tick();
-
-        checkOnWater();
     }
 
     public void checkOnWater() {
@@ -292,6 +272,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<Element, Playe
                 || (onWater != null && onWater.done());
     }
 
+    @Override
     public int scores() {
         return score;
     }

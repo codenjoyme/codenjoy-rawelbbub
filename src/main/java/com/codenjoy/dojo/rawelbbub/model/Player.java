@@ -72,6 +72,14 @@ public class Player extends RoundGamePlayer<Hero, Field> {
         return new Hero(pt, Direction.UP);
     }
 
+    @Override
+    public void newHero(Field field) {
+        super.newHero(field);
+
+        // TODO чисто в тестах надо поправить в районе game.newGame и убрать отсюда этот метод
+        hero.manual(false);
+    }
+
     public int score() {
         return killed;
     }

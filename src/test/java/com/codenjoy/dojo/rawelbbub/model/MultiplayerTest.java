@@ -23,338 +23,270 @@ package com.codenjoy.dojo.rawelbbub.model;
  */
 
 
-import com.codenjoy.dojo.games.rawelbbub.Element;
-import com.codenjoy.dojo.rawelbbub.TestGameSettings;
-import com.codenjoy.dojo.rawelbbub.model.items.Ice;
-import com.codenjoy.dojo.rawelbbub.model.items.River;
-import com.codenjoy.dojo.rawelbbub.model.items.Tree;
-import com.codenjoy.dojo.rawelbbub.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.Game;
-import com.codenjoy.dojo.services.multiplayer.LevelProgress;
-import com.codenjoy.dojo.services.multiplayer.Single;
-import com.codenjoy.dojo.services.printer.PrinterFactory;
-import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.OngoingStubbing;
 
-import static com.codenjoy.dojo.services.PointImpl.pt;
 import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class MultiplayerTest {
-
-    private int size = 5;
-    private Rawelbbub field;
-    private Game game1;
-    private Game game2;
-    private Player player1;
-    private Player player2;
-    private PrinterFactory printerFactory;
-    private GameSettings settings;
-    private Dice dice;
-    private Level level;
-
-    @Before
-    public void setUp() {
-        dice = mock(Dice.class);
-        settings = new TestGameSettings();
-        printerFactory = new PrinterFactoryImpl();
-    }
-
-    public void givenGame() {
-        String map = StringUtils.leftPad("", size*size, Element.NONE.ch());
-        int levelNumber = LevelProgress.levelsStartsFrom1;
-        settings.setLevelMaps(levelNumber, new String[]{map});
-        level = settings.level(levelNumber, dice, Level::new);
-
-        field = new Rawelbbub(level, dice, settings);
-
-        field.addBorder(new DefaultBorders(size).get());
-
-        player1 = new Player(null, settings);
-        player2 = new Player(null, settings);
-        game1 = new Single(player1, printerFactory);
-        game1.on(field);
-        game2 = new Single(player2, printerFactory);
-        game2.on(field);
-    }
+public class MultiplayerTest extends AbstractGameTest {
 
     @Test
-    public void shouldRandomPosition_whenNewGame() {
-        dice(1, 1,
-                2, 2);
-
-        givenGame();
-
-        game1.newGame();
-
+    public void shouldAllHeroesInOneBoard_whenNewGame() {
+        // given when
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ▲ ☼\n" +
+                "☼▲  ☼\n" +
+                "☼☼☼☼☼\n");
+        
+        // then
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
-                "☼   ☼\n" +
-                "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
-
-        game2.newGame();
+                "☼ ▲ ☼\n" +
+                "☼˄  ☼\n" +
+                "☼☼☼☼☼\n", 0);
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ˄ ☼\n" +
                 "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 1);
     }
 
     @Test
     public void shouldCantDoAnything_whenRoundIsNotStarted_whenRoundsEnabled() {
-        settings.bool(ROUNDS_ENABLED, true);
+        // given
+        settings().bool(ROUNDS_ENABLED, true);
 
-        dice(1, 1,
-                1, 2,
-                2, 2);
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼˄  ☼\n" +
+                "☼▲  ☼\n" +
+                "☼☼☼☼☼\n");
 
-        givenGame();
+        assertEquals(false, hero(0).isActive());
+        assertEquals(true, hero(0).isAlive());
 
-        game1.newGame();
-        game2.newGame();
-
-        assertEquals(false, hero1().isActive());
-        assertEquals(true, hero1().isAlive());
-
-        assertEquals(false, hero2().isActive());
-        assertEquals(true, hero2().isAlive());
+        assertEquals(false, hero(1).isActive());
+        assertEquals(true, hero(1).isAlive());
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼˄  ☼\n" +
                 "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
 
-        hero1().right();
-        hero1().fire();
+        verifyAllEvents("");
 
-        hero2().right();
-        field.tick();
+        // when
+        hero(0).right();
+        hero(0).fire();
 
-        assertEquals(false, hero1().isActive());
-        assertEquals(true, hero1().isAlive());
+        hero(1).right();
+        tick();
 
-        assertEquals(false, hero2().isActive());
-        assertEquals(true, hero2().isAlive());
+        // then
+        assertEquals(false, hero(0).isActive());
+        assertEquals(true, hero(0).isAlive());
+
+        assertEquals(false, hero(1).isActive());
+        assertEquals(true, hero(1).isAlive());
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼˄  ☼\n" +
                 "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
+
+        verifyAllEvents(
+                "listener(0) => [[....4....]]\n" +
+                "listener(1) => [[....4....]]\n");
     }
 
     @Test
     public void shouldCanDoAnything_whenRoundsDisabled() {
-        settings.bool(ROUNDS_ENABLED, false);
+        // given
+        settings().bool(ROUNDS_ENABLED, false);
 
-        dice(1, 1,
-                1, 2,
-                2, 2);
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼˄  ☼\n" +
+                "☼▲  ☼\n" +
+                "☼☼☼☼☼\n");
 
-        givenGame();
+        assertEquals(true, hero(0).isActive());
+        assertEquals(true, hero(0).isAlive());
 
-        game1.newGame();
-        game2.newGame();
-
-        assertEquals(true, hero1().isActive());
-        assertEquals(true, hero1().isAlive());
-
-        assertEquals(true, hero2().isActive());
-        assertEquals(true, hero2().isAlive());
+        assertEquals(true, hero(1).isActive());
+        assertEquals(true, hero(1).isAlive());
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼˄  ☼\n" +
                 "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
 
-        hero1().right();
-        hero1().fire();
+        // when
+        hero(0).right();
+        hero(0).fire();
 
-        hero2().right();
-        field.tick();
+        hero(1).right();
+        tick();
 
-        assertEquals(true, hero1().isActive());
-        assertEquals(true, hero1().isAlive());
+        // then
+        assertEquals(true, hero(0).isActive());
+        assertEquals(true, hero(0).isAlive());
 
-        assertEquals(true, hero2().isActive());
-        assertEquals(true, hero2().isAlive());
+        assertEquals(true, hero(1).isActive());
+        assertEquals(true, hero(1).isAlive());
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ˃ ☼\n" +
                 "☼ ►•☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
     }
-
-    public Hero hero2() {
-        return (Hero) game2.getPlayer().getHero();
-    }
-
-    public Hero hero1() {
-        return (Hero) game1.getPlayer().getHero();
-    }
-
+    
     @Test
     public void shouldRandomPosition_whenKillHero() {
-        dice(1, 1,
-                1, 2,
-                2, 2);
-
-        givenGame();
-
-        game1.newGame();
-        game2.newGame();
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼˄  ☼\n" +
+                "☼▲  ☼\n" +
+                "☼☼☼☼☼\n");
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼˄  ☼\n" +
                 "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
 
-        hero1().fire();
-        field.tick();
+        // when
+        hero(0).fire();
+        tick();
 
+        // then
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼Ѡ  ☼\n" +
                 "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
 
-        assertTrue(game2.isGameOver());
-        game2.newGame();
+        verifyAllEvents(
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
-        field.tick();
+        assertEquals(true, game(1).isGameOver());
 
+        // when
+        dice(2, 2);
+        game(1).newGame();
+
+        tick();
+
+        // then
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ˄ ☼\n" +
                 "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
 
     }
 
     @Test
     public void shouldRandomPosition_atFreeSpace_whenKillHero() {
-        dice(1, 1,
-                1, 2,
-                0, 0, // skipped, not free, because hero
-                2, 2);
-
-        givenGame();
-
-        game1.newGame();
-        game2.newGame();
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼˄  ☼\n" +
+                "☼▲  ☼\n" +
+                "☼☼☼☼☼\n");
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼˄  ☼\n" +
                 "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
 
-        hero1().fire();
-        field.tick();
+        // when
+        hero(0).fire();
+        tick();
 
+        // then
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼Ѡ  ☼\n" +
                 "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
 
-        assertTrue(game2.isGameOver());
-        game2.newGame();
+        verifyAllEvents(
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
-        field.tick();
+        assertEquals(true, game(1).isGameOver());
 
+        // when
+        dice(0, 0, // skipped, not free, because hero
+            2, 2);
+        game(1).newGame();
+
+        tick();
+
+        // then
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ˄ ☼\n" +
                 "☼▲  ☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
 
     }
 
     @Test
     public void shouldRandomPosition_atFreeSpace_whenTrySpawnUnderTreeRiverOrIce() {
-        dice(1, 1,
-                1, 2,
-                3, 3, // skipped, not free, because tree
-                3, 2, // skipped, not free, because river
-                3, 1, // skipped, not free, because ice
-                2, 2);
-
-        givenGame();
-        field.addTree(new Tree(pt(3, 3)));
-        field.addRiver(new River(pt(3, 2)));
-        field.addIce(new Ice(pt(3, 1)));
-
-        game1.newGame();
-        game2.newGame();
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼  %☼\n" +
+                "☼˄ ~☼\n" +
+                "☼▲ #☼\n" +
+                "☼☼☼☼☼\n");
 
         assertD("☼☼☼☼☼\n" +
                 "☼  %☼\n" +
                 "☼˄ ~☼\n" +
                 "☼▲ #☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
 
-        hero1().fire();
-        field.tick();
+        // when
+        hero(0).fire();
+        tick();
 
         assertD("☼☼☼☼☼\n" +
                 "☼  %☼\n" +
                 "☼Ѡ ~☼\n" +
                 "☼▲ #☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
+                "☼☼☼☼☼\n", 0);
 
-        assertTrue(game2.isGameOver());
-        game2.newGame();
+        verifyAllEvents(
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
-        field.tick();
+        assertEquals(true, game(1).isGameOver());
 
+        // when
+        dice(3, 3, // skipped, not free, because tree
+            3, 2, // skipped, not free, because river
+            3, 1, // skipped, not free, because ice
+            2, 2);
+        game(1).newGame();
+
+        tick();
+
+        // then
         assertD("☼☼☼☼☼\n" +
                 "☼  %☼\n" +
                 "☼ ˄~☼\n" +
                 "☼▲ #☼\n" +
-                "☼☼☼☼☼\n", player1
-        );
-
+                "☼☼☼☼☼\n", 0);
     }
-
-    private void dice(int... values) {
-        OngoingStubbing<Integer> when = when(dice.next(anyInt()));
-        for (int value : values) {
-            when = when.thenReturn(value);
-        }
-    }
-
-    private void assertD(String field, Player player) {
-        assertEquals(field, printerFactory.getPrinter(
-                this.field.reader(), player).print());
-    }
-
 }

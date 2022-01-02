@@ -7,8 +7,10 @@ import com.codenjoy.dojo.rawelbbub.services.GameRunner;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.Game;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.multiplayer.LevelProgress;
+import com.codenjoy.dojo.services.multiplayer.Single;
 import com.codenjoy.dojo.services.printer.Printer;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
@@ -26,8 +28,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AbstractGameTest {
+
     protected Dice dice;
-    private Rawelbbub game;
+    private Rawelbbub field;
     private List<Player> players;
     private PrinterFactory printerFactory;
     private GameSettings settings;
@@ -35,6 +38,7 @@ public class AbstractGameTest {
     private List<EventListener> listeners;
     private EventsListenersAssert events;
     private Level level;
+    private List<Game> games;
 
     public Dice dice(int... values) {
         OngoingStubbing<Integer> when = when(dice.next(anyInt()));
@@ -54,6 +58,7 @@ public class AbstractGameTest {
         settings = new TestGameSettings();
         printerFactory = new PrinterFactoryImpl();
         events = new EventsListenersAssert(() -> listeners, Event.class);
+        games = new LinkedList<>();
     }
 
     @After
@@ -81,12 +86,12 @@ public class AbstractGameTest {
                 return settings;
             }
         };
-        game = (Rawelbbub) runner.createGame(levelNumber, settings);
+        field = (Rawelbbub) runner.createGame(levelNumber, settings);
 
-        level.heroes()
-                .forEach(hero -> game.newGame(initPlayer(hero)));
 
-        game.ais().stream()
+        level.heroes().forEach(this::initPlayer);
+
+        field.ais().stream()
                 .filter(ai -> ai instanceof AI)
                 .map(ai -> (AI) ai)
                 .forEach(ai -> {
@@ -94,11 +99,11 @@ public class AbstractGameTest {
                     ai.dontMove = true;
                 });
 
-        heroes = game.heroes();
+        heroes = field.heroes();
     }
 
     public AI dropAI(Point pt) {
-        AI ai = game.getAiGenerator().drop(pt);
+        AI ai = field.getAiGenerator().drop(pt);
         ai.dontMove = true;
         ai.dontShoot = true;
         return ai;
@@ -116,27 +121,36 @@ public class AbstractGameTest {
         player.setHero(hero);
         players.add(player);
 
+        Game game = new Single(player, printerFactory);
+        game.on(field);
+        game.newGame();
+        games.add(game);
+
         return player;
     }
 
     public String getPrizesCount() {
-        List<Hero> all = game.heroesAndAis();
+        List<Hero> all = field.heroesAndAis();
         long prizes = all.stream().filter(Hero::withPrize).count();
 
         return String.format("%s prizes with %s heroes", prizes, all.size());
     }
 
     public void assertD(String field) {
-        assertEquals(field, getPrinter().print());
+        assertD(field, 0);
     }
 
-    private Printer<String> getPrinter() {
+    public void assertD(String field, int index) {
+        assertEquals(field, printer(index).print());
+    }
+
+    private Printer<String> printer(int index) {
         return printerFactory.getPrinter(
-                game.reader(), players.get(0));
+                field.reader(), players.get(index));
     }
 
-    public Rawelbbub game() {
-        return game;
+    public Rawelbbub field() {
+        return field;
     }
 
     public GameSettings settings() {
@@ -144,11 +158,19 @@ public class AbstractGameTest {
     }
 
     public void assertW(String expected) {
-        Printer<String> printer = getPrinter();
+        Printer<String> printer = printer(0);
         assertEquals(expected, printer.print().replaceAll("[«¿»?•]", " "));
     }
 
     public Player player(int index) {
         return players.get(index);
+    }
+
+    public Game game(int index) {
+        return games.get(index);
+    }
+
+    public void tick() {
+        field.tick();
     }
 }

@@ -3100,7 +3100,7 @@ public class GameTest extends AbstractGameTest {
 
         field().tick();
 
-        assertW("☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3114,7 +3114,7 @@ public class GameTest extends AbstractGameTest {
 
         field().tick();
 
-        assertW("☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6132,10 +6132,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("1 prizes with 2 heroes", getPrizesCount());
+        assertPrize("1 prizes with 2 heroes");
     }
 
-    // У АИтанка с призами после 4-го хода должен смениться Element
+    // У АИ с призами после 4-го хода должен смениться Element
     @Test
     public void shouldSwapElementAfterFourTicks() {
         settings().integer(KILL_HITS_AI_PRIZE, 3);
@@ -6225,7 +6225,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("1 prizes with 2 heroes", getPrizesCount());
+        assertPrize("1 prizes with 2 heroes");
     }
 
     // если spawnAiPrize = 3, а спаунится сразу 2 АИтанка, то 2-й должен быть АИтанком с призами
@@ -6255,7 +6255,7 @@ public class GameTest extends AbstractGameTest {
 
         field().tick();
 
-        assertEquals("1 prizes with 3 heroes", getPrizesCount());
+        assertPrize("1 prizes with 3 heroes");
     }
 
     // если spawnAiPrize = 3 и спаунится сразу 3 АИтанка, то 2-й должен быть АИтанком с призами
@@ -6285,7 +6285,7 @@ public class GameTest extends AbstractGameTest {
 
         field().tick();
 
-        assertEquals("1 prizes with 4 heroes", getPrizesCount());
+        assertPrize("1 prizes with 4 heroes");
     }
 
     // если spawnAiPrize = 3, а спаунятся сразу 6 АИтанков, то должно быть 2 АИтанка с призами
@@ -6315,7 +6315,7 @@ public class GameTest extends AbstractGameTest {
 
         field().tick();
 
-        assertEquals("2 prizes with 7 heroes", getPrizesCount());
+        assertPrize("2 prizes with 7 heroes");
     }
 
     // если spawnAiPrize = 3, а 3 АИтанка спаунятся по 1-му за каждый ход,
@@ -6396,7 +6396,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
-        assertEquals("1 prizes with 4 heroes", getPrizesCount());
+        assertPrize("1 prizes with 4 heroes");
 
         dropAI(pt(5, 7));
 
@@ -6411,7 +6411,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
-        assertEquals("2 prizes with 5 heroes", getPrizesCount());
+        assertPrize("2 prizes with 5 heroes");
 
         field().tick();
 
@@ -10198,7 +10198,7 @@ public class GameTest extends AbstractGameTest {
 
         field().tick();
 
-        assertEquals("2 prizes with 7 heroes", getPrizesCount());
+        assertPrize("2 prizes with 7 heroes");
     }
 
     // если spawnAiPrize = 2, то каждый второй АИтанк будет с призами
@@ -10231,7 +10231,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("2 prizes with 7 heroes", getPrizesCount());
+        assertPrize("2 prizes with 7 heroes");
 
         hero(0).fire();
         field().tick();
@@ -10287,7 +10287,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("1 prizes with 9 heroes", getPrizesCount());
+        assertPrize("1 prizes with 9 heroes");
     }
 
     @Test
@@ -10317,7 +10317,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("2 prizes with 7 heroes", getPrizesCount());
+        assertPrize("2 prizes with 7 heroes");
 
         hero(0).fire();
         field().tick();
@@ -10398,7 +10398,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("2 prizes with 9 heroes", getPrizesCount());
+        assertPrize("2 prizes with 9 heroes");
     }
 
     @Test

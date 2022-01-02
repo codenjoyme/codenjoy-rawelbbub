@@ -98,15 +98,12 @@ public class AbstractGameTest
         return ai;
     }
 
-    public String getPrizesCount() {
+    public void assertPrize(String expected) {
         List<Hero> all = field().heroesAndAis();
         long prizes = all.stream().filter(Hero::withPrize).count();
 
-        return String.format("%s prizes with %s heroes", prizes, all.size());
-    }
-
-    public void assertW(String expected) {
-//        Printer<String> printer = printer(0);
-//        assertEquals(expected, printer.print().replaceAll("[«¿»?•]", " "));
+        assertEquals(expected,
+                String.format("%s prizes with %s heroes",
+                        prizes, all.size()));
     }
 }

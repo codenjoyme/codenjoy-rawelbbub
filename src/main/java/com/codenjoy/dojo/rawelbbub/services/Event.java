@@ -80,28 +80,27 @@ public class Event implements EventObject<Event.Type, Integer> {
     }
 
     public boolean isHeroDied() {
-        return type.equals(HERO_DIED.type);
+        return type == Type.HERO_DIED;
     }
 
     public boolean isCatchPrize() {
-        return type.equals(CATCH_PRIZE.apply(1).type);
+        return type == Type.CATCH_PRIZE;
     }
 
     public boolean isKillOtherHero() {
-        return type.equals(KILL_OTHER_HERO.apply(1).type);
+        return type == Type.KILL_OTHER_HERO;
     }
 
     public boolean isKillAI() {
-        return type.equals(KILL_AI.type);
+        return type == Type.KILL_AI;
     }
 
     @Override
     public String toString() {
         if (isKillOtherHero() || isCatchPrize()) {
             return String.format("%s[%s]", type, value);
-        } else {
-            return type.name();
         }
+        return type.name();
     }
 
     @Override

@@ -71,7 +71,7 @@ public class AI extends Hero {
 
     private void shootIfReady() {
         if (act++ % ticksPerShoot() == 0) {
-            act();
+            fire();
         }
     }
 

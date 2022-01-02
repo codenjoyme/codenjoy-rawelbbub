@@ -139,7 +139,7 @@ public class MultiplayerTest {
         );
 
         hero1().right();
-        hero1().act();
+        hero1().fire();
 
         hero2().right();
         field.tick();
@@ -185,7 +185,7 @@ public class MultiplayerTest {
         );
 
         hero1().right();
-        hero1().act();
+        hero1().fire();
 
         hero2().right();
         field.tick();
@@ -230,7 +230,7 @@ public class MultiplayerTest {
                 "☼☼☼☼☼\n", player1
         );
 
-        hero1().act();
+        hero1().fire();
         field.tick();
 
         assertD("☼☼☼☼☼\n" +
@@ -273,7 +273,7 @@ public class MultiplayerTest {
                 "☼☼☼☼☼\n", player1
         );
 
-        hero1().act();
+        hero1().fire();
         field.tick();
 
         assertD("☼☼☼☼☼\n" +
@@ -321,7 +321,7 @@ public class MultiplayerTest {
                 "☼☼☼☼☼\n", player1
         );
 
-        hero1().act();
+        hero1().fire();
         field.tick();
 
         assertD("☼☼☼☼☼\n" +

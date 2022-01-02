@@ -28,7 +28,6 @@ import com.codenjoy.dojo.rawelbbub.model.items.Bullet;
 import com.codenjoy.dojo.rawelbbub.model.items.Prize;
 import com.codenjoy.dojo.rawelbbub.model.items.Prizes;
 import com.codenjoy.dojo.rawelbbub.model.items.Tree;
-import com.codenjoy.dojo.rawelbbub.services.Event;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
@@ -44,6 +43,8 @@ import java.util.List;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_WALLS;
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_WALKING_ON_WATER;
+import static com.codenjoy.dojo.rawelbbub.services.Event.CATCH_PRIZE;
+import static com.codenjoy.dojo.rawelbbub.services.Event.HERO_DIED;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.StateUtils.filterOne;
 
@@ -98,7 +99,7 @@ public class Hero extends RoundPlayerHero<Field>
         fire = true;
     }
 
-    void fire() {
+    protected void fire() {
         act();
     }
 
@@ -142,7 +143,7 @@ public class Hero extends RoundPlayerHero<Field>
 
     @Override
     public void die() {
-        die(Event.HERO_DIED);
+        die(HERO_DIED);
     }
 
     public Collection<Bullet> getBullets() {
@@ -257,7 +258,7 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     public void take(Prize prize) {
-        getPlayer().event(Event.CATCH_PRIZE.apply(Integer.valueOf("" + prize.elements().ch())));
+        getPlayer().event(CATCH_PRIZE.apply(Integer.valueOf("" + prize.elements().ch())));
         prizes.add(prize);
     }
 

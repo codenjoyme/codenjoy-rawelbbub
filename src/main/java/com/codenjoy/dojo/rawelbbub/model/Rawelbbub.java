@@ -24,7 +24,6 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 
 import com.codenjoy.dojo.rawelbbub.model.items.*;
-import com.codenjoy.dojo.rawelbbub.services.Event;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.BoardUtils;
 import com.codenjoy.dojo.services.Dice;
@@ -39,8 +38,7 @@ import java.util.function.Consumer;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_WALLS;
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_IMMORTALITY;
-import static com.codenjoy.dojo.rawelbbub.services.Event.START_ROUND;
-import static com.codenjoy.dojo.rawelbbub.services.Event.WIN_ROUND;
+import static com.codenjoy.dojo.rawelbbub.services.Event.*;
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toList;
 
@@ -285,10 +283,10 @@ public class Rawelbbub extends RoundField<Player> implements Field {
 
         if (player != null) {
             if (ais.contains(prey)) {
-                player.event(Event.KILL_AI);
+                player.event(KILL_AI);
             } else {
                 player.killHero();
-                player.event(Event.KILL_OTHER_HERO.apply(player.score()));
+                player.event(KILL_OTHER_HERO.apply(player.score()));
             }
         }
     }

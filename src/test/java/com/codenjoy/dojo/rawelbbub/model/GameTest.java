@@ -96,9 +96,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldResetSlidingTicksWhenLeaveIce() {
+    public void shouldResetSlidingTicks_whenLeaveOilLeak() {
         // given
-        settings().integer(SLIPPERINESS, 2);
+        settings().integer(OIL_SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -189,7 +189,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        // sliding state should be reset because the hero left ice
+        // sliding state should be reset because the hero left oil leak
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -314,7 +314,7 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void bulletDirectionShouldBeAffectedBySliding() {
         // given
-        settings().integer(SLIPPERINESS, 2);
+        settings().integer(OIL_SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -407,7 +407,7 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void bulletDirectionShouldBeAffectedBySliding2() {
         // given
-        settings().integer(SLIPPERINESS, 2);
+        settings().integer(OIL_SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -549,12 +549,12 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroCanGoIfIceAtWayWithoutSliding_whenHeroTakePrize() {
+    public void shouldHeroCanGoIfOilLeakAtWayWithoutSliding_whenHeroTakePrize() {
         // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 6)
-                .integer(SLIPPERINESS, 1);
+                .integer(OIL_SLIPPERINESS, 1);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -624,7 +624,7 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        // заезжаем на лед
+        // заезжаем на нефтяное пятно
         hero(0).up();
         tick();
 
@@ -666,7 +666,7 @@ public class GameTest extends AbstractGameTest {
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 2)
-                .integer(SLIPPERINESS, 3);
+                .integer(OIL_SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
@@ -736,7 +736,7 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        // заезжаем на лед
+        // заезжаем на нефтяное пятно
         hero(0).up();
         tick();
 
@@ -853,7 +853,7 @@ public class GameTest extends AbstractGameTest {
         settings().integer(PRIZE_ON_FIELD, 4)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 6)
-                .integer(SLIPPERINESS, 5);
+                .integer(OIL_SLIPPERINESS, 5);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -6236,7 +6236,7 @@ public class GameTest extends AbstractGameTest {
 
 	// Лёд
     @Test
-    public void shouldBeWallIce_whenGameCreated() {
+    public void shouldBeOilLeak_whenGameCreated() {
         // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6247,7 +6247,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // then
-        assertEquals(1, field().ice().size());
+        assertEquals(1, field().oil().size());
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6258,13 +6258,13 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // когда герой двигается по льду, происходит скольжение
+    // когда герой двигается по нефтяному пятну, происходит скольжение
     // (он проскальзывает одну команду).
     // Если только заезжаем - то сразу же начинается занос,
-    // то есть запоминается команда которой заезжали на лед
-    // Если съезжаем на землю, то любой занос прекращается тут же
+    // то есть запоминается команда которой заезжали на пятно
+    // Если съезжаем в чистые воды, то любой занос прекращается тут же
     @Test
-    public void shouldHeroMoveUp_onIce_afterBeforeGround() {
+    public void shouldHeroMoveUp_onOilLeak_afterBeforeWater() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -6377,9 +6377,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroMoveLeftThenUpThenDown_onIce() {
+    public void shouldHeroMoveLeftThenUpThenDown_onOilLeak() {
         // given
-        settings().integer(SLIPPERINESS, 1);
+        settings().integer(OIL_SLIPPERINESS, 1);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -6468,9 +6468,9 @@ public class GameTest extends AbstractGameTest {
 
     // также когда на нем двигается враг, он проскальзывает команду на два тика
     @Test
-    public void shouldOtherHeroMoveLeftThenUpThenDown_onIce() {
+    public void shouldOtherHeroMoveLeftThenUpThenDown_onOilLeak() {
         // given
-        settings().integer(SLIPPERINESS, 1);
+        settings().integer(OIL_SLIPPERINESS, 1);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -7643,7 +7643,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDropPrize_InPointKilledAiPrize_onIce() {
+    public void shouldDropPrize_InPointKilledAiPrize_onOilLeak() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1);
 
@@ -7995,10 +7995,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // приз на льду должен исчезнуть через 2 тика, если его не подобрали
-    // после исчезновения приза видим лед
+    // приз на нефти должен исчезнуть через 2 тика, если его не подобрали
+    // после исчезновения приза видим нефть
     @Test
-    public void shouldExpirePrizeOnField_disappearOnIce() {
+    public void shouldExpirePrizeOnField_disappearOnOilLeak() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 2);
@@ -8463,7 +8463,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroTookPrize_onIce() {
+    public void shouldHeroTookPrize_onOilLeak() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
@@ -8538,7 +8538,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldOtherTookPrize_onIce() {
+    public void shouldOtherTookPrize_onOilLeak() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
@@ -10255,12 +10255,12 @@ public class GameTest extends AbstractGameTest {
         verifyAllEvents("[HERO_DIED]");
     }
 
-    // если герой заехал на лед, а в следующий тик не указал никакой команды,
-    // то продолжается движение вперед по старой команде на 1 тик.
+    // если герой заехал на нефтяное пятно, а в следующий тик не указал
+    // никакой команды, то продолжается движение вперед по старой команде на 1 тик.
     @Test
     public void shouldHeroSlidingOneTicks() {
         // given
-        settings().integer(SLIPPERINESS, 3);
+        settings().integer(OIL_SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -10308,12 +10308,12 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // если герой заехал на лед, а в следующий тик указал какую-то команду,
-    // то продолжается движение по старой команде N тиков.
+    // если герой заехал на нефтяное пятно, а в следующий тик указал
+    // какую-то команду, то продолжается движение по старой команде N тиков.
     @Test
     public void shouldHeroSlidingNTicks() {
         // given
-        settings().integer(SLIPPERINESS, 3);
+        settings().integer(OIL_SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -10417,12 +10417,12 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // если герой заехал на лед, то продолжается движение по старой команде N тиков
-    // слушается команда N + 1 и опять занос N тиков
+    // если герой заехал на нефтяное пятно, то продолжается движение
+    // по старой команде N тиков слушается команда N + 1 и опять занос N тиков
     @Test
     public void shouldHeroSlidingNTicks_andAgainSliding() {
         // given
-        settings().integer(SLIPPERINESS, 3);
+        settings().integer(OIL_SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -10584,7 +10584,7 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroAndSliding_ifBumpedWall() {
         // given
-        settings().integer(SLIPPERINESS, 5);
+        settings().integer(OIL_SLIPPERINESS, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼###  ☼\n" +
@@ -11557,12 +11557,12 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // если дропнуть танк на лед, то случался NPE
+    // если дропнуть танк на нефть, то случался NPE
     // теперь все нормально
     @Test
-    public void shouldDropAiOnIce() {
+    public void shouldDropAiOnOilLeak() {
         // given
-        settings().integer(SLIPPERINESS, 2);
+        settings().integer(OIL_SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼#    ☼\n" +

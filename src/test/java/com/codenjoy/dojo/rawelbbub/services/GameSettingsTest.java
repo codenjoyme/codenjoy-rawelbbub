@@ -33,7 +33,7 @@ public class GameSettingsTest {
     public void shouldGetAllKeys() {
         assertEquals("[AI_TICKS_PER_SHOOT, \n" +
                         "HERO_TICKS_PER_SHOOT, \n" +
-                        "SLIPPERINESS, \n" +
+                        "OIL_SLIPPERINESS, \n" +
                         "PENALTY_WALKING_ON_WATER, \n" +
                         "SHOW_MY_HERO_UNDER_TREE, \n" +
                         "WALL_REGENERATE_TIME, \n" +

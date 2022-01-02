@@ -211,7 +211,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         return !isBarrier(pt)
                 && !isTree(pt)
                 && !isRiver(pt)
-                && !isIce(pt);
+                && !isOil(pt);
     }
 
     @Override
@@ -235,7 +235,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
                 Prize.class,
                 Bullet.class,
                 Wall.class,
-                Ice.class,
+                Oil.class,
                 River.class);
     }
 
@@ -330,8 +330,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public boolean isIce(Point pt) {
-        return ice().contains(pt);
+    public boolean isOil(Point pt) {
+        return oil().contains(pt);
     }
 
     @Override
@@ -386,8 +386,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<Ice> ice() {
-        return field.of(Ice.class);
+    public Accessor<Oil> oil() {
+        return field.of(Oil.class);
     }
 
     @Override

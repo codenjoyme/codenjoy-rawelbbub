@@ -275,7 +275,7 @@ public class MultiplayerTest extends AbstractGameTest {
         // when
         dice(3, 3, // skipped, not free, because tree
             3, 2, // skipped, not free, because river
-            3, 1, // skipped, not free, because ice
+            3, 1, // skipped, not free, because oil leak
             2, 2);
         game(1).newGame();
 

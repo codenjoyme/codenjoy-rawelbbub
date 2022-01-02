@@ -28,14 +28,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.State;
 
-public class Ice extends PointImpl implements State<Element, Player> {
+public class Oil extends PointImpl implements State<Element, Player> {
 
-	public Ice(Point pt) {
+	public Oil(Point pt) {
 		super(pt);
 	}
 
 	@Override
 	public Element state(Player player, Object... alsoAtPoint) {
-		return Element.ICE;
+		return Element.OIL;
 	}
 }

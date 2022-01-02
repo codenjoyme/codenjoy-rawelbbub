@@ -45,7 +45,7 @@ public class GameSettings extends SettingsImpl
 
         AI_TICKS_PER_SHOOT("[Game] Ticks until the next AI shoot"),
         HERO_TICKS_PER_SHOOT("[Game] Ticks until the next hero shoot"),
-        SLIPPERINESS("[Game] Value of hero sliding on ice"),
+        OIL_SLIPPERINESS("[Game] The amount of leaked oil. The more - the more naughty the submarine."),
         PENALTY_WALKING_ON_WATER("[Game] Penalty time when walking on water"),
         SHOW_MY_HERO_UNDER_TREE("[Game] Show my hero under tree"),
         WALL_REGENERATE_TIME("[Game] Wall regenerate time"),
@@ -96,7 +96,7 @@ public class GameSettings extends SettingsImpl
 
         integer(AI_TICKS_PER_SHOOT, 10);
         integer(HERO_TICKS_PER_SHOOT, 4);
-        integer(SLIPPERINESS, 3);
+        integer(OIL_SLIPPERINESS, 3);
         integer(PENALTY_WALKING_ON_WATER, 2);
         bool(SHOW_MY_HERO_UNDER_TREE, false);
         integer(WALL_REGENERATE_TIME, 30);

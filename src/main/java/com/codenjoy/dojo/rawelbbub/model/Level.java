@@ -47,8 +47,8 @@ public class Level extends AbstractLevel {
         return find(River::new, RIVER);
     }
 
-    public List<Ice> ice() {
-        return find(Ice::new, ICE);
+    public List<Oil> oil() {
+        return find(Oil::new, OIL);
     }
 
     public List<Tree> trees() {
@@ -84,7 +84,7 @@ public class Level extends AbstractLevel {
         // TODO это делается не тут, а позже потому что в каждой
         //      такой точке может возникнуть как простой AI так и призовой
         // field.addAll(ais());
-        field.addAll(ice());
+        field.addAll(oil());
         field.addAll(rivers());
         field.addAll(trees());
     }

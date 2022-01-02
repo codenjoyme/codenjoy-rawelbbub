@@ -128,7 +128,7 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     public void move() {
-        moving = moving || field.isIce(this);
+        moving = moving || field.isOil(this);
         if (!moving) return;
 
         if (sliding.active(this)) {

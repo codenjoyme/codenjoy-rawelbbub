@@ -46,7 +46,7 @@ public class TestGameSettings extends GameSettings {
          integer(KILL_HITS_AI_PRIZE, 3);
          integer(AI_TICKS_PER_SHOOT, 10);
          integer(HERO_TICKS_PER_SHOOT, 1);
-         integer(SLIPPERINESS, 3);
+         integer(OIL_SLIPPERINESS, 3);
          bool(SHOW_MY_HERO_UNDER_TREE, false);
          integer(PRIZE_ON_FIELD, 3);
          integer(PRIZE_WORKING, 10);

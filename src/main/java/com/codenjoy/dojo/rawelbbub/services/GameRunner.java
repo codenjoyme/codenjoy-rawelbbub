@@ -59,7 +59,7 @@ public class GameRunner extends AbstractGameType<GameSettings> {
     @Override
     public GameField createGame(int levelNumber, GameSettings settings) {
         Level level = settings.level(levelNumber, getDice(), Level::new);
-        return new Rawelbbub(level, getDice(), settings);
+        return new Rawelbbub(getDice(), level, settings);
     }
 
     @Override

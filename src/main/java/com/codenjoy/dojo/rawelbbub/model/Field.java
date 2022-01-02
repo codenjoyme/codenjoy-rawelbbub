@@ -31,7 +31,7 @@ import com.codenjoy.dojo.services.round.RoundGameField;
 import java.util.List;
 import java.util.Optional;
 
-public interface Field extends RoundGameField<Player> {
+public interface Field extends RoundGameField<Player, Hero> {
 
     boolean isBarrier(Point pt);
 

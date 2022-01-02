@@ -26,7 +26,6 @@ package com.codenjoy.dojo.rawelbbub.model;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
-import static org.junit.Assert.assertEquals;
 
 public class MultiplayerTest extends AbstractGameTest {
 
@@ -40,13 +39,13 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼\n");
         
         // then
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ▲ ☼\n" +
                 "☼˄  ☼\n" +
                 "☼☼☼☼☼\n", 0);
 
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ˄ ☼\n" +
                 "☼▲  ☼\n" +
@@ -70,7 +69,7 @@ public class MultiplayerTest extends AbstractGameTest {
         assertEquals(false, hero(1).isActive());
         assertEquals(true, hero(1).isAlive());
 
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼˄  ☼\n" +
                 "☼▲  ☼\n" +
@@ -92,7 +91,7 @@ public class MultiplayerTest extends AbstractGameTest {
         assertEquals(false, hero(1).isActive());
         assertEquals(true, hero(1).isAlive());
 
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼˄  ☼\n" +
                 "☼▲  ☼\n" +
@@ -120,7 +119,7 @@ public class MultiplayerTest extends AbstractGameTest {
         assertEquals(true, hero(1).isActive());
         assertEquals(true, hero(1).isAlive());
 
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼˄  ☼\n" +
                 "☼▲  ☼\n" +
@@ -140,7 +139,7 @@ public class MultiplayerTest extends AbstractGameTest {
         assertEquals(true, hero(1).isActive());
         assertEquals(true, hero(1).isAlive());
 
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ˃ ☼\n" +
                 "☼ ►•☼\n" +
@@ -156,7 +155,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼▲  ☼\n" +
                 "☼☼☼☼☼\n");
 
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼˄  ☼\n" +
                 "☼▲  ☼\n" +
@@ -167,7 +166,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         // then
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼Ѡ  ☼\n" +
                 "☼▲  ☼\n" +
@@ -186,7 +185,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         // then
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ˄ ☼\n" +
                 "☼▲  ☼\n" +
@@ -203,7 +202,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼▲  ☼\n" +
                 "☼☼☼☼☼\n");
 
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼˄  ☼\n" +
                 "☼▲  ☼\n" +
@@ -214,7 +213,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         // then
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼Ѡ  ☼\n" +
                 "☼▲  ☼\n" +
@@ -234,7 +233,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         // then
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ˄ ☼\n" +
                 "☼▲  ☼\n" +
@@ -251,7 +250,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼▲ #☼\n" +
                 "☼☼☼☼☼\n");
 
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼  %☼\n" +
                 "☼˄ ~☼\n" +
                 "☼▲ #☼\n" +
@@ -261,7 +260,7 @@ public class MultiplayerTest extends AbstractGameTest {
         hero(0).fire();
         tick();
 
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼  %☼\n" +
                 "☼Ѡ ~☼\n" +
                 "☼▲ #☼\n" +
@@ -283,7 +282,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         // then
-        assertD("☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼\n" +
                 "☼  %☼\n" +
                 "☼ ˄~☼\n" +
                 "☼▲ #☼\n" +

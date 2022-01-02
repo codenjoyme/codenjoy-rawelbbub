@@ -30,11 +30,13 @@ import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.round.RoundField;
+import com.codenjoy.dojo.utils.whatsnext.WhatsNextUtils;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_WALLS;
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_IMMORTALITY;
@@ -42,7 +44,7 @@ import static com.codenjoy.dojo.rawelbbub.services.Event.*;
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toList;
 
-public class Rawelbbub extends RoundField<Player> implements Field {
+public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
     private Level level;
     private Dice dice;
@@ -63,31 +65,15 @@ public class Rawelbbub extends RoundField<Player> implements Field {
 
     private GameSettings settings;
 
-    public Rawelbbub(Level level, Dice dice, GameSettings settings) {
+    public Rawelbbub(Dice dice, Level level, GameSettings settings) {
         super(START_ROUND, WIN_ROUND, settings);
 
         this.level = level;
-        this.size = level.size();
         this.dice = dice;
         this.settings = settings;
+        this.players = new LinkedList<>();
 
-        ais = new LinkedList<>();
-        prizes = new Prizes();
-        walls = new LinkedList<>();
-        borders = new LinkedList<>();
-        trees = new LinkedList<>();
-        ice = new LinkedList<>();
-        rivers = new LinkedList<>();
-        players = new LinkedList<>();
-        prizeGen = new PrizeGenerator(this, dice, settings);
-        aiGen = new AiGenerator(this, dice, settings);
-
-        addBorder(level.borders());
-        addWall(level.walls());
-        addAis(level.ais());
-        addRiver(level.rivers());
-        addTree(level.trees());
-        addIce(level.ice());
+        clearScore();
     }
 
     @Override
@@ -107,6 +93,26 @@ public class Rawelbbub extends RoundField<Player> implements Field {
 
     @Override
     public void clearScore() {
+        if (level == null) return;
+
+        this.size = level.size();
+        ais = new LinkedList<>();
+        prizes = new Prizes();
+        walls = new LinkedList<>();
+        borders = new LinkedList<>();
+        trees = new LinkedList<>();
+        ice = new LinkedList<>();
+        rivers = new LinkedList<>();
+        prizeGen = new PrizeGenerator(this, dice, settings);
+        aiGen = new AiGenerator(this, dice, settings);
+
+        addBorder(level.borders());
+        addWall(level.walls());
+        addAis(level.ais());
+        addRiver(level.rivers());
+        addTree(level.trees());
+        addIce(level.ice());
+
         players.forEach(Player::reset);
         walls.forEach(Wall::reset);
         heroesAndAis().forEach(Hero::reset);
@@ -306,16 +312,19 @@ public class Rawelbbub extends RoundField<Player> implements Field {
 
     @Override
     public boolean isFree(Point pt) {
-        return !(isBarrier(pt) || isTree(pt) || isRiver(pt) || isIce(pt));
+        return !isBarrier(pt)
+                && !isTree(pt)
+                && !isRiver(pt)
+                && !isIce(pt);
     }
 
     @Override
     public Optional<Point> freeRandom(Player player) {
-        return BoardUtils.freeRandom(size, dice, pt -> isFree(pt));
+        return BoardUtils.freeRandom(size, dice, this::isFree);
     }
 
     public boolean isBarrier(Point pt) {
-        for (Wall wall : this.walls) {
+        for (Wall wall : walls) {
             if (wall.itsMe(pt) && !wall.destroyed()) {
                 return true;
             }
@@ -379,6 +388,12 @@ public class Rawelbbub extends RoundField<Player> implements Field {
 
     public int size() {
         return size;
+    }
+
+    @Override
+    public List<Player> load(String board, Function<Hero, Player> player) {
+        level = new Level(board);
+        return WhatsNextUtils.load(this, level.heroes(), player);
     }
 
     @Override

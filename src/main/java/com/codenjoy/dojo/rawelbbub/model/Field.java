@@ -47,7 +47,7 @@ public interface Field extends RoundGameField<Player> {
 
     void addAi(Hero hero);
 
-    List<Hero> aiTanks();
+    List<Hero> ais();
 
     int size();
 

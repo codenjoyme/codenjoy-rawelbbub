@@ -1,10 +1,10 @@
-package com.codenjoy.dojo.rawelbbub.model.levels;
+package com.codenjoy.dojo.rawelbbub.services;
 
 /*-
  * #%L
  * Codenjoy - it's a dojo-like platform from developers to developers.
  * %%
- * Copyright (C) 2018 Codenjoy
+ * Copyright (C) 2022 Codenjoy
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -22,43 +22,15 @@ package com.codenjoy.dojo.rawelbbub.model.levels;
  * #L%
  */
 
+import com.codenjoy.dojo.services.multiplayer.LevelProgress;
 
-import com.codenjoy.dojo.rawelbbub.services.GameRunner;
-import com.codenjoy.dojo.rawelbbub.services.GameSettings;
-import com.codenjoy.dojo.services.EventListener;
-import com.codenjoy.dojo.services.multiplayer.GameField;
-import com.codenjoy.dojo.services.multiplayer.GamePlayer;
-import com.codenjoy.dojo.services.printer.Printer;
-import com.codenjoy.dojo.services.printer.PrinterFactory;
-import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
-import org.junit.Test;
+public class Levels {
 
-import static com.codenjoy.dojo.services.multiplayer.GamePlayer.DEFAULT_TEAM_ID;
-import static com.codenjoy.dojo.services.multiplayer.LevelProgress.levelsStartsFrom1;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-
-public class LevelTest {
-
-    private PrinterFactory printerFactory = new PrinterFactoryImpl();
-
-    @Test
-    public void test() {
-        GameRunner runner = new GameRunner();
-        GameSettings settings = runner.getSettings();
-        GamePlayer player = runner.createPlayer(mock(EventListener.class),
-                DEFAULT_TEAM_ID, "id", settings);
-        GameField game = runner.createGame(levelsStartsFrom1, settings);
-        player.newHero(game);
-
-        assertEquals(34, game.reader().size());
-
-        Printer printer = printerFactory.getPrinter(
-                game.reader(), player);
-
-        assertEquals(
+    public static void setup(GameSettings settings) {
+        int level = LevelProgress.levelsStartsFrom1;
+        settings.setLevelMaps(level,
                 "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
-                "☼ ◘    ¿    ¿        ¿    ◘    ¿ ☼\n" +
+                "☼ ¿    ¿    ¿        ¿    ¿    ¿ ☼\n" +
                 "☼                                ☼\n" +
                 "☼  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ☼\n" +
                 "☼ #╬╬╬# ╬╬╬ #╬╬╬##╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
@@ -90,8 +62,6 @@ public class LevelTest {
                 "☼  ╬╬╬       ╬╬╬╬╬╬╬╬       ╬╬╬  ☼\n" +
                 "☼            ╬╬    ╬╬            ☼\n" +
                 "☼  %%%%%%    ╬╬    ╬╬    %%%%%%  ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n",
-                printer.print());
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
     }
-
 }

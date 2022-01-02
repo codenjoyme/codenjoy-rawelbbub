@@ -25,7 +25,6 @@ package com.codenjoy.dojo.rawelbbub.model.levels;
 
 import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.model.items.*;
-import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.AbstractLevel;
 
@@ -38,11 +37,8 @@ import static com.codenjoy.dojo.services.Direction.*;
 
 public class Level extends AbstractLevel {
 
-    private Dice dice;
-
-    public Level(String map, Dice dice) {
+    public Level(String map) {
         super(map);
-        this.dice = dice;
     }
 
     public List<Wall> walls() {
@@ -63,10 +59,10 @@ public class Level extends AbstractLevel {
 
     public List<Hero> ais() {
         return new LinkedList<>(){{
-            addAll(find((pt, el) -> new AI(pt, DOWN, dice),  AI_TANK_DOWN));
-            addAll(find((pt, el) -> new AI(pt, UP, dice),    AI_TANK_UP));
-            addAll(find((pt, el) -> new AI(pt, LEFT, dice),  AI_TANK_LEFT));
-            addAll(find((pt, el) -> new AI(pt, RIGHT, dice), AI_TANK_RIGHT));
+            addAll(find((pt, el) -> new AI(pt, DOWN),  AI_TANK_DOWN));
+            addAll(find((pt, el) -> new AI(pt, UP),    AI_TANK_UP));
+            addAll(find((pt, el) -> new AI(pt, LEFT),  AI_TANK_LEFT));
+            addAll(find((pt, el) -> new AI(pt, RIGHT), AI_TANK_RIGHT));
         }};
     }
 

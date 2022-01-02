@@ -60,7 +60,7 @@ public class AiGenerator {
     }
 
     public void dropAll() {
-        int needed = capacity - field.aiTanks().size();
+        int needed = capacity - field.ais().size();
 
         for (int i = 0; i < needed; i++) {
             Point pt = freePosition();
@@ -90,11 +90,14 @@ public class AiGenerator {
     }
 
     private AI tank(Point pt) {
+        AI result;
         if (isPrizeTankTurn() && canDrop()) {
-            return new AIPrize(pt, Direction.DOWN, dice);
+            result = new AIPrize(pt, Direction.DOWN);
         } else {
-            return new AI(pt, Direction.DOWN, dice);
+            result = new AI(pt, Direction.DOWN);
         }
+        result.dice(dice);
+        return result;
     }
 
     private boolean isPrizeTankTurn() {
@@ -105,11 +108,12 @@ public class AiGenerator {
     }
 
     public AI drop(Point pt) {
-        AI tank = checkDropPt(pt);
-        tank.init(field);
-        field.addAi(tank);
+        AI ai = checkDropPt(pt);
+        ai.init(field);
+        ai.dice(dice);
+        field.addAi(ai);
         newSpawn();
-        return tank;
+        return ai;
     }
 
     private AI checkDropPt(Point pt) {

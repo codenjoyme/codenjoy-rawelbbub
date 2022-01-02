@@ -42,9 +42,8 @@ public class AI extends Hero {
     private int act;
     private int count;
 
-    public AI(Point pt, Direction direction, Dice dice) {
+    public AI(Point pt, Direction direction) {
         super(pt, direction);
-        this.dice = dice;
         this.count = 0;
         setActive(true);
         setAlive(true);
@@ -134,4 +133,7 @@ public class AI extends Hero {
         return null;
     }
 
+    public void dice(Dice dice) {
+        this.dice = dice;
+    }
 }

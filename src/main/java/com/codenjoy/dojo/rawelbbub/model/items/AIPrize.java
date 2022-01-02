@@ -23,7 +23,6 @@ package com.codenjoy.dojo.rawelbbub.model.items;
  */
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
-import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 
@@ -36,8 +35,8 @@ public class AIPrize extends AI {
     private int ticks;
     private boolean wounded;
 
-    public AIPrize(Point pt, Direction direction, Dice dice) {
-        super(pt, direction, dice);
+    public AIPrize(Point pt, Direction direction) {
+        super(pt, direction);
         damage = 0;
         ticks = 0;
         wounded = false;

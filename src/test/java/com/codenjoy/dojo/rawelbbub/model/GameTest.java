@@ -27,12 +27,14 @@ import com.codenjoy.dojo.rawelbbub.TestGameSettings;
 import com.codenjoy.dojo.rawelbbub.model.items.AI;
 import com.codenjoy.dojo.rawelbbub.model.items.Bullet;
 import com.codenjoy.dojo.rawelbbub.model.items.Wall;
+import com.codenjoy.dojo.rawelbbub.model.levels.Level;
 import com.codenjoy.dojo.rawelbbub.services.Event;
 import com.codenjoy.dojo.rawelbbub.services.GameRunner;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.multiplayer.LevelProgress;
 import com.codenjoy.dojo.services.printer.Printer;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
@@ -65,6 +67,7 @@ public class GameTest {
     private List<Hero> heroes;
     private List<EventListener> listeners;
     private EventsListenersAssert events;
+    private Level level;
 
     private Dice dice(int... values) {
         OngoingStubbing<Integer> when = when(dice.next(anyInt()));
@@ -95,8 +98,10 @@ public class GameTest {
         return heroes.get(index);
     }
 
-    private void givenFl(String board) {
-        settings.string(LEVEL_MAP, board);
+    private void givenFl(String map) {
+        int levelNumber = LevelProgress.levelsStartsFrom1;
+        settings.setLevelMaps(levelNumber, new String[]{map});
+        level = settings.level(levelNumber, dice, Level::new);
 
         GameRunner runner = new GameRunner() {
             @Override
@@ -109,38 +114,41 @@ public class GameTest {
                 return settings;
             }
         };
-        game = (Rawelbbub) runner.createGame(0, settings);
+        game = (Rawelbbub) runner.createGame(levelNumber, settings);
 
-        settings.level(dice).heroes()
+        level.heroes()
                 .forEach(tank -> game.newGame(initPlayer(tank)));
-        game.aiTanks().stream()
-                .filter(tank -> tank instanceof AI)
-                .map(tank -> (AI) tank)
-                .forEach(tank -> {
-                    tank.dontShoot = true;
-                    tank.dontMove = true;
+
+        game.ais().stream()
+                .filter(ai -> ai instanceof AI)
+                .map(ai -> (AI) ai)
+                .forEach(ai -> {
+                    ai.dontShoot = true;
+                    ai.dontMove = true;
                 });
 
         heroes = game.heroes();
     }
 
-    private AI dropAI(Point point) {
-        AI aiTank = game.getAiGenerator().drop(point);
-        aiTank.dontMove = true;
-        aiTank.dontShoot = true;
-        return aiTank;
+    private AI dropAI(Point pt) {
+        AI ai = game.getAiGenerator().drop(pt);
+        ai.dontMove = true;
+        ai.dontShoot = true;
+        return ai;
     }
 
     public void verifyAllEvents(String expected) {
         assertEquals(expected, events.getEvents());
     }
     
-    private Player initPlayer(Hero tank) {
+    private Player initPlayer(Hero hero) {
         EventListener listener = mock(EventListener.class);
         listeners.add(listener);
+
         Player player = new Player(listener, settings);
-        player.setHero(tank);
+        player.setHero(hero);
         players.add(player);
+
         return player;
     }
 
@@ -6165,7 +6173,7 @@ public class GameTest {
     }
 
     private AI ai(int index) {
-        return (AI) game.aiTanks().get(index);
+        return (AI) game.ais().get(index);
     }
 
     @Test

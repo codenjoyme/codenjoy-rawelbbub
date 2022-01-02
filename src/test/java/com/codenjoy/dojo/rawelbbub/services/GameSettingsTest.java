@@ -53,7 +53,7 @@ public class GameSettingsTest {
                         "KILL_YOUR_TANK_PENALTY, \n" +
                         "KILL_OTHER_HERO_TANK_SCORE, \n" +
                         "KILL_OTHER_AI_TANK_SCORE, \n" +
-                        "LEVEL_MAP]",
+                        "SCORE_COUNTING_TYPE]",
                 Utils.split(new GameSettings().allKeys(), ", \n"));
     }
 

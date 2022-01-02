@@ -28,13 +28,13 @@ import com.codenjoy.dojo.rawelbbub.services.GameRunner;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.rawelbbub.services.ai.AISolver;
 import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.services.multiplayer.LevelProgress;
 import com.codenjoy.dojo.utils.Smoke;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.LEVEL_MAP;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.SHOW_MY_TANK_UNDER_TREE;
 
 public class SmokeTest {
@@ -62,9 +62,10 @@ public class SmokeTest {
 
                     @Override
                     public GameSettings getSettings() {
+                        int level = LevelProgress.levelsStartsFrom1;
                         return new TestGameSettings()
-                                .bool(SHOW_MY_TANK_UNDER_TREE, true)
-                                .string(LEVEL_MAP,
+                                .clearLevelMaps(level)
+                                .setLevelMap(level,
                                         "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                                         "☼¿ ¿ ¿   ¿ ¿ ¿☼\n" +
                                         "☼ ╬ ╬%╬ ╬%╬ ╬ ☼\n" +
@@ -79,7 +80,8 @@ public class SmokeTest {
                                         "☼ ╬         ╬ ☼\n" +
                                         "☼ ╬   ╬╬╬   ╬ ☼\n" +
                                         "☼     ╬ ╬     ☼\n" +
-                                        "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                                        "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n")
+                                .bool(SHOW_MY_TANK_UNDER_TREE, true);
                     }
                 },
                 Arrays.asList(new AISolver(dice), new AISolver(dice)),

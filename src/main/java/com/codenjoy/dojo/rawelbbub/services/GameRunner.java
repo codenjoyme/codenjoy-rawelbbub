@@ -37,6 +37,7 @@ import com.codenjoy.dojo.services.PlayerScores;
 import com.codenjoy.dojo.services.event.ScoresImpl;
 import com.codenjoy.dojo.services.multiplayer.GameField;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
+import com.codenjoy.dojo.services.multiplayer.LevelProgress;
 import com.codenjoy.dojo.services.multiplayer.MultiplayerType;
 import com.codenjoy.dojo.services.printer.CharElement;
 import com.codenjoy.dojo.services.settings.Parameter;
@@ -57,12 +58,12 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public GameField createGame(int levelNumber, GameSettings settings) {
-        Level level = settings.level(getDice());
+        Level level = settings.level(levelNumber, getDice(), Level::new);
         Rawelbbub game = new Rawelbbub(level.size(), getDice(), settings);
 
         game.addBorder(level.borders());
         game.addWall(level.walls());
-        game.addAiTanks(level.ais());
+        game.addAis(level.ais());
         game.addRiver(level.rivers());
         game.addTree(level.trees());
         game.addIce(level.ice());
@@ -71,7 +72,8 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public Parameter<Integer> getBoardSize(GameSettings settings) {
-        return v(settings.level(getDice()).size());
+        // TODO решить что-то с этим наконец
+        return v(settings.level(LevelProgress.levelsStartsFrom1, getDice(), Level::new).size());
     }
 
     @Override

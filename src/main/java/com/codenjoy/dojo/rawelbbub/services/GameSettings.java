@@ -24,16 +24,12 @@ package com.codenjoy.dojo.rawelbbub.services;
 
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
-import com.codenjoy.dojo.rawelbbub.model.levels.Level;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.incativity.InactivitySettings;
-import com.codenjoy.dojo.services.multiplayer.MultiplayerSettings;
-import com.codenjoy.dojo.services.round.RoundSettings;
-import com.codenjoy.dojo.services.semifinal.SemifinalSettings;
+import com.codenjoy.dojo.services.event.ScoresImpl;
+import com.codenjoy.dojo.services.settings.AllSettings;
 import com.codenjoy.dojo.services.settings.Chance;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
-import com.codenjoy.dojo.services.settings.SettingsReader;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,11 +39,7 @@ import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.settings.Chance.CHANCE_RESERVED;
 
 public class GameSettings extends SettingsImpl
-        implements SettingsReader<GameSettings>,
-                RoundSettings<GameSettings>,
-                SemifinalSettings<GameSettings>,
-                InactivitySettings<GameSettings>,
-                MultiplayerSettings<GameSettings> {
+        implements AllSettings<GameSettings> {
 
     public enum Keys implements Key {
 
@@ -77,7 +69,7 @@ public class GameSettings extends SettingsImpl
         KILL_OTHER_HERO_TANK_SCORE("[Score] Kill other hero tank score"),
         KILL_OTHER_AI_TANK_SCORE("[Score] Kill other AI tank score"),
 
-        LEVEL_MAP("[Map] map");
+        SCORE_COUNTING_TYPE(ScoresImpl.SCORE_COUNTING_TYPE.key());
 
         private String key;
 
@@ -97,9 +89,7 @@ public class GameSettings extends SettingsImpl
     }
 
     public GameSettings() {
-        initInactivity();
-        initRound();
-        initSemifinal();
+        initAll();
 
         // сколько участников в комнате
         playersPerRoom().update(20);
@@ -132,41 +122,7 @@ public class GameSettings extends SettingsImpl
         integer(KILL_OTHER_AI_TANK_SCORE, 25);
 
 
-        multiline(LEVEL_MAP,
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
-                "☼ ¿    ¿    ¿        ¿    ¿    ¿ ☼\n" +
-                "☼                                ☼\n" +
-                "☼  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ☼\n" +
-                "☼ #╬╬╬# ╬╬╬ #╬╬╬##╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬ #╬╬╬##╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬ #╬╬╬##╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬ #╬╬╬☼☼╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬ #╬╬╬☼☼╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬ #╬╬╬  ╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬            ╬╬╬ #╬╬╬# ☼\n" +
-                "☼  ╬╬╬  ╬╬╬   ~    ~   ╬╬╬  ╬╬╬  ☼\n" +
-                "☼  ~~~       ╬╬╬  ╬╬╬       ~~~  ☼\n" +
-                "☼  ~~        ╬╬╬  ╬╬╬        ~~  ☼\n" +
-                "☼     ╬╬╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬╬╬     ☼\n" +
-                "☼☼☼   ╬╬╬╬╬            ╬╬╬╬╬   ☼☼☼\n" +
-                "☼ ~~          %%%%%%          ~~ ☼\n" +
-                "☼           ~╬╬╬%%╬╬╬~           ☼\n" +
-                "☼  ╬╬╬  ╬╬╬ ~╬╬╬%%╬╬╬~ ╬╬╬  ╬╬╬  ☼\n" +
-                "☼  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ☼\n" +
-                "☼  ╬╬╬~ ╬╬╬  ╬╬╬╬╬╬╬╬  ╬╬╬ ~╬╬╬  ☼\n" +
-                "☼  ╬╬╬  ╬╬╬  ╬╬╬╬╬╬╬╬  ╬╬╬  ╬╬╬  ☼\n" +
-                "☼ %╬╬╬  ╬╬╬  ╬╬╬%%╬╬╬  ╬╬╬  ╬╬╬% ☼\n" +
-                "☼ %╬╬╬  ╬╬╬~ ╬╬╬%%╬╬╬ ~╬╬╬  ╬╬╬% ☼\n" +
-                "☼ %╬╬╬  ╬╬╬~ ╬╬╬%%╬╬╬ ~╬╬╬  ╬╬╬% ☼\n" +
-                "☼ %╬╬╬ ~╬╬╬  ╬╬╬%%╬╬╬  ╬╬╬~ ╬╬╬% ☼\n" +
-                "☼ %╬╬╬  %%%            %%%  ╬╬╬% ☼\n" +
-                "☼  ╬╬╬  %%%    ~~~~    %%%  ╬╬╬  ☼\n" +
-                "☼  ╬╬╬  %%%  ╬╬╬╬╬╬╬╬  %%%  ╬╬╬  ☼\n" +
-                "☼  ╬╬╬       ╬╬╬╬╬╬╬╬       ╬╬╬  ☼\n" +
-                "☼            ╬╬    ╬╬            ☼\n" +
-                "☼  %%%%%%    ╬╬    ╬╬    %%%%%%  ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+        Levels.setup(this);
     }
 
     public Chance<Element> chance(Dice dice) {
@@ -177,10 +133,6 @@ public class GameSettings extends SettingsImpl
             .put(CHANCE_VISIBILITY, PRIZE_VISIBILITY)
             .put(CHANCE_NO_SLIDING, PRIZE_NO_SLIDING)
             .run();
-    }
-
-    public Level level(Dice dice) {
-        return new Level(string(LEVEL_MAP), dice);
     }
 
     public Calculator<Integer> calculator() {

@@ -90,8 +90,8 @@ public class Rawelbbub extends RoundField<Player> implements Field {
     }
 
 
-    public void addAiTanks(List<? extends Point> tanks) {
-        aiGen.dropAll(tanks);
+    public void addAis(List<? extends Point> ais) {
+        aiGen.dropAll(ais);
     }
 
     @Override
@@ -332,7 +332,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
     }
 
     @Override
-    public List<Hero> aiTanks() {
+    public List<Hero> ais() {
         return ais;
     }
 

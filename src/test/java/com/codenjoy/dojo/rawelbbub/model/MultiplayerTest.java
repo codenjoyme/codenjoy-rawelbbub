@@ -27,7 +27,6 @@ import com.codenjoy.dojo.rawelbbub.TestGameSettings;
 import com.codenjoy.dojo.rawelbbub.model.items.Ice;
 import com.codenjoy.dojo.rawelbbub.model.items.River;
 import com.codenjoy.dojo.rawelbbub.model.items.Tree;
-import com.codenjoy.dojo.rawelbbub.model.levels.DefaultBorders;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Game;

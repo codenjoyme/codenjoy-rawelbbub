@@ -27,7 +27,6 @@ import com.codenjoy.dojo.rawelbbub.TestGameSettings;
 import com.codenjoy.dojo.rawelbbub.model.items.AI;
 import com.codenjoy.dojo.rawelbbub.model.items.Bullet;
 import com.codenjoy.dojo.rawelbbub.model.items.Wall;
-import com.codenjoy.dojo.rawelbbub.model.levels.Level;
 import com.codenjoy.dojo.rawelbbub.services.Event;
 import com.codenjoy.dojo.rawelbbub.services.GameRunner;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;

@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.rawelbbub.model.levels;
+package com.codenjoy.dojo.rawelbbub.model;
 
 /*-
  * #%L
@@ -23,7 +23,6 @@ package com.codenjoy.dojo.rawelbbub.model.levels;
  */
 
 
-import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.model.items.*;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.AbstractLevel;

@@ -23,25 +23,10 @@ package com.codenjoy.dojo.rawelbbub.model;
  */
 
 
-import com.codenjoy.dojo.rawelbbub.TestGameSettings;
 import com.codenjoy.dojo.rawelbbub.model.items.AI;
 import com.codenjoy.dojo.rawelbbub.model.items.Bullet;
 import com.codenjoy.dojo.rawelbbub.model.items.Wall;
-import com.codenjoy.dojo.rawelbbub.services.Event;
-import com.codenjoy.dojo.rawelbbub.services.GameRunner;
-import com.codenjoy.dojo.rawelbbub.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.EventListener;
-import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.multiplayer.LevelProgress;
-import com.codenjoy.dojo.services.printer.Printer;
-import com.codenjoy.dojo.services.printer.PrinterFactory;
-import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
-import com.codenjoy.dojo.utils.events.EventsListenersAssert;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -52,112 +37,10 @@ import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.PointImpl.pt;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class GameTest {
-
-    protected Dice dice;
-    private Rawelbbub game;
-    private List<Player> players;
-    private PrinterFactory printerFactory;
-    private GameSettings settings;
-    private List<Hero> heroes;
-    private List<EventListener> listeners;
-    private EventsListenersAssert events;
-    private Level level;
-
-    private Dice dice(int... values) {
-        OngoingStubbing<Integer> when = when(dice.next(anyInt()));
-        for (int value : values) {
-            when = when.thenReturn(value);
-        }
-        return dice;
-    }
+public class GameTest extends AbstractGameTest {
     
-    @Before
-    public void setup() {
-        listeners = new LinkedList<>();
-        players = new LinkedList<>();
-        heroes = new LinkedList<>();
-
-        dice = mock(Dice.class);
-        settings = new TestGameSettings();
-        printerFactory = new PrinterFactoryImpl();
-        events = new EventsListenersAssert(() -> listeners, Event.class);
-    }
-
-    @After
-    public void tearDown() {
-        verifyAllEvents("");
-    }
-
-    private Hero hero(int index) {
-        return heroes.get(index);
-    }
-
-    private void givenFl(String map) {
-        int levelNumber = LevelProgress.levelsStartsFrom1;
-        settings.setLevelMaps(levelNumber, new String[]{map});
-        level = settings.level(levelNumber, dice, Level::new);
-
-        GameRunner runner = new GameRunner() {
-            @Override
-            public Dice getDice() {
-                return dice;
-            }
-
-            @Override
-            public GameSettings getSettings() {
-                return settings;
-            }
-        };
-        game = (Rawelbbub) runner.createGame(levelNumber, settings);
-
-        level.heroes()
-                .forEach(hero -> game.newGame(initPlayer(hero)));
-
-        game.ais().stream()
-                .filter(ai -> ai instanceof AI)
-                .map(ai -> (AI) ai)
-                .forEach(ai -> {
-                    ai.dontShoot = true;
-                    ai.dontMove = true;
-                });
-
-        heroes = game.heroes();
-    }
-
-    private AI dropAI(Point pt) {
-        AI ai = game.getAiGenerator().drop(pt);
-        ai.dontMove = true;
-        ai.dontShoot = true;
-        return ai;
-    }
-
-    public void verifyAllEvents(String expected) {
-        assertEquals(expected, events.getEvents());
-    }
-    
-    private Player initPlayer(Hero hero) {
-        EventListener listener = mock(EventListener.class);
-        listeners.add(listener);
-
-        Player player = new Player(listener, settings);
-        player.setHero(hero);
-        players.add(player);
-
-        return player;
-    }
-
-    private String getPrizesCount() {
-        List<Hero> all = game.heroesAndAis();
-        long prizes = all.stream().filter(Hero::withPrize).count();
-
-        return String.format("%s prizes with %s heroes", prizes, all.size());
-    }
-
     @Test
     public void shouldDrawField() {
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -176,16 +59,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
-
-    private void assertD(String field) {
-        assertEquals(field, getPrinter().print());
-    }
-
-    private Printer<String> getPrinter() {
-        return printerFactory.getPrinter(
-                game.reader(), players.get(0));
-    }
-
+    
     // рисуем стенку
     @Test
     public void shouldBeWall_whenGameCreated() {
@@ -197,7 +71,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertEquals(1, game.walls().size());
+        assertEquals(1, game().walls().size());
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -219,12 +93,12 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertNotNull(game.heroesAndAis());
+        assertNotNull(game().heroesAndAis());
     }
 
     @Test
     public void shouldResetSlidingTicksWhenLeaveIce() {
-        settings.integer(SLIPPERINESS, 2);
+        settings().integer(SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -239,7 +113,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -255,7 +129,7 @@ public class GameTest {
 
         // LEFT -> UP [sliding]
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -271,7 +145,7 @@ public class GameTest {
 
         // LEFT -> UP [sliding]
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -287,7 +161,7 @@ public class GameTest {
 
         // LEFT -> LEFT
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -303,7 +177,7 @@ public class GameTest {
 
         // UP -> LEFT [sliding]
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -321,7 +195,7 @@ public class GameTest {
 
         // RIGHT -> RIGHT
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -337,7 +211,7 @@ public class GameTest {
 
         // DOWN -> RIGHT [sliding]
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -353,7 +227,7 @@ public class GameTest {
 
         // DOWN -> RIGHT [sliding]
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -369,7 +243,7 @@ public class GameTest {
 
         // DOWN -> DOWN [sliding]
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -385,7 +259,7 @@ public class GameTest {
 
         // RIGHT -> DOWN [sliding]
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -401,7 +275,7 @@ public class GameTest {
 
         // RIGHT -> RIGHT
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -415,10 +289,10 @@ public class GameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
-
+    
     @Test
     public void bulletDirectionShouldBeAffectedBySliding() {
-        settings.integer(SLIPPERINESS, 2);
+        settings().integer(SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -434,7 +308,7 @@ public class GameTest {
 
         hero(0).up();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -451,7 +325,7 @@ public class GameTest {
         // RIGHT -> UP [sliding]
         hero(0).right();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -468,7 +342,7 @@ public class GameTest {
         // RIGHT -> UP [sliding]
         hero(0).right();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -485,7 +359,7 @@ public class GameTest {
         // LEFT -> LEFT
         hero(0).left();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    •    ☼\n" +
@@ -502,7 +376,7 @@ public class GameTest {
 
     @Test
     public void bulletDirectionShouldBeAffectedBySliding2() {
-        settings.integer(SLIPPERINESS, 2);
+        settings().integer(SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -518,7 +392,7 @@ public class GameTest {
 
         hero(0).left();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -533,7 +407,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -549,7 +423,7 @@ public class GameTest {
 
         hero(0).left();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -564,7 +438,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -581,7 +455,7 @@ public class GameTest {
         // UP -> LEFT [sliding]
         hero(0).up();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -597,7 +471,7 @@ public class GameTest {
 
         // UP -> LEFT [sliding]
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -614,7 +488,7 @@ public class GameTest {
         // UP -> UP
         hero(0).up();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -631,7 +505,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroCanGoIfIceAtWayWithoutSliding_whenHeroTakePrize() {
-        settings.integer(PRIZE_ON_FIELD, 5)
+        settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 6)
                 .integer(SLIPPERINESS, 1);
@@ -663,7 +537,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         dice(DICE_NO_SLIDING);
-        game.tick();
+        game().tick();
         verifyAllEvents("");
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -681,7 +555,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_NO_SLIDING]");
         verifyAllEvents("[CATCH_PRIZE[5]]");
@@ -700,7 +574,7 @@ public class GameTest {
 
         // заезжаем на лед
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -716,7 +590,7 @@ public class GameTest {
 
         //  DOWN -> UP но так как игрок взял приз скольжение не происходит, по этому DOWN -> DOWN
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -733,7 +607,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroCanGoIfAceAtWay_whenPrizeWorkingEnd() {
-        settings.integer(PRIZE_ON_FIELD, 5)
+        settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 2)
                 .integer(SLIPPERINESS, 3);
@@ -765,7 +639,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         dice(DICE_NO_SLIDING);
-        game.tick();
+        game().tick();
         verifyAllEvents("");
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -783,7 +657,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_NO_SLIDING]");
         verifyAllEvents("[CATCH_PRIZE[5]]");
@@ -802,7 +676,7 @@ public class GameTest {
 
         // заезжаем на лед
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
@@ -818,7 +692,7 @@ public class GameTest {
 
         // так как игрок взял приз скольжение не происходит, по этому UP -> UP
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
@@ -834,7 +708,7 @@ public class GameTest {
 
         // так как игрок взял приз скольжение не происходит, по этому UP -> UP
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
@@ -853,7 +727,7 @@ public class GameTest {
 
         // мы снова на льду, начинаем занос запоминаем команду
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
@@ -869,7 +743,7 @@ public class GameTest {
 
         // RIGHT -> UP занос
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
@@ -885,7 +759,7 @@ public class GameTest {
 
         // RIGHT -> RIGHT
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
@@ -902,7 +776,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroCanGoIfAceAtWay_whenHeroTackPrizeSlidingEnd() {
-        settings.integer(PRIZE_ON_FIELD, 4)
+        settings().integer(PRIZE_ON_FIELD, 4)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 6)
                 .integer(SLIPPERINESS, 5);
@@ -922,7 +796,7 @@ public class GameTest {
         ai(0).down();
         hero(0).up();
         ai(0).dontShoot = true;
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -938,7 +812,7 @@ public class GameTest {
 
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -967,7 +841,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         dice(DICE_NO_SLIDING);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -982,7 +856,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -998,7 +872,7 @@ public class GameTest {
 
         // RIGHT -> UP выполняется занос
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -1016,7 +890,7 @@ public class GameTest {
 
         // RIGHT -> UP выполняется занос
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -1034,7 +908,7 @@ public class GameTest {
         verifyAllEvents("[CATCH_PRIZE[5]]");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -1049,7 +923,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -1064,7 +938,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -1079,7 +953,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -1105,7 +979,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1116,7 +990,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1127,7 +1001,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1138,7 +1012,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1197,7 +1071,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertEquals(hero(0).getBullets().iterator().next().getDirection(),
                 hero(0).getDirection());
@@ -1214,7 +1088,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1225,7 +1099,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  •  ☼\n" +
@@ -1247,8 +1121,8 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
-        game.tick();
+        game().tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼•    ☼\n" +
@@ -1258,7 +1132,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1279,8 +1153,8 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
-        game.tick();
+        game().tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1290,7 +1164,7 @@ public class GameTest {
                 "☼►   •☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1312,8 +1186,8 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
-        game.tick();
+        game().tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼•   ◄☼\n" +
@@ -1323,7 +1197,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ◄☼\n" +
@@ -1345,8 +1219,8 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
-        game.tick();
+        game().tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -1356,7 +1230,7 @@ public class GameTest {
                 "☼    •☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -1379,7 +1253,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -1389,7 +1263,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
@@ -1400,7 +1274,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
@@ -1410,7 +1284,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╨    ☼\n" +
@@ -1421,7 +1295,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╨    ☼\n" +
@@ -1431,7 +1305,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1454,7 +1328,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1464,7 +1338,7 @@ public class GameTest {
                 "☼► • ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1475,7 +1349,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1485,7 +1359,7 @@ public class GameTest {
                 "☼► • ╠☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1496,7 +1370,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1506,7 +1380,7 @@ public class GameTest {
                 "☼► • ╞☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1529,7 +1403,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1539,7 +1413,7 @@ public class GameTest {
                 "☼╬ • ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1550,7 +1424,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1560,7 +1434,7 @@ public class GameTest {
                 "☼╣ • ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1571,7 +1445,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1581,7 +1455,7 @@ public class GameTest {
                 "☼╡ • ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1604,7 +1478,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -1614,7 +1488,7 @@ public class GameTest {
                 "☼╬    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -1625,7 +1499,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -1635,7 +1509,7 @@ public class GameTest {
                 "☼╦    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -1646,7 +1520,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -1656,7 +1530,7 @@ public class GameTest {
                 "☼╥    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -1680,7 +1554,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -1690,7 +1564,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
@@ -1701,7 +1575,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
@@ -1711,7 +1585,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╨    ☼\n" +
@@ -1722,7 +1596,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╨    ☼\n" +
@@ -1732,7 +1606,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1755,7 +1629,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1765,7 +1639,7 @@ public class GameTest {
                 "☼ ► •╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1776,7 +1650,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1786,7 +1660,7 @@ public class GameTest {
                 "☼ ► •╠☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1797,7 +1671,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1807,7 +1681,7 @@ public class GameTest {
                 "☼ ► •╞☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1831,7 +1705,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1841,7 +1715,7 @@ public class GameTest {
                 "☼╬• ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1852,7 +1726,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1862,7 +1736,7 @@ public class GameTest {
                 "☼╣• ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1873,7 +1747,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1883,7 +1757,7 @@ public class GameTest {
                 "☼╡• ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1906,7 +1780,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1916,7 +1790,7 @@ public class GameTest {
                 "☼╬    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1927,7 +1801,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1937,7 +1811,7 @@ public class GameTest {
                 "☼╦    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1948,7 +1822,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1958,7 +1832,7 @@ public class GameTest {
                 "☼╥    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1989,7 +1863,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -1999,7 +1873,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -2010,7 +1884,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -2020,7 +1894,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -2031,7 +1905,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -2041,7 +1915,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -2052,7 +1926,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -2062,7 +1936,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
@@ -2093,7 +1967,7 @@ public class GameTest {
                 "☼►  ╬╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2103,7 +1977,7 @@ public class GameTest {
                 "☼► •╬╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2114,7 +1988,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2124,7 +1998,7 @@ public class GameTest {
                 "☼► •╠╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2135,7 +2009,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2145,7 +2019,7 @@ public class GameTest {
                 "☼► •╞╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2156,7 +2030,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2166,7 +2040,7 @@ public class GameTest {
                 "☼► • ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2197,7 +2071,7 @@ public class GameTest {
                 "☼╬╬  ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2207,7 +2081,7 @@ public class GameTest {
                 "☼╬╬• ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2218,7 +2092,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2228,7 +2102,7 @@ public class GameTest {
                 "☼╬╣• ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2239,7 +2113,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2249,7 +2123,7 @@ public class GameTest {
                 "☼╬╡• ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2260,7 +2134,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2270,7 +2144,7 @@ public class GameTest {
                 "☼╬ • ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2301,7 +2175,7 @@ public class GameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -2311,7 +2185,7 @@ public class GameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -2322,7 +2196,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -2332,7 +2206,7 @@ public class GameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -2343,7 +2217,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -2353,7 +2227,7 @@ public class GameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -2364,7 +2238,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -2374,7 +2248,7 @@ public class GameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -2397,7 +2271,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2408,7 +2282,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2419,7 +2293,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2430,7 +2304,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2451,7 +2325,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2462,7 +2336,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2473,7 +2347,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2484,7 +2358,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2507,24 +2381,24 @@ public class GameTest {
 
     private void removeAllNear() {
         hero(0).up();
-        game.tick();
+        game().tick();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         hero(0).left();
-        game.tick();
+        game().tick();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         hero(0).right();
-        game.tick();
+        game().tick();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         hero(0).down();
-        game.tick();
+        game().tick();
         hero(0).fire();
-        game.tick();
+        game().tick();
     }
 
     // если я стреляю дважды, то выпускается два снаряда
@@ -2542,7 +2416,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2555,7 +2429,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2568,7 +2442,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2580,7 +2454,7 @@ public class GameTest {
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2593,7 +2467,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2606,7 +2480,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2619,7 +2493,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2631,7 +2505,7 @@ public class GameTest {
                 "☼      ╦☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2644,7 +2518,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2657,7 +2531,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2670,7 +2544,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2682,7 +2556,7 @@ public class GameTest {
                 "☼      •☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2694,7 +2568,7 @@ public class GameTest {
                 "☼      •☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2706,7 +2580,7 @@ public class GameTest {
                 "☼      •☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -2731,7 +2605,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2742,22 +2616,22 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2768,7 +2642,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2792,7 +2666,7 @@ public class GameTest {
 
         hero(0).down();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2819,7 +2693,7 @@ public class GameTest {
         assertEquals(true, hero(2).isAlive());
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
@@ -2837,7 +2711,7 @@ public class GameTest {
         assertEquals(false, hero(1).isAlive());
         assertEquals(true, hero(2).isAlive());
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2848,7 +2722,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[2]]\n" +
@@ -2866,7 +2740,7 @@ public class GameTest {
         assertEquals(false, hero(1).isAlive());
         assertEquals(false, hero(2).isAlive());
 
-        game.tick();
+        game().tick();
 
         assertEquals(true, hero(0).isAlive());
         assertEquals(false, hero(1).isAlive());
@@ -2890,7 +2764,7 @@ public class GameTest {
         hero(0).fire();
         hero(0).right();
         hero(1).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -2926,7 +2800,7 @@ public class GameTest {
         hero(0).right();
         hero(1).fire();
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -2962,7 +2836,7 @@ public class GameTest {
 
         hero(1).fire();
         hero(2).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -2976,7 +2850,7 @@ public class GameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         verifyAllEvents(
                 "listener(0) => [HERO_DIED]\n" +
@@ -3009,7 +2883,7 @@ public class GameTest {
 
         hero(0).fire();
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3036,7 +2910,7 @@ public class GameTest {
 
         hero(1).fire();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3046,8 +2920,8 @@ public class GameTest {
                 "☼Ѡ    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
-        game.tick();
+        game().tick();
+        game().tick();
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1], HERO_DIED]\n" +
@@ -3076,7 +2950,7 @@ public class GameTest {
 
         hero(0).fire();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼      ☼\n" +
@@ -3088,7 +2962,7 @@ public class GameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼      ☼\n" +
@@ -3100,7 +2974,7 @@ public class GameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼      ☼\n" +
@@ -3127,7 +3001,7 @@ public class GameTest {
 
         hero(0).fire();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3139,7 +3013,7 @@ public class GameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3151,7 +3025,7 @@ public class GameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3184,7 +3058,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼˄    ☼\n" +
@@ -3196,7 +3070,7 @@ public class GameTest {
 
         verifyAllEvents("");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -3211,10 +3085,10 @@ public class GameTest {
                 "listener(1) => [HERO_DIED]\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3226,7 +3100,7 @@ public class GameTest {
 
         verifyAllEvents("");
 
-        game.tick();
+        game().tick();
 
         assertW("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3240,7 +3114,7 @@ public class GameTest {
                 "listener(0) => [KILL_OTHER_HERO[2]]\n" +
                 "listener(2) => [HERO_DIED]\n");
 
-        game.tick();
+        game().tick();
 
         assertW("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3253,20 +3127,15 @@ public class GameTest {
         verifyAllEvents("");
     }
 
-    private void assertW(String expected) {
-        Printer<String> printer = getPrinter();
-        assertEquals(expected, printer.print().replaceAll("[«¿»?•]", " "));
-    }
-
     @Test
     public void shouldRegenerateDestroyedWall() {
         shouldBulletDestroyWall_whenHittingTheWallUp_whenTwoWalls();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
         hero(0).fire();
-        game.tick();
-        game.tick();
+        game().tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3276,8 +3145,8 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        for (int i = 7; i <= settings.integer(WALL_REGENERATE_TIME); i++) {
-            game.tick();
+        for (int i = 7; i <= settings().integer(WALL_REGENERATE_TIME); i++) {
+            game().tick();
         }
 
         assertD("☼☼☼☼☼☼☼\n" +
@@ -3288,7 +3157,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3298,11 +3167,11 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
-        game.tick();
-        game.tick();
-        game.tick();
-        game.tick();
+        game().tick();
+        game().tick();
+        game().tick();
+        game().tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -3324,7 +3193,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3346,7 +3215,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3358,8 +3227,8 @@ public class GameTest {
 
         hero(0).right();
         hero(0).fire();
-        game.tick();
-        game.tick();
+        game().tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3369,7 +3238,7 @@ public class GameTest {
                 "☼ ►  •☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3393,7 +3262,7 @@ public class GameTest {
         hero(0).fire();
         hero(0).fire();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3406,7 +3275,7 @@ public class GameTest {
         hero(0).fire();
         hero(0).fire();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3416,7 +3285,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3439,7 +3308,7 @@ public class GameTest {
 
         hero(0).fire();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -3461,13 +3330,13 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3478,7 +3347,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3501,8 +3370,8 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        for (int i = 3; i <= settings.integer(WALL_REGENERATE_TIME); i++) {
-            game.tick();
+        for (int i = 3; i <= settings().integer(WALL_REGENERATE_TIME); i++) {
+            game().tick();
         }
 
         assertD("☼☼☼☼☼☼☼\n" +
@@ -3514,9 +3383,9 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
-        for (int i = 2; i <= settings.integer(WALL_REGENERATE_TIME); i++) {
+        for (int i = 2; i <= settings().integer(WALL_REGENERATE_TIME); i++) {
             assertD("☼☼☼☼☼☼☼\n" +
                     "☼     ☼\n" +
                     "☼     ☼\n" +
@@ -3525,7 +3394,7 @@ public class GameTest {
                     "☼     ☼\n" +
                     "☼☼☼☼☼☼☼\n");
 
-            game.tick();
+            game().tick();
         }
 
         assertD("☼☼☼☼☼☼☼\n" +
@@ -3549,13 +3418,13 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3565,8 +3434,8 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        for (int i = 3; i <= settings.integer(WALL_REGENERATE_TIME); i++) {
-            game.tick();
+        for (int i = 3; i <= settings().integer(WALL_REGENERATE_TIME); i++) {
+            game().tick();
         }
 
         assertD("☼☼☼☼☼☼☼\n" +
@@ -3578,7 +3447,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3588,7 +3457,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼•    ☼\n" +
                 "☼     ☼\n" +
@@ -3597,7 +3466,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3609,7 +3478,7 @@ public class GameTest {
 
     @Test
     public void shouldNTicksPerBullet() {
-        settings.integer(HERO_TICKS_PER_SHOOT, 4);
+        settings().integer(HERO_TICKS_PER_SHOOT, 4);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3620,7 +3489,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         String field =
                 "☼☼☼☼☼☼☼\n" +
@@ -3632,15 +3501,15 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n";
         assertD(field);
 
-        for (int i = 1; i < settings.integer(HERO_TICKS_PER_SHOOT); i++) {
+        for (int i = 1; i < settings().integer(HERO_TICKS_PER_SHOOT); i++) {
             hero(0).fire();
-            game.tick();
+            game().tick();
 
             assertD(field);
         }
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3653,7 +3522,7 @@ public class GameTest {
 
     @Test
     public void shouldNewAIWhenKillOther() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1);
+        settings().integer(KILL_HITS_AI_PRIZE, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿¿   ☼\n" +
@@ -3664,7 +3533,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼¿¿   ☼\n" +
@@ -3674,7 +3543,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ¿   ☼\n" +
@@ -3685,7 +3554,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
         verifyAllEvents("[KILL_AI]");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1¿   ☼\n" +
@@ -3696,7 +3565,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(5, 5);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼!¿   ☼\n" +
@@ -3718,7 +3587,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3740,7 +3609,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3762,9 +3631,9 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).fire();
-        game.tick();
+        game().tick();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3776,7 +3645,7 @@ public class GameTest {
 
         hero(1).fire();
         hero(1).up();  // команда поигнорится потому что вначале ходят все танки, а потом летят все снаряды
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3787,7 +3656,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3798,7 +3667,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
@@ -3826,7 +3695,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3839,7 +3708,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
@@ -3869,7 +3738,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3882,7 +3751,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
@@ -3912,7 +3781,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3925,7 +3794,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
@@ -3946,7 +3815,7 @@ public class GameTest {
     // если стенка недорушенная, снаряд летит, и ресетнули игру, то все конструкции восстанавливаются
     @Test
     public void shouldRemoveBulletsAndResetWalls_whenReset() {
-        settings.integer(HERO_TICKS_PER_SHOOT, 3);
+        settings().integer(HERO_TICKS_PER_SHOOT, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -3961,7 +3830,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -3975,7 +3844,7 @@ public class GameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -3989,7 +3858,7 @@ public class GameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -4004,7 +3873,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -4019,7 +3888,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire(); // не выйдет
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -4033,7 +3902,7 @@ public class GameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -4048,7 +3917,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -4062,12 +3931,12 @@ public class GameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
-        game.tick();
+        game().tick();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -4081,12 +3950,12 @@ public class GameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
-        game.tick();
+        game().tick();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╩        ☼\n" +
@@ -4101,15 +3970,15 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // допустим за игру он прибил 5 танков
-        Player player = players.iterator().next();
+        Player player = player(0);
         player.setKilled(5);
 
         // when
-        game.clearScore();
+        game().clearScore();
 
         // смогу стрельнуть, пушка ресетнется
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         // then
         // но после рисета это поле чистится
@@ -4129,12 +3998,12 @@ public class GameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
-        game.tick();
+        game().tick();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -4152,7 +4021,7 @@ public class GameTest {
     // первый выстрел иногда получается сделать дважды
     @Test
     public void shouldCantFireTwice() {
-        settings.integer(HERO_TICKS_PER_SHOOT, 4);
+        settings().integer(HERO_TICKS_PER_SHOOT, 4);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4166,13 +4035,13 @@ public class GameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.clearScore();
+        game().clearScore();
 
-        game.tick(); // внутри там тикает так же gun, но первого выстрела еще небыло
-        game.tick();
+        game().tick(); // внутри там тикает так же gun, но первого выстрела еще небыло
+        game().tick();
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4187,7 +4056,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4202,7 +4071,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4217,7 +4086,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼•        ☼\n" +
@@ -4243,7 +4112,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertEquals(1, game.trees().size());
+        assertEquals(1, game().trees().size());
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4264,7 +4133,7 @@ public class GameTest {
                 "☼▲   %☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertEquals(2, game.trees().size());
+        assertEquals(2, game().trees().size());
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4305,7 +4174,7 @@ public class GameTest {
                 "☼►    %   ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4319,7 +4188,7 @@ public class GameTest {
                 "☼ ►•  %   ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4333,7 +4202,7 @@ public class GameTest {
                 "☼ ►  •%   ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4347,7 +4216,7 @@ public class GameTest {
                 "☼ ►   %•  ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4361,7 +4230,7 @@ public class GameTest {
                 "☼ ►   %  •☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4396,7 +4265,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -4406,7 +4275,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -4417,7 +4286,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -4427,7 +4296,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -4438,7 +4307,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -4448,7 +4317,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -4459,7 +4328,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -4469,7 +4338,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
@@ -4489,7 +4358,7 @@ public class GameTest {
     @Test
     public void shouldBulletFlyUnderTwoTree_up_caseShowMyHeroUnderTree() {
         // given
-        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         // when then
         shouldBulletFlyUnderTwoTree_up();
@@ -4525,7 +4394,7 @@ public class GameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4539,7 +4408,7 @@ public class GameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4553,7 +4422,7 @@ public class GameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4567,7 +4436,7 @@ public class GameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    •    ☼\n" +
@@ -4581,7 +4450,7 @@ public class GameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4608,7 +4477,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4619,7 +4488,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4630,7 +4499,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4641,7 +4510,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4652,7 +4521,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4668,7 +4537,7 @@ public class GameTest {
     // я вижу свой танк
     @Test
     public void shouldHeroMove_underTree_caseShowMyHeroUnderTree_case2() {
-        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4679,7 +4548,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4690,7 +4559,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4701,7 +4570,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4712,7 +4581,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4723,7 +4592,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4736,7 +4605,7 @@ public class GameTest {
 
     @Test
     public void shouldBulletFlyUnderTree_jointly_shouldHeroMoveUnderTree() {
-        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4765,7 +4634,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4780,7 +4649,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4795,7 +4664,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4810,7 +4679,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        •☼\n" +
@@ -4825,7 +4694,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4840,7 +4709,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4855,10 +4724,10 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4903,7 +4772,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4918,7 +4787,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4933,7 +4802,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4948,7 +4817,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        •☼\n" +
@@ -4963,7 +4832,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4978,7 +4847,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4993,10 +4862,10 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5027,7 +4896,7 @@ public class GameTest {
 				"☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
 		assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
 				"☼         ☼\n" +
@@ -5042,7 +4911,7 @@ public class GameTest {
 				"☼☼☼☼☼☼☼☼☼☼☼\n");
 
 		hero(0).down();
-		game.tick();
+		game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5057,7 +4926,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
 		hero(0).down();
-		game.tick();
+		game().tick();
 
 		assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
 				"☼         ☼\n" +
@@ -5072,7 +4941,7 @@ public class GameTest {
 				"☼☼☼☼☼☼☼☼☼☼☼\n");
 
 		hero(0).down();
-		game.tick();
+		game().tick();
 
 		assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
 				"☼         ☼\n" +
@@ -5090,7 +4959,7 @@ public class GameTest {
     // но если в сеттингах сказано что меня видно под деревьями, я - вижу
     @Test
     public void shouldHeroMove_underTree_caseShowMyHeroUnderTree() {
-        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5105,7 +4974,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5120,7 +4989,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5135,7 +5004,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5150,7 +5019,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5181,7 +5050,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5196,7 +5065,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5211,7 +5080,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5226,7 +5095,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5245,7 +5114,7 @@ public class GameTest {
     // другого танка я не вижу все равно
     @Test
     public void shouldOtherHeroMove_underTree_caseShowMyHeroUnderTree() {
-        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5260,7 +5129,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5275,7 +5144,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5290,7 +5159,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5305,7 +5174,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5348,7 +5217,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5364,10 +5233,10 @@ public class GameTest {
 
         ai(0).fire();
         ai(0).down();
-        game.tick();
+        game().tick();
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5382,7 +5251,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5412,7 +5281,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();// герой запрятался в кустах
+        game().tick();// герой запрятался в кустах
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5427,7 +5296,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5441,10 +5310,10 @@ public class GameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertEquals(true, hero(1).isAlive());
-        game.tick();// герой должен погибнуть
+        game().tick();// герой должен погибнуть
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
@@ -5468,7 +5337,7 @@ public class GameTest {
     // но мой танк видно - так сказано в настройках
     @Test
     public void shouldTwoHeroCanPassThroughEachOtherUnderTree_caseShowMyHeroUnderTree() {
-        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5480,7 +5349,7 @@ public class GameTest {
 
         hero(0).down();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5492,10 +5361,10 @@ public class GameTest {
 
         hero(0).down();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         hero(1).up();
         // Два танка не могут проехать через друг друга
@@ -5509,7 +5378,7 @@ public class GameTest {
 
         hero(0).right();
         hero(1).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5534,7 +5403,7 @@ public class GameTest {
 
         hero(0).down();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5546,10 +5415,10 @@ public class GameTest {
 
         hero(0).down();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         hero(1).up();
         // Два танка не могут проехать через друг друга
@@ -5563,7 +5432,7 @@ public class GameTest {
 
         hero(0).right();
         hero(1).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5585,7 +5454,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertEquals(1, game.ice().size());
+        assertEquals(1, game().ice().size());
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5617,7 +5486,7 @@ public class GameTest {
 
         // заежаем на лёд
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5636,7 +5505,7 @@ public class GameTest {
         // двигается дальше с предедущей командой up()
         // RIGHT -> UP (скольжение)
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5653,7 +5522,7 @@ public class GameTest {
         // двигаемся дальше в направлении up()
         // UP -> UP (выполнилась)
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5671,7 +5540,7 @@ public class GameTest {
         // двигается дальше с предедущей командой up()
         // RIGHT -> UP (скольжение)
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5689,7 +5558,7 @@ public class GameTest {
         // двигается дальше в направлении up()
         // UP -> UP (выполнилась)
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5706,7 +5575,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroMoveLeftThenUpThenDown_onIce() {
-        settings.integer(SLIPPERINESS, 1);
+        settings().integer(SLIPPERINESS, 1);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5722,7 +5591,7 @@ public class GameTest {
 
         // заежаем на лёд
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5738,7 +5607,7 @@ public class GameTest {
 
         // LEFT -> UP (скольжение)
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5754,7 +5623,7 @@ public class GameTest {
 
         // DOWN -> DOWN (выполнилась)
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5770,7 +5639,7 @@ public class GameTest {
 
         // DOWN -> DOWN (скольжение)
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5788,7 +5657,7 @@ public class GameTest {
     // также когда на нем двигается враг он проскальзывает команду на два тика
     @Test
     public void shouldOtherHeroMoveLeftThenUpThenDown_onIce() {
-        settings.integer(SLIPPERINESS, 1);
+        settings().integer(SLIPPERINESS, 1);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5804,7 +5673,7 @@ public class GameTest {
 
         // враг заежает на лёд
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5820,7 +5689,7 @@ public class GameTest {
 
         // LEFT -> DOWN(скольжение)
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5836,7 +5705,7 @@ public class GameTest {
 
         // UP -> UP (выполнилась)
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5853,7 +5722,7 @@ public class GameTest {
         // UP -> UP (скольжение)
         // сьезд со льда
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5879,7 +5748,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertEquals(1, game.rivers().size());
+        assertEquals(1, game().rivers().size());
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5902,10 +5771,10 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5927,7 +5796,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
 		hero(0).up();
-		game.tick();
+		game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5938,7 +5807,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
 		hero(0).fire();
-		game.tick();
+		game().tick();
 
 		assertD("☼☼☼☼☼☼☼\n" +
 				"☼     ☼\n" +
@@ -5950,7 +5819,7 @@ public class GameTest {
 
 		hero(0).right();
 		hero(0).fire();
-		game.tick();
+		game().tick();
 
 		assertD("☼☼☼☼☼☼☼\n" +
 				"☼•    ☼\n" +
@@ -5960,7 +5829,7 @@ public class GameTest {
 				"☼ ►•  ☼\n" +
 				"☼☼☼☼☼☼☼\n");
 
-		game.tick();
+		game().tick();
 
 		assertD("☼☼☼☼☼☼☼\n" +
 				"☼     ☼\n" +
@@ -5982,7 +5851,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5993,7 +5862,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6004,7 +5873,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6015,7 +5884,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
 		hero(0).down();
-		game.tick();
+		game().tick();
 
 		assertD("☼☼☼☼☼☼☼\n" +
 				"☼     ☼\n" +
@@ -6038,10 +5907,10 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6053,7 +5922,7 @@ public class GameTest {
 
         hero(1).right();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼•    ☼\n" +
@@ -6063,7 +5932,7 @@ public class GameTest {
                 "☼ ˃•  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6085,7 +5954,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6096,7 +5965,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6107,7 +5976,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6118,7 +5987,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6149,7 +6018,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6160,7 +6029,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6172,7 +6041,7 @@ public class GameTest {
     }
 
     private AI ai(int index) {
-        return (AI) game.ais().get(index);
+        return (AI) game().ais().get(index);
     }
 
     @Test
@@ -6194,7 +6063,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6205,7 +6074,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6216,7 +6085,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6230,7 +6099,7 @@ public class GameTest {
     // создаем АИтанк с призами
     @Test
     public void shouldCreatedAiPrize() {
-        settings.integer(KILL_HITS_AI_PRIZE, 3);
+        settings().integer(KILL_HITS_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ?☼\n" +
@@ -6253,7 +6122,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -6271,7 +6140,7 @@ public class GameTest {
     // У АИтанка с призами после 4-го хода должен смениться Element
     @Test
     public void shouldSwapElementAfterFourTicks() {
-        settings.integer(KILL_HITS_AI_PRIZE, 3);
+        settings().integer(KILL_HITS_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ?☼\n" +
@@ -6294,7 +6163,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -6307,7 +6176,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         ai(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -6320,7 +6189,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼     ? ☼\n" +
@@ -6333,7 +6202,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         ai(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ◘☼\n" +
@@ -6346,7 +6215,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -6364,7 +6233,7 @@ public class GameTest {
     // если spawnAiPrize = 3, а спаунится сразу 2 АИтанка, то 2-й должен быть АИтанком с призами
     @Test
     public void shouldSpawnAiPrizeWhenTwoAi() {
-        settings.integer(SPAWN_AI_PRIZE, 3);
+        settings().integer(SPAWN_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿    ¿☼\n" +
@@ -6386,7 +6255,7 @@ public class GameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertEquals("1 prizes with 3 heroes", getPrizesCount());
     }
@@ -6394,7 +6263,7 @@ public class GameTest {
     // если spawnAiPrize = 3 и спаунится сразу 3 АИтанка, то 2-й должен быть АИтанком с призами
     @Test
     public void shouldSpawnAiPrizeWhenThreeAi() {
-        settings.integer(SPAWN_AI_PRIZE, 3);
+        settings().integer(SPAWN_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿  ¿ ¿☼\n" +
@@ -6416,7 +6285,7 @@ public class GameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertEquals("1 prizes with 4 heroes", getPrizesCount());
     }
@@ -6424,7 +6293,7 @@ public class GameTest {
     // если spawnAiPrize = 3, а спаунятся сразу 6 АИтанков, то должно быть 2 АИтанка с призами
     @Test
     public void shouldSpawnTwoAiPrizeWhenSixAi() {
-        settings.integer(SPAWN_AI_PRIZE, 3);
+        settings().integer(SPAWN_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿¿¿☼\n" +
@@ -6446,7 +6315,7 @@ public class GameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertEquals("2 prizes with 7 heroes", getPrizesCount());
     }
@@ -6456,7 +6325,7 @@ public class GameTest {
     // так же проверяем что призовой танк меняет свой символ каждые 4 тика
     @Test
     public void shouldSpawnAiPrize_whenAddOneByOneAI() {
-        settings.integer(SPAWN_AI_PRIZE, 3);
+        settings().integer(SPAWN_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -6480,7 +6349,7 @@ public class GameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿     ☼\n" +
@@ -6504,7 +6373,7 @@ public class GameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿    ☼\n" +
@@ -6518,7 +6387,7 @@ public class GameTest {
 
         dropAI(pt(4, 7));
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿   ☼\n" +
@@ -6533,7 +6402,7 @@ public class GameTest {
 
         dropAI(pt(5, 7));
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ◘¿¿¿  ☼\n" +
@@ -6546,7 +6415,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
         assertEquals("2 prizes with 5 heroes", getPrizesCount());
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿  ☼\n" +
@@ -6558,7 +6427,7 @@ public class GameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿  ☼\n" +
@@ -6570,7 +6439,7 @@ public class GameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿◘  ☼\n" +
@@ -6586,7 +6455,7 @@ public class GameTest {
     // в AI-танк с призами надо попасть 3 раза, чтобы убить
     @Test
     public void shouldKillAiPrizeInThreeHits() {
-        settings.integer(KILL_HITS_AI_PRIZE, 3);
+        settings().integer(KILL_HITS_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼?    ☼\n" +
@@ -6605,7 +6474,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -6615,7 +6484,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -6626,7 +6495,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -6636,7 +6505,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -6647,7 +6516,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -6657,7 +6526,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -6667,7 +6536,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         verifyAllEvents("[KILL_AI]");
 
@@ -6691,7 +6560,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -6702,7 +6571,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
@@ -6717,7 +6586,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertEquals(false, hero(1).isAlive());
-        game.tick();
+        game().tick();
 
         verifyAllEvents("");
 
@@ -6732,7 +6601,7 @@ public class GameTest {
 
     @Test
     public void shouldDropPrize_onlyInPointKilledAiPrize() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1);
+        settings().integer(KILL_HITS_AI_PRIZE, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -6760,7 +6629,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
@@ -6773,7 +6642,7 @@ public class GameTest {
 
     @Test
     public void shouldDropPrize_inPointKilledAiPrize_underTree() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1);
+        settings().integer(KILL_HITS_AI_PRIZE, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -6793,7 +6662,7 @@ public class GameTest {
 
         ai(0).dontShoot = true;
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6813,7 +6682,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6826,7 +6695,7 @@ public class GameTest {
 
     @Test
     public void shouldDropPrize_InPointKilledAiPrize_onIce() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1);
+        settings().integer(KILL_HITS_AI_PRIZE, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -6846,7 +6715,7 @@ public class GameTest {
 
         ai(0).dontShoot = true;
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6866,7 +6735,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6880,7 +6749,7 @@ public class GameTest {
     // приз должен експайриться и исчезнуть через 2 тика, если его не подобрали
     @Test
     public void shouldExpirePrizeOnField_disappearTwoTicks() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -6892,7 +6761,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).kill(mock(Bullet.class));
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
@@ -6902,7 +6771,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
@@ -6912,7 +6781,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6926,7 +6795,7 @@ public class GameTest {
     // приз должен експайриться и исчезнуть через 3 тика, если его не подобрали
     @Test
     public void shouldExpirePrizeOnField_disappearThreeTicks() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -6947,7 +6816,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
@@ -6957,7 +6826,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
@@ -6967,7 +6836,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
@@ -6977,7 +6846,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6991,7 +6860,7 @@ public class GameTest {
     // приз должен експайриться и исчезнуть через 4 тика, если его не подобрали
     @Test
     public void shouldExpirePrizeOnField_disappearFourTicks() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 4);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7003,7 +6872,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).kill(mock(Bullet.class));
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
@@ -7013,7 +6882,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
@@ -7023,7 +6892,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
@@ -7033,7 +6902,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
@@ -7043,7 +6912,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7058,7 +6927,7 @@ public class GameTest {
     // после исчезновения приза видим дерево
     @Test
     public void shouldExpirePrizeOnField_disappearOnTree() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7079,7 +6948,7 @@ public class GameTest {
 
         ai(0).dontShoot = true;
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7099,7 +6968,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7109,7 +6978,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7119,7 +6988,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7134,7 +7003,7 @@ public class GameTest {
     // после исчезновения приза видим лед
     @Test
     public void shouldExpirePrizeOnField_disappearOnIce() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7155,7 +7024,7 @@ public class GameTest {
 
         ai(0).dontShoot = true;
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7175,7 +7044,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7185,7 +7054,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7195,7 +7064,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7208,7 +7077,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTookPrize() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7231,7 +7100,7 @@ public class GameTest {
 
         dice(DICE_IMMORTALITY);
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7244,7 +7113,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7258,7 +7127,7 @@ public class GameTest {
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7271,7 +7140,7 @@ public class GameTest {
 
     @Test
     public void shouldOtherTookPrize() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7294,7 +7163,7 @@ public class GameTest {
 
         dice(DICE_IMMORTALITY);
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7307,7 +7176,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7323,7 +7192,7 @@ public class GameTest {
                 "listener(1) => [CATCH_PRIZE[1]]\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7337,7 +7206,7 @@ public class GameTest {
     // герой берет приз под деревом - когда его видно под деревьями
     @Test
     public void shouldHeroTookPrize_underTree_caseShowMyHeroUnderTree() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3)
                 .bool(SHOW_MY_HERO_UNDER_TREE, true);
 
@@ -7351,7 +7220,7 @@ public class GameTest {
 
         ai(0).down();
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7363,7 +7232,7 @@ public class GameTest {
 
         ai(0).kill(mock(Bullet.class));
         dice(DICE_IMMORTALITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7376,7 +7245,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7390,7 +7259,7 @@ public class GameTest {
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7404,7 +7273,7 @@ public class GameTest {
     // герой берет приз под деревом - когда его не видно под деревьями
     @Test
     public void shouldHeroTookPrize_underTree() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7417,7 +7286,7 @@ public class GameTest {
 
         ai(0).down();
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7429,7 +7298,7 @@ public class GameTest {
 
         ai(0).kill(mock(Bullet.class));
         dice(DICE_IMMORTALITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7442,7 +7311,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7456,7 +7325,7 @@ public class GameTest {
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7469,7 +7338,7 @@ public class GameTest {
 
     @Test
     public void shouldOtherTookPrize_underTree() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7482,7 +7351,7 @@ public class GameTest {
 
         ai(0).down();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7494,7 +7363,7 @@ public class GameTest {
 
         ai(0).kill(mock(Bullet.class));
         dice(DICE_IMMORTALITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7507,7 +7376,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7523,7 +7392,7 @@ public class GameTest {
                 "listener(1) => [CATCH_PRIZE[1]]\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7536,7 +7405,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTookPrize_onIce() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7549,7 +7418,7 @@ public class GameTest {
 
         ai(0).down();
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7562,7 +7431,7 @@ public class GameTest {
 
         ai(0).kill(mock(Bullet.class));
         dice(DICE_IMMORTALITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7575,7 +7444,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7589,7 +7458,7 @@ public class GameTest {
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7602,7 +7471,7 @@ public class GameTest {
 
     @Test
     public void shouldOtherTookPrize_onIce() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7615,7 +7484,7 @@ public class GameTest {
 
         ai(0).down();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7627,7 +7496,7 @@ public class GameTest {
 
         ai(0).kill(mock(Bullet.class));
         dice(DICE_IMMORTALITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7640,7 +7509,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7656,7 +7525,7 @@ public class GameTest {
                 "listener(1) => [CATCH_PRIZE[1]]\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7669,7 +7538,7 @@ public class GameTest {
 
     @Test
     public void shouldAiDontTookPrize() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7693,7 +7562,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_IMMORTALITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7704,7 +7573,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7715,7 +7584,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼?    ☼\n" +
@@ -7730,7 +7599,7 @@ public class GameTest {
     // то приз считается подобраным и не отбражается на филде
     @Test
     public void shouldHeroTookPrize_inPointKillAi() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7755,7 +7624,7 @@ public class GameTest {
 
         dice(DICE_IMMORTALITY);
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7769,7 +7638,7 @@ public class GameTest {
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7788,7 +7657,7 @@ public class GameTest {
     // если в момент подбора приза прилетает снаряд, то умирает танк, а приз остается
     @Test
     public void shouldKillHero_whenHeroTookPrizeAndComesBullet() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 6);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7812,7 +7681,7 @@ public class GameTest {
         dice(DICE_IMMORTALITY);
         hero(0).up();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7826,7 +7695,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7842,7 +7711,7 @@ public class GameTest {
                 "listener(1) => [KILL_OTHER_HERO[1]]\n");
 
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7853,7 +7722,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7866,7 +7735,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7881,7 +7750,7 @@ public class GameTest {
                 "listener(1) => [CATCH_PRIZE[1]]\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7896,7 +7765,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroKillPrize() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7919,7 +7788,7 @@ public class GameTest {
 
         dice(DICE_IMMORTALITY);
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7929,7 +7798,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7939,7 +7808,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7956,7 +7825,7 @@ public class GameTest {
     // то приз не подбирается
     @Test
     public void shouldHeroKillPrize_dontTakeNextTick() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -7978,7 +7847,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_IMMORTALITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7989,7 +7858,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8000,7 +7869,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8016,7 +7885,7 @@ public class GameTest {
 
     @Test
     public void shouldKilAIWithPrize_whenHitKillsIs2() {
-        settings.integer(KILL_HITS_AI_PRIZE, 2)
+        settings().integer(KILL_HITS_AI_PRIZE, 2)
                 .integer(PRIZE_ON_FIELD, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -8039,7 +7908,7 @@ public class GameTest {
 
         ai(0).down();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8050,7 +7919,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -8064,7 +7933,7 @@ public class GameTest {
 
         ai(0).down();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8077,7 +7946,7 @@ public class GameTest {
         verifyAllEvents("");
 
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -8091,7 +7960,7 @@ public class GameTest {
                 "[KILL_AI]");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
@@ -8101,7 +7970,7 @@ public class GameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -8116,7 +7985,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTakePrize_shouldShootWithDelayAfterPrizeEnd() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 5)
                 .integer(HERO_TICKS_PER_SHOOT,3);
@@ -8141,7 +8010,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_BREAKING_WALLS);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8154,7 +8023,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8168,7 +8037,7 @@ public class GameTest {
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8179,7 +8048,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8190,7 +8059,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8201,7 +8070,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8212,7 +8081,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8223,7 +8092,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8235,7 +8104,7 @@ public class GameTest {
 
         //The impact of the prize ended. should stop shooting
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8247,7 +8116,7 @@ public class GameTest {
 
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8259,7 +8128,7 @@ public class GameTest {
 
         //should shoot now
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8271,7 +8140,7 @@ public class GameTest {
 
         //silence
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8282,7 +8151,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8294,7 +8163,7 @@ public class GameTest {
 
         //and shoot again
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8306,7 +8175,7 @@ public class GameTest {
 
         //and silence
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8321,7 +8190,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTakePrize_breakingWalls() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 10);
 
@@ -8345,7 +8214,7 @@ public class GameTest {
 
         dice(DICE_BREAKING_WALLS);
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8358,7 +8227,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8373,7 +8242,7 @@ public class GameTest {
 
         hero(0).right();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -8385,7 +8254,7 @@ public class GameTest {
 
         hero(0).up();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8397,7 +8266,7 @@ public class GameTest {
 
         hero(0).down();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8409,7 +8278,7 @@ public class GameTest {
 
         hero(0).left();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8422,7 +8291,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTakePrizeEnemyWithoutPrize_breakingWalls() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -8444,7 +8313,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_BREAKING_WALLS);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
@@ -8456,7 +8325,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
         verifyAllEvents(
@@ -8472,7 +8341,7 @@ public class GameTest {
 
         hero(0).fire();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
@@ -8482,7 +8351,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╩  ☼\n" +
@@ -8495,7 +8364,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroNotBreakingBorder_breakingWalls() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -8519,7 +8388,7 @@ public class GameTest {
         verifyAllEvents("");
 
         dice(DICE_BREAKING_WALLS);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
@@ -8530,7 +8399,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
         verifyAllEvents("[CATCH_PRIZE[2]]");
@@ -8544,7 +8413,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
@@ -8554,7 +8423,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╬  ☼\n" +
@@ -8565,7 +8434,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╬  ☼\n" +
@@ -8575,7 +8444,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╬  ☼\n" +
@@ -8588,7 +8457,7 @@ public class GameTest {
 
     @Test
     public void shouldEndPrizeWorking_breakingWalls() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 1);
 
@@ -8613,7 +8482,7 @@ public class GameTest {
         verifyAllEvents("");
 
         dice(DICE_BREAKING_WALLS);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -8624,7 +8493,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
         verifyAllEvents("[CATCH_PRIZE[2]]");
@@ -8638,7 +8507,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -8649,7 +8518,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -8659,7 +8528,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
@@ -8672,7 +8541,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTakePrizeEnemyShootsHero_immortality() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -8696,7 +8565,7 @@ public class GameTest {
 
         dice(DICE_IMMORTALITY);
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8710,7 +8579,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
         verifyAllEvents(
@@ -8725,7 +8594,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8735,7 +8604,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8750,7 +8619,7 @@ public class GameTest {
 
     @Test
     public void shouldEndPrizeWorkingEnemyShootsHero_immortality() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 3);
 
@@ -8775,7 +8644,7 @@ public class GameTest {
 
         dice(DICE_IMMORTALITY);
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8789,7 +8658,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
         verifyAllEvents(
@@ -8804,7 +8673,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8814,7 +8683,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         verifyAllEvents("");
 
@@ -8826,8 +8695,8 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
-        game.tick();
+        game().tick();
+        game().tick();
 
         assertPrize(hero(0), "[]");
 
@@ -8840,7 +8709,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8850,7 +8719,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8867,7 +8736,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTakePrizeAiShootsHero_immortality() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -8889,7 +8758,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_IMMORTALITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
@@ -8900,7 +8769,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
@@ -8913,7 +8782,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
         verifyAllEvents("[CATCH_PRIZE[1]]");
@@ -8928,7 +8797,7 @@ public class GameTest {
 
         ai(0).up();
         ai(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
@@ -8938,7 +8807,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
@@ -8953,7 +8822,7 @@ public class GameTest {
 
     @Test
     public void shouldEndPrizeWorkingAiShootsHero_immortality() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 2);
 
@@ -8977,7 +8846,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_IMMORTALITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
@@ -8989,7 +8858,7 @@ public class GameTest {
 
         hero(0).up();
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
@@ -9003,7 +8872,7 @@ public class GameTest {
 
         hero(0).up();
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
         verifyAllEvents("[CATCH_PRIZE[1]]");
@@ -9018,7 +8887,7 @@ public class GameTest {
 
         ai(0).up();
         ai(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
@@ -9029,7 +8898,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
@@ -9043,7 +8912,7 @@ public class GameTest {
 
         ai(0).up();
         ai(0).fire();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[]");
 
@@ -9055,7 +8924,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -9072,7 +8941,7 @@ public class GameTest {
     // то продолжается движение вперед по старой команде на 1 тик.
     @Test
     public void shouldHeroSlidingOneTicks() {
-        settings.integer(SLIPPERINESS, 3);
+        settings().integer(SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9087,7 +8956,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9101,7 +8970,7 @@ public class GameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9120,7 +8989,7 @@ public class GameTest {
     // то продолжается движение по старой команде N тиков.
     @Test
     public void shouldHeroSlidingNTicks() {
-        settings.integer(SLIPPERINESS, 3);
+        settings().integer(SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9135,7 +9004,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9151,7 +9020,7 @@ public class GameTest {
 
         // RIGHT -> UP
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9167,7 +9036,7 @@ public class GameTest {
 
         // RIGHT -> UP
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9183,7 +9052,7 @@ public class GameTest {
 
         // RIGHT -> UP
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9199,7 +9068,7 @@ public class GameTest {
 
         // RIGHT -> RIGHT
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9218,7 +9087,7 @@ public class GameTest {
     // слушается команда N + 1 и опять занос N тиков
     @Test
     public void shouldHeroSlidingNTicks_andAgainSliding() {
-        settings.integer(SLIPPERINESS, 3);
+        settings().integer(SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9233,7 +9102,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9249,7 +9118,7 @@ public class GameTest {
 
         // RIGHT -> UP
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9265,7 +9134,7 @@ public class GameTest {
 
         // RIGHT -> UP
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9281,7 +9150,7 @@ public class GameTest {
 
         // RIGHT -> UP
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9297,7 +9166,7 @@ public class GameTest {
 
         // RIGHT -> RIGHT
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9313,7 +9182,7 @@ public class GameTest {
 
         // UP -> RIGHT
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9329,7 +9198,7 @@ public class GameTest {
 
         // UP -> RIGHT
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9345,7 +9214,7 @@ public class GameTest {
 
         // UP -> UP
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -9363,7 +9232,7 @@ public class GameTest {
     // если герой в ходе заноса уперся в стену, то занос прекращается
     @Test
     public void shouldHeroAndSliding_ifBumpedWall() {
-        settings.integer(SLIPPERINESS, 5);
+        settings().integer(SLIPPERINESS, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼###  ☼\n" +
@@ -9374,7 +9243,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼###  ☼\n" +
@@ -9386,7 +9255,7 @@ public class GameTest {
 
         // RIGHT -> UP
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼###  ☼\n" +
@@ -9398,7 +9267,7 @@ public class GameTest {
 
         // RIGHT -> UP
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▲##  ☼\n" +
@@ -9410,7 +9279,7 @@ public class GameTest {
 
         // RIGHT -> UP -> wall -> Canceled sliding
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▲##  ☼\n" +
@@ -9422,7 +9291,7 @@ public class GameTest {
 
         // RIGHT -> RIGHT
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼#►#  ☼\n" +
@@ -9435,7 +9304,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroCanGoIfRiverAtWay_whenHeroTakePrize() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 3);
 
@@ -9458,7 +9327,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_WALKING_ON_WATER);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -9471,7 +9340,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -9482,7 +9351,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
         verifyAllEvents("[CATCH_PRIZE[3]]");
 
         assertD("☼☼☼☼☼☼☼\n" +
@@ -9494,7 +9363,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -9505,7 +9374,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
@@ -9518,7 +9387,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTakePrize_walkOnWater() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 3);
 
@@ -9543,7 +9412,7 @@ public class GameTest {
         dice(DICE_WALKING_ON_WATER);
         hero(0).up();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -9557,7 +9426,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER]");
         verifyAllEvents(
@@ -9573,7 +9442,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -9585,7 +9454,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
@@ -9599,7 +9468,7 @@ public class GameTest {
     // когда заканчивается действие приза движение по воде отключается
     @Test
     public void shouldHeroCanGoIfRiverAtWay_whenPrizeIsOver() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 2);
 
@@ -9622,7 +9491,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_WALKING_ON_WATER);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
@@ -9635,7 +9504,7 @@ public class GameTest {
         verifyAllEvents("");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
@@ -9646,7 +9515,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
         verifyAllEvents("[CATCH_PRIZE[3]]");
 
         assertD("☼☼☼☼☼☼☼\n" +
@@ -9658,7 +9527,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
@@ -9669,16 +9538,16 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
@@ -9696,7 +9565,7 @@ public class GameTest {
     // пока танк не выйдет полностью из воды.
     @Test
     public void shouldHeroCanGoIfRiverAtWay_whenPrizeIsOver_butHeroOnWater() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PENALTY_WALKING_ON_WATER, 4)
                 .integer(PRIZE_WORKING, 2);
@@ -9720,7 +9589,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_WALKING_ON_WATER);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9735,7 +9604,7 @@ public class GameTest {
         assertPrize(hero(0), "[]");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9749,7 +9618,7 @@ public class GameTest {
         verifyAllEvents("[CATCH_PRIZE[3]]");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9762,7 +9631,7 @@ public class GameTest {
         assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER]");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9777,7 +9646,7 @@ public class GameTest {
         // действие приза закончилось
         // герой получает штраф 4 тика
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9790,7 +9659,7 @@ public class GameTest {
         assertPrize(hero(0), "[]");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9803,7 +9672,7 @@ public class GameTest {
         assertPrize(hero(0), "[]");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9816,7 +9685,7 @@ public class GameTest {
         assertPrize(hero(0), "[]");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9830,7 +9699,7 @@ public class GameTest {
 
         // штраф 4 тика закончился. Возможно перемещение
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9844,7 +9713,7 @@ public class GameTest {
 
         // штраф еще 4 тика, так как герой снова на воде
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9857,7 +9726,7 @@ public class GameTest {
         assertPrize(hero(0), "[]");
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9870,7 +9739,7 @@ public class GameTest {
         assertPrize(hero(0), "[]");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9883,7 +9752,7 @@ public class GameTest {
         assertPrize(hero(0), "[]");
 
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9897,7 +9766,7 @@ public class GameTest {
 
         // штраф 4 тика закончился. Возможно перемещение
         hero(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9911,10 +9780,10 @@ public class GameTest {
 
         // штраф еще 4 тика, так как герой снова на воде
         hero(0).down();
-        game.tick();
-        game.tick();
-        game.tick();
-        game.tick();
+        game().tick();
+        game().tick();
+        game().tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9927,7 +9796,7 @@ public class GameTest {
         assertPrize(hero(0), "[]");
 
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9941,7 +9810,7 @@ public class GameTest {
 
         // мы все так же на воде, а потому не можем двигаться 4 тика
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9954,7 +9823,7 @@ public class GameTest {
         assertPrize(hero(0), "[]");
 
         hero(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9968,7 +9837,7 @@ public class GameTest {
 
         // но можем выехать на сушу, хоть штраф не закончился
         hero(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -9982,19 +9851,19 @@ public class GameTest {
 
         // обратно заехать уже не можем как ни старайся
         hero(0).up();
-        game.tick();
+        game().tick();
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         hero(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -10009,7 +9878,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTakePrizeAndShootsEveryTick_breakingWalls() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 3)
                 .integer(HERO_TICKS_PER_SHOOT, 3);
@@ -10033,7 +9902,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_BREAKING_WALLS);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
@@ -10047,7 +9916,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
         verifyAllEvents(
@@ -10063,7 +9932,7 @@ public class GameTest {
 
         hero(0).fire();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
@@ -10075,7 +9944,7 @@ public class GameTest {
 
         hero(0).fire();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╩  ☼\n" +
@@ -10087,7 +9956,7 @@ public class GameTest {
 
         hero(0).fire();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╩  ☼\n" +
@@ -10099,7 +9968,7 @@ public class GameTest {
 
         hero(0).fire();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[]");
 
@@ -10113,7 +9982,7 @@ public class GameTest {
 
         hero(0).fire();
         hero(1).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╨  ☼\n" +
@@ -10147,7 +10016,7 @@ public class GameTest {
                 "☼◘    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10157,7 +10026,7 @@ public class GameTest {
                 "☼?    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼•    ☼\n" +
@@ -10167,7 +10036,7 @@ public class GameTest {
                 "☼?    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10177,7 +10046,7 @@ public class GameTest {
                 "☼?    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10187,7 +10056,7 @@ public class GameTest {
                 "☼◘    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10198,7 +10067,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(1);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10213,7 +10082,7 @@ public class GameTest {
     // теперь все нормально
     @Test
     public void shouldDropAiOnIce() {
-        settings.integer(SLIPPERINESS, 2);
+        settings().integer(SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼#    ☼\n" +
@@ -10223,7 +10092,7 @@ public class GameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        game.getAiGenerator().drop(pt(1, 5));
+        game().getAiGenerator().drop(pt(1, 5));
         ai(0).dontShoot = true;
 
         assertD("☼☼☼☼☼☼☼\n" +
@@ -10235,7 +10104,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼#    ☼\n" +
@@ -10246,7 +10115,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼#    ☼\n" +
@@ -10257,7 +10126,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼#    ☼\n" +
@@ -10291,7 +10160,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
@@ -10306,7 +10175,7 @@ public class GameTest {
     // если aiPrizeLimit = 2, то будет на поле 2 АИтанка с призами
     @Test
     public void shouldSpawnTwoAiPrize() {
-        settings.integer(SPAWN_AI_PRIZE, 2)
+        settings().integer(SPAWN_AI_PRIZE, 2)
                 .integer(AI_PRIZE_LIMIT, 2);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
@@ -10329,7 +10198,7 @@ public class GameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertEquals("2 prizes with 7 heroes", getPrizesCount());
     }
@@ -10339,7 +10208,7 @@ public class GameTest {
     // АИтанков с призами больше появляться не будет
     @Test
     public void shouldNotSpawnAiPrize_ifPrizeOnField() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(SPAWN_AI_PRIZE, 2)
                 .integer(AI_PRIZE_LIMIT, 2);
@@ -10367,7 +10236,7 @@ public class GameTest {
         assertEquals("2 prizes with 7 heroes", getPrizesCount());
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼¿¿¿¿¿¿ ☼\n" +
@@ -10379,7 +10248,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼Ѡ¿¿¿¿¿ ☼\n" +
@@ -10391,7 +10260,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼1¿¿¿¿¿ ☼\n" +
@@ -10408,7 +10277,7 @@ public class GameTest {
         dropAI(pt(5, 6));
         dropAI(pt(6, 6));
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼!¿◘¿¿¿ ☼\n" +
@@ -10425,7 +10294,7 @@ public class GameTest {
 
     @Test
     public void shouldSpawnAiPrize_ifKillPrize() {
-        settings.integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(SPAWN_AI_PRIZE, 2)
                 .integer(AI_PRIZE_LIMIT, 2);
@@ -10453,7 +10322,7 @@ public class GameTest {
         assertEquals("2 prizes with 7 heroes", getPrizesCount());
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼¿¿¿¿¿¿ ☼\n" +
@@ -10465,7 +10334,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼Ѡ¿¿¿¿¿ ☼\n" +
@@ -10478,7 +10347,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         hero(0).fire();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼1¿¿¿¿¿ ☼\n" +
@@ -10491,7 +10360,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
         verifyAllEvents("[KILL_AI]");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼Ѡ¿◘¿¿¿ ☼\n" +
@@ -10503,7 +10372,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿¿ ☼\n" +
@@ -10519,7 +10388,7 @@ public class GameTest {
         dropAI(pt(5, 6));
         dropAI(pt(6, 6));
 
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿¿ ☼\n" +
@@ -10551,7 +10420,7 @@ public class GameTest {
         hero(0).fire();
         hero(0).up();
         hero(1).right();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -10584,7 +10453,7 @@ public class GameTest {
         hero(1).right();
         hero(0).up();
         hero(0).fire();
-        game.tick();
+        game().tick();
 
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -10602,7 +10471,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTakePrizeAndSeeAiUnderTree_visibility() {
-        settings.integer(PRIZE_ON_FIELD, 5)
+        settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -10625,7 +10494,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_VISIBILITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10637,7 +10506,7 @@ public class GameTest {
 
         hero(0).up();
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10651,7 +10520,7 @@ public class GameTest {
 
         hero(0).up();
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_VISIBILITY]");
         verifyAllEvents("[CATCH_PRIZE[4]]");
@@ -10667,7 +10536,7 @@ public class GameTest {
 
     @Test
     public void shouldHeroTakePrizeAndSeeEnemyUnderTree_visibility() {
-        settings.integer(PRIZE_ON_FIELD, 5)
+        settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -10690,7 +10559,7 @@ public class GameTest {
 
         dice(DICE_VISIBILITY);
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10701,7 +10570,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10713,7 +10582,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10727,7 +10596,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_VISIBILITY]");
         verifyAllEvents(
@@ -10744,7 +10613,7 @@ public class GameTest {
 
     @Test
     public void shouldEndPrizeWorkingDontSeeAiUnderTree_visibility() {
-        settings.integer(PRIZE_ON_FIELD, 5)
+        settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 2);
 
@@ -10768,7 +10637,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_VISIBILITY);
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10780,7 +10649,7 @@ public class GameTest {
 
         hero(0).up();
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10794,7 +10663,7 @@ public class GameTest {
 
         hero(0).up();
         ai(0).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_VISIBILITY]");
         verifyAllEvents("[CATCH_PRIZE[4]]");
@@ -10808,7 +10677,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  «% ☼\n" +
@@ -10819,7 +10688,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10830,7 +10699,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         ai(0).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10845,7 +10714,7 @@ public class GameTest {
 
     @Test
     public void shouldEndPrizeWorkingDontSeeEnemyUnderTree_visibility() {
-        settings.integer(PRIZE_ON_FIELD, 5)
+        settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 2);
 
@@ -10869,7 +10738,7 @@ public class GameTest {
 
         dice(DICE_VISIBILITY);
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10880,7 +10749,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10892,7 +10761,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -10906,7 +10775,7 @@ public class GameTest {
 
         hero(0).up();
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertPrize(hero(0), "[PRIZE_VISIBILITY]");
         verifyAllEvents(
@@ -10921,7 +10790,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).up();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %˄ ☼\n" +
@@ -10932,7 +10801,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).left();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  ˂% ☼\n" +
@@ -10943,7 +10812,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         hero(1).down();
-        game.tick();
+        game().tick();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +

@@ -83,7 +83,7 @@ public class AIPrize extends AI {
         }
 
         if (wounded) {
-            return Element.BANG;
+            return Element.EXPLOSION;
         }
         return null;
     }

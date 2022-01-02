@@ -34,8 +34,6 @@ import com.codenjoy.dojo.services.State;
 
 import java.util.function.Consumer;
 
-import static com.codenjoy.dojo.services.StateUtils.filterOne;
-
 public class Bullet extends MovingObject implements State<Element, Player> {
 
     private final Field field;
@@ -95,7 +93,7 @@ public class Bullet extends MovingObject implements State<Element, Player> {
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
         if (destroyed()) {
-            return Element.BANG;
+            return Element.EXPLOSION;
         } else {
             return Element.BULLET;
         }

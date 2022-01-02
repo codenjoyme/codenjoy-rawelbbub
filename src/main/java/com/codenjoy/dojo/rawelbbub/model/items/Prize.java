@@ -64,7 +64,7 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
         if (destroyed) {
-            return Element.BANG;
+            return Element.EXPLOSION;
         }
 
         if (ticks % changeEveryTicks() == 0) {

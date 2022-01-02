@@ -119,7 +119,7 @@ public class AI extends Hero {
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
         if (!isAlive()) {
-            return Element.BANG;
+            return Element.EXPLOSION;
         }
 
         Element sub = subState();

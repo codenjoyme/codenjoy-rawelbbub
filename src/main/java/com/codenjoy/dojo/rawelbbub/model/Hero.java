@@ -185,7 +185,7 @@ public class Hero extends RoundPlayerHero<Field>
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
         if (!isAlive()) {
-            return Element.BANG;
+            return Element.EXPLOSION;
         }
 
         if (player.getHero() != this) {

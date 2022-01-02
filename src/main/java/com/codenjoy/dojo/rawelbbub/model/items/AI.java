@@ -23,9 +23,9 @@ package com.codenjoy.dojo.rawelbbub.model.items;
  */
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.rawelbbub.model.Field;
 import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.model.Player;
-import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 
@@ -36,7 +36,6 @@ public class AI extends Hero {
 
     public static final int MAX = 10;
 
-    private Dice dice;
     public boolean dontShoot = false;
     public boolean dontMove = false;
     private int act;
@@ -47,6 +46,11 @@ public class AI extends Hero {
         this.count = 0;
         setActive(true);
         setAlive(true);
+    }
+
+    @Override
+    public boolean isAI() {
+        return true;
     }
 
     @Override
@@ -69,6 +73,15 @@ public class AI extends Hero {
         super.tick();
     }
 
+    @Override
+    public void init(Field field) {
+        super.init(field);
+
+        if (!withPrize()) {
+            field.ais().add(this);
+        }
+    }
+
     private void shootIfReady() {
         if (act++ % ticksPerShoot() == 0) {
             fire();
@@ -81,11 +94,11 @@ public class AI extends Hero {
         do {
             pt = direction.change(this);
             if (field.isBarrier(pt)) {
-                direction = Direction.random(dice);
+                direction = Direction.random(dice());
             }
 
             if (count == ticksStuckByRiver()) {
-                direction = Direction.random(dice);
+                direction = Direction.random(dice());
                 count = 0;
             }
 
@@ -118,9 +131,11 @@ public class AI extends Hero {
             case LEFT:  return Element.AI_LEFT;
             case RIGHT: return Element.AI_RIGHT;
             case UP:    return Element.AI_UP;
-            case DOWN:  return Element.AI_DOWN;
-            default: throw new RuntimeException(
-                    "Неправильное состояние танка!");
+            case DOWN:
+                return Element.AI_DOWN;
+            default:
+                throw new RuntimeException(
+                        "Неправильное состояние танка!");
         }
     }
 
@@ -128,7 +143,12 @@ public class AI extends Hero {
         return null;
     }
 
-    public void dice(Dice dice) {
-        this.dice = dice;
+    public boolean withPrize() {
+        return false;
+    }
+
+    public void stop() {
+        dontShoot = true;
+        dontMove = true;
     }
 }

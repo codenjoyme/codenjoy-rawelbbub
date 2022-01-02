@@ -23,8 +23,10 @@ package com.codenjoy.dojo.rawelbbub.model;
  */
 
 
+import com.codenjoy.dojo.client.local.DiceGenerator;
 import com.codenjoy.dojo.rawelbbub.services.GameRunner;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
+import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.multiplayer.GameField;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
@@ -45,7 +47,13 @@ public class LevelTest {
     @Test
     public void test() {
         // given
-        GameRunner runner = new GameRunner();
+        DiceGenerator generator = new DiceGenerator();
+        GameRunner runner = new GameRunner() {
+            @Override
+            public Dice getDice() {
+                return generator.getDice();
+            }
+        };
         GameSettings settings = runner.getSettings();
         GamePlayer player = runner.createPlayer(mock(EventListener.class),
                 DEFAULT_TEAM_ID, "id", settings);
@@ -67,27 +75,27 @@ public class LevelTest {
                 "☼ #╬╬╬# ╬╬╬ #╬╬╬##╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
                 "☼ #╬╬╬# ╬╬╬ #╬╬╬##╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
                 "☼ #╬╬╬# ╬╬╬ #╬╬╬☼☼╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬ #╬╬╬☼☼╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬ #╬╬╬  ╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬ #╬╬╬# ☼\n" +
-                "☼ #╬╬╬# ╬╬╬            ╬╬╬ #╬╬╬# ☼\n" +
-                "☼  ╬╬╬  ╬╬╬   ~    ~   ╬╬╬  ╬╬╬  ☼\n" +
-                "☼  ~~~       ╬╬╬  ╬╬╬       ~~~  ☼\n" +
-                "☼  ~~        ╬╬╬  ╬╬╬        ~~  ☼\n" +
-                "☼     ╬╬╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬╬╬     ☼\n" +
-                "☼☼☼   ╬╬╬╬╬            ╬╬╬╬╬   ☼☼☼\n" +
-                "☼ ~~          %%%%%%          ~~ ☼\n" +
-                "☼           ~╬╬╬%%╬╬╬~           ☼\n" +
-                "☼  ╬╬╬  ╬╬╬ ~╬╬╬%%╬╬╬~ ╬╬╬  ╬╬╬  ☼\n" +
-                "☼  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ☼\n" +
-                "☼  ╬╬╬~ ╬╬╬  ╬╬╬╬╬╬╬╬  ╬╬╬ ~╬╬╬  ☼\n" +
-                "☼  ╬╬╬  ╬╬╬  ╬╬╬╬╬╬╬╬  ╬╬╬  ╬╬╬  ☼\n" +
-                "☼ %╬╬╬  ╬╬╬  ╬╬╬%%╬╬╬  ╬╬╬  ╬╬╬% ☼\n" +
-                "☼ %╬╬╬  ╬╬╬~ ╬╬╬%%╬╬╬ ~╬╬╬  ╬╬╬% ☼\n" +
-                "☼ %╬╬╬  ╬╬╬~ ╬╬╬%%╬╬╬ ~╬╬╬  ╬╬╬% ☼\n" +
-                "☼ %╬╬╬ ~╬╬╬  ╬╬╬%%╬╬╬  ╬╬╬~ ╬╬╬% ☼\n" +
-                "☼ %╬╬╬  %%%            %%%  ╬╬╬% ☼\n" +
-                "☼  ╬╬╬  %%%    ~~~~    %%%  ╬╬╬  ☼\n" +
+                        "☼ #╬╬╬# ╬╬╬ #╬╬╬☼☼╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
+                        "☼ #╬╬╬# ╬╬╬ #╬╬╬  ╬╬╬# ╬╬╬ #╬╬╬# ☼\n" +
+                        "☼ #╬╬╬# ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬ #╬╬╬# ☼\n" +
+                        "☼ #╬╬╬# ╬╬╬            ╬╬╬ #╬╬╬# ☼\n" +
+                        "☼  ╬╬╬  ╬╬╬   ~    ~   ╬╬╬  ╬╬╬  ☼\n" +
+                        "☼  ~~~       ╬╬╬  ╬╬╬       ~~~  ☼\n" +
+                        "☼  ~~        ╬╬╬  ╬╬╬        ~~  ☼\n" +
+                        "☼     ╬╬╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬╬╬     ☼\n" +
+                        "☼☼☼   ╬╬╬╬╬            ╬╬╬╬╬   ☼☼☼\n" +
+                        "☼ ~~          %%%%%%          ~~ ☼\n" +
+                        "☼          ▲~╬╬╬%%╬╬╬~           ☼\n" +
+                        "☼  ╬╬╬  ╬╬╬ ~╬╬╬%%╬╬╬~ ╬╬╬  ╬╬╬  ☼\n" +
+                        "☼  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ╬╬╬  ☼\n" +
+                        "☼  ╬╬╬~ ╬╬╬  ╬╬╬╬╬╬╬╬  ╬╬╬ ~╬╬╬  ☼\n" +
+                        "☼  ╬╬╬  ╬╬╬  ╬╬╬╬╬╬╬╬  ╬╬╬  ╬╬╬  ☼\n" +
+                        "☼ %╬╬╬  ╬╬╬  ╬╬╬%%╬╬╬  ╬╬╬  ╬╬╬% ☼\n" +
+                        "☼ %╬╬╬  ╬╬╬~ ╬╬╬%%╬╬╬ ~╬╬╬  ╬╬╬% ☼\n" +
+                        "☼ %╬╬╬  ╬╬╬~ ╬╬╬%%╬╬╬ ~╬╬╬  ╬╬╬% ☼\n" +
+                        "☼ %╬╬╬ ~╬╬╬  ╬╬╬%%╬╬╬  ╬╬╬~ ╬╬╬% ☼\n" +
+                        "☼ %╬╬╬  %%%            %%%  ╬╬╬% ☼\n" +
+                        "☼  ╬╬╬  %%%    ~~~~    %%%  ╬╬╬  ☼\n" +
                 "☼  ╬╬╬  %%%  ╬╬╬╬╬╬╬╬  %%%  ╬╬╬  ☼\n" +
                 "☼  ╬╬╬       ╬╬╬╬╬╬╬╬       ╬╬╬  ☼\n" +
                 "☼            ╬╬    ╬╬            ☼\n" +

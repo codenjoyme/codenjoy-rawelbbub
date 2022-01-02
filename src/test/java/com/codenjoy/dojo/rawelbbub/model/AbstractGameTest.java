@@ -34,7 +34,9 @@ import com.codenjoy.dojo.utils.gametest.AbstractBaseGameTest;
 import org.junit.After;
 import org.junit.Before;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -84,32 +86,29 @@ public class AbstractGameTest
     // other methods
 
     private void stopAllAis() {
-        field().ais().stream()
-                .filter(ai -> ai instanceof AI)
-                .map(ai -> (AI) ai)
-                .forEach(ai -> {
-                    ai.dontShoot = true;
-                    ai.dontMove = true;
-                });
+        field().ais().forEach(AI::stop);
+        field().prizeAis().forEach(AI::stop);
     }
 
     public AI dropAI(Point pt) {
-        AI ai = field().getAiGenerator().drop(pt);
-        ai.dontMove = true;
-        ai.dontShoot = true;
-        return ai;
+        AI result = field().getAiGenerator().drop(pt);
+        result.stop();
+        return result;
     }
 
     public void assertPrize(String expected) {
-        List<Hero> all = field().heroesAndAis();
-        long prizes = all.stream().filter(Hero::withPrize).count();
-
         assertEquals(expected,
                 String.format("%s prizes with %s heroes",
-                        prizes, all.size()));
+                        field().prizeAis().size(),
+                        field().heroesAndAis().size()));
     }
 
     protected AI ai(int index) {
-        return (AI) field().ais().get(index);
+        LinkedList<AI> all = new LinkedList<>() {{
+            addAll(field().ais().copy());
+            addAll(field().prizeAis().copy());
+        }};
+        Collections.sort(all, Comparator.reverseOrder());
+        return all.get(index);
     }
 }

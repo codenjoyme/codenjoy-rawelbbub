@@ -55,14 +55,11 @@ public class AiGenerator {
         this.aiPrize = 0;
     }
 
-    void newSpawn(){
-        spawn++;
-    }
-
     public void dropAll() {
-        int needed = capacity - field.ais().size();
+        int actual = field.ais().size() + field.prizeAis().size();
+        int needed = capacity - actual;
 
-        for (int i = 0; i < needed; i++) {
+        for (int count = 0; count < needed; count++) {
             Point pt = freePosition();
             if (pt == null) continue;
 
@@ -89,15 +86,16 @@ public class AiGenerator {
         return findFreePosition(field.size() - 2, field.size());
     }
 
-    private AI ai(Point pt) {
-        AI result;
-        if (isPrizeAiTurn() && canDrop()) {
-            result = new AIPrize(pt, Direction.DOWN);
-        } else {
-            result = new AI(pt, Direction.DOWN);
+    private AI create(Point pt) {
+        if (field.isRiver(pt)) {
+            pt = freePosition();
         }
-        result.dice(dice);
-        return result;
+
+        if (isPrizeAiTurn() && canDrop()) {
+            return new AIPrize(pt, Direction.DOWN);
+        } else {
+            return new AI(pt, Direction.DOWN);
+        }
     }
 
     private boolean isPrizeAiTurn() {
@@ -108,22 +106,10 @@ public class AiGenerator {
     }
 
     public AI drop(Point pt) {
-        AI ai = checkDropPt(pt);
-        ai.init(field);
-        ai.dice(dice);
-        field.addAi(ai);
-        newSpawn();
-        return ai;
-    }
-
-    private AI checkDropPt(Point pt) {
-        AI ai;
-        if (field.isRiver(pt)) {
-            ai = ai(freePosition());
-        } else {
-            ai = ai(pt);
-        }
-        return ai;
+        AI result = create(pt);
+        result.init(field);
+        spawn++;
+        return result;
     }
 
     public void dropAll(List<? extends Point> points) {

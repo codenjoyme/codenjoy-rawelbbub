@@ -23,6 +23,7 @@ package com.codenjoy.dojo.rawelbbub.model.items;
  */
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.rawelbbub.model.Field;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 
@@ -40,6 +41,13 @@ public class AIPrize extends AI {
         damage = 0;
         ticks = 0;
         wounded = false;
+    }
+
+    @Override
+    public void init(Field field) {
+        super.init(field);
+
+        field.prizeAis().add(this);
     }
 
     @Override
@@ -80,7 +88,8 @@ public class AIPrize extends AI {
         return null;
     }
 
-    protected boolean withPrize() {
+    @Override
+    public boolean withPrize() {
         return true;
     }
 }

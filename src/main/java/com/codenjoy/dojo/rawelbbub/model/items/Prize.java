@@ -37,20 +37,20 @@ import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.PRIZE_SPRIT
 
 public class Prize extends PointImpl implements Tickable, State<Element, Player> {
 
-    private final Element elements;
+    private final Element element;
     private final int prizeOnField;
     private final int prizeWorking;
 
     private boolean destroyed;
     private boolean active;
-    private Consumer<Object> onDestroy;
+    private Consumer<Prize> onDestroy;
     private int timeout;
     private int ticks;
     private GameSettings settings;
 
-    public Prize(Point pt, int prizeOnField, int prizeWorking, Element elements) {
+    public Prize(Point pt, int prizeOnField, int prizeWorking, Element element) {
         super(pt);
-        this.elements = elements;
+        this.element = element;
         this.prizeOnField = prizeOnField;
         this.prizeWorking = prizeWorking;
         destroyed = false;
@@ -71,7 +71,7 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
             return Element.PRIZE;
         }
 
-        return elements;
+        return element;
     }
 
     public int changeEveryTicks() {
@@ -102,11 +102,11 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
         destroyed = true;
     }
 
-    public Element elements() {
-        return elements;
+    public Element element() {
+        return element;
     }
 
-    public void taken(Consumer<Object> onDestroy) {
+    public void taken(Consumer<Prize> onDestroy) {
         if (this.onDestroy == null) {
             timeout = prizeOnField;
         } else {
@@ -114,5 +114,17 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
         }
         ticks = 0;
         this.onDestroy = onDestroy;
+    }
+
+    public int value() {
+        return Integer.parseInt(String.valueOf(element.ch()));
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s(%s/%s)",
+                element.name(),
+                ticks,
+                timeout);
     }
 }

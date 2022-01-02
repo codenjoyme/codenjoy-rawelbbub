@@ -23,12 +23,12 @@ package com.codenjoy.dojo.rawelbbub.model;
  */
 
 
-import com.codenjoy.dojo.rawelbbub.model.items.Bullet;
-import com.codenjoy.dojo.rawelbbub.model.items.Prize;
+import com.codenjoy.dojo.rawelbbub.model.items.*;
+import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.field.Accessor;
 import com.codenjoy.dojo.services.round.RoundGameField;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface Field extends RoundGameField<Player, Hero> {
@@ -45,9 +45,21 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     void add(Prize prize);
 
-    void addAi(Hero hero);
+    Accessor<Hero> heroes();
 
-    List<Hero> ais();
+    Accessor<Prize> prizes();
+
+    Accessor<Tree> trees();
+
+    Accessor<Ice> ice();
+
+    Accessor<River> rivers();
+
+    Accessor<Wall> walls();
+
+    Accessor<Border> borders();
+
+    Accessor<AI> ais();
 
     int size();
 
@@ -56,4 +68,10 @@ public interface Field extends RoundGameField<Player, Hero> {
     boolean isFree(Point pt);
 
     Optional<Point> freeRandom(Player player);
+
+    Accessor<AIPrize> prizeAis();
+
+    Accessor<Bullet> bullets();
+
+    Dice dice();
 }

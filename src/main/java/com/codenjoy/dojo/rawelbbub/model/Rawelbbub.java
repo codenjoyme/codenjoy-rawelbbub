@@ -28,6 +28,8 @@ import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.BoardUtils;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.field.Accessor;
+import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.round.RoundField;
 import com.codenjoy.dojo.utils.whatsnext.WhatsNextUtils;
@@ -35,35 +37,25 @@ import com.codenjoy.dojo.utils.whatsnext.WhatsNextUtils;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_WALLS;
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_IMMORTALITY;
 import static com.codenjoy.dojo.rawelbbub.services.Event.*;
 import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.toList;
 
 public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
     private Level level;
+    private PointField field;
+    private List<Player> players;
     private Dice dice;
-    private int size;
+    private GameSettings settings;
 
+    private Prizes prizes;
     private PrizeGenerator prizeGen;
     private AiGenerator aiGen;
-
-    private List<Player> players;
-
-    private List<Wall> walls;
-    private List<Border> borders;
-    private List<Tree> trees;
-    private List<Ice> ice;
-    private List<River> rivers;
-    private Prizes prizes;
-    private List<Hero> ais;
-
-    private GameSettings settings;
 
     public Rawelbbub(Dice dice, Level level, GameSettings settings) {
         super(START_ROUND, WIN_ROUND, settings);
@@ -71,9 +63,41 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         this.level = level;
         this.dice = dice;
         this.settings = settings;
+        this.field = new PointField();
         this.players = new LinkedList<>();
+        this.prizes = new Prizes(field);
 
         clearScore();
+    }
+
+    @Override
+    public void clearScore() {
+        if (level == null) return;
+
+        level.saveTo(field);
+        field.init(this);
+
+        prizeGen = new PrizeGenerator(this, dice, settings);
+        aiGen = new AiGenerator(this, dice, settings);
+
+        addAis(level.ais());
+
+        players.forEach(Player::reset);
+        heroesAndAis().forEach(Hero::reset);
+
+        super.clearScore();
+    }
+
+    @Override
+    protected void onAdd(Player player) {
+        player.newHero(this);
+    }
+
+    @Override
+    protected void onRemove(Player player) {
+        Hero hero = player.getHero();
+        heroes().removeExact(hero);
+        bullets().removeIf(bullet -> bullet.owner() == hero);
     }
 
     @Override
@@ -84,38 +108,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     @Override
     public void cleanStuff() {
         removeDeadItems();
-    }
-
-
-    public void addAis(List<? extends Point> ais) {
-        aiGen.dropAll(ais);
-    }
-
-    @Override
-    public void clearScore() {
-        if (level == null) return;
-
-        this.size = level.size();
-        ais = new LinkedList<>();
-        prizes = new Prizes();
-        walls = new LinkedList<>();
-        borders = new LinkedList<>();
-        trees = new LinkedList<>();
-        ice = new LinkedList<>();
-        rivers = new LinkedList<>();
-        prizeGen = new PrizeGenerator(this, dice, settings);
-        aiGen = new AiGenerator(this, dice, settings);
-
-        addBorder(level.borders());
-        addWall(level.walls());
-        addAis(level.ais());
-        addRiver(level.rivers());
-        addTree(level.trees());
-        addIce(level.ice());
-
-        players.forEach(Player::reset);
-        walls.forEach(Wall::reset);
-        heroesAndAis().forEach(Hero::reset);
     }
 
     @Override
@@ -129,7 +121,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             hero.tick();
         }
 
-        for (Bullet bullet : bullets()) {
+        for (Bullet bullet : bullets().copy()) {
             if (bullet.destroyed()) {
                 bullet.remove();
             }
@@ -149,10 +141,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             if (hero.isAlive()) {
                 hero.move();
 
-                List<Bullet> bullets = bullets();
-                int index = bullets.indexOf(hero);
-                if (index != -1) {
-                    Bullet bullet = bullets.get(index);
+                Bullet bullet = bullets().getFirstAt(hero);
+                if (bullet != null) {
                     if (bullet.getTick() != 0) {
                         affect(bullet);
                     }
@@ -160,11 +150,11 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             }
         }
 
-        for (Bullet bullet : bullets()) {
+        for (Bullet bullet : bullets().copy()) {
             bullet.move();
         }
 
-        for (Wall wall : walls) {
+        for (Wall wall : walls()) {
             if (!heroes.contains(wall) && !bullets().contains(wall)) {
                 wall.tick();
             }
@@ -179,129 +169,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         }
     }
 
-    private void removeDeadItems() {
-        removeDeadAi();
-        players.removeIf(Player::isDestroyed);
-        prizes.removeDead();
-    }
-
-    private void removeDeadAi() {
-        List<Hero> dead = ais.stream()
-                .filter(not(Hero::isAlive))
-                .collect(toList());
-        ais.removeAll(dead);
-        dead.stream()
-            .filter(Hero::withPrize)
-            .forEach(hero -> prizeGen.drop(hero));
-    }
-
-    @Override
-    public void affect(Bullet bullet) {
-        if (borders.contains(bullet)) {
-            bullet.remove();
-            return;
-        }
-
-        if (heroesAndAis().contains(bullet)) {
-            int index = heroesAndAis().indexOf(bullet);
-            Hero hero = heroesAndAis().get(index);
-            if (hero == bullet.getOwner()) {
-                return;
-            }
-
-            if (!hero.prizes().contains(PRIZE_IMMORTALITY)) {
-                hero.kill(bullet);
-            }
-
-            if (!hero.isAlive()) {
-                scoresForKill(bullet, hero);
-            }
-
-            bullet.remove();  // TODO заимплементить взрыв
-            return;
-        }
-
-        for (Bullet bullet2 : bullets().toArray(new Bullet[0])) {
-            if (bullet != bullet2
-                    && bullet.equals(bullet2)
-                    && bullet2.getTick() != 0)
-            {
-                bullet.boom();
-                bullet2.boom();
-                return;
-            }
-        }
-
-        if (walls.contains(bullet)) {
-            Wall wall = getWallAt(bullet);
-
-            if (!wall.destroyed()) {
-                wall.destroy(bullet);
-                bullet.remove();  // TODO заимплементить взрыв
-            }
-
-            return;
-        }
-
-        if (prizes.affect(bullet)) {
-            bullet.remove();
-            return;
-        }
-    }
-
-    @Override
-    public boolean isRiver(Point pt) {
-        return rivers.stream().anyMatch(river -> river.itsMe(pt));
-    }
-
-    @Override
-    public boolean isTree(Point pt) {
-        return trees.stream().anyMatch(tree -> tree.itsMe(pt));
-    }
-
-    @Override
-    public boolean isIce(Point pt) {
-        return ice.stream().anyMatch(ice -> ice.itsMe(pt));
-    }
-
-    @Override
-    public void add(Prize prize) {
-        prize.init(settings);
-        prizes.add(prize);
-    }
-
-    @Override
-    public void addAi(Hero hero) {
-        ais.add(hero);
-    }
-
-    private Wall getWallAt(Point pt) {
-        int index = walls.indexOf(pt);
-        return walls.get(index);
-    }
-
-    private void scoresForKill(Bullet bullet, Hero prey) {
-        Hero hunter = bullet.getOwner();
-        Player player = null;
-        if (!ais.contains(hunter)) {
-            player = player(hunter);
-        }
-
-        if (player != null) {
-            if (ais.contains(prey)) {
-                player.event(KILL_AI);
-            } else {
-                player.killHero();
-                player.event(KILL_OTHER_HERO.apply(player.score()));
-            }
-        }
-    }
-
-    private Player player(Hero hero) {
-        return players.stream()
-                .filter(player -> player.getHero().equals(hero))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Танк игрока не найден!"));
+    public int size() {
+        return field.size();
     }
 
     @Override
@@ -310,27 +179,14 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
                 || (isRiver(pt) && !hero.canWalkOnWater());
     }
 
-    @Override
-    public boolean isFree(Point pt) {
-        return !isBarrier(pt)
-                && !isTree(pt)
-                && !isRiver(pt)
-                && !isIce(pt);
-    }
-
-    @Override
-    public Optional<Point> freeRandom(Player player) {
-        return BoardUtils.freeRandom(size, dice, this::isFree);
-    }
-
     public boolean isBarrier(Point pt) {
-        for (Wall wall : walls) {
+        for (Wall wall : walls()) {
             if (wall.itsMe(pt) && !wall.destroyed()) {
                 return true;
             }
         }
 
-        for (Point border : borders) {
+        for (Point border : borders()) {
             if (border.itsMe(pt)) {
                 return true;
             }
@@ -342,52 +198,45 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             }
         }
 
-        return pt.isOutOf(size);
-    }
-
-    private List<Bullet> bullets() {
-        return heroesAndAis().stream()
-                .flatMap(hero -> hero.getBullets().stream())
-                .collect(toList());
+        return pt.isOutOf(size());
     }
 
     @Override
-    public List<Hero> ais() {
-        return ais;
-    }
-
-    public List<Hero> heroesAndAis() {
-        List<Hero> result = new LinkedList<>(ais);
-        for (Player player : players) {
-            if (player.getHero() != null) {
-                result.add(player.getHero());
-            }
-        }
-        return result;
-    }
-
-    public List<Hero> heroes() {
-        return players.stream()
-                .map(Player::getHero)
-                .collect(toList());
-    }
-
-    public List<Prize> prizes() {
-        return prizes.all();
+    public Optional<Point> freeRandom(Player player) {
+        return BoardUtils.freeRandom(size(), dice, this::isFree);
     }
 
     @Override
-    protected void onAdd(Player player) {
-        player.newHero(this);
+    public boolean isFree(Point pt) {
+        return !isBarrier(pt)
+                && !isTree(pt)
+                && !isRiver(pt)
+                && !isIce(pt);
     }
 
     @Override
-    protected void onRemove(Player player) {
-        // do nothing
+    public GameSettings settings() {
+        return settings;
     }
 
-    public int size() {
-        return size;
+    @Override
+    public Dice dice() {
+        return dice;
+    }
+
+    @Override
+    public BoardReader<Player> reader() {
+        return field.reader(
+                Border.class,
+                Tree.class,
+                Hero.class,
+                AI.class,
+                AIPrize.class,
+                Prize.class,
+                Bullet.class,
+                Wall.class,
+                Ice.class,
+                River.class);
     }
 
     @Override
@@ -396,104 +245,181 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         return WhatsNextUtils.load(this, level.heroes(), player);
     }
 
-    @Override
-    public BoardReader<Player> reader() {
-        return new BoardReader<>() {
-            private int size = Rawelbbub.this.size;
-
-            @Override
-            public int size() {
-                return size;
-            }
-
-            @Override
-            public void addAll(Player player, Consumer<Iterable<? extends Point>> processor) {
-                processor.accept(borders());
-                processor.accept(heroesAndAis());
-                processor.accept(walls());
-                processor.accept(bullets());
-                processor.accept(prizes());
-                processor.accept(trees());
-                processor.accept(ice());
-                processor.accept(rivers());
-            }
-        };
+    public void addAis(List<? extends Point> ais) {
+        aiGen.dropAll(ais);
     }
 
-    public List<Wall> walls() {
-        return walls.stream()
-                .filter(not(Wall::destroyed))
-                .collect(toList());
+    private void removeDeadItems() {
+        removeDeadAi();
+        prizes.removeDead();
+    }
+
+    private void removeDeadAi() {
+        removeDeadAnd(ais())
+                .forEach(ai -> {
+                });
+        removeDeadAnd(prizeAis())
+                .forEach(ai -> prizeGen.drop(ai));
+    }
+
+    private <E extends AI> Stream<E> removeDeadAnd(Accessor<E> accessor) {
+        return accessor.copy().stream()
+                .filter(not(AI::isAlive))
+                .peek(accessor::removeExact);
+    }
+
+    @Override
+    public void affect(Bullet bullet) {
+        if (borders().contains(bullet)) {
+            bullet.remove();
+            return;
+        }
+
+        if (heroesAndAis().contains(bullet)) {
+            int index = heroesAndAis().indexOf(bullet);
+            Hero prey = heroesAndAis().get(index);
+            if (prey == bullet.owner()) {
+                return;
+            }
+
+            if (!prey.prizes().contains(PRIZE_IMMORTALITY)) {
+                prey.kill(bullet);
+            }
+
+            if (!prey.isAlive()) {
+                scoresForKill(bullet, prey);
+            }
+
+            bullet.remove();  // TODO заимплементить взрыв
+            return;
+        }
+
+        for (Bullet bullet2 : bullets().copy()) {
+            if (bullet != bullet2
+                    && bullet.equals(bullet2)
+                    && bullet2.getTick() != 0) {
+                bullet.boom();
+                bullet2.boom();
+                return;
+            }
+        }
+
+        if (walls().contains(bullet)) {
+            Wall wall = walls().getFirstAt(bullet);
+            if (!wall.destroyed()) {
+                wall.destroy(bullet);
+                bullet.remove();  // TODO заимплементить взрыв
+                return;
+            }
+        }
+
+        if (prizes.affect(bullet)) {
+            bullet.remove();
+            return;
+        }
+    }
+
+    @Override
+    public boolean isRiver(Point pt) {
+        return rivers().contains(pt);
+    }
+
+    @Override
+    public boolean isTree(Point pt) {
+        return trees().contains(pt);
+    }
+
+    @Override
+    public boolean isIce(Point pt) {
+        return ice().contains(pt);
+    }
+
+    @Override
+    public void add(Prize prize) {
+        prize.init(settings);
+        prizes.add(prize);
+    }
+
+    private void scoresForKill(Bullet bullet, Hero prey) {
+        Player hunter = (Player) bullet.owner().getPlayer();
+        if (!players.contains(hunter)) {
+            return;
+        }
+
+        if (prey.isAI()) {
+            hunter.event(KILL_AI);
+        } else {
+            hunter.killHero();
+            hunter.event(KILL_OTHER_HERO.apply(hunter.score()));
+        }
+    }
+
+    public List<Hero> heroesAndAis() {
+        List<Hero> result = new LinkedList<>();
+        result.addAll(ais().all());
+        result.addAll(prizeAis().all());
+        result.addAll(heroes().all());
+        return result;
     }
 
     private int withPrize() {
-        int withPrize = (int) heroesAndAis().stream().filter(Hero::withPrize).count();
-        return prizes().size() + withPrize;
-    }
-
-    public List<Tree> trees() {
-        return trees;
-    }
-
-    public List<Ice> ice() {
-        return ice;
-    }
-
-	public List<River> rivers() {
-		return rivers;
-	}
-
-    public List<Border> borders() {
-        return borders;
-    }
-
-    public void addTree(Tree tree) {
-        trees.add(tree);
-    }
-
-    public void addBorder(Border border) {
-        borders.add(border);
-    }
-
-    public void addIce(Ice ice) {
-        this.ice.add(ice);
-    }
-
-    public void addRiver(River river) {
-        rivers.add(river);
-    }
-
-    public void addWall(Wall wall) {
-        wall.init(settings);
-        walls.add(wall);
+        return prizes().size() + prizeAis().size();
     }
 
     public AiGenerator getAiGenerator() {
         return aiGen;
     }
 
-    public void addWall(List<Wall> walls) {
-        walls.forEach(this::addWall);
-    }
-
-    public void addBorder(List<Border> borders) {
-        borders.forEach(this::addBorder);
-    }
-
-    public void addRiver(List<River> rivers) {
-        rivers.forEach(this::addRiver);
-    }
-
-    public void addTree(List<Tree> trees) {
-        trees.forEach(this::addTree);
-    }
-
-    public void addIce(List<Ice> ice) {
-        ice.forEach(this::addIce);
+    @Override
+    public Accessor<Hero> heroes() {
+        return field.of(Hero.class);
     }
 
     @Override
-    public GameSettings settings() {
-        return settings;
+    public Accessor<Prize> prizes() {
+        return field.of(Prize.class);
+    }
+
+    @Override
+    public Accessor<Tree> trees() {
+        return field.of(Tree.class);
+    }
+
+    @Override
+    public Accessor<Ice> ice() {
+        return field.of(Ice.class);
+    }
+
+    @Override
+    public Accessor<River> rivers() {
+        return field.of(River.class);
+    }
+
+    @Override
+    public Accessor<Wall> walls() {
+//        TODO
+//         .filter(not(Wall::destroyed))
+//                .collect(toList());
+        return field.of(Wall.class);
+    }
+
+    @Override
+    public Accessor<Border> borders() {
+        return field.of(Border.class);
+    }
+
+    @Override
+    public Accessor<AI> ais() {
+        return field.of(AI.class);
+    }
+
+    @Override
+    public Accessor<AIPrize> prizeAis() {
+        return field.of(AIPrize.class);
+    }
+
+    @Override
+    public Accessor<Bullet> bullets() {
+        return field.of(Bullet.class);
     }
 }

@@ -26,82 +26,78 @@ import com.codenjoy.dojo.games.rawelbbub.Element;
 import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.Tickable;
+import com.codenjoy.dojo.services.field.Accessor;
+import com.codenjoy.dojo.services.field.PointField;
 
-import java.util.ConcurrentModificationException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
 public class Prizes implements Tickable {
 
-    private List<Prize> prizes = new LinkedList<>();
+    private PointField field;
+
+    public Prizes(PointField field) {
+        this.field = field;
+    }
 
     @Override
     public void tick() {
-        try {
-            prizes.forEach(Prize::tick);
-        } catch (ConcurrentModificationException exception) {
-            // TODO #643 try solve ConcurrentModification
-            System.out.println("Got ConcurrentModificationException");
-        }
+        prizes().copy()
+                .forEach(Prize::tick);
+    }
+
+    private Accessor<Prize> prizes() {
+        return field.of(Prize.class);
     }
 
     public void takeBy(Hero hero) {
-        int index = prizes.indexOf(hero);
-        if (index == -1) {
-            return;
-        }
+        Prize prize = prizes().getFirstAt(hero);
+        if (prize == null) return;
 
-        Prize prize = prizes.get(index);
         hero.take(prize);
-        prizes.remove(prize);
+        prizes().removeExact(prize);
     }
 
     public void removeDead() {
-        prizes.removeIf(Prize::isDestroyed);
+        prizes().removeIf(Prize::isDestroyed);
     }
 
     public Prize prizeAt(Point pt) {
-        int index = prizes.indexOf(pt);
-        return prizes.get(index);
+        return prizes().getFirstAt(pt);
     }
 
     public void add(Prize prize) {
-        prizes.add(prize);
-        prize.taken(item -> prizes.remove(item)); // TODO #643 try solve ConcurrentModification
+        prizes().add(prize);
+        prize.taken(item -> prizes().removeExact(item));
     }
 
     public boolean affect(Bullet bullet) {
-        boolean contains = prizes.contains(bullet);
-        if (contains) {
-            Prize prize = prizeAt(bullet);
+        Prize prize = prizeAt(bullet);
+        if (prize != null) {
             prize.kill();
+            return true;
         }
-        return contains;
-    }
-
-    public List<Prize> all() {
-        return prizes;
+        return false;
     }
 
     public boolean contains(Element elements) {
-        return prizes.stream()
-                .anyMatch(x -> elements.equals(x.elements()));
+        return prizes().stream()
+                .anyMatch(prize -> elements.equals(prize.element()));
     }
 
     public int size() {
-        return prizes.size();
+        return prizes().size();
     }
 
     public void clear() {
-        prizes.clear();
+        prizes().clear();
     }
 
     @Override
     public String toString() {
-        return prizes.stream()
-                .map(prize -> prize.elements().name())
+        return prizes().stream()
+                .map(Objects::toString)
                 .collect(toList())
                 .toString();
     }

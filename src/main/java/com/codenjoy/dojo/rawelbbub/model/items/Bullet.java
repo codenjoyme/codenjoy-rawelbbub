@@ -40,13 +40,13 @@ public class Bullet extends MovingObject implements State<Element, Player> {
 
     private final Field field;
     private Hero owner;
-    private Consumer<Object> onDestroy;
+    private Consumer<Bullet> onDestroy;
     private boolean heavy;
     private int tick;
 
     public Bullet(Field field, Direction direction,
                   Point from, Hero owner,
-                  Consumer<Object> onDestroy)
+                  Consumer<Bullet> onDestroy)
     {
         super(from.getX(), from.getY(), direction);
         this.field = field;
@@ -79,7 +79,7 @@ public class Bullet extends MovingObject implements State<Element, Player> {
         }
     }
 
-    public Hero getOwner() {
+    public Hero owner() {
         return owner;
     }
 

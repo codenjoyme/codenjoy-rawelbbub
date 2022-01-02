@@ -27,26 +27,26 @@ import com.codenjoy.dojo.games.rawelbbub.Element;
 import com.codenjoy.dojo.rawelbbub.model.items.Bullet;
 import com.codenjoy.dojo.rawelbbub.model.items.Prize;
 import com.codenjoy.dojo.rawelbbub.model.items.Prizes;
-import com.codenjoy.dojo.rawelbbub.model.items.Tree;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
+import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.joystick.Act;
 import com.codenjoy.dojo.services.joystick.RoundsDirectionActJoystick;
 import com.codenjoy.dojo.services.round.RoundPlayerHero;
 import com.codenjoy.dojo.services.round.Timer;
 
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_WALLS;
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_WALKING_ON_WATER;
 import static com.codenjoy.dojo.rawelbbub.services.Event.CATCH_PRIZE;
 import static com.codenjoy.dojo.rawelbbub.services.Event.HERO_DIED;
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
-import static com.codenjoy.dojo.services.StateUtils.filterOne;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.HERO_TICKS_PER_SHOOT;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.PENALTY_WALKING_ON_WATER;
+import static java.util.stream.Collectors.toList;
 
 public class Hero extends RoundPlayerHero<Field> 
         implements RoundsDirectionActJoystick, State<Element, Player> {
@@ -59,28 +59,36 @@ public class Hero extends RoundPlayerHero<Field>
     private Gun gun;
     private Sliding sliding;
 
-    private List<Bullet> bullets;
     private Prizes prizes;
 
     private Timer onWater;
+    private Dice dice;
 
     public Hero(Point pt, Direction direction) {
         super(pt);
         score = 0;
         this.direction = direction;
-        bullets = new LinkedList<>();
-        prizes = new Prizes();
     }
 
     @Override
     public void init(Field field) {
         super.init(field);
 
+        if (!isAI()) {
+            field.heroes().add(this);
+        }
+
+        dice(field.dice());
         gun = new Gun(settings());
         sliding = new Sliding(field, direction, settings());
+        prizes = new Prizes(new PointField().size(field.size()));
 
         reset();
         setAlive(true);
+    }
+
+    public boolean isAI() {
+        return false;
     }
 
     @Override
@@ -146,8 +154,10 @@ public class Hero extends RoundPlayerHero<Field>
         die(HERO_DIED);
     }
 
-    public Collection<Bullet> getBullets() {
-        return new LinkedList<>(bullets);
+    public List<Bullet> getBullets() {
+        return field.bullets().stream()
+                .filter(bullet -> bullet.owner() == this)
+                .collect(toList());
     }
 
     protected int ticksPerShoot() {
@@ -158,10 +168,6 @@ public class Hero extends RoundPlayerHero<Field>
         if (isAlive()) {
             die();
         }
-    }
-
-    public void removeBullets() {
-        bullets.clear();
     }
 
     public void checkOnWater() {
@@ -206,7 +212,6 @@ public class Hero extends RoundPlayerHero<Field>
         fire = false;
         setAlive(true);
         gun.reset();
-        bullets.clear();
         prizes.clear();
     }
 
@@ -216,19 +221,16 @@ public class Hero extends RoundPlayerHero<Field>
 
         if (!gun.tryToFire()) return;
 
-        Direction bulletDirection = this.direction;
+        Direction direction = this.direction;
         if (sliding.active(this) && !sliding.lastSlipperiness()) {
-            bulletDirection = sliding.getPreviousDirection();
+            direction = sliding.getPreviousDirection();
         }
-        Bullet bullet = new Bullet(field, bulletDirection, copy(), this, b -> Hero.this.bullets.remove(b));
+        Bullet bullet = new Bullet(field, direction, copy(), this,
+                it -> field.bullets().removeExact(it));
 
-        if (!bullets.contains(bullet)) {
-            bullets.add(bullet);
+        if (!field.bullets().contains(bullet)) {
+            field.bullets().add(bullet);
         }
-    }
-
-    protected boolean withPrize() {
-        return false;
     }
 
     public Prizes prizes() {
@@ -236,7 +238,7 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     public void take(Prize prize) {
-        getPlayer().event(CATCH_PRIZE.apply(Integer.valueOf("" + prize.elements().ch())));
+        getPlayer().event(CATCH_PRIZE.apply(prize.value()));
         prizes.add(prize);
     }
 
@@ -258,5 +260,13 @@ public class Hero extends RoundPlayerHero<Field>
 
     public void addScore(int added) {
         score = Math.max(0, score + added);
+    }
+
+    public Dice dice() {
+        return dice;
+    }
+
+    public void dice(Dice dice) {
+        this.dice = dice;
     }
 }

@@ -24,12 +24,11 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 
 import com.codenjoy.dojo.rawelbbub.model.items.*;
-import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.AbstractLevel;
+import com.codenjoy.dojo.services.field.PointField;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.*;
 import static com.codenjoy.dojo.services.Direction.*;
@@ -79,12 +78,14 @@ public class Level extends AbstractLevel {
     }
 
     @Override
-    public void addAll(Consumer<Iterable<? extends Point>> processor) {
-        processor.accept(borders());
-        processor.accept(walls());
-        processor.accept(ais());
-        processor.accept(ice());
-        processor.accept(rivers());
-        processor.accept(trees());
+    protected void fill(PointField field) {
+        field.addAll(borders());
+        field.addAll(walls());
+        // TODO это делается не тут, а позже потому что в каждой
+        //      такой точке может возникнуть как простой AI так и призовой
+        // field.addAll(ais());
+        field.addAll(ice());
+        field.addAll(rivers());
+        field.addAll(trees());
     }
 }

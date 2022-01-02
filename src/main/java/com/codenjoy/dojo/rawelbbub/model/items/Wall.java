@@ -24,18 +24,20 @@ package com.codenjoy.dojo.rawelbbub.model.items;
 
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.rawelbbub.model.Field;
 import com.codenjoy.dojo.rawelbbub.model.Player;
-import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.*;
+import com.codenjoy.dojo.services.field.Fieldable;
+import com.codenjoy.dojo.services.settings.SettingsReader;
 
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.WALL_REGENERATE_TIME;
 
-public class Wall extends PointImpl implements Tickable, State<Element, Player> {
+public class Wall extends PointImpl implements Tickable, Fieldable<Field>, State<Element, Player> {
 
     private Element ch;
     private int timer;
     private boolean overDamage;
-    private GameSettings settings;
+    private SettingsReader settings;
 
     public Wall(Point pt) {
         super(pt);
@@ -43,8 +45,9 @@ public class Wall extends PointImpl implements Tickable, State<Element, Player> 
         overDamage = false;
     }
 
-    public void init(GameSettings settings) {
-        this.settings = settings;
+    @Override
+    public void init(Field field) {
+        settings = field.settings();
     }
 
     public void destroy(Bullet bullet) {
@@ -122,5 +125,4 @@ public class Wall extends PointImpl implements Tickable, State<Element, Player> 
     public boolean destroyed() {
         return ch.power() == 0;
     }
-
 }

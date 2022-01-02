@@ -608,7 +608,8 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_NO_SLIDING]");
+        assertPrize(hero(0), "[PRIZE_NO_SLIDING(0/6)]");
+
         verifyAllEvents("[CATCH_PRIZE[5]]");
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -719,7 +720,8 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_NO_SLIDING]");
+        assertPrize(hero(0), "[PRIZE_NO_SLIDING(0/2)]");
+
         verifyAllEvents("[CATCH_PRIZE[5]]");
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -989,7 +991,8 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_NO_SLIDING]");
+        assertPrize(hero(0), "[PRIZE_NO_SLIDING(0/6)]");
+
         verifyAllEvents("[CATCH_PRIZE[5]]");
 
         // when
@@ -3093,14 +3096,15 @@ public class GameTest extends AbstractGameTest {
         assertEquals(false, hero(1).isAlive());
         assertEquals(true, hero(2).isAlive());
 
+
         // when
-        tick();
+        newGameFor(player(1), 3, 3);
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼▼    ☼\n" +
+                "☼▼ ˄  ☼\n" +
                 "☼     ☼\n" +
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
@@ -3117,22 +3121,30 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼▼    ☼\n" +
+                "☼▼ ˄  ☼\n" +
                 "☼     ☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         assertEquals(true, hero(0).isAlive());
-        assertEquals(false, hero(1).isAlive());
+        assertEquals(true, hero(1).isAlive());
         assertEquals(false, hero(2).isAlive());
 
         // when
-        tick();
+        newGameFor(player(2), 4, 4);
 
         // then
         assertEquals(true, hero(0).isAlive());
-        assertEquals(false, hero(1).isAlive());
-        assertEquals(false, hero(2).isAlive());
+        assertEquals(true, hero(1).isAlive());
+        assertEquals(true, hero(2).isAlive());
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼   ˄ ☼\n" +
+                "☼▼ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
     }
 
     @Test
@@ -3211,9 +3223,8 @@ public class GameTest extends AbstractGameTest {
                 "listener(1) => [KILL_OTHER_HERO[1]]\n");
     }
 
-
     @Test
-    public void shouldDieOnceWhenIsDamagedByManyBullets() {
+    public void shouldDieOnce_whenIsDamagedByManyBullets() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -3245,15 +3256,15 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        // when
-        tick();
-
-        // then
         verifyAllEvents(
                 "listener(0) => [HERO_DIED]\n" +
-                "listener(1) => [KILL_OTHER_HERO[1]]\n" +
-                "listener(2) => [KILL_OTHER_HERO[1]]\n");
+                        "listener(1) => [KILL_OTHER_HERO[1]]\n" +
+                        "listener(2) => [KILL_OTHER_HERO[1]]\n");
 
+        // when
+        newGameFor(player(0), 1, 1);
+
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -3263,7 +3274,7 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼    ˄    ☼\n" +
                 "☼         ☼\n" +
-                "☼         ☼\n" +
+                "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
@@ -3323,20 +3334,20 @@ public class GameTest extends AbstractGameTest {
                 "☼Ѡ    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        // when
-        tick();
-        tick();
-
-        // then
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1], HERO_DIED]\n" +
-                "listener(1) => [HERO_DIED, KILL_OTHER_HERO[1]]\n");
+                        "listener(1) => [HERO_DIED, KILL_OTHER_HERO[1]]\n");
 
+        // when
+        newGameFor(player(0), 2, 2);
+        newGameFor(player(1), 3, 3);
+
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
+                "☼  ˄  ☼\n" +
+                "☼ ▲   ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
@@ -3458,7 +3469,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldRemoveAIWhenKillIt() {
+    public void shouldRemoveOtherHero_whenKillIt() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼˄    ☼\n" +
@@ -3506,7 +3517,19 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
-                "listener(1) => [HERO_DIED]\n");
+                        "listener(1) => [HERO_DIED]\n");
+
+        // when
+        newGameFor(player(1), 3, 3);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼▲   ˄☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
         // when
         hero(0).right();
@@ -3519,7 +3542,7 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼     ☼\n" +
+                "☼  ˄  ☼\n" +
                 "☼     ☼\n" +
                 "☼ ► •˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
@@ -3533,7 +3556,7 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼     ☼\n" +
+                "☼  ˄  ☼\n" +
                 "☼     ☼\n" +
                 "☼ ►  Ѡ☼\n" +
                 "☼☼☼☼☼☼☼\n");
@@ -3543,18 +3566,40 @@ public class GameTest extends AbstractGameTest {
                 "listener(2) => [HERO_DIED]\n");
 
         // when
+        newGameFor(player(2), 4, 4);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼   ˄ ☼\n" +
+                "☼  ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ►   ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
         tick();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
+                "☼   ˄ ☼\n" +
+                "☼  ˄  ☼\n" +
                 "☼     ☼\n" +
                 "☼ ►   ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         verifyAllEvents("");
+    }
+
+    private void newGameFor(Player player, int x, int y) {
+        // then
+        assertEquals(true, player.isDestroyed());
+
+        // when
+        // новые координаты для героя
+        dice(x, y);
+        field().newGame(player); // это сделает сервер в ответ на isAlive = false
     }
 
     @Test
@@ -4524,6 +4569,7 @@ public class GameTest extends AbstractGameTest {
         Player player = player(0);
         player.setKilled(5);
 
+        dice(1, 1);
         field().clearScore();
 
         // смогу стрельнуть, пушка ресетнется
@@ -4588,9 +4634,24 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
+        dice(1, 1);
         field().clearScore();
 
-        tick(); // внутри там тикает так же gun, но первого выстрела еще небыло
+        // then
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼▲        ☼\n" +
+                "☼☼☼☼☼☼☼☼☼☼☼\n");
+
+        // when
+        tick(); // внутри там тикает так же gun, но первого выстрела еще не было
         tick();
 
         hero(0).fire();
@@ -6920,7 +6981,6 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ◘☼\n" +
                 "☼       ☼\n" +
@@ -7461,20 +7521,17 @@ public class GameTest extends AbstractGameTest {
                 "☼Ѡ • ˃☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertEquals(false, hero(1).isAlive());
-
         // when
-        tick();
-
-        // when
-        verifyAllEvents("");
+        newGameFor(player(1), 2, 2);
 
         // then
+        verifyAllEvents("");
+
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼     ☼\n" +
+                "☼ ˄   ☼\n" +
                 "☼    ˃☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
@@ -7566,7 +7623,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
-                "☼%    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -7895,7 +7952,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
-                "☼%    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -8080,7 +8137,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(0), "[PRIZE_IMMORTALITY(0/10)]");
 
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
@@ -8155,7 +8212,7 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
-        assertPrize(hero(1), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(1), "[PRIZE_IMMORTALITY(0/10)]");
 
         verifyAllEvents(
                 "listener(1) => [CATCH_PRIZE[1]]\n");
@@ -8233,7 +8290,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(0), "[PRIZE_IMMORTALITY(0/10)]");
 
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
@@ -8309,7 +8366,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(0), "[PRIZE_IMMORTALITY(0/10)]");
 
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
@@ -8386,7 +8443,7 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
-        assertPrize(hero(1), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(1), "[PRIZE_IMMORTALITY(0/10)]");
 
         verifyAllEvents(
                 "listener(1) => [CATCH_PRIZE[1]]\n");
@@ -8464,7 +8521,7 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
-        assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(0), "[PRIZE_IMMORTALITY(0/10)]");
 
         // when
         hero(0).up();
@@ -8539,7 +8596,7 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
-        assertPrize(hero(1), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(1), "[PRIZE_IMMORTALITY(0/10)]");
 
         verifyAllEvents(
                 "listener(1) => [CATCH_PRIZE[1]]\n");
@@ -8669,7 +8726,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(0), "[PRIZE_IMMORTALITY(0/10)]");
 
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
@@ -8699,40 +8756,46 @@ public class GameTest extends AbstractGameTest {
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 6);
 
-        givenFl("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼¿   ˂☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼¿   ˂ ☼\n" +
+                "☼      ☼\n" +
+                "☼▲     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
         // when
         ai(0).kill(mock(Bullet.class));
 
         // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼Ѡ   ˂☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼Ѡ   ˂ ☼\n" +
+                "☼      ☼\n" +
+                "☼▲     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
+
+        verifyAllEvents("");
 
         // when
-        dice(DICE_IMMORTALITY);
+        dice(DICE_IMMORTALITY,
+                6, 6); // новый AI генерим так, чтобы не мешался
         hero(0).up();
         hero(1).fire();
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼1 • ˂☼\n" +
-                "☼▲    ☼\n" +
-                "☼     ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼     ¿☼\n" +
+                "☼     •☼\n" +
+                "☼1 • ˂ ☼\n" +
+                "☼▲     ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
         verifyAllEvents("");
 
@@ -8742,45 +8805,61 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼Ѡ  ˂ ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼     ¿☼\n" +
+                "☼Ѡ  ˂  ☼\n" +
+                "☼     •☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[]");
 
         verifyAllEvents(
                 "listener(0) => [HERO_DIED]\n" +
-                "listener(1) => [KILL_OTHER_HERO[1]]\n");
+                        "listener(1) => [KILL_OTHER_HERO[1]]\n");
+
+        // when
+        newGameFor(player(0), 5, 1);
+
+        // then
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼     ¿☼\n" +
+                "☼!  ˂  ☼\n" +
+                "☼     •☼\n" +
+                "☼    ▲ ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
         // when
         hero(1).left();
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼1 ˂  ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼1 ˂  ¿☼\n" +
+                "☼      ☼\n" +
+                "☼    ▲ ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
         // when
         hero(1).left();
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼!˂   ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼!˂    ☼\n" +
+                "☼     ¿☼\n" +
+                "☼    ▲ ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
         verifyAllEvents("");
 
@@ -8789,15 +8868,16 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼˂    ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼˂     ☼\n" +
+                "☼      ☼\n" +
+                "☼    ▲¿☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(1), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(1), "[PRIZE_IMMORTALITY(0/10)]");
 
         verifyAllEvents(
                 "listener(1) => [CATCH_PRIZE[1]]\n");
@@ -8807,15 +8887,16 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
-                "☼˄    ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼˄     ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼    ▲»☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(1), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(1), "[PRIZE_IMMORTALITY(1/10)]");
     }
 
     @Test
@@ -9128,7 +9209,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/5)]");
 
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
@@ -9364,7 +9445,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/10)]");
 
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
@@ -9469,7 +9550,7 @@ public class GameTest extends AbstractGameTest {
         hero(1).up();
         tick();
 
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/10)]");
 
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[2]]\n");
@@ -9555,7 +9636,7 @@ public class GameTest extends AbstractGameTest {
         hero(0).up();
         tick();
 
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/10)]");
 
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
@@ -9666,7 +9747,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/1)]");
 
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
@@ -9765,7 +9846,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(0), "[PRIZE_IMMORTALITY(0/10)]");
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[1]]\n");
 
@@ -9854,7 +9935,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(0), "[PRIZE_IMMORTALITY(0/3)]");
 
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[1]]\n");
@@ -9998,7 +10079,8 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(0), "[PRIZE_IMMORTALITY(0/10)]");
+
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10101,7 +10183,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+        assertPrize(hero(0), "[PRIZE_IMMORTALITY(0/2)]");
 
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
@@ -10729,7 +10811,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER]");
+        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER(0/3)]");
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[3]]\n");
 
@@ -10940,7 +11022,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER]");
+        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER(0/2)]");
 
         verifyAllEvents("[CATCH_PRIZE[3]]");
 
@@ -10957,7 +11039,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER]");
+        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER(1/2)]");
 
         // when
         hero(0).up();
@@ -10972,7 +11054,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER]");
+        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER(2/2)]");
 
         // when
         // действие приза закончилось
@@ -11288,7 +11370,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/3)]");
 
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[2]]\n");
@@ -11916,70 +11998,15 @@ public class GameTest extends AbstractGameTest {
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1);
 
-        givenFl("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼¿ %%¿☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        catchVisibilityPrizeWithAIOnMap();
 
-        // when
-        ai(0).kill(mock(Bullet.class));
-        ai(1).left();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼Ѡ %%«☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
-        dice(DICE_VISIBILITY);
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼4 %% ☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
-        hero(0).up();
-        ai(0).up();
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼! %% ☼\n" +
-                "☼▲    ☼\n" +
-                "☼     ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        verifyAllEvents("");
-
-        // when
-        hero(0).up();
-        ai(0).up();
-        tick();
-
-        // then
-        assertPrize(hero(0), "[PRIZE_VISIBILITY]");
-        verifyAllEvents("[CATCH_PRIZE[4]]");
+        assertPrize(hero(0), "[PRIZE_VISIBILITY(0/10)]");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %? ☼\n" +
                 "☼  %% ☼\n" +
                 "☼▲ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
@@ -11990,11 +12017,25 @@ public class GameTest extends AbstractGameTest {
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1);
 
+        catchVisibilityPrizeWithEnemyOnMap();
+
+        assertPrize(hero(0), "[PRIZE_VISIBILITY(0/10)]");
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  %% ☼\n" +
+                "☼  %˄ ☼\n" +
+                "☼▲ %% ☼\n" +
+                "☼  %% ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    private void catchVisibilityPrizeWithEnemyOnMap() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
                 "☼¿ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12006,7 +12047,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
                 "☼Ѡ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12020,7 +12061,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
                 "☼4 %% ☼\n" +
-                "☼    ˄☼\n" +
+                "☼  %%˄☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12033,7 +12074,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
                 "☼! %%˄☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12047,7 +12088,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
                 "☼4 %% ☼\n" +
-                "☼▲    ☼\n" +
+                "☼▲ %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12059,16 +12100,115 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_VISIBILITY]");
-
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[4]]\n");
+    }
+
+    @Test
+    public void shouldHeroTakePrizeAndSeeBulletsUnderTree_visibility() {
+        // given
+        shouldHeroTakePrizeAndSeeEnemyUnderTree_visibility();
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %˄ ☼\n" +
                 "☼▲ %% ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).right();
+        hero(1).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  %˄ ☼\n" +
+                "☼  %% ☼\n" +
+                "☼ ►%% ☼\n" +
+                "☼  %% ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        hero(1).down();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  %% ☼\n" +
+                "☼  %˅ ☼\n" +
+                "☼ ►%• ☼\n" +
+                "☼  %% ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(1).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  %% ☼\n" +
+                "☼  %˅ ☼\n" +
+                "☼ ►%% ☼\n" +
+                "☼  %• ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void shouldEndPrizeWorkingDontSeeBulletsUnderTree_visibility() {
+        // given
+        shouldHeroTakePrizeAndSeeBulletsUnderTree_visibility();
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  %% ☼\n" +
+                "☼  %˅ ☼\n" +
+                "☼ ►%% ☼\n" +
+                "☼  %• ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertPrize(hero(0), "[PRIZE_VISIBILITY(3/10)]");
+
+        // when
+        for (int count = 0; count < 7; count++) {
+            tick();
+        }
+
+        // then
+        assertPrize(hero(0), "[PRIZE_VISIBILITY(10/10)]");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertPrize(hero(0), "[]");
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  %% ☼\n" +
+                "☼  %% ☼\n" +
+                "☼ ►%% ☼\n" +
+                "☼  %% ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(1).fire();
+        tick();
+
+        // then
+        assertPrize(hero(0), "[]");
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  %% ☼\n" +
+                "☼  %% ☼\n" +
+                "☼ ►%% ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
@@ -12080,70 +12220,15 @@ public class GameTest extends AbstractGameTest {
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 2);
 
-        givenFl("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼¿ %%¿☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        catchVisibilityPrizeWithAIOnMap();
 
-        // when
-        ai(0).kill(mock(Bullet.class));
-        ai(1).left();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼Ѡ %%«☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
-        dice(DICE_VISIBILITY);
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼4 %% ☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
-        hero(0).up();
-        ai(0).up();
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼! %% ☼\n" +
-                "☼▲    ☼\n" +
-                "☼     ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        verifyAllEvents("");
-
-        // when
-        hero(0).up();
-        ai(0).up();
-        tick();
-
-        // then
-        assertPrize(hero(0), "[PRIZE_VISIBILITY]");
-        verifyAllEvents("[CATCH_PRIZE[4]]");
+        assertPrize(hero(0), "[PRIZE_VISIBILITY(0/2)]");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %? ☼\n" +
                 "☼  %% ☼\n" +
                 "☼▲ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12156,7 +12241,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  «% ☼\n" +
                 "☼  %% ☼\n" +
                 "☼▲ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12169,7 +12254,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  %% ☼\n" +
                 "☼  ¿% ☼\n" +
                 "☼▲ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12182,11 +12267,72 @@ public class GameTest extends AbstractGameTest {
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
                 "☼▲ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[]");
+    }
+
+    private void catchVisibilityPrizeWithAIOnMap() {
+        // given
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼  %% ☼\n" +
+                "☼  %% ☼\n" +
+                "☼¿ %%¿☼\n" +
+                "☼  %% ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(1).kill(mock(Bullet.class));
+        ai(0).left();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  %% ☼\n" +
+                "☼  %% ☼\n" +
+                "☼Ѡ %%«☼\n" +
+                "☼  %% ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        dice(DICE_VISIBILITY);
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  %% ☼\n" +
+                "☼  %% ☼\n" +
+                "☼4 %% ☼\n" +
+                "☼  %% ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).up();
+        ai(0).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  %% ☼\n" +
+                "☼  %% ☼\n" +
+                "☼! %% ☼\n" +
+                "☼▲ %% ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        verifyAllEvents("");
+
+        // when
+        hero(0).up();
+        ai(0).up();
+        tick();
+
+        // then
+        verifyAllEvents("[CATCH_PRIZE[4]]");
     }
 
     @Test
@@ -12196,84 +12342,15 @@ public class GameTest extends AbstractGameTest {
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 2);
 
-        givenFl("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼¿ %% ☼\n" +
-                "☼     ☼\n" +
-                "☼▲   ˄☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        catchVisibilityPrizeWithEnemyOnMap();
 
-        // when
-        ai(0).kill(mock(Bullet.class));
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼Ѡ %% ☼\n" +
-                "☼     ☼\n" +
-                "☼▲   ˄☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
-        dice(DICE_VISIBILITY);
-        hero(1).up();
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼4 %% ☼\n" +
-                "☼    ˄☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
-        hero(1).up();
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼! %%˄☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
-        hero(0).up();
-        hero(1).left();
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼  %% ☼\n" +
-                "☼  %% ☼\n" +
-                "☼4 %% ☼\n" +
-                "☼▲    ☼\n" +
-                "☼     ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        verifyAllEvents("");
-
-        // when
-        hero(0).up();
-        hero(1).up();
-        tick();
-
-        // then
-        assertPrize(hero(0), "[PRIZE_VISIBILITY]");
-        verifyAllEvents(
-                "listener(0) => [CATCH_PRIZE[4]]\n");
+        assertPrize(hero(0), "[PRIZE_VISIBILITY(0/2)]");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %˄ ☼\n" +
                 "☼▲ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12286,7 +12363,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  %˄ ☼\n" +
                 "☼  %% ☼\n" +
                 "☼▲ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12299,7 +12376,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  ˂% ☼\n" +
                 "☼  %% ☼\n" +
                 "☼▲ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -12312,7 +12389,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
                 "☼▲ %% ☼\n" +
-                "☼     ☼\n" +
+                "☼  %% ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }

@@ -23,6 +23,7 @@ package com.codenjoy.dojo.rawelbbub.model;
  */
 
 
+import com.codenjoy.dojo.games.rawelbbub.Element;
 import com.codenjoy.dojo.rawelbbub.TestGameSettings;
 import com.codenjoy.dojo.rawelbbub.model.items.Ice;
 import com.codenjoy.dojo.rawelbbub.model.items.River;
@@ -30,9 +31,11 @@ import com.codenjoy.dojo.rawelbbub.model.items.Tree;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Game;
+import com.codenjoy.dojo.services.multiplayer.LevelProgress;
 import com.codenjoy.dojo.services.multiplayer.Single;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.stubbing.OngoingStubbing;
@@ -56,6 +59,7 @@ public class MultiplayerTest {
     private PrinterFactory printerFactory;
     private GameSettings settings;
     private Dice dice;
+    private Level level;
 
     @Before
     public void setUp() {
@@ -65,7 +69,12 @@ public class MultiplayerTest {
     }
 
     public void givenGame() {
-        field = new Rawelbbub(size, dice, settings);
+        String map = StringUtils.leftPad("", size*size, Element.NONE.ch());
+        int levelNumber = LevelProgress.levelsStartsFrom1;
+        settings.setLevelMaps(levelNumber, new String[]{map});
+        level = settings.level(levelNumber, dice, Level::new);
+
+        field = new Rawelbbub(level, dice, settings);
 
         field.addBorder(new DefaultBorders(size).get());
 

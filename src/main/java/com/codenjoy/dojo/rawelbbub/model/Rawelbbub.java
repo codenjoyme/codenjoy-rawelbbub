@@ -39,11 +39,14 @@ import java.util.function.Consumer;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_WALLS;
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_IMMORTALITY;
+import static com.codenjoy.dojo.rawelbbub.services.Event.START_ROUND;
+import static com.codenjoy.dojo.rawelbbub.services.Event.WIN_ROUND;
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toList;
 
 public class Rawelbbub extends RoundField<Player> implements Field {
 
+    private Level level;
     private Dice dice;
     private int size;
 
@@ -62,11 +65,14 @@ public class Rawelbbub extends RoundField<Player> implements Field {
 
     private GameSettings settings;
 
-    public Rawelbbub(int size, Dice dice, GameSettings settings) {
-        super(Event.START_ROUND, Event.WIN_ROUND, settings);
-        this.size = size;
+    public Rawelbbub(Level level, Dice dice, GameSettings settings) {
+        super(START_ROUND, WIN_ROUND, settings);
+
+        this.level = level;
+        this.size = level.size();
         this.dice = dice;
         this.settings = settings;
+
         ais = new LinkedList<>();
         prizes = new Prizes();
         walls = new LinkedList<>();
@@ -77,6 +83,13 @@ public class Rawelbbub extends RoundField<Player> implements Field {
         players = new LinkedList<>();
         prizeGen = new PrizeGenerator(this, dice, settings);
         aiGen = new AiGenerator(this, dice, settings);
+
+        addBorder(level.borders());
+        addWall(level.walls());
+        addAis(level.ais());
+        addRiver(level.rivers());
+        addTree(level.trees());
+        addIce(level.ice());
     }
 
     @Override

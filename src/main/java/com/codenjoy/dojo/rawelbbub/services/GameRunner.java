@@ -59,15 +59,7 @@ public class GameRunner extends AbstractGameType<GameSettings> {
     @Override
     public GameField createGame(int levelNumber, GameSettings settings) {
         Level level = settings.level(levelNumber, getDice(), Level::new);
-        Rawelbbub game = new Rawelbbub(level.size(), getDice(), settings);
-
-        game.addBorder(level.borders());
-        game.addWall(level.walls());
-        game.addAis(level.ais());
-        game.addRiver(level.rivers());
-        game.addTree(level.trees());
-        game.addIce(level.ice());
-        return game;
+        return new Rawelbbub(level, getDice(), settings);
     }
 
     @Override
@@ -98,8 +90,7 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public MultiplayerType getMultiplayerType(GameSettings settings) {
-        // TODO добавить LevelsSettings как в других играх
-        return settings.multiplayerType(1);
+        return settings.multiplayerType(settings.getLevelsCount());
     }
 
     @Override

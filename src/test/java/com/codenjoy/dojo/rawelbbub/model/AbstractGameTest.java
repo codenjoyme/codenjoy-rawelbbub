@@ -108,4 +108,8 @@ public class AbstractGameTest
                 String.format("%s prizes with %s heroes",
                         prizes, all.size()));
     }
+
+    protected AI ai(int index) {
+        return (AI) field().ais().get(index);
+    }
 }

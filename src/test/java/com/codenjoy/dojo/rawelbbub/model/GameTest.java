@@ -23,14 +23,8 @@ package com.codenjoy.dojo.rawelbbub.model;
  */
 
 
-import com.codenjoy.dojo.rawelbbub.model.items.AI;
 import com.codenjoy.dojo.rawelbbub.model.items.Bullet;
-import com.codenjoy.dojo.rawelbbub.model.items.Wall;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import static com.codenjoy.dojo.rawelbbub.TestGameSettings.*;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
@@ -41,6 +35,7 @@ public class GameTest extends AbstractGameTest {
     
     @Test
     public void shouldDrawField() {
+        // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -48,7 +43,8 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
-
+ 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -61,6 +57,7 @@ public class GameTest extends AbstractGameTest {
     // рисуем стенку
     @Test
     public void shouldBeWall_whenGameCreated() {
+        // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -68,9 +65,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
-
+ 
+        // then
         assertEquals(1, field().walls().size());
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -83,6 +82,7 @@ public class GameTest extends AbstractGameTest {
     // рисуем мой танк
     @Test
     public void shouldBeHeroOnFieldWhenGameCreated() {
+        // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -90,12 +90,14 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
-
+ 
+        // then
         assertEquals(1, field().heroesAndAis().size());
     }
 
     @Test
     public void shouldResetSlidingTicksWhenLeaveIce() {
+        // given
         settings().integer(SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -110,9 +112,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -125,10 +129,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // LEFT -> UP [sliding]
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -141,10 +147,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // LEFT -> UP [sliding]
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -157,10 +165,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // LEFT -> LEFT
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -173,10 +183,13 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // UP -> LEFT [sliding]
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
+        // sliding state should be reset because the hero left ice
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -189,12 +202,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        // sliding state should be reset because the hero left ice
-
+        // when
         // RIGHT -> RIGHT
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -207,10 +220,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // DOWN -> RIGHT [sliding]
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -223,10 +238,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // DOWN -> RIGHT [sliding]
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -239,10 +256,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // DOWN -> DOWN [sliding]
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -255,10 +274,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> DOWN [sliding]
         hero(0).right();
-        field().tick();
-
+        tick();
+        
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -271,10 +292,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> RIGHT
         hero(0).right();
-        field().tick();
-
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -290,6 +313,7 @@ public class GameTest extends AbstractGameTest {
     
     @Test
     public void bulletDirectionShouldBeAffectedBySliding() {
+        // given
         settings().integer(SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -304,10 +328,12 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         hero(0).fire();
-        field().tick();
-
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -320,11 +346,13 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP [sliding]
         hero(0).right();
         hero(0).fire();
-        field().tick();
-
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -337,11 +365,13 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP [sliding]
         hero(0).right();
         hero(0).fire();
-        field().tick();
-
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼   ###   ☼\n" +
@@ -354,11 +384,13 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // LEFT -> LEFT
         hero(0).left();
         hero(0).fire();
-        field().tick();
-
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    •    ☼\n" +
                 "☼   #•#   ☼\n" +
@@ -374,6 +406,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void bulletDirectionShouldBeAffectedBySliding2() {
+        // given
         settings().integer(SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -388,10 +421,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
         hero(0).fire();
-        field().tick();
-
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -404,9 +439,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
-
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -419,10 +456,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
         hero(0).fire();
-        field().tick();
-
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -435,9 +474,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -450,11 +491,13 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // UP -> LEFT [sliding]
         hero(0).up();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -467,10 +510,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // UP -> LEFT [sliding]
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -483,11 +528,13 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // UP -> UP
         hero(0).up();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -503,6 +550,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroCanGoIfIceAtWayWithoutSliding_whenHeroTakePrize() {
+        // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 6)
@@ -520,6 +568,7 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -534,10 +583,12 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_NO_SLIDING);
-        field().tick();
+        tick();
         verifyAllEvents("");
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -552,9 +603,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_NO_SLIDING]");
         verifyAllEvents("[CATCH_PRIZE[5]]");
 
@@ -572,8 +625,9 @@ public class GameTest extends AbstractGameTest {
 
         // заезжаем на лед
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -586,10 +640,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        //  DOWN -> UP но так как игрок взял приз скольжение не происходит, по этому DOWN -> DOWN
+        // when
+        // DOWN -> UP но так как игрок взял приз скольжение не происходит, по этому DOWN -> DOWN
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -605,6 +661,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroCanGoIfAceAtWay_whenPrizeWorkingEnd() {
+        // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 2)
@@ -622,6 +679,7 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -636,10 +694,12 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_NO_SLIDING);
-        field().tick();
+        tick();
         verifyAllEvents("");
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
                 "☼    #    ☼\n" +
@@ -654,9 +714,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_NO_SLIDING]");
         verifyAllEvents("[CATCH_PRIZE[5]]");
 
@@ -674,8 +736,9 @@ public class GameTest extends AbstractGameTest {
 
         // заезжаем на лед
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
                 "☼    #    ☼\n" +
@@ -688,10 +751,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // так как игрок взял приз скольжение не происходит, по этому UP -> UP
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
                 "☼    #    ☼\n" +
@@ -704,10 +769,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // так как игрок взял приз скольжение не происходит, по этому UP -> UP
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
                 "☼    #    ☼\n" +
@@ -723,10 +790,12 @@ public class GameTest extends AbstractGameTest {
         // действие приза окончилось
         assertPrize(hero(0), "[]");
 
+        // when
         // мы снова на льду, начинаем занос запоминаем команду
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
                 "☼    #    ☼\n" +
@@ -739,10 +808,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP занос
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
                 "☼    #    ☼\n" +
@@ -755,10 +826,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> RIGHT
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
                 "☼    #    ☼\n" +
@@ -774,6 +847,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroCanGoIfAceAtWay_whenHeroTackPrizeSlidingEnd() {
+        // given
         settings().integer(PRIZE_ON_FIELD, 4)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 6)
@@ -791,11 +865,13 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
         hero(0).up();
         ai(0).dontShoot = true;
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -807,11 +883,12 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
-
-
+        
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -824,8 +901,10 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -838,9 +917,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_NO_SLIDING);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -853,9 +934,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -868,10 +951,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP выполняется занос
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -886,10 +971,12 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         // RIGHT -> UP выполняется занос
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -905,9 +992,11 @@ public class GameTest extends AbstractGameTest {
         assertPrize(hero(0), "[PRIZE_NO_SLIDING]");
         verifyAllEvents("[CATCH_PRIZE[5]]");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -920,9 +1009,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -935,9 +1026,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -950,9 +1043,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -968,6 +1063,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroMove() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -976,9 +1072,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -987,9 +1085,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -998,9 +1098,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▼    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1009,9 +1111,11 @@ public class GameTest extends AbstractGameTest {
                 "☼ ►   ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1023,6 +1127,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroStayAtPreviousPositionWhenIsNearBorder() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -1031,11 +1136,14 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         hero(0).up();
+        
         hero(1).down();
         hero(1).down();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▲☼\n" +
                 "☼     ☼\n" +
@@ -1044,11 +1152,14 @@ public class GameTest extends AbstractGameTest {
                 "☼˅    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
         hero(0).right();
+        
         hero(1).left();
         hero(1).left();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ►☼\n" +
                 "☼     ☼\n" +
@@ -1060,6 +1171,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletHasSameDirectionAsHero() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1068,15 +1180,18 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertEquals(hero(0).getBullets().iterator().next().getDirection(),
                 hero(0).getDirection());
     }
 
     @Test
     public void shouldBulletGoInertiaWhenHeroChangeDirection() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1085,9 +1200,11 @@ public class GameTest extends AbstractGameTest {
                 "☼  ▲  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1096,9 +1213,11 @@ public class GameTest extends AbstractGameTest {
                 "☼  ▲  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  •  ☼\n" +
                 "☼     ☼\n" +
@@ -1110,6 +1229,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletDisappear_whenHittingTheWallUp() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1118,10 +1238,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
-        field().tick();
+        tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼•    ☼\n" +
                 "☼     ☼\n" +
@@ -1130,7 +1252,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1142,6 +1267,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletDisappear_whenHittingTheWallRight() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1150,10 +1276,12 @@ public class GameTest extends AbstractGameTest {
                 "☼►    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
-        field().tick();
+        tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1162,8 +1290,10 @@ public class GameTest extends AbstractGameTest {
                 "☼►   •☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1175,6 +1305,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletDisappear_whenHittingTheWallLeft() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ◄☼\n" +
                 "☼     ☼\n" +
@@ -1183,10 +1314,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
-        field().tick();
+        tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼•   ◄☼\n" +
                 "☼     ☼\n" +
@@ -1195,8 +1328,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ◄☼\n" +
                 "☼     ☼\n" +
@@ -1208,6 +1343,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletDisappear_whenHittingTheWallDown() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -1216,10 +1352,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
-        field().tick();
+        tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -1228,8 +1366,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    •☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -1242,6 +1382,7 @@ public class GameTest extends AbstractGameTest {
     // снарядом уничтожается стенка за три присеста - снизу
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallDown() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
@@ -1250,9 +1391,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
@@ -1261,8 +1404,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
                 "☼     ☼\n" +
@@ -1271,9 +1416,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
                 "☼     ☼\n" +
@@ -1282,8 +1429,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╨    ☼\n" +
                 "☼     ☼\n" +
@@ -1292,9 +1441,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╨    ☼\n" +
                 "☼     ☼\n" +
@@ -1303,8 +1454,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1317,6 +1470,7 @@ public class GameTest extends AbstractGameTest {
     // снарядом уничтожается стенка за три присеста - слева
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallLeft() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1325,9 +1479,11 @@ public class GameTest extends AbstractGameTest {
                 "☼►   ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1336,8 +1492,10 @@ public class GameTest extends AbstractGameTest {
                 "☼► • ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1346,9 +1504,11 @@ public class GameTest extends AbstractGameTest {
                 "☼►   ╠☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1357,8 +1517,10 @@ public class GameTest extends AbstractGameTest {
                 "☼► • ╠☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1367,9 +1529,11 @@ public class GameTest extends AbstractGameTest {
                 "☼►   ╞☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1378,8 +1542,10 @@ public class GameTest extends AbstractGameTest {
                 "☼► • ╞☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1392,6 +1558,7 @@ public class GameTest extends AbstractGameTest {
     // снарядом уничтожается стенка за три присеста - справа
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallRight() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1400,9 +1567,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╬   ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1411,8 +1580,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╬ • ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1421,9 +1592,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╣   ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1432,8 +1605,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╣ • ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1442,9 +1617,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╡   ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1453,8 +1630,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╡ • ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1467,6 +1646,7 @@ public class GameTest extends AbstractGameTest {
     // снарядом уничтожается стенка за три присеста - сверху
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallUp() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -1475,9 +1655,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╬    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -1486,8 +1668,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╬    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -1496,9 +1680,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╦    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -1507,8 +1693,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╦    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -1517,9 +1705,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╥    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -1528,8 +1718,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╥    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -1543,6 +1735,7 @@ public class GameTest extends AbstractGameTest {
     // снарядом уничтожается стенка за три присеста - снизу но сквозь стену
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallDown_overWall() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
@@ -1551,9 +1744,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼•    ☼\n" +
@@ -1562,8 +1757,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
                 "☼     ☼\n" +
@@ -1572,9 +1769,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
                 "☼•    ☼\n" +
@@ -1583,8 +1782,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╨    ☼\n" +
                 "☼     ☼\n" +
@@ -1593,9 +1794,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╨    ☼\n" +
                 "☼•    ☼\n" +
@@ -1604,8 +1807,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1618,6 +1823,7 @@ public class GameTest extends AbstractGameTest {
     // снарядом уничтожается стенка за три присеста - слева но сквозь стену
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallLeft_overWall() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1626,9 +1832,11 @@ public class GameTest extends AbstractGameTest {
                 "☼ ►  ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1637,8 +1845,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ► •╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1647,9 +1857,11 @@ public class GameTest extends AbstractGameTest {
                 "☼ ►  ╠☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1658,8 +1870,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ► •╠☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1668,9 +1882,11 @@ public class GameTest extends AbstractGameTest {
                 "☼ ►  ╞☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1679,8 +1895,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ► •╞☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1694,6 +1912,7 @@ public class GameTest extends AbstractGameTest {
     // снарядом уничтожается стенка за три присеста - справа но через стену
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallRight_overWall() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1702,9 +1921,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╬  ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1713,8 +1934,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╬• ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1723,9 +1946,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╣  ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1734,8 +1959,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╣• ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1744,9 +1971,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╡  ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1755,8 +1984,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╡• ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1769,6 +2000,7 @@ public class GameTest extends AbstractGameTest {
     // снарядом уничтожается стенка за три присеста - сверху но сквозь стену
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallUp_overWall() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
@@ -1777,9 +2009,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╬    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
@@ -1788,8 +2022,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╬    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
@@ -1798,9 +2034,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╦    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
@@ -1809,8 +2047,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╦    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
@@ -1819,9 +2059,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╥    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
@@ -1830,8 +2072,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╥    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
@@ -1843,6 +2087,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallUp_whenTwoWalls() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╬    ☼\n" +
@@ -1851,8 +2096,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╬    ☼\n" +
@@ -1861,8 +2108,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╬    ☼\n" +
@@ -1871,8 +2120,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╩    ☼\n" +
@@ -1881,9 +2132,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╩    ☼\n" +
@@ -1892,8 +2145,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╨    ☼\n" +
@@ -1902,9 +2157,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╨    ☼\n" +
@@ -1913,8 +2170,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
@@ -1923,9 +2182,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
@@ -1934,8 +2195,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
                 "☼     ☼\n" +
@@ -1947,6 +2210,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallRight_whenTwoWalls() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1955,8 +2219,10 @@ public class GameTest extends AbstractGameTest {
                 "☼►  ╬╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1965,8 +2231,10 @@ public class GameTest extends AbstractGameTest {
                 "☼►  ╬╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1975,8 +2243,10 @@ public class GameTest extends AbstractGameTest {
                 "☼► •╬╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1985,9 +2255,11 @@ public class GameTest extends AbstractGameTest {
                 "☼►  ╠╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1996,8 +2268,10 @@ public class GameTest extends AbstractGameTest {
                 "☼► •╠╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2006,9 +2280,11 @@ public class GameTest extends AbstractGameTest {
                 "☼►  ╞╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2017,8 +2293,10 @@ public class GameTest extends AbstractGameTest {
                 "☼► •╞╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2027,9 +2305,11 @@ public class GameTest extends AbstractGameTest {
                 "☼►   ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2038,8 +2318,10 @@ public class GameTest extends AbstractGameTest {
                 "☼► • ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2051,6 +2333,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallLeft_whenTwoWalls() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2059,8 +2342,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╬╬  ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2069,8 +2354,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╬╬  ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2079,8 +2366,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╬╬• ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2089,9 +2378,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╬╣  ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2100,8 +2391,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╬╣• ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2110,9 +2403,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╬╡  ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2121,8 +2416,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╬╡• ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2131,9 +2428,11 @@ public class GameTest extends AbstractGameTest {
                 "☼╬   ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2142,8 +2441,10 @@ public class GameTest extends AbstractGameTest {
                 "☼╬ • ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2155,6 +2456,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletDestroyWall_whenHittingTheWallDown_whenTwoWalls() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -2163,8 +2465,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -2173,8 +2477,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -2183,8 +2489,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -2193,9 +2501,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -2204,8 +2514,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -2214,9 +2526,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -2225,8 +2539,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -2235,9 +2551,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -2246,8 +2564,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -2257,9 +2577,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // если я иду а спереди стена, то я не могу двигаться дальше
+    // если я иду, а спереди стена, то я не могу двигаться дальше
     @Test
     public void shouldDoNotMove_whenWallTaWay_goDownOrLeft() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╬  ☼\n" +
@@ -2268,9 +2589,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╬  ☼\n" +
@@ -2279,9 +2602,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╬  ☼\n" +
@@ -2290,9 +2615,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╬  ☼\n" +
@@ -2301,9 +2628,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╬  ☼\n" +
@@ -2312,8 +2641,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         removeAllNear();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╩  ☼\n" +
@@ -2322,9 +2653,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╩  ☼\n" +
@@ -2333,9 +2666,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╩  ☼\n" +
@@ -2344,9 +2679,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╩  ☼\n" +
@@ -2355,9 +2692,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╩  ☼\n" +
@@ -2366,8 +2705,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         removeAllNear();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╨  ☼\n" +
@@ -2378,31 +2719,33 @@ public class GameTest extends AbstractGameTest {
     }
 
     private void removeAllNear() {
+        // when
         hero(0).up();
-        field().tick();
+        tick();
         hero(0).fire();
-        field().tick();
+        tick();
 
         hero(0).left();
-        field().tick();
+        tick();
         hero(0).fire();
-        field().tick();
+        tick();
 
         hero(0).right();
-        field().tick();
+        tick();
         hero(0).fire();
-        field().tick();
-
+        tick();
+        
         hero(0).down();
-        field().tick();
+        tick();
         hero(0).fire();
-        field().tick();
+        tick();
     }
 
     // если я стреляю дважды, то выпускается два снаряда
     // при этом я проверяю, что они уничтожаются в порядке очереди
     @Test
     public void shouldShotWithSeveralBullets_whenHittingTheWallDown() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2413,9 +2756,11 @@ public class GameTest extends AbstractGameTest {
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2426,9 +2771,11 @@ public class GameTest extends AbstractGameTest {
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2439,9 +2786,11 @@ public class GameTest extends AbstractGameTest {
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2452,8 +2801,10 @@ public class GameTest extends AbstractGameTest {
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2464,9 +2815,11 @@ public class GameTest extends AbstractGameTest {
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2477,9 +2830,11 @@ public class GameTest extends AbstractGameTest {
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2490,9 +2845,11 @@ public class GameTest extends AbstractGameTest {
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2503,8 +2860,10 @@ public class GameTest extends AbstractGameTest {
                 "☼      ╦☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2515,9 +2874,11 @@ public class GameTest extends AbstractGameTest {
                 "☼      ╥☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2528,9 +2889,11 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2541,9 +2904,11 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2554,8 +2919,10 @@ public class GameTest extends AbstractGameTest {
                 "☼      •☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2566,8 +2933,10 @@ public class GameTest extends AbstractGameTest {
                 "☼      •☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2578,8 +2947,10 @@ public class GameTest extends AbstractGameTest {
                 "☼      •☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
                 "☼       ☼\n" +
@@ -2594,6 +2965,7 @@ public class GameTest extends AbstractGameTest {
     // стоит проверить, как будут себя вести полуразрушенные конструкции, если их растреливать со всех других сторон
     @Test
     public void shouldDestroyFromUpAndDownTwice() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ▼  ☼\n" +
@@ -2602,9 +2974,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ▼  ☼\n" +
@@ -2613,24 +2987,26 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
         hero(0).down();
-        field().tick();
+        tick();
 
         hero(0).down();
-        field().tick();
+        tick();
 
         hero(0).left();
-        field().tick();
+        tick();
 
         hero(0).up();
-        field().tick();
+        tick();
 
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2639,9 +3015,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2654,6 +3032,7 @@ public class GameTest extends AbstractGameTest {
     // стоять, если спереди другой танк
     @Test
     public void shouldStopWhenBeforeOtherHero() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2662,10 +3041,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2678,6 +3059,7 @@ public class GameTest extends AbstractGameTest {
     // геймовер, если убили не бот-танк
     @Test
     public void shouldDieWhenOtherHeroKillMe() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2690,9 +3072,11 @@ public class GameTest extends AbstractGameTest {
         assertEquals(true, hero(1).isAlive());
         assertEquals(true, hero(2).isAlive());
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
                 "listener(1) => [HERO_DIED]\n");
@@ -2709,8 +3093,10 @@ public class GameTest extends AbstractGameTest {
         assertEquals(false, hero(1).isAlive());
         assertEquals(true, hero(2).isAlive());
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2719,9 +3105,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[2]]\n" +
                 "listener(2) => [HERO_DIED]\n");
@@ -2738,8 +3126,10 @@ public class GameTest extends AbstractGameTest {
         assertEquals(false, hero(1).isAlive());
         assertEquals(false, hero(2).isAlive());
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertEquals(true, hero(0).isAlive());
         assertEquals(false, hero(1).isAlive());
         assertEquals(false, hero(2).isAlive());
@@ -2759,11 +3149,13 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(0).right();
         hero(1).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -2795,11 +3187,13 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
         hero(1).fire();
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -2820,6 +3214,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDieOnceWhenIsDamagedByManyBullets() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -2832,10 +3227,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).fire();
         hero(2).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -2848,8 +3245,10 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [HERO_DIED]\n" +
                 "listener(1) => [KILL_OTHER_HERO[1]]\n" +
@@ -2871,6 +3270,7 @@ public class GameTest extends AbstractGameTest {
     // стоять, если меня убили
     @Test
     public void shouldStopWhenKill() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2879,10 +3279,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2898,6 +3300,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldNoConcurrentException() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2906,10 +3309,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).fire();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2918,9 +3323,11 @@ public class GameTest extends AbstractGameTest {
                 "☼Ѡ    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
-        field().tick();
+        // when
+        tick();
+        tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1], HERO_DIED]\n" +
                 "listener(1) => [HERO_DIED, KILL_OTHER_HERO[1]]\n");
@@ -2936,6 +3343,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDestroyBullet() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼      ☼\n" +
                 "☼       ☼\n" +
@@ -2946,10 +3354,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼      ☼\n" +
                 "☼       ☼\n" +
@@ -2960,8 +3370,10 @@ public class GameTest extends AbstractGameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼      ☼\n" +
                 "☼       ☼\n" +
@@ -2972,8 +3384,10 @@ public class GameTest extends AbstractGameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼      ☼\n" +
                 "☼       ☼\n" +
@@ -2987,6 +3401,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDestroyBullet2() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼▼      ☼\n" +
@@ -2997,10 +3412,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼▼      ☼\n" +
@@ -3011,8 +3428,10 @@ public class GameTest extends AbstractGameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼▼      ☼\n" +
@@ -3023,8 +3442,10 @@ public class GameTest extends AbstractGameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼▼      ☼\n" +
@@ -3038,6 +3459,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldRemoveAIWhenKillIt() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼˄    ☼\n" +
                 "☼     ☼\n" +
@@ -3046,7 +3468,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼˄    ☼\n" +
                 "☼     ☼\n" +
@@ -3055,9 +3477,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼˄    ☼\n" +
                 "☼     ☼\n" +
@@ -3068,8 +3492,10 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -3082,12 +3508,14 @@ public class GameTest extends AbstractGameTest {
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
                 "listener(1) => [HERO_DIED]\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3098,8 +3526,10 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3112,8 +3542,10 @@ public class GameTest extends AbstractGameTest {
                 "listener(0) => [KILL_OTHER_HERO[2]]\n" +
                 "listener(2) => [HERO_DIED]\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3127,14 +3559,18 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldRegenerateDestroyedWall() {
+        // given
         shouldBulletDestroyWall_whenHittingTheWallUp_whenTwoWalls();
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
+        
         hero(0).fire();
-        field().tick();
-        field().tick();
+        tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3143,10 +3579,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        for (int i = 7; i <= settings().integer(WALL_REGENERATE_TIME); i++) {
-            field().tick();
+        // when
+        for (int tick = 7; tick <= settings().integer(WALL_REGENERATE_TIME); tick++) {
+            tick();
         }
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3155,8 +3593,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╬    ☼\n" +
@@ -3165,12 +3605,14 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
-        field().tick();
-        field().tick();
-        field().tick();
-        field().tick();
+        // when
+        tick();
+        tick();
+        tick();
+        tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╬    ☼\n" +
@@ -3182,6 +3624,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroCantGoIfWallAtWay() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3190,9 +3633,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3204,6 +3649,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletCantGoIfWallAtWay() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3212,9 +3658,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3223,11 +3671,13 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
         hero(0).fire();
-        field().tick();
-        field().tick();
+        tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3236,8 +3686,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ►  •☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3249,6 +3701,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldOnlyOneBulletPerTick() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3257,11 +3710,13 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(0).fire();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3270,11 +3725,13 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(0).fire();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3283,8 +3740,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3296,6 +3755,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroCanFireIfAtWayEnemyBullet() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -3304,10 +3764,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -3319,6 +3781,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroCanGoIfDestroyWall() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3327,15 +3790,17 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
         hero(0).fire();
-        field().tick();
+        tick();
 
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3344,9 +3809,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3358,8 +3825,10 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldWallCantRegenerateOnHero() {
+        // given
         shouldHeroCanGoIfDestroyWall();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3368,10 +3837,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        for (int i = 3; i <= settings().integer(WALL_REGENERATE_TIME); i++) {
-            field().tick();
+        // when
+        for (int tick = 3; tick <= settings().integer(WALL_REGENERATE_TIME); tick++) {
+            tick();
         }
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3380,10 +3851,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
-        for (int i = 2; i <= settings().integer(WALL_REGENERATE_TIME); i++) {
+        for (int tick = 2; tick <= settings().integer(WALL_REGENERATE_TIME); tick++) {
+            // then
             assertF("☼☼☼☼☼☼☼\n" +
                     "☼     ☼\n" +
                     "☼     ☼\n" +
@@ -3392,9 +3865,11 @@ public class GameTest extends AbstractGameTest {
                     "☼     ☼\n" +
                     "☼☼☼☼☼☼☼\n");
 
-            field().tick();
+            // when
+            tick();
         }
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3407,6 +3882,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldWallCantRegenerateOnBullet() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3415,15 +3891,17 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
         hero(0).fire();
-        field().tick();
+        tick();
 
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3432,10 +3910,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        for (int i = 3; i <= settings().integer(WALL_REGENERATE_TIME); i++) {
-            field().tick();
+        // when
+        for (int tick = 3; tick <= settings().integer(WALL_REGENERATE_TIME); tick++) {
+            tick();
         }
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3444,9 +3924,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3455,7 +3937,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼•    ☼\n" +
                 "☼     ☼\n" +
@@ -3464,7 +3949,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
+ 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3476,6 +3964,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldNTicksPerBullet() {
+        // given
         settings().integer(HERO_TICKS_PER_SHOOT, 4);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -3486,9 +3975,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         String field =
                 "☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3499,16 +3990,20 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n";
         assertF(field);
 
-        for (int i = 1; i < settings().integer(HERO_TICKS_PER_SHOOT); i++) {
+        for (int tick = 1; tick < settings().integer(HERO_TICKS_PER_SHOOT); tick++) {
+            // when
             hero(0).fire();
-            field().tick();
+            tick();
 
+            // then
             assertF(field);
         }
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3520,6 +4015,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldNewAIWhenKillOther() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -3530,9 +4026,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼¿¿   ☼\n" +
                 "☼     ☼\n" +
@@ -3541,8 +4039,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ¿   ☼\n" +
                 "☼     ☼\n" +
@@ -3550,10 +4050,13 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
+        
         verifyAllEvents("[KILL_AI]");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1¿   ☼\n" +
                 "☼     ☼\n" +
@@ -3562,9 +4065,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(5, 5);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼!¿   ☼\n" +
                 "☼    ¿☼\n" +
@@ -3576,6 +4081,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldOnlyRotateIfNoBarrier() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3584,9 +4090,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲ ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3598,6 +4106,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldOnlyRotateIfBarrier() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3606,9 +4115,11 @@ public class GameTest extends AbstractGameTest {
                 "☼ ▲╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3620,6 +4131,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldEnemyCanKillHeroOnWall() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3628,11 +4140,14 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).fire();
-        field().tick();
+        tick();
+        
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3641,10 +4156,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).fire();
         hero(1).up();  // команда поигнорится потому что вначале ходят все танки, а потом летят все снаряды
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3653,9 +4170,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3664,9 +4183,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
                 "listener(1) => [HERO_DIED]\n");
@@ -3682,6 +4203,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDieWhenMoveOnBullet() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼▼      ☼\n" +
@@ -3692,9 +4214,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼▼      ☼\n" +
@@ -3705,9 +4229,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˄      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
                 "listener(1) => [HERO_DIED]\n");
@@ -3725,6 +4251,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDieWhenMoveOnBullet2() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼▼      ☼\n" +
@@ -3735,9 +4262,11 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼▼      ☼\n" +
@@ -3748,9 +4277,11 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
                 "listener(1) => [HERO_DIED]\n");
@@ -3768,6 +4299,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDieWhenMoveOnBullet3() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼▼      ☼\n" +
@@ -3778,9 +4310,11 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼▼      ☼\n" +
@@ -3791,9 +4325,11 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
                 "listener(1) => [HERO_DIED]\n");
@@ -3807,12 +4343,12 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
-
     }
 
     // если стенка недорушенная, снаряд летит, и ресетнули игру, то все конструкции восстанавливаются
     @Test
     public void shouldRemoveBulletsAndResetWalls_whenReset() {
+        // given
         settings().integer(HERO_TICKS_PER_SHOOT, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -3827,9 +4363,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
                 "☼╬        ☼\n" +
@@ -3842,8 +4380,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
                 "☼╬        ☼\n" +
@@ -3856,8 +4396,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
                 "☼╬        ☼\n" +
@@ -3870,9 +4412,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
                 "☼╩        ☼\n" +
@@ -3885,9 +4429,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire(); // не выйдет
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
                 "☼╩        ☼\n" +
@@ -3900,8 +4446,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
                 "☼╩        ☼\n" +
@@ -3914,9 +4462,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
                 "☼╨        ☼\n" +
@@ -3929,13 +4479,14 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
-
-        field().tick();
-
+        // when
+        tick();
+        tick();
+        
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
                 "☼         ☼\n" +
@@ -3948,13 +4499,14 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
-
-        field().tick();
-
+        // when
+        tick();
+        tick();
+        
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╩        ☼\n" +
                 "☼         ☼\n" +
@@ -3967,17 +4519,17 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // допустим за игру он прибил 5 танков
         Player player = player(0);
         player.setKilled(5);
 
-        // when
         field().clearScore();
 
         // смогу стрельнуть, пушка ресетнется
         hero(0).fire();
-        field().tick();
-
+        tick();
+ 
         // then
         // но после рисета это поле чистится
         assertEquals(0, player.score());
@@ -3996,13 +4548,14 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
-
-        field().tick();
-
+        // when
+        tick();
+        tick();
+        
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
                 "☼╩        ☼\n" +
@@ -4019,6 +4572,7 @@ public class GameTest extends AbstractGameTest {
     // первый выстрел иногда получается сделать дважды
     @Test
     public void shouldCantFireTwice() {
+        // given
         settings().integer(HERO_TICKS_PER_SHOOT, 4);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -4033,14 +4587,16 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         field().clearScore();
 
-        field().tick(); // внутри там тикает так же gun, но первого выстрела еще небыло
-        field().tick();
+        tick(); // внутри там тикает так же gun, но первого выстрела еще небыло
+        tick();
 
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4053,9 +4609,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4068,9 +4626,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4083,9 +4643,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼•        ☼\n" +
                 "☼         ☼\n" +
@@ -4102,6 +4664,7 @@ public class GameTest extends AbstractGameTest {
     // дерево
     @Test
     public void shouldBeWallTree_whenGameCreated() {
+        // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -4112,6 +4675,7 @@ public class GameTest extends AbstractGameTest {
 
         assertEquals(1, field().trees().size());
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -4123,6 +4687,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBeWallTwoTree_whenGameCreated() {
+        // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -4131,6 +4696,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   %☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertEquals(2, field().trees().size());
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -4145,6 +4711,7 @@ public class GameTest extends AbstractGameTest {
     // При выстреле пуля должна пролетать сквозь дерево
     @Test
     public void shouldBulletFlyUnderTree_right() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4157,9 +4724,11 @@ public class GameTest extends AbstractGameTest {
                 "☼►    %   ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
         hero(0).fire();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4172,8 +4741,10 @@ public class GameTest extends AbstractGameTest {
                 "☼►    %   ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4186,8 +4757,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ►•  %   ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4200,8 +4773,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ►  •%   ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4214,8 +4789,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ►   %•  ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4228,8 +4805,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ►   %  •☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4245,6 +4824,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletDestroyWallUnderTree_whenHittingTheWallUp_whenTwoWalls() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╬    ☼\n" +
@@ -4253,8 +4833,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╬    ☼\n" +
@@ -4263,8 +4845,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╬    ☼\n" +
@@ -4273,8 +4857,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╩    ☼\n" +
@@ -4283,9 +4869,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╩    ☼\n" +
@@ -4294,8 +4882,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╨    ☼\n" +
@@ -4304,9 +4894,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╨    ☼\n" +
@@ -4315,8 +4907,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
@@ -4325,9 +4919,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
@@ -4336,8 +4932,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
                 "☼     ☼\n" +
@@ -4345,10 +4943,6 @@ public class GameTest extends AbstractGameTest {
                 "☼%    ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
-    }
-
-    private List<Wall> walls(Wall... walls) {
-        return new LinkedList<>(Arrays.asList(walls));
     }
 
     // Когда пуля и дерево находятся в одной координате
@@ -4366,6 +4960,7 @@ public class GameTest extends AbstractGameTest {
     // я не вижу ее, дерево скрывает
     @Test
     public void shouldBulletFlyUnderTwoTree_up() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4378,8 +4973,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4392,8 +4989,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4406,8 +5005,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4420,8 +5021,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4434,8 +5037,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    •    ☼\n" +
                 "☼         ☼\n" +
@@ -4448,8 +5053,10 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲    ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4466,6 +5073,7 @@ public class GameTest extends AbstractGameTest {
     // дерево - когда игрок заходит под него, там видно дерево и больше никакого движения
     @Test
     public void shouldHeroMove_underTree_case2() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -4474,9 +5082,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -4485,9 +5095,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -4496,9 +5108,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -4507,9 +5121,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%►   ☼\n" +
@@ -4518,9 +5134,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼% ►  ☼\n" +
@@ -4535,6 +5153,7 @@ public class GameTest extends AbstractGameTest {
     // я вижу свой танк
     @Test
     public void shouldHeroMove_underTree_caseShowMyHeroUnderTree_case2() {
+        // given
         settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -4545,9 +5164,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -4556,9 +5177,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -4567,9 +5190,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -4578,9 +5203,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%►   ☼\n" +
@@ -4589,9 +5216,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼% ►  ☼\n" +
@@ -4603,6 +5232,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletFlyUnderTree_jointly_shouldHeroMoveUnderTree() {
+        // given
         settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -4617,8 +5247,10 @@ public class GameTest extends AbstractGameTest {
                 "☼        ▲☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4631,9 +5263,11 @@ public class GameTest extends AbstractGameTest {
                 "☼        ▲☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4646,9 +5280,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4661,9 +5297,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4676,9 +5314,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        •☼\n" +
                 "☼         ☼\n" +
@@ -4691,9 +5331,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4706,9 +5348,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4721,12 +5365,14 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4742,7 +5388,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldBulletFlyUnderTree_jointly() {
-
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4755,8 +5401,10 @@ public class GameTest extends AbstractGameTest {
                 "☼        ▲☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4769,9 +5417,11 @@ public class GameTest extends AbstractGameTest {
                 "☼        ▲☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4784,9 +5434,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4799,9 +5451,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4814,9 +5468,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        •☼\n" +
                 "☼         ☼\n" +
@@ -4829,9 +5485,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4844,9 +5502,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4859,12 +5519,14 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4881,7 +5543,8 @@ public class GameTest extends AbstractGameTest {
     // так же не видно меня под деревом
     @Test
     public void shouldHeroMove_underTree() {
-		givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
+		// when
+        givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
 				"☼▼        ☼\n" +
 				"☼         ☼\n" +
 				"☼%        ☼\n" +
@@ -4893,10 +5556,12 @@ public class GameTest extends AbstractGameTest {
 				"☼˄        ☼\n" +
 				"☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
-		assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
+		// then
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
 				"☼         ☼\n" +
 				"☼▼        ☼\n" +
 				"☼%        ☼\n" +
@@ -4908,9 +5573,11 @@ public class GameTest extends AbstractGameTest {
 				"☼˄        ☼\n" +
 				"☼☼☼☼☼☼☼☼☼☼☼\n");
 
-		hero(0).down();
-		field().tick();
+		// when
+        hero(0).down();
+		tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4923,10 +5590,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-		hero(0).down();
-		field().tick();
+		// when
+        hero(0).down();
+		tick();
 
-		assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
+		// then
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
 				"☼         ☼\n" +
 				"☼         ☼\n" +
 				"☼%        ☼\n" +
@@ -4938,10 +5607,12 @@ public class GameTest extends AbstractGameTest {
 				"☼˄        ☼\n" +
 				"☼☼☼☼☼☼☼☼☼☼☼\n");
 
-		hero(0).down();
-		field().tick();
+		// when
+        hero(0).down();
+		tick();
 
-		assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
+		// then
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
 				"☼         ☼\n" +
 				"☼         ☼\n" +
 				"☼%        ☼\n" +
@@ -4957,6 +5628,7 @@ public class GameTest extends AbstractGameTest {
     // но если в сеттингах сказано что меня видно под деревьями, я - вижу
     @Test
     public void shouldHeroMove_underTree_caseShowMyHeroUnderTree() {
+        // given
         settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -4971,9 +5643,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼▼        ☼\n" +
@@ -4986,9 +5660,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5001,9 +5677,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5016,9 +5694,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5035,6 +5715,7 @@ public class GameTest extends AbstractGameTest {
     // другого игрока не видно под деревом
     @Test
     public void shouldOtherHeroMove_underTree() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5047,9 +5728,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5062,9 +5745,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5077,9 +5762,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5092,9 +5779,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5112,6 +5801,7 @@ public class GameTest extends AbstractGameTest {
     // другого танка я не вижу все равно
     @Test
     public void shouldOtherHeroMove_underTree_caseShowMyHeroUnderTree() {
+        // given
         settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -5126,9 +5816,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5141,9 +5833,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5156,9 +5850,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5171,9 +5867,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5190,6 +5888,7 @@ public class GameTest extends AbstractGameTest {
     // под деревом не видно так же и ботов белых
     @Test
     public void shouldAIMove_underTree() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼?        ☼\n" +
                 "☼         ☼\n" +
@@ -5214,9 +5913,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼¿        ☼\n" +
@@ -5229,13 +5930,15 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).fire();
         ai(0).down();
-        field().tick();
+        tick();
 
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5248,9 +5951,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5266,6 +5971,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldEnemyCanKillHeroUnderTree() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5278,9 +5984,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();// герой запрятался в кустах
+        tick();// герой запрятался в кустах
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5293,9 +6001,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5308,16 +6018,22 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertEquals(true, hero(1).isAlive());
-        field().tick();// герой должен погибнуть
+        
+        // when
+        tick();// герой должен погибнуть
 
+        // then
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
                 "listener(1) => [HERO_DIED]\n");
 
         assertEquals(false, hero(1).isAlive());
+ 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5335,6 +6051,7 @@ public class GameTest extends AbstractGameTest {
     // но мой танк видно - так сказано в настройках
     @Test
     public void shouldTwoHeroCanPassThroughEachOtherUnderTree_caseShowMyHeroUnderTree() {
+        // given
         settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -5345,10 +6062,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5357,14 +6076,17 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
         hero(1).up();
-        field().tick();
+        tick();
 
         hero(0).down();
-        field().tick();
+        tick();
 
         hero(1).up();
+        
+        // then
         // Два танка не могут проехать через друг друга
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5374,10 +6096,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
         hero(1).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5391,6 +6115,7 @@ public class GameTest extends AbstractGameTest {
     // но мой танк видно - так сказано в настройках
     @Test
     public void shouldTwoHeroCanPassThroughEachOtherUnderTree() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
@@ -5399,10 +6124,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5411,14 +6138,17 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
         hero(1).up();
-        field().tick();
+        tick();
 
         hero(0).down();
-        field().tick();
+        tick();
 
         hero(1).up();
+        
+        // then
         // Два танка не могут проехать через друг друга
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5428,10 +6158,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
         hero(1).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5444,6 +6176,7 @@ public class GameTest extends AbstractGameTest {
 	// Лёд
     @Test
     public void shouldBeWallIce_whenGameCreated() {
+        // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5452,6 +6185,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertEquals(1, field().ice().size());
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -5470,6 +6204,7 @@ public class GameTest extends AbstractGameTest {
     // Если съезжаем на землю, то любой занос прекращается тут же
     @Test
     public void shouldHeroMoveUp_onIce_afterBeforeGround() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5484,8 +6219,9 @@ public class GameTest extends AbstractGameTest {
 
         // заежаем на лёд
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5498,13 +6234,15 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // находимся на льду
-        // выполнили команаду right(), но танк не реагирует, так как происходит скольжение
-        // двигается дальше с предедущей командой up()
+        // выполнили команду right(), но танк не реагирует, так как происходит скольжение,Э
+        // двигается дальше с предыдущей командой up()
         // RIGHT -> UP (скольжение)
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5517,11 +6255,13 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // двигаемся дальше в направлении up()
         // UP -> UP (выполнилась)
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5534,12 +6274,14 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        // выполнили команаду right(), но танк не реагирует, так как происходит скольжение
-        // двигается дальше с предедущей командой up()
+        // when
+        // выполнили команду right(), но танк не реагирует, так как происходит скольжение,
+        // двигается дальше с предыдущей командой up()
         // RIGHT -> UP (скольжение)
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5552,12 +6294,14 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // выехали со льда
         // двигается дальше в направлении up()
         // UP -> UP (выполнилась)
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5573,6 +6317,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroMoveLeftThenUpThenDown_onIce() {
+        // given
         settings().integer(SLIPPERINESS, 1);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -5587,10 +6332,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        // заежаем на лёд
+        // when
+        // заезжаем на лёд
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5603,10 +6350,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // LEFT -> UP (скольжение)
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5619,10 +6368,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // DOWN -> DOWN (выполнилась)
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5635,10 +6386,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // DOWN -> DOWN (скольжение)
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5652,9 +6405,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // также когда на нем двигается враг он проскальзывает команду на два тика
+    // также когда на нем двигается враг, он проскальзывает команду на два тика
     @Test
     public void shouldOtherHeroMoveLeftThenUpThenDown_onIce() {
+        // given
         settings().integer(SLIPPERINESS, 1);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -5669,10 +6423,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        // враг заежает на лёд
+        // when
+        // враг заезжает на лёд
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5685,10 +6441,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // LEFT -> DOWN(скольжение)
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5701,10 +6459,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // UP -> UP (выполнилась)
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5717,11 +6477,13 @@ public class GameTest extends AbstractGameTest {
                 "☼˄        ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // UP -> UP (скольжение)
-        // сьезд со льда
+        // съезд со льда
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5738,6 +6500,7 @@ public class GameTest extends AbstractGameTest {
     // Река
     @Test
     public void shouldBeWallWater_whenGameCreated() {
+        // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5746,6 +6509,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertEquals(1, field().rivers().size());
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -5757,9 +6521,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-	// река - через нее герою нельзя пройти. но можно стрелять
+	// Река - через нее герою нельзя пройти, но можно стрелять
 	@Test
 	public void shouldHeroCanGoIfRiverAtWay() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5768,12 +6533,14 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5785,6 +6552,7 @@ public class GameTest extends AbstractGameTest {
 
 	@Test
 	public void shouldBulletCanGoIfRiverAtWay() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5793,9 +6561,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-		hero(0).up();
-		field().tick();
+		// when
+        hero(0).up();
+		tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5804,10 +6574,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-		hero(0).fire();
-		field().tick();
+		// when
+        hero(0).fire();
+		tick();
 
-		assertF("☼☼☼☼☼☼☼\n" +
+		// then
+        assertF("☼☼☼☼☼☼☼\n" +
 				"☼     ☼\n" +
 				"☼     ☼\n" +
 				"☼•    ☼\n" +
@@ -5815,11 +6587,13 @@ public class GameTest extends AbstractGameTest {
 				"☼▲    ☼\n" +
 				"☼☼☼☼☼☼☼\n");
 
-		hero(0).right();
+		// when
+        hero(0).right();
 		hero(0).fire();
-		field().tick();
+		tick();
 
-		assertF("☼☼☼☼☼☼☼\n" +
+		// then
+        assertF("☼☼☼☼☼☼☼\n" +
 				"☼•    ☼\n" +
 				"☼     ☼\n" +
 				"☼     ☼\n" +
@@ -5827,9 +6601,11 @@ public class GameTest extends AbstractGameTest {
 				"☼ ►•  ☼\n" +
 				"☼☼☼☼☼☼☼\n");
 
-		field().tick();
+		// when
+        tick();
 
-		assertF("☼☼☼☼☼☼☼\n" +
+		// then
+        assertF("☼☼☼☼☼☼☼\n" +
 				"☼     ☼\n" +
 				"☼     ☼\n" +
 				"☼     ☼\n" +
@@ -5840,6 +6616,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDoNotMove_whenRiverToWay_goRightOrUpOrLeftOrDown() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -5848,9 +6625,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -5859,9 +6638,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -5870,9 +6651,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -5881,10 +6664,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-		hero(0).down();
-		field().tick();
+		// when
+        hero(0).down();
+		tick();
 
-		assertF("☼☼☼☼☼☼☼\n" +
+		// then
+        assertF("☼☼☼☼☼☼☼\n" +
 				"☼     ☼\n" +
 				"☼  ~  ☼\n" +
 				"☼ ~▼~ ☼\n" +
@@ -5896,6 +6681,7 @@ public class GameTest extends AbstractGameTest {
     // река - через нее врагу нельзя пройти. но можно стрелять
     @Test
     public void shouldOtherHeroBullet_canGoIfRiverAtWay() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5904,12 +6690,14 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5918,10 +6706,12 @@ public class GameTest extends AbstractGameTest {
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).right();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼•    ☼\n" +
                 "☼     ☼\n" +
@@ -5930,8 +6720,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ˃•  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5943,6 +6735,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldOtherHeroDoNotMove_whenRiverToWay_goRightOrUpOrLeftOrDown() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -5951,9 +6744,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -5962,9 +6757,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -5973,9 +6770,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -5984,9 +6783,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -5996,9 +6797,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // река - через нее боту нельзя пройти. но можно стрелять
+    // Река - через нее боту нельзя пройти. но можно стрелять
     @Test
     public void shouldAIBullet_canGoIfRiverAtWay() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6015,9 +6817,11 @@ public class GameTest extends AbstractGameTest {
                 "☼◘    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6026,9 +6830,11 @@ public class GameTest extends AbstractGameTest {
                 "☼?    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6038,12 +6844,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    private AI ai(int index) {
-        return (AI) field().ais().get(index);
-    }
-
     @Test
     public void shouldAIDoNotMove_whenRiverToWay_goRightOrUpOrLeftOrDown() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -6052,6 +6855,7 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -6060,9 +6864,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -6071,9 +6877,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -6082,9 +6890,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -6094,9 +6904,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // создаем АИтанк с призами
+    // создаем AI с призами
     @Test
     public void shouldCreatedAiPrize() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
@@ -6109,6 +6920,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ◘☼\n" +
                 "☼       ☼\n" +
@@ -6119,9 +6931,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼      ¿☼\n" +
@@ -6135,9 +6949,10 @@ public class GameTest extends AbstractGameTest {
         assertPrize("1 prizes with 2 heroes");
     }
 
-    // У АИ с призами после 4-го хода должен смениться Element
+    // У AI с призами после 4-го хода должен смениться Element
     @Test
     public void shouldSwapElementAfterFourTicks() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
@@ -6150,6 +6965,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ◘☼\n" +
                 "☼       ☼\n" +
@@ -6160,9 +6976,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼      ¿☼\n" +
@@ -6173,9 +6991,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼     « ☼\n" +
@@ -6186,9 +7006,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼     ? ☼\n" +
                 "☼       ☼\n" +
@@ -6199,9 +7021,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ◘☼\n" +
                 "☼       ☼\n" +
@@ -6212,9 +7036,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼      ¿☼\n" +
@@ -6228,9 +7054,10 @@ public class GameTest extends AbstractGameTest {
         assertPrize("1 prizes with 2 heroes");
     }
 
-    // если spawnAiPrize = 3, а спаунится сразу 2 АИтанка, то 2-й должен быть АИтанком с призами
+    // если spawnAiPrize = 3, а спаунится сразу 2 AIа, то 2-й должен быть AIом с призами
     @Test
     public void shouldSpawnAiPrizeWhenTwoAi() {
+        // given
         settings().integer(SPAWN_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
@@ -6243,6 +7070,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ◘    ¿☼\n" +
                 "☼       ☼\n" +
@@ -6253,14 +7081,17 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertPrize("1 prizes with 3 heroes");
     }
 
-    // если spawnAiPrize = 3 и спаунится сразу 3 АИтанка, то 2-й должен быть АИтанком с призами
+    // если spawnAiPrize = 3 и спаунится сразу 3 AIа, то 2-й должен быть AIом с призами
     @Test
     public void shouldSpawnAiPrizeWhenThreeAi() {
+        // given
         settings().integer(SPAWN_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
@@ -6272,7 +7103,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
-
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ◘  ¿ ¿☼\n" +
                 "☼       ☼\n" +
@@ -6283,14 +7114,17 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertPrize("1 prizes with 4 heroes");
     }
 
-    // если spawnAiPrize = 3, а спаунятся сразу 6 АИтанков, то должно быть 2 АИтанка с призами
+    // если spawnAiPrize = 3, а спаунятся сразу 6 AIов, то должно быть 2 AIа с призами
     @Test
     public void shouldSpawnTwoAiPrizeWhenSixAi() {
+        // given
         settings().integer(SPAWN_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
@@ -6313,16 +7147,19 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertPrize("2 prizes with 7 heroes");
     }
 
-    // если spawnAiPrize = 3, а 3 АИтанка спаунятся по 1-му за каждый ход,
-    // то АИтанк с призами спаунится после 2-го хода
+    // если spawnAiPrize = 3, а 3 AIа спаунятся по 1-му за каждый ход,
+    // то AI с призами спаунится после 2-го хода
     // так же проверяем что призовой танк меняет свой символ каждые 4 тика
     @Test
     public void shouldSpawnAiPrize_whenAddOneByOneAI() {
+        // given
         settings().integer(SPAWN_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
@@ -6335,8 +7172,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         dropAI(pt(2, 7));
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ◘     ☼\n" +
                 "☼       ☼\n" +
@@ -6347,8 +7186,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿     ☼\n" +
                 "☼       ☼\n" +
@@ -6359,8 +7200,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         dropAI(pt(3, 7));
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿    ☼\n" +
                 "☼       ☼\n" +
@@ -6371,8 +7214,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿    ☼\n" +
                 "☼       ☼\n" +
@@ -6383,10 +7228,13 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         dropAI(pt(4, 7));
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿   ☼\n" +
                 "☼       ☼\n" +
@@ -6396,12 +7244,14 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
+
         assertPrize("1 prizes with 4 heroes");
 
+        // when
         dropAI(pt(5, 7));
+        tick();
 
-        field().tick();
-
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ◘¿¿¿  ☼\n" +
                 "☼       ☼\n" +
@@ -6411,10 +7261,13 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
+
         assertPrize("2 prizes with 5 heroes");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿  ☼\n" +
                 "☼       ☼\n" +
@@ -6425,8 +7278,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿  ☼\n" +
                 "☼       ☼\n" +
@@ -6437,8 +7292,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿◘  ☼\n" +
                 "☼       ☼\n" +
@@ -6453,6 +7310,7 @@ public class GameTest extends AbstractGameTest {
     // в AI-танк с призами надо попасть 3 раза, чтобы убить
     @Test
     public void shouldKillAiPrizeInThreeHits() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -6463,6 +7321,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼◘    ☼\n" +
                 "☼     ☼\n" +
@@ -6471,9 +7330,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
                 "☼     ☼\n" +
@@ -6482,8 +7343,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -6492,9 +7355,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
                 "☼     ☼\n" +
@@ -6503,8 +7368,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -6513,9 +7380,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
                 "☼     ☼\n" +
@@ -6524,8 +7393,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -6534,8 +7405,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         verifyAllEvents("[KILL_AI]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -6549,6 +7422,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldMyBulletsRemovesWhenKillMe() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -6557,9 +7431,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˃   ˃☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -6568,9 +7444,11 @@ public class GameTest extends AbstractGameTest {
                 "☼˃   ˃☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO[1]]\n" +
                 "listener(1) => [HERO_DIED]\n");
@@ -6584,10 +7462,14 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertEquals(false, hero(1).isAlive());
-        field().tick();
 
+        // when
+        tick();
+
+        // when
         verifyAllEvents("");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -6599,6 +7481,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDropPrize_onlyInPointKilledAiPrize() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -6617,8 +7500,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -6627,8 +7512,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
                 "☼     ☼\n" +
@@ -6640,6 +7527,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDropPrize_inPointKilledAiPrize_underTree() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -6658,10 +7546,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).dontShoot = true;
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -6670,8 +7560,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -6680,8 +7572,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼1    ☼\n" +
@@ -6693,6 +7587,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDropPrize_InPointKilledAiPrize_onIce() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -6711,10 +7606,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).dontShoot = true;
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼¿    ☼\n" +
@@ -6723,8 +7620,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -6733,8 +7632,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼1    ☼\n" +
@@ -6747,6 +7648,7 @@ public class GameTest extends AbstractGameTest {
     // приз должен експайриться и исчезнуть через 2 тика, если его не подобрали
     @Test
     public void shouldExpirePrizeOnField_disappearTwoTicks() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 2);
 
@@ -6758,9 +7660,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
                 "☼     ☼\n" +
@@ -6769,8 +7673,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
                 "☼     ☼\n" +
@@ -6779,8 +7685,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6793,6 +7701,7 @@ public class GameTest extends AbstractGameTest {
     // приз должен експайриться и исчезнуть через 3 тика, если его не подобрали
     @Test
     public void shouldExpirePrizeOnField_disappearThreeTicks() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -6804,8 +7713,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -6814,8 +7725,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
                 "☼     ☼\n" +
@@ -6824,8 +7737,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
                 "☼     ☼\n" +
@@ -6834,8 +7749,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
                 "☼     ☼\n" +
@@ -6844,8 +7761,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6858,6 +7777,7 @@ public class GameTest extends AbstractGameTest {
     // приз должен експайриться и исчезнуть через 4 тика, если его не подобрали
     @Test
     public void shouldExpirePrizeOnField_disappearFourTicks() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 4);
 
@@ -6869,9 +7789,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
                 "☼     ☼\n" +
@@ -6880,8 +7802,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
                 "☼     ☼\n" +
@@ -6890,8 +7814,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
                 "☼     ☼\n" +
@@ -6900,8 +7826,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
                 "☼     ☼\n" +
@@ -6910,8 +7838,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6925,6 +7855,7 @@ public class GameTest extends AbstractGameTest {
     // после исчезновения приза видим дерево
     @Test
     public void shouldExpirePrizeOnField_disappearOnTree() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 2);
 
@@ -6944,10 +7875,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).dontShoot = true;
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -6956,8 +7889,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -6966,8 +7901,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼1    ☼\n" +
@@ -6976,8 +7913,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼!    ☼\n" +
@@ -6986,8 +7925,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -7001,6 +7942,7 @@ public class GameTest extends AbstractGameTest {
     // после исчезновения приза видим лед
     @Test
     public void shouldExpirePrizeOnField_disappearOnIce() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 2);
 
@@ -7020,10 +7962,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).dontShoot = true;
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼¿    ☼\n" +
@@ -7032,8 +7976,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -7042,8 +7988,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼1    ☼\n" +
@@ -7052,8 +8000,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼!    ☼\n" +
@@ -7062,8 +8012,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼#    ☼\n" +
@@ -7075,6 +8027,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroTookPrize() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7086,8 +8039,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7096,10 +8051,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_IMMORTALITY);
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7110,9 +8067,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7122,11 +8081,14 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -7138,6 +8100,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldOtherTookPrize() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7149,8 +8112,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7159,10 +8124,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_IMMORTALITY);
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7173,9 +8140,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7185,13 +8154,17 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[]");
+
         assertPrize(hero(1), "[PRIZE_IMMORTALITY]");
+
         verifyAllEvents(
                 "listener(1) => [CATCH_PRIZE[1]]\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼    ˄☼\n" +
@@ -7204,6 +8177,7 @@ public class GameTest extends AbstractGameTest {
     // герой берет приз под деревом - когда его видно под деревьями
     @Test
     public void shouldHeroTookPrize_underTree_caseShowMyHeroUnderTree() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3)
                 .bool(SHOW_MY_HERO_UNDER_TREE, true);
@@ -7216,10 +8190,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7228,10 +8204,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
         dice(DICE_IMMORTALITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7242,9 +8220,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7254,11 +8234,14 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -7271,6 +8254,7 @@ public class GameTest extends AbstractGameTest {
     // герой берет приз под деревом - когда его не видно под деревьями
     @Test
     public void shouldHeroTookPrize_underTree() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7282,10 +8266,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7294,10 +8280,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
         dice(DICE_IMMORTALITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7308,9 +8296,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7320,11 +8310,14 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -7336,6 +8329,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldOtherTookPrize_underTree() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7347,10 +8341,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7359,10 +8355,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
         dice(DICE_IMMORTALITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7373,9 +8371,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7385,13 +8385,17 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[]");
+
         assertPrize(hero(1), "[PRIZE_IMMORTALITY]");
+
         verifyAllEvents(
                 "listener(1) => [CATCH_PRIZE[1]]\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼    ˄☼\n" +
@@ -7403,6 +8407,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroTookPrize_onIce() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7414,10 +8419,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7429,8 +8436,9 @@ public class GameTest extends AbstractGameTest {
 
         ai(0).kill(mock(Bullet.class));
         dice(DICE_IMMORTALITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7441,9 +8449,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7453,11 +8463,14 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         verifyAllEvents("[CATCH_PRIZE[1]]");
+
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -7469,6 +8482,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldOtherTookPrize_onIce() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7480,10 +8494,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7492,10 +8508,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
         dice(DICE_IMMORTALITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7506,9 +8524,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7518,13 +8538,17 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[]");
+
         assertPrize(hero(1), "[PRIZE_IMMORTALITY]");
+
         verifyAllEvents(
                 "listener(1) => [CATCH_PRIZE[1]]\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼    ˄☼\n" +
@@ -7536,6 +8560,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldAiDontTookPrize() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7547,10 +8572,12 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
         ai(1).dontShoot = true;
         ai(1).up();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -7560,8 +8587,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         dice(DICE_IMMORTALITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼1    ☼\n" +
@@ -7570,9 +8598,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼?    ☼\n" +
@@ -7581,9 +8611,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼?    ☼\n" +
                 "☼1    ☼\n" +
@@ -7597,6 +8629,7 @@ public class GameTest extends AbstractGameTest {
     // то приз считается подобраным и не отбражается на филде
     @Test
     public void shouldHeroTookPrize_inPointKillAi() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7608,8 +8641,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7620,10 +8655,12 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         dice(DICE_IMMORTALITY);
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7633,11 +8670,14 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -7655,6 +8695,7 @@ public class GameTest extends AbstractGameTest {
     // если в момент подбора приза прилетает снаряд, то умирает танк, а приз остается
     @Test
     public void shouldKillHero_whenHeroTookPrizeAndComesBullet() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 6);
 
@@ -7666,8 +8707,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7676,11 +8719,13 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_IMMORTALITY);
         hero(0).up();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7691,10 +8736,12 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7704,13 +8751,16 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[]");
+
         verifyAllEvents(
                 "listener(0) => [HERO_DIED]\n" +
                 "listener(1) => [KILL_OTHER_HERO[1]]\n");
 
+        // when
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7719,9 +8769,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7732,9 +8784,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7744,12 +8798,15 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(1), "[PRIZE_IMMORTALITY]");
+
         verifyAllEvents(
                 "listener(1) => [CATCH_PRIZE[1]]\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼˄    ☼\n" +
@@ -7763,6 +8820,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroKillPrize() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7774,8 +8832,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -7784,10 +8844,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_IMMORTALITY);
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼1    ☼\n" +
@@ -7796,8 +8858,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼Ѡ    ☼\n" +
@@ -7806,8 +8870,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7823,6 +8889,7 @@ public class GameTest extends AbstractGameTest {
     // то приз не подбирается
     @Test
     public void shouldHeroKillPrize_dontTakeNextTick() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7834,8 +8901,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7844,9 +8913,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_IMMORTALITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7855,9 +8926,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7866,9 +8939,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -7878,11 +8953,13 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[]");
+
         verifyAllEvents("");
     }
 
     @Test
     public void shouldKilAIWithPrize_whenHitKillsIs2() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 2)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -7894,8 +8971,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).dontShoot = true;
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼◘    ☼\n" +
                 "☼     ☼\n" +
@@ -7904,10 +8983,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼¿    ☼\n" +
@@ -7916,9 +8997,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -7929,10 +9012,12 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         ai(0).down();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼¿    ☼\n" +
@@ -7943,9 +9028,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -7954,12 +9041,13 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        verifyAllEvents(
-                "[KILL_AI]");
+        verifyAllEvents("[KILL_AI]");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
                 "☼     ☼\n" +
@@ -7968,8 +9056,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -7983,6 +9073,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroTakePrize_shouldShootWithDelayAfterPrizeEnd() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 5)
@@ -7997,8 +9088,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ▲╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8007,9 +9100,11 @@ public class GameTest extends AbstractGameTest {
                 "☼ ▲╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_BREAKING_WALLS);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8020,9 +9115,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8032,11 +9129,14 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼ •   ☼\n" +
@@ -8045,9 +9145,11 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼ •   ☼\n" +
@@ -8056,9 +9158,11 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼ •   ☼\n" +
@@ -8067,9 +9171,11 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼ •   ☼\n" +
@@ -8078,9 +9184,11 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼ •   ☼\n" +
@@ -8089,9 +9197,11 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼ •   ☼\n" +
@@ -8100,10 +9210,12 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        //The impact of the prize ended. should stop shooting
+        // when
+        // The impact of the prize ended. should stop shooting
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8113,9 +9225,11 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8124,10 +9238,12 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        //should shoot now
+        // when
+        // should shoot now
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼ •   ☼\n" +
@@ -8136,10 +9252,12 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        //silence
+        // when
+        // silence
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8148,9 +9266,11 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8159,10 +9279,12 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        //and shoot again
+        // when
+        // and shoot again
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼ •   ☼\n" +
@@ -8171,10 +9293,12 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        //and silence
+        // when
+        // and silence
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8182,12 +9306,11 @@ public class GameTest extends AbstractGameTest {
                 "☼ ▲   ☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
-
     }
-
 
     @Test
     public void shouldHeroTakePrize_breakingWalls() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 10);
@@ -8200,8 +9323,10 @@ public class GameTest extends AbstractGameTest {
                 "☼ ▲╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8210,10 +9335,12 @@ public class GameTest extends AbstractGameTest {
                 "☼ ▲╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_BREAKING_WALLS);
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8224,9 +9351,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8236,12 +9365,15 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
+        // when
         hero(0).right();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8250,10 +9382,12 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ▲  ☼\n" +
@@ -8262,10 +9396,12 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8274,10 +9410,12 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).left();
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8289,6 +9427,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroTakePrizeEnemyWithoutPrize_breakingWalls() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5);
 
@@ -8300,8 +9439,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲ ˄  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8310,9 +9451,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲ ˄  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_BREAKING_WALLS);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8321,14 +9464,17 @@ public class GameTest extends AbstractGameTest {
                 "☼▲ ˄  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         hero(1).up();
-        field().tick();
+        tick();
 
         assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[2]]\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8337,10 +9483,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼• •  ☼\n" +
@@ -8349,8 +9497,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╩  ☼\n" +
                 "☼     ☼\n" +
@@ -8362,6 +9512,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroNotBreakingBorder_breakingWalls() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5);
 
@@ -8373,8 +9524,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8385,9 +9538,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         dice(DICE_BREAKING_WALLS);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8396,12 +9551,15 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
         assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8410,9 +9568,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼•    ☼\n" +
@@ -8421,8 +9581,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8431,9 +9593,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╬  ☼\n" +
                 "☼•    ☼\n" +
@@ -8442,8 +9606,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╬  ☼\n" +
                 "☼     ☼\n" +
@@ -8455,6 +9621,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldEndPrizeWorking_breakingWalls() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 1);
@@ -8467,8 +9634,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╬    ☼\n" +
@@ -8479,9 +9648,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         dice(DICE_BREAKING_WALLS);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╬    ☼\n" +
@@ -8490,10 +9661,13 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8504,9 +9678,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
@@ -8515,9 +9691,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼•    ☼\n" +
@@ -8526,8 +9704,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
                 "☼     ☼\n" +
@@ -8539,6 +9719,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroTakePrizeEnemyShootsHero_immortality() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5);
 
@@ -8550,8 +9731,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8560,11 +9743,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-
+        // when
         dice(DICE_IMMORTALITY);
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8575,10 +9759,12 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[1]]\n");
@@ -8591,9 +9777,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8602,8 +9790,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8617,6 +9807,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldEndPrizeWorkingEnemyShootsHero_immortality() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 3);
@@ -8629,8 +9820,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8639,11 +9832,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-
+        // when
         dice(DICE_IMMORTALITY);
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8654,11 +9848,14 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[1]]\n");
 
@@ -8670,9 +9867,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8681,8 +9880,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         verifyAllEvents("");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8693,9 +9894,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
-        field().tick();
+        // when
+        tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8706,9 +9909,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8717,8 +9922,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -8734,6 +9941,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroTakePrizeAiShootsHero_immortality() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5);
 
@@ -8745,8 +9953,10 @@ public class GameTest extends AbstractGameTest {
                 "☼?    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -8755,9 +9965,11 @@ public class GameTest extends AbstractGameTest {
                 "☼¿    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_IMMORTALITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
                 "☼     ☼\n" +
@@ -8766,9 +9978,11 @@ public class GameTest extends AbstractGameTest {
                 "☼¿    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
                 "☼▲    ☼\n" +
@@ -8779,9 +9993,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
@@ -8793,10 +10009,12 @@ public class GameTest extends AbstractGameTest {
                 "☼¿    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).up();
         ai(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
                 "☼     ☼\n" +
@@ -8805,8 +10023,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
                 "☼     ☼\n" +
@@ -8820,6 +10040,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldEndPrizeWorkingAiShootsHero_immortality() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 2);
@@ -8832,9 +10053,11 @@ public class GameTest extends AbstractGameTest {
                 "☼¿    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
         ai(1).dontShoot = true;
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -8843,9 +10066,11 @@ public class GameTest extends AbstractGameTest {
                 "☼¿    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_IMMORTALITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
                 "☼     ☼\n" +
@@ -8854,10 +10079,12 @@ public class GameTest extends AbstractGameTest {
                 "☼¿    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼!    ☼\n" +
                 "☼▲    ☼\n" +
@@ -8868,11 +10095,14 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_IMMORTALITY]");
+
         verifyAllEvents("[CATCH_PRIZE[1]]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8883,10 +10113,12 @@ public class GameTest extends AbstractGameTest {
                 "☼¿    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).up();
         ai(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
                 "☼     ☼\n" +
@@ -8895,9 +10127,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
                 "☼     ☼\n" +
@@ -8908,10 +10142,12 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         ai(0).up();
         ai(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8922,8 +10158,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
@@ -8939,6 +10177,7 @@ public class GameTest extends AbstractGameTest {
     // то продолжается движение вперед по старой команде на 1 тик.
     @Test
     public void shouldHeroSlidingOneTicks() {
+        // given
         settings().integer(SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -8953,9 +10192,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -8968,8 +10209,10 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -8987,6 +10230,7 @@ public class GameTest extends AbstractGameTest {
     // то продолжается движение по старой команде N тиков.
     @Test
     public void shouldHeroSlidingNTicks() {
+        // given
         settings().integer(SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -9001,9 +10245,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9016,10 +10262,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9032,10 +10280,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9048,10 +10298,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9064,10 +10316,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> RIGHT
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9085,6 +10339,7 @@ public class GameTest extends AbstractGameTest {
     // слушается команда N + 1 и опять занос N тиков
     @Test
     public void shouldHeroSlidingNTicks_andAgainSliding() {
+        // given
         settings().integer(SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -9099,9 +10354,11 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9114,10 +10371,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9130,10 +10389,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9146,10 +10407,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9162,10 +10425,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> RIGHT
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9178,10 +10443,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // UP -> RIGHT
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9194,10 +10461,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // UP -> RIGHT
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9210,10 +10479,12 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         // UP -> UP
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -9230,6 +10501,7 @@ public class GameTest extends AbstractGameTest {
     // если герой в ходе заноса уперся в стену, то занос прекращается
     @Test
     public void shouldHeroAndSliding_ifBumpedWall() {
+        // given
         settings().integer(SLIPPERINESS, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -9240,9 +10512,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼###  ☼\n" +
                 "☼#    ☼\n" +
@@ -9251,10 +10525,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼###  ☼\n" +
                 "☼▲    ☼\n" +
@@ -9263,10 +10539,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▲##  ☼\n" +
                 "☼#    ☼\n" +
@@ -9275,10 +10553,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> UP -> wall -> Canceled sliding
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▲##  ☼\n" +
                 "☼#    ☼\n" +
@@ -9287,10 +10567,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         // RIGHT -> RIGHT
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼#►#  ☼\n" +
                 "☼#    ☼\n" +
@@ -9302,6 +10584,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroCanGoIfRiverAtWay_whenHeroTakePrize() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 3);
@@ -9314,8 +10597,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼~    ☼\n" +
@@ -9324,9 +10609,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_WALKING_ON_WATER);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼~    ☼\n" +
@@ -9337,9 +10624,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼~    ☼\n" +
@@ -9348,8 +10637,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
+
+        // then
         verifyAllEvents("[CATCH_PRIZE[3]]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9360,9 +10652,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -9371,9 +10665,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
                 "☼~    ☼\n" +
@@ -9385,6 +10681,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroTakePrize_walkOnWater() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 3);
@@ -9397,8 +10694,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲ ˄  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼~~~  ☼\n" +
@@ -9407,11 +10706,13 @@ public class GameTest extends AbstractGameTest {
                 "☼▲ ˄  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_WALKING_ON_WATER);
         hero(0).up();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼~~~  ☼\n" +
@@ -9422,10 +10723,12 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER]");
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[3]]\n");
@@ -9438,10 +10741,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▲~~  ☼\n" +
@@ -9450,10 +10755,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼▲    ☼\n" +
                 "☼~~~  ☼\n" +
@@ -9466,6 +10773,7 @@ public class GameTest extends AbstractGameTest {
     // когда заканчивается действие приза движение по воде отключается
     @Test
     public void shouldHeroCanGoIfRiverAtWay_whenPrizeIsOver() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 2);
@@ -9478,8 +10786,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
                 "☼     ☼\n" +
@@ -9488,9 +10798,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_WALKING_ON_WATER);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
                 "☼     ☼\n" +
@@ -9501,9 +10813,11 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
                 "☼     ☼\n" +
@@ -9512,8 +10826,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
+
+        // then
         verifyAllEvents("[CATCH_PRIZE[3]]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9524,9 +10841,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
                 "☼▲    ☼\n" +
@@ -9535,18 +10854,20 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
         hero(0).up();
-        field().tick();
+        tick();
 
         hero(0).up();
-        field().tick();
+        tick();
 
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
                 "☼▲    ☼\n" +
@@ -9563,6 +10884,7 @@ public class GameTest extends AbstractGameTest {
     // пока танк не выйдет полностью из воды.
     @Test
     public void shouldHeroCanGoIfRiverAtWay_whenPrizeIsOver_butHeroOnWater() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PENALTY_WALKING_ON_WATER, 4)
@@ -9576,8 +10898,10 @@ public class GameTest extends AbstractGameTest {
                 "☼  ▲  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~~☼\n" +
@@ -9586,9 +10910,11 @@ public class GameTest extends AbstractGameTest {
                 "☼  ▲  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_WALKING_ON_WATER);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~~☼\n" +
@@ -9601,9 +10927,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~~☼\n" +
@@ -9613,11 +10941,14 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER]");
+
         verifyAllEvents("[CATCH_PRIZE[3]]");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~~☼\n" +
@@ -9628,9 +10959,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER]");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~▲~~☼\n" +
@@ -9641,11 +10974,13 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER]");
 
+        // when
         // действие приза закончилось
         // герой получает штраф 4 тика
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~▲~~☼\n" +
@@ -9656,9 +10991,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~▼~~☼\n" +
@@ -9669,9 +11006,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~◄~~☼\n" +
@@ -9682,9 +11021,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~►~~☼\n" +
@@ -9695,10 +11036,12 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         // штраф 4 тика закончился. Возможно перемещение
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~►~☼\n" +
@@ -9709,10 +11052,12 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         // штраф еще 4 тика, так как герой снова на воде
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~◄~☼\n" +
@@ -9723,9 +11068,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~▲~☼\n" +
@@ -9736,9 +11083,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~▼~☼\n" +
@@ -9749,9 +11098,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~►~☼\n" +
@@ -9762,10 +11113,12 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         // штраф 4 тика закончился. Возможно перемещение
         hero(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~►☼\n" +
@@ -9776,13 +11129,15 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         // штраф еще 4 тика, так как герой снова на воде
         hero(0).down();
-        field().tick();
-        field().tick();
-        field().tick();
-        field().tick();
+        tick();
+        tick();
+        tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~▼☼\n" +
@@ -9793,9 +11148,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~~☼\n" +
@@ -9806,10 +11163,12 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         // мы все так же на воде, а потому не можем двигаться 4 тика
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~~☼\n" +
@@ -9820,9 +11179,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         hero(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~~☼\n" +
@@ -9833,10 +11194,12 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         // но можем выехать на сушу, хоть штраф не закончился
         hero(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~~☼\n" +
@@ -9847,22 +11210,24 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize(hero(0), "[]");
 
+        // when
         // обратно заехать уже не можем как ни старайся
         hero(0).up();
-        field().tick();
+        tick();
 
         hero(0).up();
-        field().tick();
+        tick();
 
         hero(0).up();
-        field().tick();
+        tick();
 
         hero(0).up();
-        field().tick();
+        tick();
 
         hero(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
                 "☼~~~~~☼\n" +
@@ -9876,6 +11241,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroTakePrizeAndShootsEveryTick_breakingWalls() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 3)
@@ -9889,8 +11255,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲ ˄  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼     ☼\n" +
@@ -9899,9 +11267,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲ ˄  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_BREAKING_WALLS);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼     ☼\n" +
@@ -9912,11 +11282,14 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_BREAKING_WALLS]");
+
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[2]]\n");
 
@@ -9928,10 +11301,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
                 "☼• •  ☼\n" +
@@ -9940,10 +11315,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╩  ☼\n" +
                 "☼•    ☼\n" +
@@ -9952,10 +11329,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╩  ☼\n" +
                 "☼•    ☼\n" +
@@ -9964,10 +11343,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9978,10 +11359,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(1).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╨  ☼\n" +
                 "☼     ☼\n" +
@@ -9995,6 +11378,7 @@ public class GameTest extends AbstractGameTest {
     // после этого меняет направление и уезжает
     @Test
     public void shouldAiMoveAfterFiveTicks() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -10002,10 +11386,13 @@ public class GameTest extends AbstractGameTest {
                 "☼~   ▲☼\n" +
                 "☼?    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
+
+        // when
         ai(0).up();
         ai(0).dontMove = false;
         ai(0).dontShoot = false;
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -10014,8 +11401,10 @@ public class GameTest extends AbstractGameTest {
                 "☼◘    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -10024,8 +11413,10 @@ public class GameTest extends AbstractGameTest {
                 "☼?    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼•    ☼\n" +
                 "☼     ☼\n" +
@@ -10034,8 +11425,10 @@ public class GameTest extends AbstractGameTest {
                 "☼?    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -10044,8 +11437,10 @@ public class GameTest extends AbstractGameTest {
                 "☼?    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -10054,8 +11449,10 @@ public class GameTest extends AbstractGameTest {
                 "☼◘    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -10064,9 +11461,11 @@ public class GameTest extends AbstractGameTest {
                 "☼?    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(1);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -10080,6 +11479,7 @@ public class GameTest extends AbstractGameTest {
     // теперь все нормально
     @Test
     public void shouldDropAiOnIce() {
+        // given
         settings().integer(SLIPPERINESS, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -10090,9 +11490,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         field().getAiGenerator().drop(pt(1, 5));
         ai(0).dontShoot = true;
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼◘    ☼\n" +
                 "☼#    ☼\n" +
@@ -10101,9 +11503,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼#    ☼\n" +
                 "☼¿    ☼\n" +
@@ -10112,9 +11516,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼#    ☼\n" +
                 "☼#    ☼\n" +
@@ -10123,9 +11529,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼#    ☼\n" +
                 "☼#    ☼\n" +
@@ -10138,6 +11546,7 @@ public class GameTest extends AbstractGameTest {
     // мы не можем дропнуть танк на воду
     @Test
     public void shouldCantDropAiInRiver() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
                 "☼~    ☼\n" +
@@ -10146,9 +11555,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(2);
         dropAI(pt(1, 5));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~◘   ☼\n" +
                 "☼~    ☼\n" +
@@ -10157,9 +11568,11 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
                 "☼~¿   ☼\n" +
@@ -10169,10 +11582,11 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // если spawnAiPrize = 2, то должно быть 3 АИтанка с призами
-    // если aiPrizeLimit = 2, то будет на поле 2 АИтанка с призами
+    // если spawnAiPrize = 2, то должно быть 3 AIа с призами
+    // если aiPrizeLimit = 2, то будет на поле 2 AIа с призами
     @Test
     public void shouldSpawnTwoAiPrize() {
+        // given
         settings().integer(SPAWN_AI_PRIZE, 2)
                 .integer(AI_PRIZE_LIMIT, 2);
 
@@ -10196,16 +11610,19 @@ public class GameTest extends AbstractGameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertPrize("2 prizes with 7 heroes");
     }
 
-    // если spawnAiPrize = 2, то каждый второй АИтанк будет с призами
-    // если на поле уже лежит приз и есть один АИтанк с призом, то при aiPrizeLimit = 2,
-    // АИтанков с призами больше появляться не будет
+    // если spawnAiPrize = 2, то каждый второй AI будет с призами
+    // если на поле уже лежит приз и есть один AI с призом, то при aiPrizeLimit = 2,
+    // AIов с призами больше появляться не будет
     @Test
     public void shouldNotSpawnAiPrize_ifPrizeOnField() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(SPAWN_AI_PRIZE, 2)
@@ -10233,9 +11650,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize("2 prizes with 7 heroes");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼¿¿¿¿¿¿ ☼\n" +
                 "☼       ☼\n" +
@@ -10246,8 +11665,10 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼Ѡ¿¿¿¿¿ ☼\n" +
                 "☼       ☼\n" +
@@ -10258,8 +11679,10 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼1¿¿¿¿¿ ☼\n" +
                 "☼       ☼\n" +
@@ -10269,14 +11692,16 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
+
         verifyAllEvents("[KILL_AI]");
 
+        // when
         dropAI(pt(4, 6));
         dropAI(pt(5, 6));
         dropAI(pt(6, 6));
+        tick();
 
-        field().tick();
-
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼!¿◘¿¿¿ ☼\n" +
                 "☼   ¿¿¿ ☼\n" +
@@ -10292,6 +11717,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldSpawnAiPrize_ifKillPrize() {
+        // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(SPAWN_AI_PRIZE, 2)
@@ -10319,9 +11745,11 @@ public class GameTest extends AbstractGameTest {
 
         assertPrize("2 prizes with 7 heroes");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼¿¿¿¿¿¿ ☼\n" +
                 "☼       ☼\n" +
@@ -10332,8 +11760,10 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼Ѡ¿¿¿¿¿ ☼\n" +
                 "☼       ☼\n" +
@@ -10344,9 +11774,11 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼1¿¿¿¿¿ ☼\n" +
                 "☼       ☼\n" +
@@ -10356,10 +11788,13 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
+
         verifyAllEvents("[KILL_AI]");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼Ѡ¿◘¿¿¿ ☼\n" +
                 "☼       ☼\n" +
@@ -10370,8 +11805,10 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        field().tick();
+        // when
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿¿ ☼\n" +
                 "☼       ☼\n" +
@@ -10382,12 +11819,13 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         dropAI(pt(4, 6));
         dropAI(pt(5, 6));
         dropAI(pt(6, 6));
+        tick();
 
-        field().tick();
-
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿¿ ☼\n" +
                 "☼   ¿¿¿ ☼\n" +
@@ -10403,6 +11841,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void bulletWithTick0ShouldNotAffectHero(){
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -10415,11 +11854,13 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).fire();
         hero(0).up();
         hero(1).right();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -10435,6 +11876,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void bulletWithTick0ShouldNotAffectOtherBullet(){
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -10447,13 +11889,14 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).fire();
         hero(1).right();
         hero(0).up();
         hero(0).fire();
-        field().tick();
+        tick();
 
-
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -10469,6 +11912,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroTakePrizeAndSeeAiUnderTree_visibility() {
+        // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1);
 
@@ -10480,9 +11924,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
         ai(1).left();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10491,9 +11937,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_VISIBILITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10502,10 +11950,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10516,10 +11966,12 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_VISIBILITY]");
         verifyAllEvents("[CATCH_PRIZE[4]]");
 
@@ -10534,6 +11986,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldHeroTakePrizeAndSeeEnemyUnderTree_visibility() {
+        // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1);
 
@@ -10545,8 +11998,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10555,10 +12010,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_VISIBILITY);
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10567,9 +12024,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10578,10 +12037,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10592,11 +12053,14 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_VISIBILITY]");
+
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[4]]\n");
 
@@ -10611,6 +12075,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldEndPrizeWorkingDontSeeAiUnderTree_visibility() {
+        // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 2);
@@ -10623,9 +12088,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
         ai(1).left();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10634,9 +12101,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_VISIBILITY);
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10645,10 +12114,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10659,10 +12130,12 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
         ai(0).up();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_VISIBILITY]");
         verifyAllEvents("[CATCH_PRIZE[4]]");
 
@@ -10674,9 +12147,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  «% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10685,9 +12160,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  ¿% ☼\n" +
@@ -10696,9 +12173,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10712,6 +12191,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldEndPrizeWorkingDontSeeEnemyUnderTree_visibility() {
+        // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 2);
@@ -10724,8 +12204,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         ai(0).kill(mock(Bullet.class));
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10734,10 +12216,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲   ˄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         dice(DICE_VISIBILITY);
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10746,9 +12230,11 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10757,10 +12243,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).up();
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10771,10 +12259,12 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("");
 
+        // when
         hero(0).up();
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertPrize(hero(0), "[PRIZE_VISIBILITY]");
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[4]]\n");
@@ -10787,9 +12277,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).up();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %˄ ☼\n" +
                 "☼  %% ☼\n" +
@@ -10798,9 +12290,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).left();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ˂% ☼\n" +
                 "☼  %% ☼\n" +
@@ -10809,9 +12303,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(1).down();
-        field().tick();
+        tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
                 "☼  %% ☼\n" +

@@ -109,7 +109,7 @@ public class ScoresTest {
     }
 
     @Test
-    public void shouldKillOtherHero() {
+    public void shouldCollectScores_whenKillOtherHero() {
         // given
         givenScores(140);
 
@@ -139,7 +139,7 @@ public class ScoresTest {
     }
 
     @Test
-    public void shouldHeroDied() {
+    public void shouldCollectScores_whenHeroDied() {
         // given
         givenScores(140);
 
@@ -154,7 +154,7 @@ public class ScoresTest {
     }
 
     @Test
-    public void shouldOtherAI() {
+    public void shouldCollectScores_whenKillAI() {
         // given
         givenScores(140);
 

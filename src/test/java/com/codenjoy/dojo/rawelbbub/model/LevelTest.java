@@ -44,6 +44,7 @@ public class LevelTest {
 
     @Test
     public void test() {
+        // given
         GameRunner runner = new GameRunner();
         GameSettings settings = runner.getSettings();
         GamePlayer player = runner.createPlayer(mock(EventListener.class),
@@ -56,6 +57,7 @@ public class LevelTest {
         Printer printer = printerFactory.getPrinter(
                 game.reader(), player);
 
+        // when then
         assertEquals(
                 "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ◘    ¿    ¿        ¿    ◘    ¿ ☼\n" +

@@ -30,9 +30,9 @@ import java.util.function.Function;
 
 public class Event implements EventObject<Event.Type, Integer> {
 
-    public static final Event KILL_YOUR_TANK = new Event(Type.KILL_YOUR_TANK);
-    public static final Function<Integer, Event> KILL_OTHER_HERO_TANK = amount -> new Event(Type.KILL_OTHER_HERO_TANK, amount);
-    public static final Event KILL_OTHER_AI_TANK = new Event(Type.KILL_OTHER_AI_TANK);
+    public static final Event HERO_DIED = new Event(Type.HERO_DIED);
+    public static final Function<Integer, Event> KILL_OTHER_HERO = amount -> new Event(Type.KILL_OTHER_HERO, amount);
+    public static final Event KILL_AI = new Event(Type.KILL_AI);
     public static final Event START_ROUND = new Event(Type.START_ROUND);
     public static final Event WIN_ROUND = new Event(Type.WIN_ROUND);
     public static final Function<Integer, Event> CATCH_PRIZE = type -> new Event(Type.CATCH_PRIZE, type);
@@ -41,11 +41,14 @@ public class Event implements EventObject<Event.Type, Integer> {
     private int value;
 
     enum Type {
-        KILL_YOUR_TANK,
-        KILL_OTHER_HERO_TANK,
-        KILL_OTHER_AI_TANK,
+
         START_ROUND,
         WIN_ROUND,
+
+        KILL_OTHER_HERO,
+        KILL_AI,
+        HERO_DIED,
+
         CATCH_PRIZE
     }
 
@@ -64,7 +67,7 @@ public class Event implements EventObject<Event.Type, Integer> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event events = (Event) o;
-        if (isKillOtherHeroTank()) {
+        if (isKillOtherHero()) {
             return Objects.equals(type, events.type) &&
                     value == events.value;
         }
@@ -76,25 +79,25 @@ public class Event implements EventObject<Event.Type, Integer> {
         return Objects.hash(type);
     }
 
-    public boolean isKillYourTank() {
-        return type.equals(KILL_YOUR_TANK.type);
+    public boolean isHeroDied() {
+        return type.equals(HERO_DIED.type);
     }
 
     public boolean isCatchPrize() {
         return type.equals(CATCH_PRIZE.apply(1).type);
     }
 
-    public boolean isKillOtherHeroTank() {
-        return type.equals(KILL_OTHER_HERO_TANK.apply(1).type);
+    public boolean isKillOtherHero() {
+        return type.equals(KILL_OTHER_HERO.apply(1).type);
     }
 
-    public boolean isKillOtherAITank() {
-        return type.equals(KILL_OTHER_AI_TANK.type);
+    public boolean isKillAI() {
+        return type.equals(KILL_AI.type);
     }
 
     @Override
     public String toString() {
-        if (isKillOtherHeroTank() || isCatchPrize()) {
+        if (isKillOtherHero() || isCatchPrize()) {
             return String.format("%s[%s]", type, value);
         } else {
             return type.name();

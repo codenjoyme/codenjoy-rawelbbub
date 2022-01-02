@@ -108,8 +108,8 @@
 3: 2:
 3: 2:Scores: 0
 3: 2:Answer: RIGHT, ACT
-3: 2:Fire Event: KILL_YOUR_TANK
-3: 1:Fire Event: KILL_YOUR_TANK
+3: 2:Fire Event: HERO_DIED
+3: 1:Fire Event: HERO_DIED
 ------------------------------------------
 4: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 4: 1:☼             ☼
@@ -149,7 +149,7 @@
 4: 2:Answer: ACT
 4: 1:PLAYER_GAME_OVER -> START_NEW_GAME
 4: 2:PLAYER_GAME_OVER -> START_NEW_GAME
-4: 1:Fire Event: KILL_YOUR_TANK
+4: 1:Fire Event: HERO_DIED
 ------------------------------------------
 5: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 5: 1:☼             ☼
@@ -225,7 +225,7 @@
 6: 2:
 6: 2:Scores: 0
 6: 2:Answer: UP, ACT
-6: 2:Fire Event: KILL_OTHER_AI_TANK
+6: 2:Fire Event: KILL_AI
 ------------------------------------------
 7: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 7: 1:☼             ☼
@@ -337,8 +337,8 @@
 9: 2:
 9: 2:Scores: 25
 9: 2:Answer: RIGHT, ACT
-9: 1:Fire Event: KILL_YOUR_TANK
-9: 2:Fire Event: KILL_OTHER_HERO_TANK[1]
+9: 1:Fire Event: HERO_DIED
+9: 2:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 10: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 10: 1:☼       «    »☼
@@ -858,7 +858,7 @@
 23: 2:
 23: 2:Scores: 75
 23: 2:Answer: UP, ACT
-23: 1:Fire Event: KILL_OTHER_AI_TANK
+23: 1:Fire Event: KILL_AI
 ------------------------------------------
 24: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 24: 1:☼ «     »     ☼
@@ -1155,7 +1155,7 @@
 31: 2:
 31: 2:Scores: 75
 31: 2:Answer: UP, ACT
-31: 1:Fire Event: KILL_OTHER_AI_TANK
+31: 1:Fire Event: KILL_AI
 ------------------------------------------
 32: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 32: 1:☼    Ѡ«    Ѡ•»☼
@@ -1193,7 +1193,7 @@
 32: 2:
 32: 2:Scores: 75
 32: 2:Answer: UP, ACT
-32: 2:Fire Event: KILL_OTHER_AI_TANK
+32: 2:Fire Event: KILL_AI
 ------------------------------------------
 33: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 33: 1:☼    Ѡ   »••◘ ☼
@@ -1231,7 +1231,7 @@
 33: 2:
 33: 2:Scores: 100
 33: 2:Answer: UP, ACT
-33: 1:Fire Event: KILL_OTHER_AI_TANK
+33: 1:Fire Event: KILL_AI
 ------------------------------------------
 34: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 34: 1:☼  ? ˄    »Ѡ  ☼
@@ -1269,7 +1269,7 @@
 34: 2:
 34: 2:Scores: 100
 34: 2:Answer: LEFT, ACT
-34: 2:Fire Event: KILL_OTHER_AI_TANK
+34: 2:Fire Event: KILL_AI
 ------------------------------------------
 35: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 35: 1:☼«  Ѡ˂ ?   »  ☼
@@ -1344,7 +1344,7 @@
 36: 2:
 36: 2:Scores: 125
 36: 2:Answer: LEFT, ACT
-36: 2:Fire Event: KILL_OTHER_AI_TANK
+36: 2:Fire Event: KILL_AI
 ------------------------------------------
 37: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 37: 1:☼   •˂ Ѡ   2 »☼
@@ -1419,7 +1419,7 @@
 38: 2:
 38: 2:Scores: 150
 38: 2:Answer: LEFT, ACT
-38: 2:Fire Event: KILL_OTHER_AI_TANK
+38: 2:Fire Event: KILL_AI
 ------------------------------------------
 39: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 39: 1:☼ Ѡ •˂   • «  ☼
@@ -1457,7 +1457,7 @@
 39: 2:
 39: 2:Scores: 175
 39: 2:Answer: DOWN, ACT
-39: 2:Fire Event: KILL_OTHER_AI_TANK
+39: 2:Fire Event: KILL_AI
 ------------------------------------------
 40: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 40: 1:☼ •       Ѡ   ☼
@@ -1717,7 +1717,7 @@
 46: 2:
 46: 2:Scores: 200
 46: 2:Answer: RIGHT, ACT
-46: 2:Fire Event: KILL_OTHER_AI_TANK
+46: 2:Fire Event: KILL_AI
 ------------------------------------------
 47: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 47: 1:☼  Ѡ ˃•   Ѡ   ☼
@@ -1755,9 +1755,9 @@
 47: 2:
 47: 2:Scores: 225
 47: 2:Answer: DOWN, ACT
-47: 1:Fire Event: KILL_OTHER_AI_TANK
-47: 1:Fire Event: KILL_OTHER_AI_TANK
-47: 1:Fire Event: KILL_OTHER_AI_TANK
+47: 1:Fire Event: KILL_AI
+47: 1:Fire Event: KILL_AI
+47: 1:Fire Event: KILL_AI
 ------------------------------------------
 48: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 48: 1:☼       •◘    ☼
@@ -1795,7 +1795,7 @@
 48: 2:
 48: 2:Scores: 225
 48: 2:Answer: DOWN, ACT
-48: 2:Fire Event: KILL_OTHER_AI_TANK
+48: 2:Fire Event: KILL_AI
 ------------------------------------------
 49: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 49: 1:☼       Ѡ     ☼
@@ -1944,7 +1944,7 @@
 52: 2:
 52: 2:Scores: 250
 52: 2:Answer: DOWN, ACT
-52: 2:Fire Event: KILL_OTHER_AI_TANK
+52: 2:Fire Event: KILL_AI
 ------------------------------------------
 53: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 53: 1:☼             ☼
@@ -2019,8 +2019,8 @@
 54: 2:
 54: 2:Scores: 275
 54: 2:Answer: UP, ACT
-54: 1:Fire Event: KILL_YOUR_TANK
-54: 2:Fire Event: KILL_OTHER_HERO_TANK[2]
+54: 1:Fire Event: HERO_DIED
+54: 2:Fire Event: KILL_OTHER_HERO[2]
 ------------------------------------------
 55: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 55: 1:☼  ? Ѡ        ☼
@@ -2244,7 +2244,7 @@
 60: 2:
 60: 2:Scores: 375
 60: 2:Answer: DOWN, ACT
-60: 2:Fire Event: KILL_OTHER_AI_TANK
+60: 2:Fire Event: KILL_AI
 ------------------------------------------
 61: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 61: 1:☼ •        Ѡ  ☼
@@ -2319,7 +2319,7 @@
 62: 2:
 62: 2:Scores: 400
 62: 2:Answer: LEFT, ACT
-62: 1:Fire Event: KILL_YOUR_TANK
+62: 1:Fire Event: HERO_DIED
 ------------------------------------------
 63: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 63: 1:☼  •˂• Ѡ « !  ☼
@@ -2432,7 +2432,7 @@
 65: 2:
 65: 2:Scores: 400
 65: 2:Answer: DOWN, ACT
-65: 2:Fire Event: KILL_OTHER_AI_TANK
+65: 2:Fire Event: KILL_AI
 ------------------------------------------
 66: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 66: 1:☼  ˅  «      »☼
@@ -2470,8 +2470,8 @@
 66: 2:
 66: 2:Scores: 425
 66: 2:Answer: RIGHT, ACT
-66: 2:Fire Event: KILL_YOUR_TANK
-66: 2:Fire Event: KILL_OTHER_AI_TANK
+66: 2:Fire Event: HERO_DIED
+66: 2:Fire Event: KILL_AI
 ------------------------------------------
 67: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 67: 1:☼  ѠѠ  »      ☼
@@ -2510,8 +2510,8 @@
 67: 2:Scores: 440
 67: 2:Answer: ACT
 67: 2:PLAYER_GAME_OVER -> START_NEW_GAME
-67: 2:Fire Event: KILL_YOUR_TANK
-67: 1:Fire Event: KILL_OTHER_HERO_TANK[1]
+67: 2:Fire Event: HERO_DIED
+67: 1:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 68: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 68: 1:☼       »     ☼
@@ -2624,8 +2624,8 @@
 70: 2:
 70: 2:Scores: 430
 70: 2:Answer: DOWN, ACT
-70: 1:Fire Event: KILL_OTHER_AI_TANK
-70: 1:Fire Event: KILL_OTHER_AI_TANK
+70: 1:Fire Event: KILL_AI
+70: 1:Fire Event: KILL_AI
 ------------------------------------------
 71: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 71: 1:☼    «     »  ☼
@@ -2701,7 +2701,7 @@
 72: 2:
 72: 2:Scores: 430
 72: 2:Answer: ACT
-72: 2:Fire Event: KILL_OTHER_AI_TANK
+72: 2:Fire Event: KILL_AI
 ------------------------------------------
 73: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 73: 1:☼  «    » •  »☼
@@ -3036,8 +3036,8 @@
 81: 2:
 81: 2:Scores: 455
 81: 2:Answer: DOWN, ACT
-81: 2:Fire Event: KILL_OTHER_AI_TANK
-81: 2:Fire Event: KILL_OTHER_AI_TANK
+81: 2:Fire Event: KILL_AI
+81: 2:Fire Event: KILL_AI
 ------------------------------------------
 82: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 82: 1:☼       »  ? »☼
@@ -3297,7 +3297,7 @@
 88: 2:
 88: 2:Scores: 505
 88: 2:Answer: RIGHT, ACT
-88: 1:Fire Event: KILL_OTHER_AI_TANK
+88: 1:Fire Event: KILL_AI
 ------------------------------------------
 89: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 89: 1:☼    Ѡ        ☼
@@ -3372,7 +3372,7 @@
 90: 2:
 90: 2:Scores: 505
 90: 2:Answer: RIGHT, ACT
-90: 1:Fire Event: KILL_OTHER_AI_TANK
+90: 1:Fire Event: KILL_AI
 ------------------------------------------
 91: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 91: 1:☼  •◄         ☼
@@ -3410,7 +3410,7 @@
 91: 2:
 91: 2:Scores: 505
 91: 2:Answer: UP, ACT
-91: 2:Fire Event: KILL_OTHER_AI_TANK
+91: 2:Fire Event: KILL_AI
 ------------------------------------------
 92: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 92: 1:☼•   ►•?•«    ☼
@@ -3559,7 +3559,7 @@
 95: 2:
 95: 2:Scores: 530
 95: 2:Answer: LEFT, ACT
-95: 1:Fire Event: KILL_OTHER_AI_TANK
+95: 1:Fire Event: KILL_AI
 ------------------------------------------
 96: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 96: 1:☼•   ►•   Ѡ »«☼
@@ -3597,7 +3597,7 @@
 96: 2:
 96: 2:Scores: 530
 96: 2:Answer: RIGHT, ACT
-96: 2:Fire Event: KILL_OTHER_AI_TANK
+96: 2:Fire Event: KILL_AI
 ------------------------------------------
 97: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 97: 1:☼  •◄ Ѡ«  4«  ☼
@@ -3635,7 +3635,7 @@
 97: 2:
 97: 2:Scores: 555
 97: 2:Answer: LEFT, ACT
-97: 1:Fire Event: KILL_OTHER_AI_TANK
+97: 1:Fire Event: KILL_AI
 ------------------------------------------
 98: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 98: 1:☼•   ►Ѡ •«!   ☼
@@ -3673,7 +3673,7 @@
 98: 2:
 98: 2:Scores: 555
 98: 2:Answer: UP, ACT
-98: 1:Fire Event: KILL_OTHER_AI_TANK
+98: 1:Fire Event: KILL_AI
 ------------------------------------------
 99: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 99: 1:☼ •Ѡ◄ • « 4   ☼
@@ -3748,8 +3748,8 @@
 100: 2:
 100: 2:Scores: 555
 100: 2:Answer: UP, ACT
-100: 1:Fire Event: KILL_YOUR_TANK
-100: 1:Fire Event: KILL_OTHER_AI_TANK
+100: 1:Fire Event: HERO_DIED
+100: 1:Fire Event: KILL_AI
 ------------------------------------------
 101: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 101: 1:☼  Ѡ  «       ☼
@@ -3862,7 +3862,7 @@
 103: 2:
 103: 2:Scores: 555
 103: 2:Answer: UP, ACT
-103: 1:Fire Event: KILL_OTHER_AI_TANK
+103: 1:Fire Event: KILL_AI
 ------------------------------------------
 104: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 104: 1:☼        »    ☼
@@ -3937,7 +3937,7 @@
 105: 2:
 105: 2:Scores: 555
 105: 2:Answer: DOWN, ACT
-105: 1:Fire Event: KILL_OTHER_AI_TANK
+105: 1:Fire Event: KILL_AI
 ------------------------------------------
 106: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 106: 1:☼   » •    Ѡ« ☼
@@ -4049,7 +4049,7 @@
 108: 2:
 108: 2:Scores: 555
 108: 2:Answer: UP, ACT
-108: 2:Fire Event: KILL_OTHER_AI_TANK
+108: 2:Fire Event: KILL_AI
 ------------------------------------------
 109: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 109: 1:☼      » Ѡ    ☼
@@ -4161,8 +4161,8 @@
 111: 2:
 111: 2:Scores: 580
 111: 2:Answer: RIGHT, ACT
-111: 2:Fire Event: KILL_YOUR_TANK
-111: 2:Fire Event: KILL_OTHER_AI_TANK
+111: 2:Fire Event: HERO_DIED
+111: 2:Fire Event: KILL_AI
 ------------------------------------------
 112: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 112: 1:☼  «  ◘ ѠѠ    ☼
@@ -4497,8 +4497,8 @@
 120: 2:
 120: 2:Scores: 595
 120: 2:Answer: DOWN, ACT
-120: 2:Fire Event: KILL_YOUR_TANK
-120: 1:Fire Event: KILL_OTHER_HERO_TANK[1]
+120: 2:Fire Event: HERO_DIED
+120: 1:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 121: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 121: 1:☼       ◘ •   ☼
@@ -4648,7 +4648,7 @@
 124: 2:
 124: 2:Scores: 585
 124: 2:Answer: UP, ACT
-124: 2:Fire Event: KILL_OTHER_AI_TANK
+124: 2:Fire Event: KILL_AI
 ------------------------------------------
 125: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 125: 1:☼•          ◘ ☼
@@ -4835,10 +4835,10 @@
 129: 2:
 129: 2:Scores: 610
 129: 2:Answer: UP, ACT
-129: 1:Fire Event: KILL_OTHER_AI_TANK
-129: 1:Fire Event: KILL_OTHER_AI_TANK
-129: 1:Fire Event: KILL_OTHER_AI_TANK
-129: 2:Fire Event: KILL_OTHER_AI_TANK
+129: 1:Fire Event: KILL_AI
+129: 1:Fire Event: KILL_AI
+129: 1:Fire Event: KILL_AI
+129: 2:Fire Event: KILL_AI
 ------------------------------------------
 130: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 130: 1:☼  «   ?•«    ☼
@@ -4913,7 +4913,7 @@
 131: 2:
 131: 2:Scores: 635
 131: 2:Answer: UP, ACT
-131: 1:Fire Event: KILL_OTHER_AI_TANK
+131: 1:Fire Event: KILL_AI
 ------------------------------------------
 132: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 132: 1:☼Ѡ   ◘        ☼
@@ -4951,7 +4951,7 @@
 132: 2:
 132: 2:Scores: 635
 132: 2:Answer: UP, ACT
-132: 2:Fire Event: KILL_OTHER_AI_TANK
+132: 2:Fire Event: KILL_AI
 ------------------------------------------
 133: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 133: 1:☼•  «  Ѡ«     ☼
@@ -5212,7 +5212,7 @@
 139: 2:
 139: 2:Scores: 660
 139: 2:Answer: RIGHT, ACT
-139: 2:Fire Event: KILL_OTHER_AI_TANK
+139: 2:Fire Event: KILL_AI
 ------------------------------------------
 140: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 140: 1:☼•        ˃Ѡ  ☼
@@ -5250,7 +5250,7 @@
 140: 2:
 140: 2:Scores: 685
 140: 2:Answer: RIGHT, ACT
-140: 2:Fire Event: KILL_OTHER_AI_TANK
+140: 2:Fire Event: KILL_AI
 ------------------------------------------
 141: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 141: 1:☼•        ˃Ѡ Ѡ☼
@@ -5288,7 +5288,7 @@
 141: 2:
 141: 2:Scores: 710
 141: 2:Answer: RIGHT, ACT
-141: 1:Fire Event: KILL_OTHER_AI_TANK
+141: 1:Fire Event: KILL_AI
 141: 2:Fire Event: CATCH_PRIZE[2]
 ------------------------------------------
 142: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
@@ -5327,7 +5327,7 @@
 142: 2:
 142: 2:Scores: 710
 142: 2:Answer: DOWN, ACT
-142: 2:Fire Event: KILL_OTHER_AI_TANK
+142: 2:Fire Event: KILL_AI
 ------------------------------------------
 143: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 143: 1:☼  »•      ˅  ☼
@@ -5513,7 +5513,7 @@
 147: 2:
 147: 2:Scores: 735
 147: 2:Answer: RIGHT, ACT
-147: 2:Fire Event: KILL_OTHER_AI_TANK
+147: 2:Fire Event: KILL_AI
 ------------------------------------------
 148: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 148: 1:☼       Ѡ   ˃•☼
@@ -5699,7 +5699,7 @@
 152: 2:
 152: 2:Scores: 760
 152: 2:Answer: LEFT, ACT
-152: 2:Fire Event: KILL_OTHER_AI_TANK
+152: 2:Fire Event: KILL_AI
 ------------------------------------------
 153: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 153: 1:☼         Ѡ˂  ☼
@@ -5737,7 +5737,7 @@
 153: 2:
 153: 2:Scores: 785
 153: 2:Answer: LEFT, ACT
-153: 2:Fire Event: KILL_OTHER_AI_TANK
+153: 2:Fire Event: KILL_AI
 153: 2:Fire Event: CATCH_PRIZE[1]
 ------------------------------------------
 154: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
@@ -5776,7 +5776,7 @@
 154: 2:
 154: 2:Scores: 810
 154: 2:Answer: LEFT, ACT
-154: 2:Fire Event: KILL_OTHER_AI_TANK
+154: 2:Fire Event: KILL_AI
 ------------------------------------------
 155: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 155: 1:☼ •«     Ѡ˂   ☼
@@ -5926,8 +5926,8 @@
 158: 2:
 158: 2:Scores: 835
 158: 2:Answer: LEFT, ACT
-158: 1:Fire Event: KILL_OTHER_AI_TANK
-158: 1:Fire Event: KILL_OTHER_AI_TANK
+158: 1:Fire Event: KILL_AI
+158: 1:Fire Event: KILL_AI
 ------------------------------------------
 159: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 159: 1:☼• » ◘ •˂     ☼
@@ -5965,10 +5965,10 @@
 159: 2:
 159: 2:Scores: 835
 159: 2:Answer: RIGHT, ACT
-159: 1:Fire Event: KILL_OTHER_AI_TANK
-159: 1:Fire Event: KILL_YOUR_TANK
-159: 1:Fire Event: KILL_OTHER_AI_TANK
-159: 1:Fire Event: KILL_OTHER_AI_TANK
+159: 1:Fire Event: KILL_AI
+159: 1:Fire Event: HERO_DIED
+159: 1:Fire Event: KILL_AI
+159: 1:Fire Event: KILL_AI
 ------------------------------------------
 160: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 160: 1:☼   »Ѡ   ˃•   ☼
@@ -6044,7 +6044,7 @@
 161: 2:
 161: 2:Scores: 835
 161: 2:Answer: RIGHT, ACT
-161: 1:Fire Event: KILL_OTHER_AI_TANK
+161: 1:Fire Event: KILL_AI
 ------------------------------------------
 162: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 162: 1:☼»«  •   ˃•   ☼
@@ -6119,7 +6119,7 @@
 163: 2:
 163: 2:Scores: 835
 163: 2:Answer: UP, ACT
-163: 1:Fire Event: KILL_OTHER_AI_TANK
+163: 1:Fire Event: KILL_AI
 ------------------------------------------
 164: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 164: 1:☼  » »   ˄    ☼
@@ -6195,7 +6195,7 @@
 165: 2:
 165: 2:Scores: 835
 165: 2:Answer: RIGHT, ACT
-165: 1:Fire Event: KILL_OTHER_AI_TANK
+165: 1:Fire Event: KILL_AI
 ------------------------------------------
 166: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 166: 1:☼  ? » Ѡ ˃•   ☼
@@ -6233,7 +6233,7 @@
 166: 2:
 166: 2:Scores: 835
 166: 2:Answer: LEFT, ACT
-166: 2:Fire Event: KILL_OTHER_AI_TANK
+166: 2:Fire Event: KILL_AI
 ------------------------------------------
 167: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 167: 1:☼     » Ѡ˂  • ☼
@@ -6271,8 +6271,8 @@
 167: 2:
 167: 2:Scores: 860
 167: 2:Answer: LEFT, ACT
-167: 1:Fire Event: KILL_OTHER_AI_TANK
-167: 1:Fire Event: KILL_OTHER_AI_TANK
+167: 1:Fire Event: KILL_AI
+167: 1:Fire Event: KILL_AI
 167: 2:Fire Event: CATCH_PRIZE[3]
 ------------------------------------------
 168: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
@@ -6311,7 +6311,7 @@
 168: 2:
 168: 2:Scores: 860
 168: 2:Answer: RIGHT, ACT
-168: 2:Fire Event: KILL_OTHER_AI_TANK
+168: 2:Fire Event: KILL_AI
 ------------------------------------------
 169: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 169: 1:☼    ▲ Ѡ ˃Ѡ«  ☼
@@ -6423,7 +6423,7 @@
 171: 2:
 171: 2:Scores: 885
 171: 2:Answer: RIGHT, ACT
-171: 2:Fire Event: KILL_OTHER_AI_TANK
+171: 2:Fire Event: KILL_AI
 ------------------------------------------
 172: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 172: 1:☼  •◄   •  ˃Ѡ ☼
@@ -6461,7 +6461,7 @@
 172: 2:
 172: 2:Scores: 910
 172: 2:Answer: DOWN, ACT
-172: 2:Fire Event: KILL_OTHER_AI_TANK
+172: 2:Fire Event: KILL_AI
 ------------------------------------------
 173: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 173: 1:☼•   ►•   •˅2 ☼
@@ -6499,9 +6499,9 @@
 173: 2:
 173: 2:Scores: 935
 173: 2:Answer: RIGHT, ACT
-173: 1:Fire Event: KILL_OTHER_AI_TANK
-173: 2:Fire Event: KILL_YOUR_TANK
-173: 1:Fire Event: KILL_OTHER_HERO_TANK[1]
+173: 1:Fire Event: KILL_AI
+173: 2:Fire Event: HERO_DIED
+173: 1:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 174: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 174: 1:☼Ѡ •◄   •   Ѡ•☼
@@ -6577,9 +6577,9 @@
 175: 2:
 175: 2:Scores: 925
 175: 2:Answer: UP, ACT
-175: 2:Fire Event: KILL_YOUR_TANK
-175: 1:Fire Event: KILL_OTHER_HERO_TANK[2]
-175: 1:Fire Event: KILL_OTHER_AI_TANK
+175: 2:Fire Event: HERO_DIED
+175: 1:Fire Event: KILL_OTHER_HERO[2]
+175: 1:Fire Event: KILL_AI
 ------------------------------------------
 176: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 176: 1:☼       •  Ѡ  ☼
@@ -6618,7 +6618,7 @@
 176: 2:Scores: 915
 176: 2:Answer: ACT
 176: 2:PLAYER_GAME_OVER -> START_NEW_GAME
-176: 1:Fire Event: KILL_OTHER_AI_TANK
+176: 1:Fire Event: KILL_AI
 ------------------------------------------
 177: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 177: 1:☼    ▲   Ѡ«   ☼
@@ -6730,7 +6730,7 @@
 179: 2:
 179: 2:Scores: 915
 179: 2:Answer: DOWN, ACT
-179: 1:Fire Event: KILL_OTHER_AI_TANK
+179: 1:Fire Event: KILL_AI
 ------------------------------------------
 180: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 180: 1:☼  •◄   Ѡ1»   ☼
@@ -6768,7 +6768,7 @@
 180: 2:
 180: 2:Scores: 915
 180: 2:Answer: RIGHT, ACT
-180: 2:Fire Event: KILL_OTHER_AI_TANK
+180: 2:Fire Event: KILL_AI
 ------------------------------------------
 181: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 181: 1:☼•   ►•    »  ☼
@@ -6843,7 +6843,7 @@
 182: 2:
 182: 2:Scores: 940
 182: 2:Answer: RIGHT, ACT
-182: 1:Fire Event: KILL_OTHER_AI_TANK
+182: 1:Fire Event: KILL_AI
 ------------------------------------------
 183: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 183: 1:☼•   ►•   Ѡ •»☼
@@ -6918,7 +6918,7 @@
 184: 2:
 184: 2:Scores: 940
 184: 2:Answer: UP, ACT
-184: 2:Fire Event: KILL_YOUR_TANK
+184: 2:Fire Event: HERO_DIED
 ------------------------------------------
 185: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 185: 1:☼•   ►• Ѡ «   ☼
@@ -6994,8 +6994,8 @@
 186: 2:
 186: 2:Scores: 930
 186: 2:Answer: UP, ACT
-186: 1:Fire Event: KILL_OTHER_AI_TANK
-186: 1:Fire Event: KILL_OTHER_AI_TANK
+186: 1:Fire Event: KILL_AI
+186: 1:Fire Event: KILL_AI
 ------------------------------------------
 187: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 187: 1:☼  Ѡ ►• Ѡ     ☼
@@ -7107,8 +7107,8 @@
 189: 2:
 189: 2:Scores: 930
 189: 2:Answer: DOWN, ACT
-189: 1:Fire Event: KILL_OTHER_AI_TANK
-189: 2:Fire Event: KILL_OTHER_AI_TANK
+189: 1:Fire Event: KILL_AI
+189: 2:Fire Event: KILL_AI
 ------------------------------------------
 190: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 190: 1:☼«   ►Ѡ       ☼
@@ -7183,7 +7183,7 @@
 191: 2:
 191: 2:Scores: 955
 191: 2:Answer: DOWN, ACT
-191: 1:Fire Event: KILL_OTHER_AI_TANK
+191: 1:Fire Event: KILL_AI
 ------------------------------------------
 192: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 192: 1:☼  Ѡ ►Ѡ       ☼
@@ -7258,8 +7258,8 @@
 193: 2:
 193: 2:Scores: 955
 193: 2:Answer: DOWN, ACT
-193: 1:Fire Event: KILL_YOUR_TANK
-193: 1:Fire Event: KILL_OTHER_AI_TANK
+193: 1:Fire Event: HERO_DIED
+193: 1:Fire Event: KILL_AI
 ------------------------------------------
 194: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 194: 1:☼   ѠѠ   •    ☼
@@ -7594,8 +7594,8 @@
 202: 2:
 202: 2:Scores: 955
 202: 2:Answer: LEFT, ACT
-202: 1:Fire Event: KILL_OTHER_AI_TANK
-202: 2:Fire Event: KILL_OTHER_AI_TANK
+202: 1:Fire Event: KILL_AI
+202: 2:Fire Event: KILL_AI
 ------------------------------------------
 203: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 203: 1:☼             ☼
@@ -7818,7 +7818,7 @@
 208: 2:
 208: 2:Scores: 980
 208: 2:Answer: UP, ACT
-208: 2:Fire Event: KILL_OTHER_AI_TANK
+208: 2:Fire Event: KILL_AI
 ------------------------------------------
 209: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 209: 1:☼     «  «    ☼
@@ -7856,7 +7856,7 @@
 209: 2:
 209: 2:Scores: 1005
 209: 2:Answer: UP, ACT
-209: 2:Fire Event: KILL_OTHER_AI_TANK
+209: 2:Fire Event: KILL_AI
 209: 2:Fire Event: CATCH_PRIZE[3]
 ------------------------------------------
 210: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
@@ -8006,7 +8006,7 @@
 213: 2:
 213: 2:Scores: 1030
 213: 2:Answer: UP, ACT
-213: 1:Fire Event: KILL_OTHER_AI_TANK
+213: 1:Fire Event: KILL_AI
 ------------------------------------------
 214: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 214: 1:☼      ?  »   ☼
@@ -8155,7 +8155,7 @@
 217: 2:
 217: 2:Scores: 1030
 217: 2:Answer: RIGHT, ACT
-217: 2:Fire Event: KILL_OTHER_AI_TANK
+217: 2:Fire Event: KILL_AI
 ------------------------------------------
 218: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 218: 1:☼   »      »« ☼
@@ -8304,10 +8304,10 @@
 221: 2:
 221: 2:Scores: 1055
 221: 2:Answer: UP, ACT
-221: 1:Fire Event: KILL_YOUR_TANK
-221: 2:Fire Event: KILL_OTHER_HERO_TANK[1]
-221: 2:Fire Event: KILL_YOUR_TANK
-221: 1:Fire Event: KILL_OTHER_HERO_TANK[1]
+221: 1:Fire Event: HERO_DIED
+221: 2:Fire Event: KILL_OTHER_HERO[1]
+221: 2:Fire Event: HERO_DIED
+221: 1:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 222: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 222: 1:☼   « « Ѡ« •  ☼
@@ -8421,7 +8421,7 @@
 224: 2:
 224: 2:Scores: 1095
 224: 2:Answer: UP, ACT
-224: 2:Fire Event: KILL_OTHER_AI_TANK
+224: 2:Fire Event: KILL_AI
 ------------------------------------------
 225: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 225: 1:☼«   «      » ☼
@@ -8497,7 +8497,7 @@
 226: 2:
 226: 2:Scores: 1120
 226: 2:Answer: DOWN, ACT
-226: 1:Fire Event: KILL_OTHER_AI_TANK
+226: 1:Fire Event: KILL_AI
 ------------------------------------------
 227: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 227: 1:☼  «        « ☼
@@ -8535,8 +8535,8 @@
 227: 2:
 227: 2:Scores: 1120
 227: 2:Answer: RIGHT, ACT
-227: 1:Fire Event: KILL_YOUR_TANK
-227: 2:Fire Event: KILL_OTHER_HERO_TANK[1]
+227: 1:Fire Event: HERO_DIED
+227: 2:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 228: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 228: 1:☼ «    ◘   «  ☼
@@ -8612,7 +8612,7 @@
 229: 2:
 229: 2:Scores: 1170
 229: 2:Answer: UP, ACT
-229: 1:Fire Event: KILL_YOUR_TANK
+229: 1:Fire Event: HERO_DIED
 ------------------------------------------
 230: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 230: 1:☼       »«    ☼
@@ -8725,7 +8725,7 @@
 232: 2:
 232: 2:Scores: 1170
 232: 2:Answer: DOWN, ACT
-232: 2:Fire Event: KILL_OTHER_AI_TANK
+232: 2:Fire Event: KILL_AI
 ------------------------------------------
 233: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 233: 1:☼  ? «        ☼
@@ -8874,7 +8874,7 @@
 236: 2:
 236: 2:Scores: 1195
 236: 2:Answer: DOWN, ACT
-236: 2:Fire Event: KILL_OTHER_AI_TANK
+236: 2:Fire Event: KILL_AI
 ------------------------------------------
 237: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 237: 1:☼«  •   «     ☼
@@ -8949,7 +8949,7 @@
 238: 2:
 238: 2:Scores: 1220
 238: 2:Answer: LEFT, ACT
-238: 2:Fire Event: KILL_OTHER_AI_TANK
+238: 2:Fire Event: KILL_AI
 ------------------------------------------
 239: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 239: 1:☼     «       ☼
@@ -8987,7 +8987,7 @@
 239: 2:
 239: 2:Scores: 1245
 239: 2:Answer: UP, ACT
-239: 1:Fire Event: KILL_OTHER_AI_TANK
+239: 1:Fire Event: KILL_AI
 ------------------------------------------
 240: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 240: 1:☼    Ѡ        ☼
@@ -9247,7 +9247,7 @@
 246: 2:
 246: 2:Scores: 1245
 246: 2:Answer: DOWN, ACT
-246: 2:Fire Event: KILL_OTHER_AI_TANK
+246: 2:Fire Event: KILL_AI
 ------------------------------------------
 247: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 247: 1:☼•   ►•   •   ☼
@@ -9285,7 +9285,7 @@
 247: 2:
 247: 2:Scores: 1270
 247: 2:Answer: UP, ACT
-247: 1:Fire Event: KILL_OTHER_AI_TANK
+247: 1:Fire Event: KILL_AI
 ------------------------------------------
 248: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 248: 1:☼  •◄  Ѡ•   • ☼
@@ -9323,7 +9323,7 @@
 248: 2:
 248: 2:Scores: 1270
 248: 2:Answer: UP, ACT
-248: 2:Fire Event: KILL_OTHER_AI_TANK
+248: 2:Fire Event: KILL_AI
 ------------------------------------------
 249: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 249: 1:☼•   ►Ѡ«      ☼
@@ -9361,7 +9361,7 @@
 249: 2:
 249: 2:Scores: 1295
 249: 2:Answer: UP, ACT
-249: 1:Fire Event: KILL_OTHER_AI_TANK
+249: 1:Fire Event: KILL_AI
 ------------------------------------------
 250: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 250: 1:☼    ►Ѡ    »• ☼
@@ -9436,7 +9436,7 @@
 251: 2:
 251: 2:Scores: 1295
 251: 2:Answer: DOWN, ACT
-251: 2:Fire Event: KILL_OTHER_AI_TANK
+251: 2:Fire Event: KILL_AI
 ------------------------------------------
 252: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 252: 1:☼•   ►•?     »☼
@@ -9474,7 +9474,7 @@
 252: 2:
 252: 2:Scores: 1320
 252: 2:Answer: UP, ACT
-252: 1:Fire Event: KILL_OTHER_AI_TANK
+252: 1:Fire Event: KILL_AI
 ------------------------------------------
 253: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 253: 1:☼  •◄ Ѡ       ☼
@@ -9549,7 +9549,7 @@
 254: 2:
 254: 2:Scores: 1320
 254: 2:Answer: UP, ACT
-254: 1:Fire Event: KILL_OTHER_AI_TANK
+254: 1:Fire Event: KILL_AI
 ------------------------------------------
 255: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 255: 1:☼  Ѡ◄ Ѡ «     ☼
@@ -9624,8 +9624,8 @@
 256: 2:
 256: 2:Scores: 1320
 256: 2:Answer: UP, ACT
-256: 1:Fire Event: KILL_OTHER_AI_TANK
-256: 1:Fire Event: KILL_OTHER_AI_TANK
+256: 1:Fire Event: KILL_AI
+256: 1:Fire Event: KILL_AI
 ------------------------------------------
 257: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 257: 1:☼•    Ѡ       ☼
@@ -9737,8 +9737,8 @@
 259: 2:
 259: 2:Scores: 1320
 259: 2:Answer: RIGHT, ACT
-259: 2:Fire Event: KILL_YOUR_TANK
-259: 1:Fire Event: KILL_OTHER_HERO_TANK[1]
+259: 2:Fire Event: HERO_DIED
+259: 1:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 260: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 260: 1:☼       »  •  ☼
@@ -9888,8 +9888,8 @@
 263: 2:
 263: 2:Scores: 1310
 263: 2:Answer: RIGHT, ACT
-263: 2:Fire Event: KILL_YOUR_TANK
-263: 1:Fire Event: KILL_OTHER_HERO_TANK[2]
+263: 2:Fire Event: HERO_DIED
+263: 1:Fire Event: KILL_OTHER_HERO[2]
 ------------------------------------------
 264: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 264: 1:☼           » ☼
@@ -10150,7 +10150,7 @@
 270: 2:
 270: 2:Scores: 1300
 270: 2:Answer: LEFT, ACT
-270: 1:Fire Event: KILL_OTHER_AI_TANK
+270: 1:Fire Event: KILL_AI
 ------------------------------------------
 271: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 271: 1:☼ •   «     « ☼
@@ -10484,7 +10484,7 @@
 279: 2:
 279: 2:Scores: 1300
 279: 2:Answer: RIGHT, ACT
-279: 1:Fire Event: KILL_OTHER_AI_TANK
+279: 1:Fire Event: KILL_AI
 ------------------------------------------
 280: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 280: 1:☼  ▼    •«    ☼
@@ -10633,7 +10633,7 @@
 283: 2:
 283: 2:Scores: 1300
 283: 2:Answer: RIGHT, ACT
-283: 1:Fire Event: KILL_OTHER_AI_TANK
+283: 1:Fire Event: KILL_AI
 ------------------------------------------
 284: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 284: 1:☼ •◄ Ѡ        ☼
@@ -10856,7 +10856,7 @@
 289: 2:
 289: 2:Scores: 1300
 289: 2:Answer: RIGHT, ACT
-289: 2:Fire Event: KILL_OTHER_AI_TANK
+289: 2:Fire Event: KILL_AI
 ------------------------------------------
 290: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 290: 1:☼ •◄   •   •  ☼
@@ -10894,8 +10894,8 @@
 290: 2:
 290: 2:Scores: 1325
 290: 2:Answer: LEFT, ACT
-290: 1:Fire Event: KILL_YOUR_TANK
-290: 1:Fire Event: KILL_OTHER_AI_TANK
+290: 1:Fire Event: HERO_DIED
+290: 1:Fire Event: KILL_AI
 ------------------------------------------
 291: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 291: 1:☼   ѠѠ   •   •☼
@@ -11008,8 +11008,8 @@
 293: 2:
 293: 2:Scores: 1325
 293: 2:Answer: RIGHT, ACT
-293: 1:Fire Event: KILL_YOUR_TANK
-293: 1:Fire Event: KILL_OTHER_AI_TANK
+293: 1:Fire Event: HERO_DIED
+293: 1:Fire Event: KILL_AI
 ------------------------------------------
 294: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 294: 1:☼          ?  ☼
@@ -11122,7 +11122,7 @@
 296: 2:
 296: 2:Scores: 1325
 296: 2:Answer: LEFT, ACT
-296: 1:Fire Event: KILL_OTHER_AI_TANK
+296: 1:Fire Event: KILL_AI
 ------------------------------------------
 297: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 297: 1:☼     •«      ☼
@@ -11197,7 +11197,7 @@
 298: 2:
 298: 2:Scores: 1325
 298: 2:Answer: LEFT, ACT
-298: 1:Fire Event: KILL_YOUR_TANK
+298: 1:Fire Event: HERO_DIED
 ------------------------------------------
 299: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 299: 1:☼ •  «     » •☼
@@ -11384,7 +11384,7 @@
 303: 2:
 303: 2:Scores: 1325
 303: 2:Answer: RIGHT, ACT
-303: 1:Fire Event: KILL_OTHER_AI_TANK
+303: 1:Fire Event: KILL_AI
 ------------------------------------------
 304: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 304: 1:☼ ◘           ☼
@@ -11422,9 +11422,9 @@
 304: 2:
 304: 2:Scores: 1325
 304: 2:Answer: LEFT, ACT
-304: 1:Fire Event: KILL_YOUR_TANK
-304: 2:Fire Event: KILL_OTHER_HERO_TANK[1]
-304: 1:Fire Event: KILL_OTHER_AI_TANK
+304: 1:Fire Event: HERO_DIED
+304: 2:Fire Event: KILL_OTHER_HERO[1]
+304: 1:Fire Event: KILL_AI
 ------------------------------------------
 305: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 305: 1:☼  »  •«      ☼
@@ -11648,7 +11648,7 @@
 310: 2:
 310: 2:Scores: 1375
 310: 2:Answer: LEFT, ACT
-310: 1:Fire Event: KILL_OTHER_AI_TANK
+310: 1:Fire Event: KILL_AI
 ------------------------------------------
 311: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 311: 1:☼   ◘  ?  » • ☼
@@ -11798,7 +11798,7 @@
 314: 2:
 314: 2:Scores: 1375
 314: 2:Answer: LEFT, ACT
-314: 2:Fire Event: KILL_OTHER_AI_TANK
+314: 2:Fire Event: KILL_AI
 ------------------------------------------
 315: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 315: 1:☼       »  »  ☼
@@ -12206,7 +12206,7 @@
 325: 2:
 325: 2:Scores: 1400
 325: 2:Answer: RIGHT, ACT
-325: 2:Fire Event: KILL_OTHER_AI_TANK
+325: 2:Fire Event: KILL_AI
 ------------------------------------------
 326: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 326: 1:☼ »Ѡ          ☼
@@ -12244,7 +12244,7 @@
 326: 2:
 326: 2:Scores: 1425
 326: 2:Answer: LEFT, ACT
-326: 2:Fire Event: KILL_OTHER_AI_TANK
+326: 2:Fire Event: KILL_AI
 ------------------------------------------
 327: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 327: 1:☼  » »•       ☼
@@ -12430,8 +12430,8 @@
 331: 2:
 331: 2:Scores: 1450
 331: 2:Answer: UP, ACT
-331: 1:Fire Event: KILL_YOUR_TANK
-331: 2:Fire Event: KILL_OTHER_HERO_TANK[2]
+331: 1:Fire Event: HERO_DIED
+331: 2:Fire Event: KILL_OTHER_HERO[2]
 ------------------------------------------
 332: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 332: 1:☼      «  ◘   ☼
@@ -12470,8 +12470,8 @@
 332: 2:Scores: 1550
 332: 2:Answer: UP, ACT
 332: 1:PLAYER_GAME_OVER -> START_NEW_GAME
-332: 2:Fire Event: KILL_OTHER_AI_TANK
-332: 2:Fire Event: KILL_OTHER_AI_TANK
+332: 2:Fire Event: KILL_AI
+332: 2:Fire Event: KILL_AI
 ------------------------------------------
 333: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 333: 1:☼     «  «    ☼
@@ -12546,8 +12546,8 @@
 334: 2:
 334: 2:Scores: 1600
 334: 2:Answer: RIGHT, ACT
-334: 1:Fire Event: KILL_YOUR_TANK
-334: 2:Fire Event: KILL_OTHER_HERO_TANK[3]
+334: 1:Fire Event: HERO_DIED
+334: 2:Fire Event: KILL_OTHER_HERO[3]
 ------------------------------------------
 335: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 335: 1:☼   «    »    ☼
@@ -12661,7 +12661,7 @@
 337: 2:
 337: 2:Scores: 1750
 337: 2:Answer: UP, ACT
-337: 1:Fire Event: KILL_OTHER_AI_TANK
+337: 1:Fire Event: KILL_AI
 ------------------------------------------
 338: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 338: 1:☼   •Ѡ◄     » ☼
@@ -12736,7 +12736,7 @@
 339: 2:
 339: 2:Scores: 1750
 339: 2:Answer: UP, ACT
-339: 1:Fire Event: KILL_OTHER_AI_TANK
+339: 1:Fire Event: KILL_AI
 ------------------------------------------
 340: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 340: 1:☼    Ѡ◄   •   ☼
@@ -12774,9 +12774,9 @@
 340: 2:
 340: 2:Scores: 1750
 340: 2:Answer: UP, ACT
-340: 1:Fire Event: KILL_YOUR_TANK
-340: 2:Fire Event: KILL_OTHER_HERO_TANK[4]
-340: 2:Fire Event: KILL_OTHER_HERO_TANK[5]
+340: 1:Fire Event: HERO_DIED
+340: 2:Fire Event: KILL_OTHER_HERO[4]
+340: 2:Fire Event: KILL_OTHER_HERO[5]
 ------------------------------------------
 341: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 341: 1:☼   •Ѡ      • ☼
@@ -13001,7 +13001,7 @@
 346: 2:
 346: 2:Scores: 2200
 346: 2:Answer: LEFT, ACT
-346: 1:Fire Event: KILL_YOUR_TANK
+346: 1:Fire Event: HERO_DIED
 ------------------------------------------
 347: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 347: 1:☼  •˂   •   • ☼
@@ -13040,8 +13040,8 @@
 347: 2:Scores: 2200
 347: 2:Answer: RIGHT, ACT
 347: 1:PLAYER_GAME_OVER -> START_NEW_GAME
-347: 1:Fire Event: KILL_YOUR_TANK
-347: 2:Fire Event: KILL_OTHER_HERO_TANK[6]
+347: 1:Fire Event: HERO_DIED
+347: 2:Fire Event: KILL_OTHER_HERO[6]
 ------------------------------------------
 348: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 348: 1:☼Ѡ   ˃•   Ѡ   ☼
@@ -13117,9 +13117,9 @@
 349: 2:
 349: 2:Scores: 2500
 349: 2:Answer: RIGHT, ACT
-349: 1:Fire Event: KILL_YOUR_TANK
-349: 2:Fire Event: KILL_OTHER_HERO_TANK[7]
-349: 2:Fire Event: KILL_OTHER_AI_TANK
+349: 1:Fire Event: HERO_DIED
+349: 2:Fire Event: KILL_OTHER_HERO[7]
+349: 2:Fire Event: KILL_AI
 ------------------------------------------
 350: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 350: 1:☼Ѡ   ˃•   Ѡ•  ☼
@@ -13158,7 +13158,7 @@
 350: 2:Scores: 2875
 350: 2:Answer: LEFT, ACT
 350: 1:PLAYER_GAME_OVER -> START_NEW_GAME
-350: 2:Fire Event: KILL_OTHER_AI_TANK
+350: 2:Fire Event: KILL_AI
 ------------------------------------------
 351: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 351: 1:☼  •˂  Ѡ•     ☼
@@ -13233,7 +13233,7 @@
 352: 2:
 352: 2:Scores: 2900
 352: 2:Answer: RIGHT, ACT
-352: 2:Fire Event: KILL_OTHER_AI_TANK
+352: 2:Fire Event: KILL_AI
 ------------------------------------------
 353: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 353: 1:☼    ˃Ѡ «  ?  ☼
@@ -13456,7 +13456,7 @@
 358: 2:
 358: 2:Scores: 2925
 358: 2:Answer: RIGHT, ACT
-358: 2:Fire Event: KILL_OTHER_AI_TANK
+358: 2:Fire Event: KILL_AI
 ------------------------------------------
 359: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 359: 1:☼•   ˃Ѡ    »• ☼
@@ -13531,7 +13531,7 @@
 360: 2:
 360: 2:Scores: 2950
 360: 2:Answer: RIGHT, ACT
-360: 2:Fire Event: KILL_OTHER_AI_TANK
+360: 2:Fire Event: KILL_AI
 ------------------------------------------
 361: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 361: 1:☼•   ˃Ѡ      »☼
@@ -13791,7 +13791,7 @@
 367: 2:
 367: 2:Scores: 2975
 367: 2:Answer: LEFT, ACT
-367: 2:Fire Event: KILL_OTHER_AI_TANK
+367: 2:Fire Event: KILL_AI
 ------------------------------------------
 368: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 368: 1:☼  Ѡ˂   •   • ☼
@@ -14236,7 +14236,7 @@
 379: 2:
 379: 2:Scores: 3000
 379: 2:Answer: UP, ACT
-379: 2:Fire Event: KILL_OTHER_AI_TANK
+379: 2:Fire Event: KILL_AI
 ------------------------------------------
 380: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 380: 1:☼    Ѡ        ☼
@@ -14348,7 +14348,7 @@
 382: 2:
 382: 2:Scores: 3025
 382: 2:Answer: RIGHT, ACT
-382: 2:Fire Event: KILL_YOUR_TANK
+382: 2:Fire Event: HERO_DIED
 ------------------------------------------
 383: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 383: 1:☼Ѡ   Ѡ• «•    ☼
@@ -14572,7 +14572,7 @@
 388: 2:
 388: 2:Scores: 3015
 388: 2:Answer: UP, ACT
-388: 1:Fire Event: KILL_OTHER_AI_TANK
+388: 1:Fire Event: KILL_AI
 ------------------------------------------
 389: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 389: 1:☼Ѡ       «    ☼
@@ -14684,7 +14684,7 @@
 391: 2:
 391: 2:Scores: 3015
 391: 2:Answer: DOWN, ACT
-391: 2:Fire Event: KILL_OTHER_AI_TANK
+391: 2:Fire Event: KILL_AI
 ------------------------------------------
 392: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 392: 1:☼•   •«•  « « ☼
@@ -14833,7 +14833,7 @@
 395: 2:
 395: 2:Scores: 3040
 395: 2:Answer: DOWN, ACT
-395: 2:Fire Event: KILL_OTHER_AI_TANK
+395: 2:Fire Event: KILL_AI
 ------------------------------------------
 396: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 396: 1:☼        »    ☼
@@ -14982,8 +14982,8 @@
 399: 2:
 399: 2:Scores: 3065
 399: 2:Answer: DOWN, ACT
-399: 2:Fire Event: KILL_OTHER_AI_TANK
-399: 1:Fire Event: KILL_OTHER_AI_TANK
+399: 2:Fire Event: KILL_AI
+399: 1:Fire Event: KILL_AI
 ------------------------------------------
 400: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 400: 1:☼   » •    ? Ѡ☼
@@ -15058,7 +15058,7 @@
 401: 2:
 401: 2:Scores: 3090
 401: 2:Answer: DOWN, ACT
-401: 2:Fire Event: KILL_OTHER_AI_TANK
+401: 2:Fire Event: KILL_AI
 ------------------------------------------
 402: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 402: 1:☼»«  »    •  Ѡ☼
@@ -15429,7 +15429,7 @@
 411: 2:
 411: 2:Scores: 3115
 411: 2:Answer: DOWN, ACT
-411: 1:Fire Event: KILL_OTHER_AI_TANK
+411: 1:Fire Event: KILL_AI
 ------------------------------------------
 412: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 412: 1:☼      ?   «  ☼
@@ -15541,7 +15541,7 @@
 414: 2:
 414: 2:Scores: 3115
 414: 2:Answer: UP, ACT
-414: 1:Fire Event: KILL_OTHER_AI_TANK
+414: 1:Fire Event: KILL_AI
 ------------------------------------------
 415: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 415: 1:☼«    «  »    ☼
@@ -15653,7 +15653,7 @@
 417: 2:
 417: 2:Scores: 3115
 417: 2:Answer: DOWN, ACT
-417: 2:Fire Event: KILL_OTHER_AI_TANK
+417: 2:Fire Event: KILL_AI
 ------------------------------------------
 418: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 418: 1:☼  «  «      Ѡ☼
@@ -15691,7 +15691,7 @@
 418: 2:
 418: 2:Scores: 3140
 418: 2:Answer: UP, ACT
-418: 2:Fire Event: KILL_OTHER_AI_TANK
+418: 2:Fire Event: KILL_AI
 ------------------------------------------
 419: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 419: 1:☼ «  «   »•  •☼
@@ -15766,8 +15766,8 @@
 420: 2:
 420: 2:Scores: 3165
 420: 2:Answer: UP, ACT
-420: 1:Fire Event: KILL_YOUR_TANK
-420: 1:Fire Event: KILL_OTHER_AI_TANK
+420: 1:Fire Event: HERO_DIED
+420: 1:Fire Event: KILL_AI
 ------------------------------------------
 421: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 421: 1:☼  «• «    »  ☼
@@ -15843,7 +15843,7 @@
 422: 2:
 422: 2:Scores: 3165
 422: 2:Answer: UP, ACT
-422: 2:Fire Event: KILL_OTHER_AI_TANK
+422: 2:Fire Event: KILL_AI
 ------------------------------------------
 423: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 423: 1:☼  »Ѡ        Ѡ☼
@@ -16584,7 +16584,7 @@
 442: 2:
 442: 2:Scores: 3190
 442: 2:Answer: UP, ACT
-442: 2:Fire Event: KILL_OTHER_AI_TANK
+442: 2:Fire Event: KILL_AI
 ------------------------------------------
 443: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 443: 1:☼          » •☼
@@ -16992,7 +16992,7 @@
 453: 2:
 453: 2:Scores: 3215
 453: 2:Answer: DOWN, ACT
-453: 1:Fire Event: KILL_OTHER_AI_TANK
+453: 1:Fire Event: KILL_AI
 ------------------------------------------
 454: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 454: 1:☼?»Ѡ◄   »     ☼
@@ -17030,8 +17030,8 @@
 454: 2:
 454: 2:Scores: 3215
 454: 2:Answer: UP, ACT
-454: 1:Fire Event: KILL_YOUR_TANK
-454: 1:Fire Event: KILL_OTHER_AI_TANK
+454: 1:Fire Event: HERO_DIED
+454: 1:Fire Event: KILL_AI
 ------------------------------------------
 455: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 455: 1:☼Ѡ ѠѠ«   »   •☼
@@ -17144,7 +17144,7 @@
 457: 2:
 457: 2:Scores: 3215
 457: 2:Answer: DOWN, ACT
-457: 2:Fire Event: KILL_OTHER_AI_TANK
+457: 2:Fire Event: KILL_AI
 ------------------------------------------
 458: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 458: 1:☼ «Ѡ  «      »☼
@@ -17330,9 +17330,9 @@
 462: 2:
 462: 2:Scores: 3240
 462: 2:Answer: ACT
-462: 2:Fire Event: KILL_OTHER_AI_TANK
-462: 2:Fire Event: KILL_OTHER_AI_TANK
-462: 2:Fire Event: KILL_OTHER_AI_TANK
+462: 2:Fire Event: KILL_AI
+462: 2:Fire Event: KILL_AI
+462: 2:Fire Event: KILL_AI
 ------------------------------------------
 463: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 463: 1:☼             ☼
@@ -17407,8 +17407,8 @@
 464: 2:
 464: 2:Scores: 3315
 464: 2:Answer: ACT
-464: 1:Fire Event: KILL_YOUR_TANK
-464: 2:Fire Event: KILL_OTHER_HERO_TANK[1]
+464: 1:Fire Event: HERO_DIED
+464: 2:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 465: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 465: 1:☼  » • ?   ?  ☼
@@ -17521,7 +17521,7 @@
 467: 2:
 467: 2:Scores: 3365
 467: 2:Answer: DOWN, ACT
-467: 1:Fire Event: KILL_OTHER_AI_TANK
+467: 1:Fire Event: KILL_AI
 ------------------------------------------
 468: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 468: 1:☼     »  »•   ☼
@@ -17596,7 +17596,7 @@
 469: 2:
 469: 2:Scores: 3365
 469: 2:Answer: DOWN, ACT
-469: 1:Fire Event: KILL_YOUR_TANK
+469: 1:Fire Event: HERO_DIED
 ------------------------------------------
 470: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 470: 1:☼     «  »•   ☼
@@ -17635,7 +17635,7 @@
 470: 2:Scores: 3365
 470: 2:Answer: UP, ACT
 470: 1:PLAYER_GAME_OVER -> START_NEW_GAME
-470: 2:Fire Event: KILL_OTHER_AI_TANK
+470: 2:Fire Event: KILL_AI
 ------------------------------------------
 471: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 471: 1:☼    ▲ »  » • ☼
@@ -17673,7 +17673,7 @@
 471: 2:
 471: 2:Scores: 3390
 471: 2:Answer: DOWN, ACT
-471: 1:Fire Event: KILL_OTHER_AI_TANK
+471: 1:Fire Event: KILL_AI
 ------------------------------------------
 472: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 472: 1:☼    ►Ѡ ?  »  ☼
@@ -17748,7 +17748,7 @@
 473: 2:
 473: 2:Scores: 3390
 473: 2:Answer: DOWN, ACT
-473: 1:Fire Event: KILL_OTHER_AI_TANK
+473: 1:Fire Event: KILL_AI
 ------------------------------------------
 474: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 474: 1:☼•   ►Ѡ      »☼
@@ -17860,7 +17860,7 @@
 476: 2:
 476: 2:Scores: 3390
 476: 2:Answer: UP, ACT
-476: 1:Fire Event: KILL_OTHER_AI_TANK
+476: 1:Fire Event: KILL_AI
 ------------------------------------------
 477: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 477: 1:☼  •◄   Ѡ ◘  •☼
@@ -18009,7 +18009,7 @@
 480: 2:
 480: 2:Scores: 3390
 480: 2:Answer: UP, ACT
-480: 1:Fire Event: KILL_OTHER_AI_TANK
+480: 1:Fire Event: KILL_AI
 ------------------------------------------
 481: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 481: 1:☼  Ѡ►Ѡ       •☼
@@ -18122,7 +18122,7 @@
 483: 2:
 483: 2:Scores: 3390
 483: 2:Answer: DOWN, ACT
-483: 2:Fire Event: KILL_OTHER_AI_TANK
+483: 2:Fire Event: KILL_AI
 ------------------------------------------
 484: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 484: 1:☼Ѡ   ►•«     Ѡ☼
@@ -18197,7 +18197,7 @@
 485: 2:
 485: 2:Scores: 3415
 485: 2:Answer: DOWN, ACT
-485: 1:Fire Event: KILL_OTHER_AI_TANK
+485: 1:Fire Event: KILL_AI
 ------------------------------------------
 486: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 486: 1:☼•   ►Ѡ   •   ☼
@@ -18309,7 +18309,7 @@
 488: 2:
 488: 2:Scores: 3415
 488: 2:Answer: UP, ACT
-488: 1:Fire Event: KILL_OTHER_AI_TANK
+488: 1:Fire Event: KILL_AI
 ------------------------------------------
 489: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 489: 1:☼  «  Ѡ•  » ••☼
@@ -18421,7 +18421,7 @@
 491: 2:
 491: 2:Scores: 3415
 491: 2:Answer: DOWN, ACT
-491: 1:Fire Event: KILL_OTHER_AI_TANK
+491: 1:Fire Event: KILL_AI
 ------------------------------------------
 492: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 492: 1:☼ ѠѠ◄        »☼
@@ -18533,7 +18533,7 @@
 494: 2:
 494: 2:Scores: 3415
 494: 2:Answer: UP, ACT
-494: 2:Fire Event: KILL_OTHER_AI_TANK
+494: 2:Fire Event: KILL_AI
 ------------------------------------------
 495: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 495: 1:☼   ►•        ☼
@@ -18608,7 +18608,7 @@
 496: 2:
 496: 2:Scores: 3440
 496: 2:Answer: UP, ACT
-496: 1:Fire Event: KILL_OTHER_AI_TANK
+496: 1:Fire Event: KILL_AI
 ------------------------------------------
 497: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 497: 1:☼        •    ☼
@@ -18684,7 +18684,7 @@
 498: 2:
 498: 2:Scores: 3440
 498: 2:Answer: UP, ACT
-498: 2:Fire Event: KILL_OTHER_AI_TANK
+498: 2:Fire Event: KILL_AI
 ------------------------------------------
 499: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 499: 1:☼   • «      •☼
@@ -18722,7 +18722,7 @@
 499: 2:
 499: 2:Scores: 3465
 499: 2:Answer: DOWN, ACT
-499: 2:Fire Event: KILL_OTHER_AI_TANK
+499: 2:Fire Event: KILL_AI
 ------------------------------------------
 500: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 500: 1:☼ •  «        ☼
@@ -18760,8 +18760,8 @@
 500: 2:
 500: 2:Scores: 3490
 500: 2:Answer: UP, ACT
-500: 1:Fire Event: KILL_OTHER_AI_TANK
-500: 1:Fire Event: KILL_OTHER_AI_TANK
+500: 1:Fire Event: KILL_AI
+500: 1:Fire Event: KILL_AI
 ------------------------------------------
 501: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 501: 1:☼   «▲   »•   ☼
@@ -18799,7 +18799,7 @@
 501: 2:
 501: 2:Scores: 3490
 501: 2:Answer: DOWN, ACT
-501: 1:Fire Event: KILL_OTHER_AI_TANK
+501: 1:Fire Event: KILL_AI
 ------------------------------------------
 502: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 502: 1:☼  Ѡ◄     ѠѠ  ☼
@@ -18874,7 +18874,7 @@
 503: 2:
 503: 2:Scores: 3490
 503: 2:Answer: DOWN, ACT
-503: 1:Fire Event: KILL_OTHER_AI_TANK
+503: 1:Fire Event: KILL_AI
 ------------------------------------------
 504: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 504: 1:☼  ▼        » ☼
@@ -18949,7 +18949,7 @@
 505: 2:
 505: 2:Scores: 3490
 505: 2:Answer: DOWN, ACT
-505: 1:Fire Event: KILL_OTHER_AI_TANK
+505: 1:Fire Event: KILL_AI
 ------------------------------------------
 506: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 506: 1:☼      Ѡ      ☼
@@ -19024,7 +19024,7 @@
 507: 2:
 507: 2:Scores: 3490
 507: 2:Answer: DOWN, ACT
-507: 2:Fire Event: KILL_OTHER_AI_TANK
+507: 2:Fire Event: KILL_AI
 ------------------------------------------
 508: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 508: 1:☼     ◘?      ☼
@@ -19210,7 +19210,7 @@
 512: 2:
 512: 2:Scores: 3515
 512: 2:Answer: UP, ACT
-512: 1:Fire Event: KILL_OTHER_AI_TANK
+512: 1:Fire Event: KILL_AI
 ------------------------------------------
 513: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 513: 1:☼«•      Ѡ  »Ѡ☼
@@ -19285,7 +19285,7 @@
 514: 2:
 514: 2:Scores: 3515
 514: 2:Answer: UP, ACT
-514: 1:Fire Event: KILL_OTHER_AI_TANK
+514: 1:Fire Event: KILL_AI
 ------------------------------------------
 515: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 515: 1:☼     ▲     «•☼
@@ -19360,7 +19360,7 @@
 516: 2:
 516: 2:Scores: 3515
 516: 2:Answer: UP, ACT
-516: 1:Fire Event: KILL_OTHER_AI_TANK
+516: 1:Fire Event: KILL_AI
 ------------------------------------------
 517: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 517: 1:☼       Ѡ «  •☼
@@ -19435,7 +19435,7 @@
 518: 2:
 518: 2:Scores: 3515
 518: 2:Answer: UP, ACT
-518: 1:Fire Event: KILL_OTHER_AI_TANK
+518: 1:Fire Event: KILL_AI
 ------------------------------------------
 519: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 519: 1:☼       «    •☼
@@ -19510,7 +19510,7 @@
 520: 2:
 520: 2:Scores: 3515
 520: 2:Answer: UP, ACT
-520: 1:Fire Event: KILL_OTHER_AI_TANK
+520: 1:Fire Event: KILL_AI
 ------------------------------------------
 521: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 521: 1:☼     Ѡ◄     •☼
@@ -19622,7 +19622,7 @@
 523: 2:
 523: 2:Scores: 3515
 523: 2:Answer: ACT
-523: 1:Fire Event: KILL_OTHER_AI_TANK
+523: 1:Fire Event: KILL_AI
 ------------------------------------------
 524: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 524: 1:☼   •   ►Ѡ    ☼
@@ -19956,7 +19956,7 @@
 532: 2:
 532: 2:Scores: 3515
 532: 2:Answer: DOWN, ACT
-532: 1:Fire Event: KILL_OTHER_AI_TANK
+532: 1:Fire Event: KILL_AI
 ------------------------------------------
 533: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 533: 1:☼   Ѡ   •◄   •☼
@@ -20031,7 +20031,7 @@
 534: 2:
 534: 2:Scores: 3515
 534: 2:Answer: DOWN, ACT
-534: 1:Fire Event: KILL_OTHER_AI_TANK
+534: 1:Fire Event: KILL_AI
 ------------------------------------------
 535: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 535: 1:☼   •   •◄ Ѡ  ☼
@@ -20069,7 +20069,7 @@
 535: 2:
 535: 2:Scores: 3515
 535: 2:Answer: UP, ACT
-535: 1:Fire Event: KILL_OTHER_AI_TANK
+535: 1:Fire Event: KILL_AI
 ------------------------------------------
 536: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 536: 1:☼ •   •      •☼
@@ -20255,7 +20255,7 @@
 540: 2:
 540: 2:Scores: 3515
 540: 2:Answer: DOWN, ACT
-540: 1:Fire Event: KILL_YOUR_TANK
+540: 1:Fire Event: HERO_DIED
 ------------------------------------------
 541: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 541: 1:☼Ѡ      «Ѡ    ☼
@@ -20294,8 +20294,8 @@
 541: 2:Scores: 3515
 541: 2:Answer: UP, ACT
 541: 1:PLAYER_GAME_OVER -> START_NEW_GAME
-541: 1:Fire Event: KILL_YOUR_TANK
-541: 2:Fire Event: KILL_OTHER_HERO_TANK[2]
+541: 1:Fire Event: HERO_DIED
+541: 2:Fire Event: KILL_OTHER_HERO[2]
 ------------------------------------------
 542: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 542: 1:☼      «    »Ѡ☼
@@ -20371,7 +20371,7 @@
 543: 2:
 543: 2:Scores: 3615
 543: 2:Answer: DOWN, ACT
-543: 2:Fire Event: KILL_OTHER_AI_TANK
+543: 2:Fire Event: KILL_AI
 ------------------------------------------
 544: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 544: 1:☼    «        ☼
@@ -20853,10 +20853,10 @@
 556: 2:
 556: 2:Scores: 3640
 556: 2:Answer: LEFT, ACT
-556: 1:Fire Event: KILL_YOUR_TANK
-556: 2:Fire Event: KILL_OTHER_HERO_TANK[3]
-556: 2:Fire Event: KILL_YOUR_TANK
-556: 1:Fire Event: KILL_OTHER_HERO_TANK[1]
+556: 1:Fire Event: HERO_DIED
+556: 2:Fire Event: KILL_OTHER_HERO[3]
+556: 2:Fire Event: HERO_DIED
+556: 1:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 557: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 557: 1:☼      » •    ☼
@@ -21007,7 +21007,7 @@
 560: 2:
 560: 2:Scores: 3780
 560: 2:Answer: RIGHT, ACT
-560: 1:Fire Event: KILL_YOUR_TANK
+560: 1:Fire Event: HERO_DIED
 ------------------------------------------
 561: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 561: 1:☼          »  ☼
@@ -21157,7 +21157,7 @@
 564: 2:
 564: 2:Scores: 3780
 564: 2:Answer: RIGHT, ACT
-564: 1:Fire Event: KILL_OTHER_AI_TANK
+564: 1:Fire Event: KILL_AI
 ------------------------------------------
 565: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 565: 1:☼  •   ►•  Ѡ  ☼
@@ -21232,7 +21232,7 @@
 566: 2:
 566: 2:Scores: 3780
 566: 2:Answer: RIGHT, ACT
-566: 1:Fire Event: KILL_OTHER_AI_TANK
+566: 1:Fire Event: KILL_AI
 ------------------------------------------
 567: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 567: 1:☼  •   ►•◘  Ѡ ☼
@@ -21270,7 +21270,7 @@
 567: 2:
 567: 2:Scores: 3780
 567: 2:Answer: UP, ACT
-567: 1:Fire Event: KILL_OTHER_AI_TANK
+567: 1:Fire Event: KILL_AI
 ------------------------------------------
 568: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 568: 1:☼Ѡ   •◄   Ѡ 4 ☼
@@ -21308,7 +21308,7 @@
 568: 2:
 568: 2:Scores: 3780
 568: 2:Answer: RIGHT, ACT
-568: 1:Fire Event: KILL_YOUR_TANK
+568: 1:Fire Event: HERO_DIED
 ------------------------------------------
 569: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 569: 1:☼  •  ѠѠ   »!»☼
@@ -21384,7 +21384,7 @@
 570: 2:
 570: 2:Scores: 3780
 570: 2:Answer: UP, ACT
-570: 1:Fire Event: KILL_YOUR_TANK
+570: 1:Fire Event: HERO_DIED
 ------------------------------------------
 571: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 571: 1:☼    Ѡ       ◘☼
@@ -21497,8 +21497,8 @@
 573: 2:
 573: 2:Scores: 3780
 573: 2:Answer: DOWN, ACT
-573: 2:Fire Event: KILL_OTHER_AI_TANK
-573: 2:Fire Event: KILL_OTHER_AI_TANK
+573: 2:Fire Event: KILL_AI
+573: 2:Fire Event: KILL_AI
 ------------------------------------------
 574: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 574: 1:☼ «  Ѡ      « ☼
@@ -21536,7 +21536,7 @@
 574: 2:
 574: 2:Scores: 3830
 574: 2:Answer: DOWN, ACT
-574: 1:Fire Event: KILL_OTHER_AI_TANK
+574: 1:Fire Event: KILL_AI
 ------------------------------------------
 575: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 575: 1:☼«   1     ◘ ?☼
@@ -21648,8 +21648,8 @@
 577: 2:
 577: 2:Scores: 3830
 577: 2:Answer: DOWN, ACT
-577: 1:Fire Event: KILL_YOUR_TANK
-577: 2:Fire Event: KILL_OTHER_HERO_TANK[1]
+577: 1:Fire Event: HERO_DIED
+577: 2:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 578: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 578: 1:☼    «  «     ☼
@@ -21762,7 +21762,7 @@
 580: 2:
 580: 2:Scores: 3880
 580: 2:Answer: LEFT, ACT
-580: 1:Fire Event: KILL_OTHER_AI_TANK
+580: 1:Fire Event: KILL_AI
 ------------------------------------------
 581: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 581: 1:☼ «• Ѡ◄       ☼
@@ -21800,8 +21800,8 @@
 581: 2:
 581: 2:Scores: 3880
 581: 2:Answer: UP, ACT
-581: 1:Fire Event: KILL_YOUR_TANK
-581: 2:Fire Event: KILL_OTHER_HERO_TANK[2]
+581: 1:Fire Event: HERO_DIED
+581: 2:Fire Event: KILL_OTHER_HERO[2]
 ------------------------------------------
 582: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 582: 1:☼«  •Ѡ        ☼
@@ -21877,7 +21877,7 @@
 583: 2:
 583: 2:Scores: 3980
 583: 2:Answer: LEFT, ACT
-583: 1:Fire Event: KILL_OTHER_AI_TANK
+583: 1:Fire Event: KILL_AI
 ------------------------------------------
 584: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 584: 1:☼  »          ☼
@@ -21952,7 +21952,7 @@
 585: 2:
 585: 2:Scores: 3980
 585: 2:Answer: LEFT, ACT
-585: 1:Fire Event: KILL_YOUR_TANK
+585: 1:Fire Event: HERO_DIED
 ------------------------------------------
 586: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 586: 1:☼    »• » •   ☼
@@ -22213,7 +22213,7 @@
 592: 2:
 592: 2:Scores: 3980
 592: 2:Answer: DOWN, ACT
-592: 1:Fire Event: KILL_OTHER_AI_TANK
+592: 1:Fire Event: KILL_AI
 ------------------------------------------
 593: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 593: 1:☼            »☼
@@ -22474,7 +22474,7 @@
 599: 2:
 599: 2:Scores: 3980
 599: 2:Answer: DOWN, ACT
-599: 1:Fire Event: KILL_OTHER_AI_TANK
+599: 1:Fire Event: KILL_AI
 ------------------------------------------
 600: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 600: 1:☼ »      Ѡ    ☼
@@ -22549,7 +22549,7 @@
 601: 2:
 601: 2:Scores: 3980
 601: 2:Answer: DOWN, ACT
-601: 1:Fire Event: KILL_OTHER_AI_TANK
+601: 1:Fire Event: KILL_AI
 ------------------------------------------
 602: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 602: 1:☼   »    • » •☼
@@ -22735,7 +22735,7 @@
 606: 2:
 606: 2:Scores: 3980
 606: 2:Answer: UP, ACT
-606: 1:Fire Event: KILL_OTHER_AI_TANK
+606: 1:Fire Event: KILL_AI
 ------------------------------------------
 607: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 607: 1:☼• «  «  Ѡ    ☼
@@ -22773,7 +22773,7 @@
 607: 2:
 607: 2:Scores: 3980
 607: 2:Answer: RIGHT, ACT
-607: 1:Fire Event: KILL_YOUR_TANK
+607: 1:Fire Event: HERO_DIED
 ------------------------------------------
 608: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 608: 1:☼ «  «        ☼
@@ -22923,7 +22923,7 @@
 611: 2:
 611: 2:Scores: 3980
 611: 2:Answer: LEFT, ACT
-611: 2:Fire Event: KILL_OTHER_AI_TANK
+611: 2:Fire Event: KILL_AI
 ------------------------------------------
 612: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 612: 1:☼«            ☼
@@ -23146,7 +23146,7 @@
 617: 2:
 617: 2:Scores: 4005
 617: 2:Answer: UP, ACT
-617: 1:Fire Event: KILL_OTHER_AI_TANK
+617: 1:Fire Event: KILL_AI
 ------------------------------------------
 618: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 618: 1:☼     »  »    ☼
@@ -23369,7 +23369,7 @@
 623: 2:
 623: 2:Scores: 4005
 623: 2:Answer: UP, ACT
-623: 2:Fire Event: KILL_OTHER_AI_TANK
+623: 2:Fire Event: KILL_AI
 ------------------------------------------
 624: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 624: 1:☼            »☼
@@ -23629,7 +23629,7 @@
 630: 2:
 630: 2:Scores: 4030
 630: 2:Answer: DOWN, ACT
-630: 2:Fire Event: KILL_OTHER_AI_TANK
+630: 2:Fire Event: KILL_AI
 ------------------------------------------
 631: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 631: 1:☼        ?    ☼
@@ -23704,7 +23704,7 @@
 632: 2:
 632: 2:Scores: 4055
 632: 2:Answer: UP, ACT
-632: 1:Fire Event: KILL_OTHER_AI_TANK
+632: 1:Fire Event: KILL_AI
 ------------------------------------------
 633: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 633: 1:☼             ☼
@@ -23742,8 +23742,8 @@
 633: 2:
 633: 2:Scores: 4055
 633: 2:Answer: DOWN, ACT
-633: 2:Fire Event: KILL_OTHER_AI_TANK
-633: 1:Fire Event: KILL_OTHER_AI_TANK
+633: 2:Fire Event: KILL_AI
+633: 1:Fire Event: KILL_AI
 ------------------------------------------
 634: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 634: 1:☼             ☼
@@ -23818,7 +23818,7 @@
 635: 2:
 635: 2:Scores: 4080
 635: 2:Answer: DOWN, ACT
-635: 2:Fire Event: KILL_OTHER_AI_TANK
+635: 2:Fire Event: KILL_AI
 ------------------------------------------
 636: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 636: 1:☼   » •       ☼
@@ -23856,7 +23856,7 @@
 636: 2:
 636: 2:Scores: 4105
 636: 2:Answer: RIGHT, ACT
-636: 2:Fire Event: KILL_YOUR_TANK
+636: 2:Fire Event: HERO_DIED
 ------------------------------------------
 637: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 637: 1:☼    »  • •«  ☼
@@ -23969,10 +23969,10 @@
 639: 2:
 639: 2:Scores: 4095
 639: 2:Answer: LEFT, ACT
-639: 1:Fire Event: KILL_OTHER_AI_TANK
-639: 2:Fire Event: KILL_OTHER_AI_TANK
-639: 1:Fire Event: KILL_OTHER_AI_TANK
-639: 1:Fire Event: KILL_OTHER_AI_TANK
+639: 1:Fire Event: KILL_AI
+639: 2:Fire Event: KILL_AI
+639: 1:Fire Event: KILL_AI
+639: 1:Fire Event: KILL_AI
 ------------------------------------------
 640: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 640: 1:☼ •˂ Ѡ   »    ☼
@@ -24010,7 +24010,7 @@
 640: 2:
 640: 2:Scores: 4120
 640: 2:Answer: RIGHT, ACT
-640: 1:Fire Event: KILL_YOUR_TANK
+640: 1:Fire Event: HERO_DIED
 ------------------------------------------
 641: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 641: 1:☼   ˃• »• »   ☼
@@ -24086,7 +24086,7 @@
 642: 2:
 642: 2:Scores: 4120
 642: 2:Answer: RIGHT, ACT
-642: 2:Fire Event: KILL_OTHER_AI_TANK
+642: 2:Fire Event: KILL_AI
 ------------------------------------------
 643: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 643: 1:☼   ˃•   Ѡ  Ѡ ☼
@@ -24272,7 +24272,7 @@
 647: 2:
 647: 2:Scores: 4145
 647: 2:Answer: RIGHT, ACT
-647: 2:Fire Event: KILL_OTHER_AI_TANK
+647: 2:Fire Event: KILL_AI
 ------------------------------------------
 648: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 648: 1:☼  ˃Ѡ    •    ☼
@@ -24458,8 +24458,8 @@
 652: 2:
 652: 2:Scores: 4170
 652: 2:Answer: DOWN, ACT
-652: 2:Fire Event: KILL_OTHER_AI_TANK
-652: 2:Fire Event: KILL_OTHER_AI_TANK
+652: 2:Fire Event: KILL_AI
+652: 2:Fire Event: KILL_AI
 ------------------------------------------
 653: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 653: 1:☼          Ѡ  ☼
@@ -24535,7 +24535,7 @@
 654: 2:
 654: 2:Scores: 4220
 654: 2:Answer: UP, ACT
-654: 1:Fire Event: KILL_OTHER_AI_TANK
+654: 1:Fire Event: KILL_AI
 ------------------------------------------
 655: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 655: 1:☼   » •       ☼
@@ -24647,7 +24647,7 @@
 657: 2:
 657: 2:Scores: 4220
 657: 2:Answer: DOWN, ACT
-657: 2:Fire Event: KILL_OTHER_AI_TANK
+657: 2:Fire Event: KILL_AI
 ------------------------------------------
 658: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 658: 1:☼      »    • ☼
@@ -24722,9 +24722,9 @@
 659: 2:
 659: 2:Scores: 4245
 659: 2:Answer: LEFT, ACT
-659: 1:Fire Event: KILL_YOUR_TANK
-659: 2:Fire Event: KILL_OTHER_HERO_TANK[1]
-659: 2:Fire Event: KILL_OTHER_AI_TANK
+659: 1:Fire Event: HERO_DIED
+659: 2:Fire Event: KILL_OTHER_HERO[1]
+659: 2:Fire Event: KILL_AI
 ------------------------------------------
 660: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 660: 1:☼        »    ☼
@@ -24837,7 +24837,7 @@
 662: 2:
 662: 2:Scores: 4320
 662: 2:Answer: LEFT, ACT
-662: 2:Fire Event: KILL_OTHER_AI_TANK
+662: 2:Fire Event: KILL_AI
 ------------------------------------------
 663: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 663: 1:☼   •˂ Ѡ  «  »☼
@@ -24875,7 +24875,7 @@
 663: 2:
 663: 2:Scores: 4345
 663: 2:Answer: RIGHT, ACT
-663: 2:Fire Event: KILL_OTHER_AI_TANK
+663: 2:Fire Event: KILL_AI
 ------------------------------------------
 664: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 664: 1:☼ •  ˃Ѡ •«  ◘ ☼
@@ -24950,8 +24950,8 @@
 665: 2:
 665: 2:Scores: 4370
 665: 2:Answer: LEFT, ACT
-665: 2:Fire Event: KILL_OTHER_AI_TANK
-665: 1:Fire Event: KILL_OTHER_AI_TANK
+665: 2:Fire Event: KILL_AI
+665: 1:Fire Event: KILL_AI
 ------------------------------------------
 666: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 666: 1:☼   •  «  «   ☼
@@ -25026,7 +25026,7 @@
 667: 2:
 667: 2:Scores: 4395
 667: 2:Answer: UP, ACT
-667: 2:Fire Event: KILL_OTHER_AI_TANK
+667: 2:Fire Event: KILL_AI
 ------------------------------------------
 668: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 668: 1:☼    Ѡ  ◘     ☼
@@ -25064,7 +25064,7 @@
 668: 2:
 668: 2:Scores: 4420
 668: 2:Answer: LEFT, ACT
-668: 1:Fire Event: KILL_OTHER_AI_TANK
+668: 1:Fire Event: KILL_AI
 ------------------------------------------
 669: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 669: 1:☼      «  •«  ☼
@@ -25139,7 +25139,7 @@
 670: 2:
 670: 2:Scores: 4420
 670: 2:Answer: UP, ACT
-670: 2:Fire Event: KILL_OTHER_AI_TANK
+670: 2:Fire Event: KILL_AI
 ------------------------------------------
 671: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 671: 1:☼    Ѡ•  «    ☼
@@ -25177,7 +25177,7 @@
 671: 2:
 671: 2:Scores: 4445
 671: 2:Answer: RIGHT, ACT
-671: 2:Fire Event: KILL_OTHER_AI_TANK
+671: 2:Fire Event: KILL_AI
 ------------------------------------------
 672: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 672: 1:☼     Ѡ «    ?☼
@@ -25215,9 +25215,9 @@
 672: 2:
 672: 2:Scores: 4470
 672: 2:Answer: RIGHT, ACT
-672: 1:Fire Event: KILL_OTHER_AI_TANK
-672: 1:Fire Event: KILL_OTHER_AI_TANK
-672: 1:Fire Event: KILL_OTHER_AI_TANK
+672: 1:Fire Event: KILL_AI
+672: 1:Fire Event: KILL_AI
+672: 1:Fire Event: KILL_AI
 ------------------------------------------
 673: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 673: 1:☼•«  « «      ☼
@@ -25292,7 +25292,7 @@
 674: 2:
 674: 2:Scores: 4470
 674: 2:Answer: LEFT, ACT
-674: 2:Fire Event: KILL_OTHER_AI_TANK
+674: 2:Fire Event: KILL_AI
 ------------------------------------------
 675: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 675: 1:☼  « Ѡ˂ •« «  ☼
@@ -25367,7 +25367,7 @@
 676: 2:
 676: 2:Scores: 4495
 676: 2:Answer: DOWN, ACT
-676: 2:Fire Event: KILL_OTHER_AI_TANK
+676: 2:Fire Event: KILL_AI
 ------------------------------------------
 677: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 677: 1:☼«  Ѡ  « «    ☼
@@ -25442,7 +25442,7 @@
 678: 2:
 678: 2:Scores: 4520
 678: 2:Answer: LEFT, ACT
-678: 2:Fire Event: KILL_OTHER_AI_TANK
+678: 2:Fire Event: KILL_AI
 ------------------------------------------
 679: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 679: 1:☼  » «   »    ☼
@@ -25518,7 +25518,7 @@
 680: 2:
 680: 2:Scores: 4545
 680: 2:Answer: RIGHT, ACT
-680: 2:Fire Event: KILL_OTHER_AI_TANK
+680: 2:Fire Event: KILL_AI
 ------------------------------------------
 681: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 681: 1:☼ •«• «    ◘  ☼
@@ -25556,8 +25556,8 @@
 681: 2:
 681: 2:Scores: 4570
 681: 2:Answer: LEFT, ACT
-681: 1:Fire Event: KILL_YOUR_TANK
-681: 1:Fire Event: KILL_OTHER_AI_TANK
+681: 1:Fire Event: HERO_DIED
+681: 1:Fire Event: KILL_AI
 ------------------------------------------
 682: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 682: 1:☼ Ѡ  «      » ☼
@@ -25596,8 +25596,8 @@
 682: 2:Scores: 4570
 682: 2:Answer: RIGHT, ACT
 682: 1:PLAYER_GAME_OVER -> START_NEW_GAME
-682: 1:Fire Event: KILL_YOUR_TANK
-682: 2:Fire Event: KILL_OTHER_HERO_TANK[2]
+682: 1:Fire Event: HERO_DIED
+682: 2:Fire Event: KILL_OTHER_HERO[2]
 ------------------------------------------
 683: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 683: 1:☼•« «        »☼
@@ -25673,7 +25673,7 @@
 684: 2:
 684: 2:Scores: 4670
 684: 2:Answer: LEFT, ACT
-684: 2:Fire Event: KILL_OTHER_AI_TANK
+684: 2:Fire Event: KILL_AI
 ------------------------------------------
 685: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 685: 1:☼»Ѡ˂          ☼
@@ -25711,7 +25711,7 @@
 685: 2:
 685: 2:Scores: 4695
 685: 2:Answer: LEFT, ACT
-685: 2:Fire Event: KILL_OTHER_AI_TANK
+685: 2:Fire Event: KILL_AI
 ------------------------------------------
 686: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 686: 1:☼ Ѡ˂          ☼
@@ -25749,7 +25749,7 @@
 686: 2:
 686: 2:Scores: 4720
 686: 2:Answer: RIGHT, ACT
-686: 2:Fire Event: KILL_OTHER_AI_TANK
+686: 2:Fire Event: KILL_AI
 ------------------------------------------
 687: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 687: 1:☼   ˃Ѡ        ☼
@@ -25787,8 +25787,8 @@
 687: 2:
 687: 2:Scores: 4745
 687: 2:Answer: RIGHT, ACT
-687: 1:Fire Event: KILL_OTHER_AI_TANK
-687: 1:Fire Event: KILL_OTHER_AI_TANK
+687: 1:Fire Event: KILL_AI
+687: 1:Fire Event: KILL_AI
 ------------------------------------------
 688: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 688: 1:☼    ˃•       ☼
@@ -25826,11 +25826,11 @@
 688: 2:
 688: 2:Scores: 4745
 688: 2:Answer: DOWN, ACT
-688: 2:Fire Event: KILL_OTHER_AI_TANK
-688: 1:Fire Event: KILL_YOUR_TANK
-688: 2:Fire Event: KILL_OTHER_HERO_TANK[3]
-688: 2:Fire Event: KILL_YOUR_TANK
-688: 1:Fire Event: KILL_OTHER_HERO_TANK[1]
+688: 2:Fire Event: KILL_AI
+688: 1:Fire Event: HERO_DIED
+688: 2:Fire Event: KILL_OTHER_HERO[3]
+688: 2:Fire Event: HERO_DIED
+688: 1:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 689: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 689: 1:☼       Ѡ •«  ☼
@@ -25870,7 +25870,7 @@
 689: 2:Answer: ACT
 689: 1:PLAYER_GAME_OVER -> START_NEW_GAME
 689: 2:PLAYER_GAME_OVER -> START_NEW_GAME
-689: 1:Fire Event: KILL_YOUR_TANK
+689: 1:Fire Event: HERO_DIED
 ------------------------------------------
 690: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 690: 1:☼       • «   ☼
@@ -25946,7 +25946,7 @@
 691: 2:
 691: 2:Scores: 4910
 691: 2:Answer: RIGHT, ACT
-691: 1:Fire Event: KILL_YOUR_TANK
+691: 1:Fire Event: HERO_DIED
 ------------------------------------------
 692: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 692: 1:☼   •   ◘     ☼
@@ -26207,7 +26207,7 @@
 698: 2:
 698: 2:Scores: 4910
 698: 2:Answer: LEFT, ACT
-698: 2:Fire Event: KILL_OTHER_AI_TANK
+698: 2:Fire Event: KILL_AI
 ------------------------------------------
 699: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 699: 1:☼        »•   ☼
@@ -26467,7 +26467,7 @@
 705: 2:
 705: 2:Scores: 4935
 705: 2:Answer: RIGHT, ACT
-705: 2:Fire Event: KILL_OTHER_AI_TANK
+705: 2:Fire Event: KILL_AI
 ------------------------------------------
 706: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 706: 1:☼         ◘  »☼
@@ -26543,7 +26543,7 @@
 707: 2:
 707: 2:Scores: 4960
 707: 2:Answer: LEFT, ACT
-707: 1:Fire Event: KILL_OTHER_AI_TANK
+707: 1:Fire Event: KILL_AI
 ------------------------------------------
 708: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 708: 1:☼     » •   ? ☼
@@ -26730,7 +26730,7 @@
 712: 2:
 712: 2:Scores: 4960
 712: 2:Answer: RIGHT, ACT
-712: 2:Fire Event: KILL_OTHER_AI_TANK
+712: 2:Fire Event: KILL_AI
 ------------------------------------------
 713: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 713: 1:☼          »  ☼
@@ -26990,7 +26990,7 @@
 719: 2:
 719: 2:Scores: 4985
 719: 2:Answer: LEFT, ACT
-719: 2:Fire Event: KILL_OTHER_AI_TANK
+719: 2:Fire Event: KILL_AI
 ------------------------------------------
 720: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 720: 1:☼    •      » ☼
@@ -27694,7 +27694,7 @@
 738: 2:
 738: 2:Scores: 5010
 738: 2:Answer: RIGHT, ACT
-738: 2:Fire Event: KILL_OTHER_AI_TANK
+738: 2:Fire Event: KILL_AI
 ------------------------------------------
 739: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 739: 1:☼        «    ☼
@@ -27843,7 +27843,7 @@
 742: 2:
 742: 2:Scores: 5035
 742: 2:Answer: RIGHT, ACT
-742: 1:Fire Event: KILL_OTHER_AI_TANK
+742: 1:Fire Event: KILL_AI
 ------------------------------------------
 743: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 743: 1:☼    Ѡ  «     ☼
@@ -28140,7 +28140,7 @@
 750: 2:
 750: 2:Scores: 5035
 750: 2:Answer: RIGHT, ACT
-750: 1:Fire Event: KILL_OTHER_AI_TANK
+750: 1:Fire Event: KILL_AI
 ------------------------------------------
 751: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 751: 1:☼ Ѡ  ►•   Ѡ   ☼
@@ -28178,7 +28178,7 @@
 751: 2:
 751: 2:Scores: 5035
 751: 2:Answer: LEFT, ACT
-751: 1:Fire Event: KILL_OTHER_AI_TANK
+751: 1:Fire Event: KILL_AI
 ------------------------------------------
 752: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 752: 1:☼ 2    Ѡ•  »  ☼
@@ -28549,7 +28549,7 @@
 761: 2:
 761: 2:Scores: 5035
 761: 2:Answer: LEFT, ACT
-761: 1:Fire Event: KILL_OTHER_AI_TANK
+761: 1:Fire Event: KILL_AI
 ------------------------------------------
 762: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 762: 1:☼    Ѡ       »☼
@@ -28698,7 +28698,7 @@
 765: 2:
 765: 2:Scores: 5035
 765: 2:Answer: LEFT, ACT
-765: 1:Fire Event: KILL_OTHER_AI_TANK
+765: 1:Fire Event: KILL_AI
 ------------------------------------------
 766: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 766: 1:☼ •Ѡ       •  ☼
@@ -28736,7 +28736,7 @@
 766: 2:
 766: 2:Scores: 5035
 766: 2:Answer: RIGHT, ACT
-766: 1:Fire Event: KILL_OTHER_AI_TANK
+766: 1:Fire Event: KILL_AI
 ------------------------------------------
 767: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 767: 1:☼          Ѡ• ☼
@@ -29070,8 +29070,8 @@
 775: 2:
 775: 2:Scores: 5035
 775: 2:Answer: RIGHT, ACT
-775: 1:Fire Event: KILL_YOUR_TANK
-775: 1:Fire Event: KILL_OTHER_AI_TANK
+775: 1:Fire Event: HERO_DIED
+775: 1:Fire Event: KILL_AI
 ------------------------------------------
 776: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 776: 1:☼     3 «   »•☼
@@ -29221,8 +29221,8 @@
 779: 2:
 779: 2:Scores: 5035
 779: 2:Answer: RIGHT, ACT
-779: 2:Fire Event: KILL_YOUR_TANK
-779: 1:Fire Event: KILL_OTHER_HERO_TANK[1]
+779: 2:Fire Event: HERO_DIED
+779: 1:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 780: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 780: 1:☼   »    »«  »☼
@@ -29335,7 +29335,7 @@
 782: 2:
 782: 2:Scores: 5025
 782: 2:Answer: RIGHT, ACT
-782: 2:Fire Event: KILL_OTHER_AI_TANK
+782: 2:Fire Event: KILL_AI
 ------------------------------------------
 783: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 783: 1:☼      ◘•« ?  ☼
@@ -29558,8 +29558,8 @@
 788: 2:
 788: 2:Scores: 5050
 788: 2:Answer: UP, ACT
-788: 2:Fire Event: KILL_OTHER_AI_TANK
-788: 2:Fire Event: KILL_OTHER_AI_TANK
+788: 2:Fire Event: KILL_AI
+788: 2:Fire Event: KILL_AI
 ------------------------------------------
 789: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 789: 1:☼ «    «    » ☼
@@ -30004,7 +30004,7 @@
 800: 2:
 800: 2:Scores: 5100
 800: 2:Answer: DOWN, ACT
-800: 2:Fire Event: KILL_OTHER_AI_TANK
+800: 2:Fire Event: KILL_AI
 ------------------------------------------
 801: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 801: 1:☼        » • ◘☼
@@ -30042,7 +30042,7 @@
 801: 2:
 801: 2:Scores: 5125
 801: 2:Answer: LEFT, ACT
-801: 1:Fire Event: KILL_OTHER_AI_TANK
+801: 1:Fire Event: KILL_AI
 ------------------------------------------
 802: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 802: 1:☼     •«  »  •☼
@@ -30154,7 +30154,7 @@
 804: 2:
 804: 2:Scores: 5125
 804: 2:Answer: RIGHT, ACT
-804: 2:Fire Event: KILL_YOUR_TANK
+804: 2:Fire Event: HERO_DIED
 ------------------------------------------
 805: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 805: 1:☼Ѡ  «  «      ☼
@@ -30193,7 +30193,7 @@
 805: 2:Scores: 5115
 805: 2:Answer: ACT
 805: 2:PLAYER_GAME_OVER -> START_NEW_GAME
-805: 2:Fire Event: KILL_YOUR_TANK
+805: 2:Fire Event: HERO_DIED
 ------------------------------------------
 806: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 806: 1:☼  «  «  •    ☼
@@ -30269,7 +30269,7 @@
 807: 2:
 807: 2:Scores: 5105
 807: 2:Answer: RIGHT, ACT
-807: 1:Fire Event: KILL_OTHER_AI_TANK
+807: 1:Fire Event: KILL_AI
 ------------------------------------------
 808: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 808: 1:☼Ѡ  «         ☼
@@ -30381,7 +30381,7 @@
 810: 2:
 810: 2:Scores: 5105
 810: 2:Answer: UP, ACT
-810: 1:Fire Event: KILL_OTHER_AI_TANK
+810: 1:Fire Event: KILL_AI
 ------------------------------------------
 811: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 811: 1:☼«            ☼
@@ -30530,7 +30530,7 @@
 814: 2:
 814: 2:Scores: 5105
 814: 2:Answer: RIGHT, ACT
-814: 1:Fire Event: KILL_OTHER_AI_TANK
+814: 1:Fire Event: KILL_AI
 ------------------------------------------
 815: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 815: 1:☼    «        ☼
@@ -30679,7 +30679,7 @@
 818: 2:
 818: 2:Scores: 5105
 818: 2:Answer: UP, ACT
-818: 1:Fire Event: KILL_OTHER_AI_TANK
+818: 1:Fire Event: KILL_AI
 ------------------------------------------
 819: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 819: 1:☼«            ☼
@@ -30791,7 +30791,7 @@
 821: 2:
 821: 2:Scores: 5105
 821: 2:Answer: LEFT, ACT
-821: 2:Fire Event: KILL_OTHER_AI_TANK
+821: 2:Fire Event: KILL_AI
 ------------------------------------------
 822: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 822: 1:☼  ?Ѡ˂        ☼
@@ -30867,7 +30867,7 @@
 823: 2:
 823: 2:Scores: 5130
 823: 2:Answer: RIGHT, ACT
-823: 1:Fire Event: KILL_OTHER_AI_TANK
+823: 1:Fire Event: KILL_AI
 ------------------------------------------
 824: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 824: 1:☼Ѡ   ˃•   » • ☼
@@ -31016,7 +31016,7 @@
 827: 2:
 827: 2:Scores: 5130
 827: 2:Answer: LEFT, ACT
-827: 2:Fire Event: KILL_OTHER_AI_TANK
+827: 2:Fire Event: KILL_AI
 ------------------------------------------
 828: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 828: 1:☼   •˂ Ѡ •    ☼
@@ -31165,7 +31165,7 @@
 831: 2:
 831: 2:Scores: 5155
 831: 2:Answer: DOWN, ACT
-831: 1:Fire Event: KILL_OTHER_AI_TANK
+831: 1:Fire Event: KILL_AI
 ------------------------------------------
 832: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 832: 1:☼             ☼
@@ -31351,7 +31351,7 @@
 836: 2:
 836: 2:Scores: 5155
 836: 2:Answer: DOWN, ACT
-836: 1:Fire Event: KILL_OTHER_AI_TANK
+836: 1:Fire Event: KILL_AI
 ------------------------------------------
 837: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 837: 1:☼      »    •»☼
@@ -31389,7 +31389,7 @@
 837: 2:
 837: 2:Scores: 5155
 837: 2:Answer: UP, ACT
-837: 2:Fire Event: KILL_OTHER_AI_TANK
+837: 2:Fire Event: KILL_AI
 ------------------------------------------
 838: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 838: 1:☼    Ѡ• »   Ѡ ☼
@@ -31612,7 +31612,7 @@
 843: 2:
 843: 2:Scores: 5180
 843: 2:Answer: UP, ACT
-843: 1:Fire Event: KILL_OTHER_AI_TANK
+843: 1:Fire Event: KILL_AI
 ------------------------------------------
 844: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 844: 1:☼          »  ☼
@@ -31725,8 +31725,8 @@
 846: 2:
 846: 2:Scores: 5180
 846: 2:Answer: UP, ACT
-846: 1:Fire Event: KILL_OTHER_AI_TANK
-846: 2:Fire Event: KILL_OTHER_AI_TANK
+846: 1:Fire Event: KILL_AI
+846: 2:Fire Event: KILL_AI
 ------------------------------------------
 847: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 847: 1:☼    •     »Ѡ ☼
@@ -31875,7 +31875,7 @@
 850: 2:
 850: 2:Scores: 5205
 850: 2:Answer: UP, ACT
-850: 2:Fire Event: KILL_OTHER_AI_TANK
+850: 2:Fire Event: KILL_AI
 ------------------------------------------
 851: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 851: 1:☼    Ѡ ?      ☼
@@ -31950,7 +31950,7 @@
 852: 2:
 852: 2:Scores: 5230
 852: 2:Answer: RIGHT, ACT
-852: 2:Fire Event: KILL_OTHER_AI_TANK
+852: 2:Fire Event: KILL_AI
 ------------------------------------------
 853: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 853: 1:☼     ˃Ѡ      ☼
@@ -31988,8 +31988,8 @@
 853: 2:
 853: 2:Scores: 5255
 853: 2:Answer: RIGHT, ACT
-853: 1:Fire Event: KILL_YOUR_TANK
-853: 2:Fire Event: KILL_OTHER_HERO_TANK[1]
+853: 1:Fire Event: HERO_DIED
+853: 2:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 854: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 854: 1:☼      ˃•»•   ☼
@@ -32176,8 +32176,8 @@
 858: 2:
 858: 2:Scores: 5305
 858: 2:Answer: LEFT, ACT
-858: 1:Fire Event: KILL_OTHER_AI_TANK
-858: 1:Fire Event: KILL_OTHER_AI_TANK
+858: 1:Fire Event: KILL_AI
+858: 1:Fire Event: KILL_AI
 ------------------------------------------
 859: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 859: 1:☼•   •˂   • Ѡ ☼
@@ -32215,8 +32215,8 @@
 859: 2:
 859: 2:Scores: 5305
 859: 2:Answer: RIGHT, ACT
-859: 2:Fire Event: KILL_OTHER_AI_TANK
-859: 2:Fire Event: KILL_OTHER_AI_TANK
+859: 2:Fire Event: KILL_AI
+859: 2:Fire Event: KILL_AI
 ------------------------------------------
 860: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 860: 1:☼    Ѡ•˃•  Ѡ  ☼
@@ -32254,7 +32254,7 @@
 860: 2:
 860: 2:Scores: 5355
 860: 2:Answer: ACT
-860: 2:Fire Event: KILL_OTHER_AI_TANK
+860: 2:Fire Event: KILL_AI
 ------------------------------------------
 861: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 861: 1:☼      ˃Ѡ •3  ☼
@@ -32699,7 +32699,7 @@
 872: 2:
 872: 2:Scores: 5380
 872: 2:Answer: UP, ACT
-872: 2:Fire Event: KILL_OTHER_AI_TANK
+872: 2:Fire Event: KILL_AI
 ------------------------------------------
 873: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 873: 1:☼      ˄   Ѡ  ☼
@@ -32774,7 +32774,7 @@
 874: 2:
 874: 2:Scores: 5405
 874: 2:Answer: LEFT, ACT
-874: 2:Fire Event: KILL_OTHER_AI_TANK
+874: 2:Fire Event: KILL_AI
 ------------------------------------------
 875: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 875: 1:☼   Ѡ˂        ☼
@@ -32812,7 +32812,7 @@
 875: 2:
 875: 2:Scores: 5430
 875: 2:Answer: LEFT, ACT
-875: 1:Fire Event: KILL_OTHER_AI_TANK
+875: 1:Fire Event: KILL_AI
 875: 2:Fire Event: CATCH_PRIZE[1]
 ------------------------------------------
 876: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
@@ -32999,9 +32999,9 @@
 880: 2:
 880: 2:Scores: 5430
 880: 2:Answer: LEFT, ACT
-880: 1:Fire Event: KILL_OTHER_AI_TANK
-880: 1:Fire Event: KILL_OTHER_AI_TANK
-880: 1:Fire Event: KILL_OTHER_AI_TANK
+880: 1:Fire Event: KILL_AI
+880: 1:Fire Event: KILL_AI
+880: 1:Fire Event: KILL_AI
 ------------------------------------------
 881: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 881: 1:☼  •˂   •Ѡ    ☼
@@ -33039,8 +33039,8 @@
 881: 2:
 881: 2:Scores: 5430
 881: 2:Answer: RIGHT, ACT
-881: 2:Fire Event: KILL_OTHER_AI_TANK
-881: 2:Fire Event: KILL_OTHER_AI_TANK
+881: 2:Fire Event: KILL_AI
+881: 2:Fire Event: KILL_AI
 ------------------------------------------
 882: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 882: 1:☼  Ѡ ˃•  •Ѡ   ☼
@@ -33078,8 +33078,8 @@
 882: 2:
 882: 2:Scores: 5480
 882: 2:Answer: DOWN, ACT
-882: 2:Fire Event: KILL_OTHER_AI_TANK
-882: 2:Fire Event: KILL_OTHER_AI_TANK
+882: 2:Fire Event: KILL_AI
+882: 2:Fire Event: KILL_AI
 ------------------------------------------
 883: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 883: 1:☼  »•  Ѡ• 1   ☼
@@ -33376,8 +33376,8 @@
 890: 2:
 890: 2:Scores: 5530
 890: 2:Answer: RIGHT, ACT
-890: 1:Fire Event: KILL_YOUR_TANK
-890: 2:Fire Event: KILL_OTHER_HERO_TANK[2]
+890: 1:Fire Event: HERO_DIED
+890: 2:Fire Event: KILL_OTHER_HERO[2]
 ------------------------------------------
 891: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 891: 1:☼•   ˃•  Ѡ  ◘ ☼
@@ -33490,7 +33490,7 @@
 893: 2:
 893: 2:Scores: 5630
 893: 2:Answer: LEFT, ACT
-893: 2:Fire Event: KILL_OTHER_AI_TANK
+893: 2:Fire Event: KILL_AI
 ------------------------------------------
 894: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 894: 1:☼  •˂   Ѡ   • ☼
@@ -33565,7 +33565,7 @@
 895: 2:
 895: 2:Scores: 5655
 895: 2:Answer: LEFT, ACT
-895: 2:Fire Event: KILL_OTHER_AI_TANK
+895: 2:Fire Event: KILL_AI
 ------------------------------------------
 896: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 896: 1:☼  Ѡ˂•  •     ☼
@@ -33788,7 +33788,7 @@
 901: 2:
 901: 2:Scores: 5680
 901: 2:Answer: RIGHT, ACT
-901: 2:Fire Event: KILL_OTHER_AI_TANK
+901: 2:Fire Event: KILL_AI
 ------------------------------------------
 902: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 902: 1:☼   ˃• Ѡ     •☼
@@ -33900,7 +33900,7 @@
 904: 2:
 904: 2:Scores: 5705
 904: 2:Answer: ACT
-904: 2:Fire Event: KILL_OTHER_AI_TANK
+904: 2:Fire Event: KILL_AI
 ------------------------------------------
 905: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 905: 1:☼  •˃ ••   Ѡ  ☼
@@ -33975,7 +33975,7 @@
 906: 2:
 906: 2:Scores: 5730
 906: 2:Answer: DOWN, ACT
-906: 2:Fire Event: KILL_OTHER_AI_TANK
+906: 2:Fire Event: KILL_AI
 ------------------------------------------
 907: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 907: 1:☼      Ѡ  ••  ☼
@@ -34013,7 +34013,7 @@
 907: 2:
 907: 2:Scores: 5755
 907: 2:Answer: UP, ACT
-907: 1:Fire Event: KILL_OTHER_AI_TANK
+907: 1:Fire Event: KILL_AI
 ------------------------------------------
 908: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 908: 1:☼  •«˄      ••☼
@@ -34051,8 +34051,8 @@
 908: 2:
 908: 2:Scores: 5755
 908: 2:Answer: LEFT, ACT
-908: 1:Fire Event: KILL_YOUR_TANK
-908: 2:Fire Event: KILL_OTHER_AI_TANK
+908: 1:Fire Event: HERO_DIED
+908: 2:Fire Event: KILL_AI
 ------------------------------------------
 909: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 909: 1:☼• Ѡ˂ •«      ☼
@@ -34128,9 +34128,9 @@
 910: 2:
 910: 2:Scores: 5780
 910: 2:Answer: ACT
-910: 2:Fire Event: KILL_YOUR_TANK
-910: 2:Fire Event: KILL_OTHER_AI_TANK
-910: 2:Fire Event: KILL_OTHER_AI_TANK
+910: 2:Fire Event: HERO_DIED
+910: 2:Fire Event: KILL_AI
+910: 2:Fire Event: KILL_AI
 ------------------------------------------
 911: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 911: 1:☼Ѡ Ѡ «        ☼
@@ -34317,7 +34317,7 @@
 915: 2:
 915: 2:Scores: 5820
 915: 2:Answer: DOWN, ACT
-915: 2:Fire Event: KILL_OTHER_AI_TANK
+915: 2:Fire Event: KILL_AI
 ------------------------------------------
 916: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 916: 1:☼      «     •☼
@@ -34355,7 +34355,7 @@
 916: 2:
 916: 2:Scores: 5845
 916: 2:Answer: DOWN, ACT
-916: 1:Fire Event: KILL_YOUR_TANK
+916: 1:Fire Event: HERO_DIED
 ------------------------------------------
 917: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 917: 1:☼•    ¿      •☼
@@ -34616,9 +34616,9 @@
 923: 2:
 923: 2:Scores: 5845
 923: 2:Answer: DOWN, ACT
-923: 1:Fire Event: KILL_OTHER_AI_TANK
-923: 1:Fire Event: KILL_YOUR_TANK
-923: 1:Fire Event: KILL_OTHER_AI_TANK
+923: 1:Fire Event: KILL_AI
+923: 1:Fire Event: HERO_DIED
+923: 1:Fire Event: KILL_AI
 ------------------------------------------
 924: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 924: 1:☼• »         »☼
@@ -34657,9 +34657,9 @@
 924: 2:Scores: 5845
 924: 2:Answer: DOWN, ACT
 924: 1:PLAYER_GAME_OVER -> START_NEW_GAME
-924: 2:Fire Event: KILL_OTHER_AI_TANK
-924: 2:Fire Event: KILL_OTHER_AI_TANK
-924: 2:Fire Event: KILL_OTHER_AI_TANK
+924: 2:Fire Event: KILL_AI
+924: 2:Fire Event: KILL_AI
+924: 2:Fire Event: KILL_AI
 ------------------------------------------
 925: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 925: 1:☼Ѡ  »       « ☼
@@ -35067,8 +35067,8 @@
 935: 2:
 935: 2:Scores: 5920
 935: 2:Answer: UP, ACT
-935: 1:Fire Event: KILL_OTHER_AI_TANK
-935: 1:Fire Event: KILL_OTHER_AI_TANK
+935: 1:Fire Event: KILL_AI
+935: 1:Fire Event: KILL_AI
 ------------------------------------------
 936: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 936: 1:☼    Ѡ Ѡ1     ☼
@@ -35328,7 +35328,7 @@
 942: 2:
 942: 2:Scores: 5920
 942: 2:Answer: DOWN, ACT
-942: 1:Fire Event: KILL_OTHER_AI_TANK
+942: 1:Fire Event: KILL_AI
 ------------------------------------------
 943: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 943: 1:☼ Ѡ  ▲   «    ☼
@@ -35440,7 +35440,7 @@
 945: 2:
 945: 2:Scores: 5920
 945: 2:Answer: UP, ACT
-945: 1:Fire Event: KILL_OTHER_AI_TANK
+945: 1:Fire Event: KILL_AI
 ------------------------------------------
 946: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 946: 1:☼ Ѡ  ►Ѡ       ☼
@@ -35478,7 +35478,7 @@
 946: 2:
 946: 2:Scores: 5920
 946: 2:Answer: UP, ACT
-946: 2:Fire Event: KILL_YOUR_TANK
+946: 2:Fire Event: HERO_DIED
 946: 1:Fire Event: CATCH_PRIZE[2]
 ------------------------------------------
 947: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
@@ -35518,7 +35518,7 @@
 947: 2:Scores: 5910
 947: 2:Answer: ACT
 947: 2:PLAYER_GAME_OVER -> START_NEW_GAME
-947: 2:Fire Event: KILL_YOUR_TANK
+947: 2:Fire Event: HERO_DIED
 ------------------------------------------
 948: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 948: 1:☼   •◄  Ѡ Ѡ   ☼
@@ -35594,7 +35594,7 @@
 949: 2:
 949: 2:Scores: 5900
 949: 2:Answer: RIGHT, ACT
-949: 1:Fire Event: KILL_OTHER_AI_TANK
+949: 1:Fire Event: KILL_AI
 ------------------------------------------
 950: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 950: 1:☼      ►Ѡ     ☼
@@ -35966,7 +35966,7 @@
 959: 2:
 959: 2:Scores: 5900
 959: 2:Answer: DOWN, ACT
-959: 1:Fire Event: KILL_OTHER_AI_TANK
+959: 1:Fire Event: KILL_AI
 ------------------------------------------
 960: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 960: 1:☼  Ѡ  •◄   Ѡ• ☼
@@ -36078,7 +36078,7 @@
 962: 2:
 962: 2:Scores: 5900
 962: 2:Answer: UP, ACT
-962: 2:Fire Event: KILL_OTHER_AI_TANK
+962: 2:Fire Event: KILL_AI
 ------------------------------------------
 963: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 963: 1:☼  «•   ►•   •☼
@@ -36190,8 +36190,8 @@
 965: 2:
 965: 2:Scores: 5925
 965: 2:Answer: RIGHT, ACT
-965: 1:Fire Event: KILL_OTHER_AI_TANK
-965: 2:Fire Event: KILL_OTHER_AI_TANK
+965: 1:Fire Event: KILL_AI
+965: 2:Fire Event: KILL_AI
 ------------------------------------------
 966: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 966: 1:☼  »Ѡ •◄   Ѡ• ☼
@@ -36229,8 +36229,8 @@
 966: 2:
 966: 2:Scores: 5950
 966: 2:Answer: UP, ACT
-966: 1:Fire Event: KILL_OTHER_AI_TANK
-966: 1:Fire Event: KILL_OTHER_AI_TANK
+966: 1:Fire Event: KILL_AI
+966: 1:Fire Event: KILL_AI
 ------------------------------------------
 967: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 967: 1:☼   Ѡ   ►Ѡ•  •☼
@@ -36379,7 +36379,7 @@
 970: 2:
 970: 2:Scores: 5950
 970: 2:Answer: UP, ACT
-970: 1:Fire Event: KILL_OTHER_AI_TANK
+970: 1:Fire Event: KILL_AI
 ------------------------------------------
 971: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 971: 1:☼     Ѡ ►•   •☼
@@ -36417,8 +36417,8 @@
 971: 2:
 971: 2:Scores: 5950
 971: 2:Answer: UP, ACT
-971: 2:Fire Event: KILL_OTHER_AI_TANK
-971: 2:Fire Event: KILL_OTHER_AI_TANK
+971: 2:Fire Event: KILL_AI
+971: 2:Fire Event: KILL_AI
 ------------------------------------------
 972: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 972: 1:☼     •◄   •  ☼
@@ -36456,7 +36456,7 @@
 972: 2:
 972: 2:Scores: 6000
 972: 2:Answer: UP, ACT
-972: 1:Fire Event: KILL_OTHER_AI_TANK
+972: 1:Fire Event: KILL_AI
 ------------------------------------------
 973: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 973: 1:☼   •   ►••Ѡ  ☼
@@ -36568,8 +36568,8 @@
 975: 2:
 975: 2:Scores: 6000
 975: 2:Answer: UP, ACT
-975: 1:Fire Event: KILL_OTHER_AI_TANK
-975: 1:Fire Event: KILL_OTHER_AI_TANK
+975: 1:Fire Event: KILL_AI
+975: 1:Fire Event: KILL_AI
 ------------------------------------------
 976: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 976: 1:☼ •     ►Ѡ    ☼
@@ -36829,7 +36829,7 @@
 982: 2:
 982: 2:Scores: 6000
 982: 2:Answer: LEFT, ACT
-982: 2:Fire Event: KILL_OTHER_AI_TANK
+982: 2:Fire Event: KILL_AI
 ------------------------------------------
 983: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 983: 1:☼  Ѡ˂•   ►•   ☼
@@ -36867,8 +36867,8 @@
 983: 2:
 983: 2:Scores: 6025
 983: 2:Answer: LEFT, ACT
-983: 2:Fire Event: KILL_YOUR_TANK
-983: 1:Fire Event: KILL_OTHER_HERO_TANK[1]
+983: 2:Fire Event: HERO_DIED
+983: 1:Fire Event: KILL_OTHER_HERO[1]
 ------------------------------------------
 984: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 984: 1:☼ •Ѡ  •«    • ☼
@@ -36944,7 +36944,7 @@
 985: 2:
 985: 2:Scores: 6015
 985: 2:Answer: DOWN, ACT
-985: 1:Fire Event: KILL_OTHER_AI_TANK
+985: 1:Fire Event: KILL_AI
 ------------------------------------------
 986: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 986: 1:☼ •  «•Ѡ◄     ☼
@@ -37019,7 +37019,7 @@
 987: 2:
 987: 2:Scores: 6015
 987: 2:Answer: DOWN, ACT
-987: 2:Fire Event: KILL_OTHER_AI_TANK
+987: 2:Fire Event: KILL_AI
 ------------------------------------------
 988: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 988: 1:☼  «   •◄   • ☼
@@ -37057,7 +37057,7 @@
 988: 2:
 988: 2:Scores: 6040
 988: 2:Answer: DOWN, ACT
-988: 1:Fire Event: KILL_OTHER_AI_TANK
+988: 1:Fire Event: KILL_AI
 988: 2:Fire Event: CATCH_PRIZE[4]
 ------------------------------------------
 989: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
@@ -37133,7 +37133,7 @@
 990: 2:
 990: 2:Scores: 6040
 990: 2:Answer: DOWN, ACT
-990: 1:Fire Event: KILL_OTHER_AI_TANK
+990: 1:Fire Event: KILL_AI
 ------------------------------------------
 991: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 991: 1:☼•Ѡ • «  ▲    ☼
@@ -37171,7 +37171,7 @@
 991: 2:
 991: 2:Scores: 6040
 991: 2:Answer: UP, ACT
-991: 1:Fire Event: KILL_OTHER_AI_TANK
+991: 1:Fire Event: KILL_AI
 ------------------------------------------
 992: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 992: 1:☼ •  « •◄     ☼
@@ -37246,7 +37246,7 @@
 993: 2:
 993: 2:Scores: 6040
 993: 2:Answer: UP, ACT
-993: 1:Fire Event: KILL_OTHER_AI_TANK
+993: 1:Fire Event: KILL_AI
 ------------------------------------------
 994: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 994: 1:☼• Ѡ   Ѡ◄   • ☼
@@ -37284,7 +37284,7 @@
 994: 2:
 994: 2:Scores: 6040
 994: 2:Answer: DOWN, ACT
-994: 2:Fire Event: KILL_OTHER_AI_TANK
+994: 2:Fire Event: KILL_AI
 ------------------------------------------
 995: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 995: 1:☼ «      ►•   ☼
@@ -37322,7 +37322,7 @@
 995: 2:
 995: 2:Scores: 6065
 995: 2:Answer: UP, ACT
-995: 1:Fire Event: KILL_OTHER_AI_TANK
+995: 1:Fire Event: KILL_AI
 ------------------------------------------
 996: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
 996: 1:☼Ѡ     •◄  Ѡ  ☼
@@ -37508,7 +37508,7 @@
 1000: 2:
 1000: 2:Scores: 6065
 1000: 2:Answer: DOWN, ACT
-1000: 1:Fire Event: KILL_YOUR_TANK
-1000: 1:Fire Event: KILL_OTHER_AI_TANK
-1000: 1:Fire Event: KILL_OTHER_AI_TANK
+1000: 1:Fire Event: HERO_DIED
+1000: 1:Fire Event: KILL_AI
+1000: 1:Fire Event: KILL_AI
 ------------------------------------------

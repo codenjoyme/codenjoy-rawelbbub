@@ -28,7 +28,7 @@ import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.TANK_TICKS_PER_SHOOT;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.HERO_TICKS_PER_SHOOT;
 import static org.junit.Assert.assertEquals;
 
 public class GunTest {
@@ -43,7 +43,7 @@ public class GunTest {
     @Test
     public void test5ticks() {
         // given
-        settings.integer(TANK_TICKS_PER_SHOOT, 5);
+        settings.integer(HERO_TICKS_PER_SHOOT, 5);
         
         Gun gun = new Gun(settings);
 
@@ -67,7 +67,7 @@ public class GunTest {
     @Test
     public void test2Ticks() {
         // given
-        settings.integer(TANK_TICKS_PER_SHOOT, 2);
+        settings.integer(HERO_TICKS_PER_SHOOT, 2);
         
         Gun gun = new Gun(settings);
 
@@ -88,7 +88,7 @@ public class GunTest {
     @Test
     public void test1Ticks() {
         // given
-        settings.integer(TANK_TICKS_PER_SHOOT, 1);
+        settings.integer(HERO_TICKS_PER_SHOOT, 1);
 
         Gun gun = new Gun(settings);
 
@@ -105,7 +105,7 @@ public class GunTest {
     @Test
     public void test0Ticks() {
         // given
-        settings.integer(TANK_TICKS_PER_SHOOT, 0);
+        settings.integer(HERO_TICKS_PER_SHOOT, 0);
         
         Gun gun = new Gun(settings);
 
@@ -120,7 +120,7 @@ public class GunTest {
     @Test
     public void testReset() {
         // given
-        settings.integer(TANK_TICKS_PER_SHOOT, 5);
+        settings.integer(HERO_TICKS_PER_SHOOT, 5);
 
         Gun gun = new Gun(settings);
 

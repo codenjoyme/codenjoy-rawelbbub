@@ -48,9 +48,9 @@ import static org.mockito.Mockito.when;
 public class MultiplayerTest {
 
     private int size = 5;
-    private Rawelbbub game;
-    private Game tanks1;
-    private Game tanks2;
+    private Rawelbbub field;
+    private Game game1;
+    private Game game2;
     private Player player1;
     private Player player2;
     private PrinterFactory printerFactory;
@@ -65,16 +65,16 @@ public class MultiplayerTest {
     }
 
     public void givenGame() {
-        game = new Rawelbbub(size, dice, settings);
+        field = new Rawelbbub(size, dice, settings);
 
-        game.addBorder(new DefaultBorders(size).get());
+        field.addBorder(new DefaultBorders(size).get());
 
         player1 = new Player(null, settings);
         player2 = new Player(null, settings);
-        tanks1 = new Single(player1, printerFactory);
-        tanks1.on(game);
-        tanks2 = new Single(player2, printerFactory);
-        tanks2.on(game);
+        game1 = new Single(player1, printerFactory);
+        game1.on(field);
+        game2 = new Single(player2, printerFactory);
+        game2.on(field);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class MultiplayerTest {
 
         givenGame();
 
-        tanks1.newGame();
+        game1.newGame();
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
@@ -93,7 +93,7 @@ public class MultiplayerTest {
                 "☼☼☼☼☼\n", player1
         );
 
-        tanks2.newGame();
+        game2.newGame();
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
@@ -113,8 +113,8 @@ public class MultiplayerTest {
 
         givenGame();
 
-        tanks1.newGame();
-        tanks2.newGame();
+        game1.newGame();
+        game2.newGame();
 
         assertEquals(false, hero1().isActive());
         assertEquals(true, hero1().isAlive());
@@ -133,7 +133,7 @@ public class MultiplayerTest {
         hero1().act();
 
         hero2().right();
-        game.tick();
+        field.tick();
 
         assertEquals(false, hero1().isActive());
         assertEquals(true, hero1().isAlive());
@@ -159,8 +159,8 @@ public class MultiplayerTest {
 
         givenGame();
 
-        tanks1.newGame();
-        tanks2.newGame();
+        game1.newGame();
+        game2.newGame();
 
         assertEquals(true, hero1().isActive());
         assertEquals(true, hero1().isAlive());
@@ -179,7 +179,7 @@ public class MultiplayerTest {
         hero1().act();
 
         hero2().right();
-        game.tick();
+        field.tick();
 
         assertEquals(true, hero1().isActive());
         assertEquals(true, hero1().isAlive());
@@ -196,23 +196,23 @@ public class MultiplayerTest {
     }
 
     public Hero hero2() {
-        return (Hero) tanks2.getPlayer().getHero();
+        return (Hero) game2.getPlayer().getHero();
     }
 
     public Hero hero1() {
-        return (Hero) tanks1.getPlayer().getHero();
+        return (Hero) game1.getPlayer().getHero();
     }
 
     @Test
-    public void shouldRandomPosition_whenKillTank() {
+    public void shouldRandomPosition_whenKillHero() {
         dice(1, 1,
                 1, 2,
                 2, 2);
 
         givenGame();
 
-        tanks1.newGame();
-        tanks2.newGame();
+        game1.newGame();
+        game2.newGame();
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
@@ -222,7 +222,7 @@ public class MultiplayerTest {
         );
 
         hero1().act();
-        game.tick();
+        field.tick();
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
@@ -231,10 +231,10 @@ public class MultiplayerTest {
                 "☼☼☼☼☼\n", player1
         );
 
-        assertTrue(tanks2.isGameOver());
-        tanks2.newGame();
+        assertTrue(game2.isGameOver());
+        game2.newGame();
 
-        game.tick();
+        field.tick();
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
@@ -246,7 +246,7 @@ public class MultiplayerTest {
     }
 
     @Test
-    public void shouldRandomPosition_atFreeSpace_whenKillTank() {
+    public void shouldRandomPosition_atFreeSpace_whenKillHero() {
         dice(1, 1,
                 1, 2,
                 0, 0, // skipped, not free, because hero
@@ -254,8 +254,8 @@ public class MultiplayerTest {
 
         givenGame();
 
-        tanks1.newGame();
-        tanks2.newGame();
+        game1.newGame();
+        game2.newGame();
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
@@ -265,7 +265,7 @@ public class MultiplayerTest {
         );
 
         hero1().act();
-        game.tick();
+        field.tick();
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
@@ -274,10 +274,10 @@ public class MultiplayerTest {
                 "☼☼☼☼☼\n", player1
         );
 
-        assertTrue(tanks2.isGameOver());
-        tanks2.newGame();
+        assertTrue(game2.isGameOver());
+        game2.newGame();
 
-        game.tick();
+        field.tick();
 
         assertD("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
@@ -298,12 +298,12 @@ public class MultiplayerTest {
                 2, 2);
 
         givenGame();
-        game.addTree(new Tree(pt(3, 3)));
-        game.addRiver(new River(pt(3, 2)));
-        game.addIce(new Ice(pt(3, 1)));
+        field.addTree(new Tree(pt(3, 3)));
+        field.addRiver(new River(pt(3, 2)));
+        field.addIce(new Ice(pt(3, 1)));
 
-        tanks1.newGame();
-        tanks2.newGame();
+        game1.newGame();
+        game2.newGame();
 
         assertD("☼☼☼☼☼\n" +
                 "☼  %☼\n" +
@@ -313,7 +313,7 @@ public class MultiplayerTest {
         );
 
         hero1().act();
-        game.tick();
+        field.tick();
 
         assertD("☼☼☼☼☼\n" +
                 "☼  %☼\n" +
@@ -322,10 +322,10 @@ public class MultiplayerTest {
                 "☼☼☼☼☼\n", player1
         );
 
-        assertTrue(tanks2.isGameOver());
-        tanks2.newGame();
+        assertTrue(game2.isGameOver());
+        game2.newGame();
 
-        game.tick();
+        field.tick();
 
         assertD("☼☼☼☼☼\n" +
                 "☼  %☼\n" +
@@ -345,7 +345,7 @@ public class MultiplayerTest {
 
     private void assertD(String field, Player player) {
         assertEquals(field, printerFactory.getPrinter(
-                this.game.reader(), player).print());
+                this.field.reader(), player).print());
     }
 
 }

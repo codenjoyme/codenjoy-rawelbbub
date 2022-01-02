@@ -116,7 +116,7 @@ public class GameTest {
         game = (Rawelbbub) runner.createGame(levelNumber, settings);
 
         level.heroes()
-                .forEach(tank -> game.newGame(initPlayer(tank)));
+                .forEach(hero -> game.newGame(initPlayer(hero)));
 
         game.ais().stream()
                 .filter(ai -> ai instanceof AI)
@@ -152,10 +152,10 @@ public class GameTest {
     }
 
     private String getPrizesCount() {
-        List<Hero> tanks = game.heroesAndAis();
-        long prizes = tanks.stream().filter(Hero::withPrize).count();
+        List<Hero> all = game.heroesAndAis();
+        long prizes = all.stream().filter(Hero::withPrize).count();
 
-        return String.format("%s prizes with %s tanks", prizes, tanks.size());
+        return String.format("%s prizes with %s heroes", prizes, all.size());
     }
 
     @Test
@@ -210,7 +210,7 @@ public class GameTest {
 
     // рисуем мой танк
     @Test
-    public void shouldBeTankOnFieldWhenGameCreated() {
+    public void shouldBeHeroOnFieldWhenGameCreated() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -317,7 +317,7 @@ public class GameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        // sliding state should be reset because the tank left ice
+        // sliding state should be reset because the hero left ice
 
         // RIGHT -> RIGHT
         hero(0).right();
@@ -630,7 +630,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldTankCanGoIfIceAtWayWithoutSliding_whenTankTakePrize() {
+    public void shouldHeroCanGoIfIceAtWayWithoutSliding_whenHeroTakePrize() {
         settings.integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 6)
@@ -732,7 +732,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldTankCanGoIfAceAtWay_whenPrizeWorkingEnd() {
+    public void shouldHeroCanGoIfAceAtWay_whenPrizeWorkingEnd() {
         settings.integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 2)
@@ -901,7 +901,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldTankCanGoIfAceAtWay_whenTankTackPrizeSlidingEnd() {
+    public void shouldHeroCanGoIfAceAtWay_whenHeroTackPrizeSlidingEnd() {
         settings.integer(PRIZE_ON_FIELD, 4)
                 .integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_WORKING, 6)
@@ -1095,7 +1095,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldTankMove() {
+    public void shouldHeroMove() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1150,7 +1150,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldTankStayAtPreviousPositionWhenIsNearBorder() {
+    public void shouldHeroStayAtPreviousPositionWhenIsNearBorder() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
@@ -1187,7 +1187,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldBulletHasSameDirectionAsTank() {
+    public void shouldBulletHasSameDirectionAsHero() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1204,7 +1204,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldBulletGoInertiaWhenTankChangeDirection() {
+    public void shouldBulletGoInertiaWhenHeroChangeDirection() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2781,7 +2781,7 @@ public class GameTest {
 
     // стоять, если спереди другой танк
     @Test
-    public void shouldStopWhenBeforeOtherTank() {
+    public void shouldStopWhenBeforeOtherHero() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2805,7 +2805,7 @@ public class GameTest {
 
     // геймовер, если убили не бот-танк
     @Test
-    public void shouldDieWhenOtherTankKillMe() {
+    public void shouldDieWhenOtherHeroKillMe() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2822,8 +2822,8 @@ public class GameTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(1) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2851,8 +2851,8 @@ public class GameTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[2]]\n" +
-                "listener(2) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[2]]\n" +
+                "listener(2) => [HERO_DIED]\n");
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2874,7 +2874,7 @@ public class GameTest {
     }
 
     @Test
-    public void killTankForward(){
+    public void killHeroForward(){
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -2905,12 +2905,12 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(1) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
     }
 
     @Test
-    public void killTankBackward(){
+    public void killHeroBackward(){
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -2941,8 +2941,8 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         verifyAllEvents(
-                "listener(0) => [KILL_YOUR_TANK]\n" +
-                "listener(1) => [KILL_OTHER_HERO_TANK[1]]\n");
+                "listener(0) => [HERO_DIED]\n" +
+                "listener(1) => [KILL_OTHER_HERO[1]]\n");
     }
 
 
@@ -2979,9 +2979,9 @@ public class GameTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [KILL_YOUR_TANK]\n" +
-                "listener(1) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(2) => [KILL_OTHER_HERO_TANK[1]]\n");
+                "listener(0) => [HERO_DIED]\n" +
+                "listener(1) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(2) => [KILL_OTHER_HERO[1]]\n");
 
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -3020,8 +3020,8 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(1) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
     }
 
     @Test
@@ -3050,8 +3050,8 @@ public class GameTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1], KILL_YOUR_TANK]\n" +
-                "listener(1) => [KILL_YOUR_TANK, KILL_OTHER_HERO_TANK[1]]\n");
+                "listener(0) => [KILL_OTHER_HERO[1], HERO_DIED]\n" +
+                "listener(1) => [HERO_DIED, KILL_OTHER_HERO[1]]\n");
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3207,8 +3207,8 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(1) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
         hero(0).right();
         game.tick();
@@ -3237,8 +3237,8 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[2]]\n" +
-                "listener(2) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[2]]\n" +
+                "listener(2) => [HERO_DIED]\n");
 
         game.tick();
 
@@ -3314,7 +3314,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldTankCantGoIfWallAtWay() {
+    public void shouldHeroCantGoIfWallAtWay() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3428,7 +3428,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldTankCanFireIfAtWayEnemyBullet() {
+    public void shouldHeroCanFireIfAtWayEnemyBullet() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
@@ -3451,7 +3451,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldTankCanGoIfDestroyWall() {
+    public void shouldHeroCanGoIfDestroyWall() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3490,8 +3490,8 @@ public class GameTest {
     }
 
     @Test
-    public void shouldWallCantRegenerateOnTank() {
-        shouldTankCanGoIfDestroyWall();
+    public void shouldWallCantRegenerateOnHero() {
+        shouldHeroCanGoIfDestroyWall();
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3609,7 +3609,7 @@ public class GameTest {
 
     @Test
     public void shouldNTicksPerBullet() {
-        settings.integer(TANK_TICKS_PER_SHOOT, 4);
+        settings.integer(HERO_TICKS_PER_SHOOT, 4);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3632,7 +3632,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n";
         assertD(field);
 
-        for (int i = 1; i < settings.integer(TANK_TICKS_PER_SHOOT); i++) {
+        for (int i = 1; i < settings.integer(HERO_TICKS_PER_SHOOT); i++) {
             hero(0).act();
             game.tick();
 
@@ -3683,7 +3683,7 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
-        verifyAllEvents("[KILL_OTHER_AI_TANK]");
+        verifyAllEvents("[KILL_AI]");
 
         game.tick();
 
@@ -3752,7 +3752,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldEnemyCanKillTankOnWall() {
+    public void shouldEnemyCanKillHeroOnWall() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -3801,8 +3801,8 @@ public class GameTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(1) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3842,8 +3842,8 @@ public class GameTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(1) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3885,8 +3885,8 @@ public class GameTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(1) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3928,8 +3928,8 @@ public class GameTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(1) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
         assertD("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3946,7 +3946,7 @@ public class GameTest {
     // если стенка недорушенная, снаряд летит, и ресетнули игру, то все конструкции восстанавливаются
     @Test
     public void shouldRemoveBulletsAndResetWalls_whenReset() {
-        settings.integer(TANK_TICKS_PER_SHOOT, 3);
+        settings.integer(HERO_TICKS_PER_SHOOT, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -4152,7 +4152,7 @@ public class GameTest {
     // первый выстрел иногда получается сделать дважды
     @Test
     public void shouldCantFireTwice() {
-        settings.integer(TANK_TICKS_PER_SHOOT, 4);
+        settings.integer(HERO_TICKS_PER_SHOOT, 4);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4487,9 +4487,9 @@ public class GameTest {
     // Когда пуля и дерево находятся в одной координате
     // и я не вижу свой танк под деревом, то и пулю все равно не вижу
     @Test
-    public void shouldBulletFlyUnderTwoTree_up_caseShowMyTankUnderTree() {
+    public void shouldBulletFlyUnderTwoTree_up_caseShowMyHeroUnderTree() {
         // given
-        settings.bool(SHOW_MY_TANK_UNDER_TREE, true);
+        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         // when then
         shouldBulletFlyUnderTwoTree_up();
@@ -4598,7 +4598,7 @@ public class GameTest {
 
     // дерево - когда игрок заходит под него, там видно дерево и больше никакого движения
     @Test
-    public void shouldTankMove_underTree_case2() {
+    public void shouldHeroMove_underTree_case2() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -4667,8 +4667,8 @@ public class GameTest {
     // и в настройках сказано, что свой танк виден под деревом
     // я вижу свой танк
     @Test
-    public void shouldTankMove_underTree_caseShowMyTankUnderTree_case2() {
-        settings.bool(SHOW_MY_TANK_UNDER_TREE, true);
+    public void shouldHeroMove_underTree_caseShowMyHeroUnderTree_case2() {
+        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4735,8 +4735,8 @@ public class GameTest {
     }
 
     @Test
-    public void shouldBulletFlyUnderTree_jointly_shouldTankMoveUnderTree() {
-        settings.bool(SHOW_MY_TANK_UNDER_TREE, true);
+    public void shouldBulletFlyUnderTree_jointly_shouldHeroMoveUnderTree() {
+        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5013,7 +5013,7 @@ public class GameTest {
 
     // так же не видно меня под деревом
     @Test
-    public void shouldTankMove_underTree() {
+    public void shouldHeroMove_underTree() {
 		givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
 				"☼▼        ☼\n" +
 				"☼         ☼\n" +
@@ -5089,8 +5089,8 @@ public class GameTest {
 
     // но если в сеттингах сказано что меня видно под деревьями, я - вижу
     @Test
-    public void shouldTankMove_underTree_caseShowMyTankUnderTree() {
-        settings.bool(SHOW_MY_TANK_UNDER_TREE, true);
+    public void shouldHeroMove_underTree_caseShowMyHeroUnderTree() {
+        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5167,7 +5167,7 @@ public class GameTest {
 
     // другого игрока не видно под деревом
     @Test
-    public void shouldOtherTankMove_underTree() {
+    public void shouldOtherHeroMove_underTree() {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5244,8 +5244,8 @@ public class GameTest {
     // даже если в сеттингах сказано что меня видно под деревьями,
     // другого танка я не вижу все равно
     @Test
-    public void shouldOtherTankMove_underTree_caseShowMyTankUnderTree() {
-        settings.bool(SHOW_MY_TANK_UNDER_TREE, true);
+    public void shouldOtherHeroMove_underTree_caseShowMyHeroUnderTree() {
+        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5322,7 +5322,7 @@ public class GameTest {
 
     // под деревом не видно так же и ботов белых
     @Test
-    public void shouldAITankMove_underTree() {
+    public void shouldAIMove_underTree() {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼?        ☼\n" +
                 "☼         ☼\n" +
@@ -5398,7 +5398,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldEnemyCanKillTankUnderTree() {
+    public void shouldEnemyCanKillHeroUnderTree() {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
                 "☼         ☼\n" +
@@ -5447,8 +5447,8 @@ public class GameTest {
         game.tick();// герой должен погибнуть
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(1) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
         assertEquals(false, hero(1).isAlive());
         assertD("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -5467,8 +5467,8 @@ public class GameTest {
     // два танка не могут проехать друг через друга под деревьями
     // но мой танк видно - так сказано в настройках
     @Test
-    public void shouldTwoTankCanPassThroughEachOtherUnderTree_caseShowMyTankUnderTree() {
-        settings.bool(SHOW_MY_TANK_UNDER_TREE, true);
+    public void shouldTwoHeroCanPassThroughEachOtherUnderTree_caseShowMyHeroUnderTree() {
+        settings.bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5523,7 +5523,7 @@ public class GameTest {
     // два танка не могут проехать друг через друга под деревьями
     // но мой танк видно - так сказано в настройках
     @Test
-    public void shouldTwoTankCanPassThroughEachOtherUnderTree() {
+    public void shouldTwoHeroCanPassThroughEachOtherUnderTree() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
@@ -5602,7 +5602,7 @@ public class GameTest {
     // то есть запоминается команда которой заезжали на лед
     // Если съезжаем на землю, то любой занос прекращается тут же
     @Test
-    public void shouldTankMoveUp_onIce_afterBeforeGround() {
+    public void shouldHeroMoveUp_onIce_afterBeforeGround() {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -5705,7 +5705,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldTankMoveLeftThenUpThenDown_onIce() {
+    public void shouldHeroMoveLeftThenUpThenDown_onIce() {
         settings.integer(SLIPPERINESS, 1);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -5787,7 +5787,7 @@ public class GameTest {
 
     // также когда на нем двигается враг он проскальзывает команду на два тика
     @Test
-    public void shouldOtherTankMoveLeftThenUpThenDown_onIce() {
+    public void shouldOtherHeroMoveLeftThenUpThenDown_onIce() {
         settings.integer(SLIPPERINESS, 1);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -5892,7 +5892,7 @@ public class GameTest {
 
 	// река - через нее герою нельзя пройти. но можно стрелять
 	@Test
-	public void shouldTankCanGoIfRiverAtWay() {
+	public void shouldHeroCanGoIfRiverAtWay() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6028,7 +6028,7 @@ public class GameTest {
 
     // река - через нее врагу нельзя пройти. но можно стрелять
     @Test
-    public void shouldOtherTankBullet_canGoIfRiverAtWay() {
+    public void shouldOtherHeroBullet_canGoIfRiverAtWay() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6075,7 +6075,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldOtherTankDoNotMove_whenRiverToWay_goRightOrUpOrLeftOrDown() {
+    public void shouldOtherHeroDoNotMove_whenRiverToWay_goRightOrUpOrLeftOrDown() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -6131,7 +6131,7 @@ public class GameTest {
 
     // река - через нее боту нельзя пройти. но можно стрелять
     @Test
-    public void shouldAITankBullet_canGoIfRiverAtWay() {
+    public void shouldAIBullet_canGoIfRiverAtWay() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6176,7 +6176,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldAITankDoNotMove_whenRiverToWay_goRightOrUpOrLeftOrDown() {
+    public void shouldAIDoNotMove_whenRiverToWay_goRightOrUpOrLeftOrDown() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ~  ☼\n" +
@@ -6265,7 +6265,7 @@ public class GameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("1 prizes with 2 tanks", getPrizesCount());
+        assertEquals("1 prizes with 2 heroes", getPrizesCount());
     }
 
     // У АИтанка с призами после 4-го хода должен смениться Element
@@ -6358,7 +6358,7 @@ public class GameTest {
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("1 prizes with 2 tanks", getPrizesCount());
+        assertEquals("1 prizes with 2 heroes", getPrizesCount());
     }
 
     // если spawnAiPrize = 3, а спаунится сразу 2 АИтанка, то 2-й должен быть АИтанком с призами
@@ -6388,7 +6388,7 @@ public class GameTest {
 
         game.tick();
 
-        assertEquals("1 prizes with 3 tanks", getPrizesCount());
+        assertEquals("1 prizes with 3 heroes", getPrizesCount());
     }
 
     // если spawnAiPrize = 3 и спаунится сразу 3 АИтанка, то 2-й должен быть АИтанком с призами
@@ -6418,7 +6418,7 @@ public class GameTest {
 
         game.tick();
 
-        assertEquals("1 prizes with 4 tanks", getPrizesCount());
+        assertEquals("1 prizes with 4 heroes", getPrizesCount());
     }
 
     // если spawnAiPrize = 3, а спаунятся сразу 6 АИтанков, то должно быть 2 АИтанка с призами
@@ -6448,7 +6448,7 @@ public class GameTest {
 
         game.tick();
 
-        assertEquals("2 prizes with 7 tanks", getPrizesCount());
+        assertEquals("2 prizes with 7 heroes", getPrizesCount());
     }
 
     // если spawnAiPrize = 3, а 3 АИтанка спаунятся по 1-му за каждый ход,
@@ -6529,7 +6529,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
-        assertEquals("1 prizes with 4 tanks", getPrizesCount());
+        assertEquals("1 prizes with 4 heroes", getPrizesCount());
 
         dropAI(pt(5, 7));
 
@@ -6544,7 +6544,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼▲      ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
-        assertEquals("2 prizes with 5 tanks", getPrizesCount());
+        assertEquals("2 prizes with 5 heroes", getPrizesCount());
 
         game.tick();
 
@@ -6669,7 +6669,7 @@ public class GameTest {
 
         game.tick();
 
-        verifyAllEvents("[KILL_OTHER_AI_TANK]");
+        verifyAllEvents("[KILL_AI]");
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼1    ☼\n" +
@@ -6705,8 +6705,8 @@ public class GameTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [KILL_OTHER_HERO_TANK[1]]\n" +
-                "listener(1) => [KILL_YOUR_TANK]\n");
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n");
 
         assertD("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -7336,10 +7336,10 @@ public class GameTest {
 
     // герой берет приз под деревом - когда его видно под деревьями
     @Test
-    public void shouldHeroTookPrize_underTree_caseShowMyTankUnderTree() {
+    public void shouldHeroTookPrize_underTree_caseShowMyHeroUnderTree() {
         settings.integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3)
-                .bool(SHOW_MY_TANK_UNDER_TREE, true);
+                .bool(SHOW_MY_HERO_UNDER_TREE, true);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7838,8 +7838,8 @@ public class GameTest {
 
         assertPrize(hero(0), "[]");
         verifyAllEvents(
-                "listener(0) => [KILL_YOUR_TANK]\n" +
-                "listener(1) => [KILL_OTHER_HERO_TANK[1]]\n");
+                "listener(0) => [HERO_DIED]\n" +
+                "listener(1) => [KILL_OTHER_HERO[1]]\n");
 
         hero(1).left();
         game.tick();
@@ -8015,7 +8015,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldKilAITankWithPrize_whenHitKillsIs2() {
+    public void shouldKilAIWithPrize_whenHitKillsIs2() {
         settings.integer(KILL_HITS_AI_PRIZE, 2)
                 .integer(PRIZE_ON_FIELD, 3);
 
@@ -8088,7 +8088,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         verifyAllEvents(
-                "[KILL_OTHER_AI_TANK]");
+                "[KILL_AI]");
 
         hero(0).act();
         game.tick();
@@ -8119,7 +8119,7 @@ public class GameTest {
         settings.integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 5)
-                .integer(TANK_TICKS_PER_SHOOT,3);
+                .integer(HERO_TICKS_PER_SHOOT,3);
 
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -8861,8 +8861,8 @@ public class GameTest {
                 "☼☼☼☼☼☼☼\n");
 
         verifyAllEvents(
-                "listener(0) => [KILL_YOUR_TANK]\n" +
-                "listener(1) => [KILL_OTHER_HERO_TANK[1]]\n");
+                "listener(0) => [HERO_DIED]\n" +
+                "listener(1) => [KILL_OTHER_HERO[1]]\n");
     }
 
     @Test
@@ -9065,13 +9065,13 @@ public class GameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        verifyAllEvents("[KILL_YOUR_TANK]");
+        verifyAllEvents("[HERO_DIED]");
     }
 
     // если герой заехал на лед, а в следующий тик не указал никакой команды,
     // то продолжается движение вперед по старой команде на 1 тик.
     @Test
-    public void shouldTankSlidingOneTicks() {
+    public void shouldHeroSlidingOneTicks() {
         settings.integer(SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -9119,7 +9119,7 @@ public class GameTest {
     // если герой заехал на лед, а в следующий тик указал какую-то команду,
     // то продолжается движение по старой команде N тиков.
     @Test
-    public void shouldTankSlidingNTicks() {
+    public void shouldHeroSlidingNTicks() {
         settings.integer(SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -9217,7 +9217,7 @@ public class GameTest {
     // если герой заехал на лед, то продолжается движение по старой команде N тиков
     // слушается команда N + 1 и опять занос N тиков
     @Test
-    public void shouldTankSlidingNTicks_andAgainSliding() {
+    public void shouldHeroSlidingNTicks_andAgainSliding() {
         settings.integer(SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -9362,7 +9362,7 @@ public class GameTest {
 
     // если герой в ходе заноса уперся в стену, то занос прекращается
     @Test
-    public void shouldTankAndSliding_ifBumpedWall() {
+    public void shouldHeroAndSliding_ifBumpedWall() {
         settings.integer(SLIPPERINESS, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -9434,7 +9434,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldTankCanGoIfRiverAtWay_whenTankTakePrize() {
+    public void shouldHeroCanGoIfRiverAtWay_whenHeroTakePrize() {
         settings.integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 3);
@@ -9598,7 +9598,7 @@ public class GameTest {
 
     // когда заканчивается действие приза движение по воде отключается
     @Test
-    public void shouldTankCanGoIfRiverAtWay_whenPrizeIsOver() {
+    public void shouldHeroCanGoIfRiverAtWay_whenPrizeIsOver() {
         settings.integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 2);
@@ -9695,7 +9695,7 @@ public class GameTest {
     // За исключением - если после смещения он оказался снова на воде, то процедура повторяется до тех пор,
     // пока танк не выйдет полностью из воды.
     @Test
-    public void shouldTankCanGoIfRiverAtWay_whenPrizeIsOver_butTankOnWater() {
+    public void shouldHeroCanGoIfRiverAtWay_whenPrizeIsOver_butHeroOnWater() {
         settings.integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PENALTY_WALKING_ON_WATER, 4)
@@ -10012,7 +10012,7 @@ public class GameTest {
         settings.integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(PRIZE_WORKING, 3)
-                .integer(TANK_TICKS_PER_SHOOT, 3);
+                .integer(HERO_TICKS_PER_SHOOT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
@@ -10331,7 +10331,7 @@ public class GameTest {
 
         game.tick();
 
-        assertEquals("2 prizes with 7 tanks", getPrizesCount());
+        assertEquals("2 prizes with 7 heroes", getPrizesCount());
     }
 
     // если spawnAiPrize = 2, то каждый второй АИтанк будет с призами
@@ -10364,7 +10364,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("2 prizes with 7 tanks", getPrizesCount());
+        assertEquals("2 prizes with 7 heroes", getPrizesCount());
 
         hero(0).act();
         game.tick();
@@ -10402,7 +10402,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
-        verifyAllEvents("[KILL_OTHER_AI_TANK]");
+        verifyAllEvents("[KILL_AI]");
 
         dropAI(pt(4, 6));
         dropAI(pt(5, 6));
@@ -10420,7 +10420,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("1 prizes with 9 tanks", getPrizesCount());
+        assertEquals("1 prizes with 9 heroes", getPrizesCount());
     }
 
     @Test
@@ -10450,7 +10450,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("2 prizes with 7 tanks", getPrizesCount());
+        assertEquals("2 prizes with 7 heroes", getPrizesCount());
 
         hero(0).act();
         game.tick();
@@ -10489,7 +10489,7 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
-        verifyAllEvents("[KILL_OTHER_AI_TANK]");
+        verifyAllEvents("[KILL_AI]");
 
         game.tick();
 
@@ -10531,11 +10531,11 @@ public class GameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertEquals("2 prizes with 9 tanks", getPrizesCount());
+        assertEquals("2 prizes with 9 heroes", getPrizesCount());
     }
 
     @Test
-    public void bulletWithTick0ShouldNotAffectTank(){
+    public void bulletWithTick0ShouldNotAffectHero(){
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +

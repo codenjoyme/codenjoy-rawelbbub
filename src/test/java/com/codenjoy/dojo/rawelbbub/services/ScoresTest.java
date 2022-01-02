@@ -38,16 +38,16 @@ public class ScoresTest {
     private PlayerScores scores;
     private GameSettings settings;
 
-    public void killYourTank() {
-        scores.event(Event.KILL_YOUR_TANK);
+    public void heroDied() {
+        scores.event(Event.HERO_DIED);
     }
 
-    public void killOtherAITank() {
-        scores.event(Event.KILL_OTHER_AI_TANK);
+    public void killAI() {
+        scores.event(Event.KILL_AI);
     }
 
-    public void killOtherHeroTank(int amount) {
-        scores.event(Event.KILL_OTHER_HERO_TANK.apply(amount));
+    public void killOtherHero(int amount) {
+        scores.event(Event.KILL_OTHER_HERO.apply(amount));
     }
 
     @Before
@@ -65,20 +65,20 @@ public class ScoresTest {
         givenScores(140);
 
         // when
-        killOtherHeroTank(1);
-        killOtherHeroTank(2);
-        killOtherHeroTank(3);
+        killOtherHero(1);
+        killOtherHero(2);
+        killOtherHero(3);
 
-        killOtherAITank();
-        killOtherAITank();
+        killAI();
+        killAI();
 
-        killYourTank();
+        heroDied();
 
         // then
         assertEquals(140
-                + (1 + 2 + 3) * settings.integer(KILL_OTHER_HERO_TANK_SCORE)
-                + 2 * settings.integer(KILL_OTHER_AI_TANK_SCORE)
-                + settings.integer(KILL_YOUR_TANK_PENALTY),
+                    + (1 + 2 + 3) * settings.integer(KILL_OTHER_HERO_SCORE)
+                    + 2 * settings.integer(KILL_AI_SCORE)
+                    + settings.integer(HERO_DIED_PENALTY),
                 scores.getScore());
     }
 
@@ -88,7 +88,7 @@ public class ScoresTest {
         givenScores(0);
 
         // when
-        killYourTank();
+        heroDied();
 
         // then
         assertEquals(0, scores.getScore());
@@ -99,7 +99,7 @@ public class ScoresTest {
         // given
         givenScores(0);
 
-        killOtherHeroTank(1);
+        killOtherHero(1);
 
         // when
         scores.clear();
@@ -109,62 +109,62 @@ public class ScoresTest {
     }
 
     @Test
-    public void shouldKillOtherTank() {
+    public void shouldKillOtherHero() {
         // given
         givenScores(140);
 
         // when
-        killOtherHeroTank(1);
+        killOtherHero(1);
 
         // then
         assertEquals(140
-                    + settings.integer(KILL_OTHER_HERO_TANK_SCORE),
+                    + settings.integer(KILL_OTHER_HERO_SCORE),
                 scores.getScore());
 
         // when
-        killOtherHeroTank(2);
+        killOtherHero(2);
 
         // then
         assertEquals(140
-                    + (1 + 2) * settings.integer(KILL_OTHER_HERO_TANK_SCORE),
+                    + (1 + 2) * settings.integer(KILL_OTHER_HERO_SCORE),
                 scores.getScore());
 
         // when
-        killOtherHeroTank(3);
+        killOtherHero(3);
 
         // then
         assertEquals(140
-                     + (1 + 2 + 3) * settings.integer(KILL_OTHER_HERO_TANK_SCORE),
+                     + (1 + 2 + 3) * settings.integer(KILL_OTHER_HERO_SCORE),
                 scores.getScore());
     }
 
     @Test
-    public void shouldKillYourScore() {
+    public void shouldHeroDied() {
         // given
         givenScores(140);
 
         // when
-        killYourTank();
-        killYourTank();
+        heroDied();
+        heroDied();
 
         // then
         assertEquals(140
-                    + 2 * settings.integer(KILL_YOUR_TANK_PENALTY),
+                    + 2 * settings.integer(HERO_DIED_PENALTY),
                 scores.getScore());
     }
 
     @Test
-    public void shouldOtherAITank() {
+    public void shouldOtherAI() {
         // given
         givenScores(140);
 
         // when
-        killOtherAITank();
-        killOtherAITank();
+        killAI();
+        killAI();
 
         // then
         assertEquals(140
-                    + 2 * settings.integer(KILL_OTHER_AI_TANK_SCORE),
+                    + 2 * settings.integer(KILL_AI_SCORE),
                 scores.getScore());
     }
 }

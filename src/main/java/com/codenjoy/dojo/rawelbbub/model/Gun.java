@@ -26,7 +26,7 @@ package com.codenjoy.dojo.rawelbbub.model;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Tickable;
 
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.TANK_TICKS_PER_SHOOT;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.HERO_TICKS_PER_SHOOT;
 
 public class Gun implements Tickable {
 
@@ -41,7 +41,7 @@ public class Gun implements Tickable {
     }
 
     private int ticksPerShoot() {
-        return settings.integer(TANK_TICKS_PER_SHOOT);
+        return settings.integer(HERO_TICKS_PER_SHOOT);
     }
 
     public void reset() {

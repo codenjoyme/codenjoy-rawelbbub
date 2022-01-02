@@ -106,10 +106,10 @@ public class Rawelbbub extends RoundField<Player> implements Field {
         aiGen.allHave(withPrize());
         aiGen.dropAll();
 
-        List<Hero> tanks = heroesAndAis();
+        List<Hero> heroes = heroesAndAis();
 
-        for (Hero tank : tanks) {
-            tank.tick();
+        for (Hero hero : heroes) {
+            hero.tick();
         }
 
         for (Bullet bullet : bullets()) {
@@ -118,22 +118,22 @@ public class Rawelbbub extends RoundField<Player> implements Field {
             }
         }
 
-        for (Hero tank : tanks) {
-            if (tank.isAlive()) {
-                tank.tryFire();
+        for (Hero hero : heroes) {
+            if (hero.isAlive()) {
+                hero.tryFire();
             }
 
-            if (tank.prizes().contains(PRIZE_BREAKING_WALLS)) {
-                tank.getBullets().forEach(Bullet::heavy);
+            if (hero.prizes().contains(PRIZE_BREAKING_WALLS)) {
+                hero.getBullets().forEach(Bullet::heavy);
             }
         }
 
-        for (Hero tank : tanks) {
-            if (tank.isAlive()) {
-                tank.move();
+        for (Hero hero : heroes) {
+            if (hero.isAlive()) {
+                hero.move();
 
                 List<Bullet> bullets = bullets();
-                int index = bullets.indexOf(tank);
+                int index = bullets.indexOf(hero);
                 if (index != -1) {
                     Bullet bullet = bullets.get(index);
                     if (bullet.getTick() != 0) {
@@ -148,7 +148,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
         }
 
         for (Wall wall : walls) {
-            if (!tanks.contains(wall) && !bullets().contains(wall)) {
+            if (!heroes.contains(wall) && !bullets().contains(wall)) {
                 wall.tick();
             }
         }
@@ -175,7 +175,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
         ais.removeAll(dead);
         dead.stream()
             .filter(Hero::withPrize)
-            .forEach(tank -> prizeGen.drop(tank));
+            .forEach(hero -> prizeGen.drop(hero));
     }
 
     @Override
@@ -187,17 +187,17 @@ public class Rawelbbub extends RoundField<Player> implements Field {
 
         if (heroesAndAis().contains(bullet)) {
             int index = heroesAndAis().indexOf(bullet);
-            Hero tank = heroesAndAis().get(index);
-            if (tank == bullet.getOwner()) {
+            Hero hero = heroesAndAis().get(index);
+            if (hero == bullet.getOwner()) {
                 return;
             }
 
-            if (!tank.prizes().contains(PRIZE_IMMORTALITY)) {
-                tank.kill(bullet);
+            if (!hero.prizes().contains(PRIZE_IMMORTALITY)) {
+                hero.kill(bullet);
             }
 
-            if (!tank.isAlive()) {
-                scoresForKill(bullet, tank);
+            if (!hero.isAlive()) {
+                scoresForKill(bullet, hero);
             }
 
             bullet.remove();  // TODO заимплементить взрыв
@@ -263,26 +263,26 @@ public class Rawelbbub extends RoundField<Player> implements Field {
         return walls.get(index);
     }
 
-    private void scoresForKill(Bullet killedBullet, Hero diedTank) {
-        Hero killerTank = killedBullet.getOwner();
-        Player killer = null;
-        if (!ais.contains(killerTank)) {
-            killer = player(killerTank);
+    private void scoresForKill(Bullet bullet, Hero prey) {
+        Hero hunter = bullet.getOwner();
+        Player player = null;
+        if (!ais.contains(hunter)) {
+            player = player(hunter);
         }
 
-        if (killer != null) {
-            if (ais.contains(diedTank)) {
-                killer.event(Event.KILL_OTHER_AI_TANK);
+        if (player != null) {
+            if (ais.contains(prey)) {
+                player.event(Event.KILL_AI);
             } else {
-                killer.killHero();
-                killer.event(Event.KILL_OTHER_HERO_TANK.apply(killer.score()));
+                player.killHero();
+                player.event(Event.KILL_OTHER_HERO.apply(player.score()));
             }
         }
     }
 
-    private Player player(Hero tank) {
+    private Player player(Hero hero) {
         return players.stream()
-                .filter(player -> player.getHero().equals(tank))
+                .filter(player -> player.getHero().equals(hero))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Танк игрока не найден!"));
     }
@@ -316,8 +316,8 @@ public class Rawelbbub extends RoundField<Player> implements Field {
             }
         }
 
-        for (Hero tank : heroesAndAis()) {   //  TODO проверить как один танк не может проходить мимо другого танка игрока (не AI)
-            if (tank.itsMe(pt)) {
+        for (Hero hero : heroesAndAis()) {   //  TODO проверить как один танк не может проходить мимо другого танка игрока (не AI)
+            if (hero.itsMe(pt)) {
                 return true;
             }
         }
@@ -327,7 +327,7 @@ public class Rawelbbub extends RoundField<Player> implements Field {
 
     private List<Bullet> bullets() {
         return heroesAndAis().stream()
-                .flatMap(tank -> tank.getBullets().stream())
+                .flatMap(hero -> hero.getBullets().stream())
                 .collect(toList());
     }
 

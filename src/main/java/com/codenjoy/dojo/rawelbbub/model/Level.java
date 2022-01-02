@@ -58,19 +58,19 @@ public class Level extends AbstractLevel {
 
     public List<Hero> ais() {
         return new LinkedList<>(){{
-            addAll(find((pt, el) -> new AI(pt, DOWN),  AI_TANK_DOWN));
-            addAll(find((pt, el) -> new AI(pt, UP),    AI_TANK_UP));
-            addAll(find((pt, el) -> new AI(pt, LEFT),  AI_TANK_LEFT));
-            addAll(find((pt, el) -> new AI(pt, RIGHT), AI_TANK_RIGHT));
+            addAll(find((pt, el) -> new AI(pt, DOWN), AI_DOWN));
+            addAll(find((pt, el) -> new AI(pt, UP), AI_UP));
+            addAll(find((pt, el) -> new AI(pt, LEFT), AI_LEFT));
+            addAll(find((pt, el) -> new AI(pt, RIGHT), AI_RIGHT));
         }};
     }
 
     public List<Hero> heroes() {
         return new LinkedList<>(){{
-            addAll(find((pt, el) -> new Hero(pt, DOWN),  TANK_DOWN,  OTHER_TANK_DOWN));
-            addAll(find((pt, el) -> new Hero(pt, UP),    TANK_UP,    OTHER_TANK_UP));
-            addAll(find((pt, el) -> new Hero(pt, LEFT),  TANK_LEFT,  OTHER_TANK_LEFT));
-            addAll(find((pt, el) -> new Hero(pt, RIGHT), TANK_RIGHT, OTHER_TANK_RIGHT));
+            addAll(find((pt, el) -> new Hero(pt, DOWN), HERO_DOWN, OTHER_HERO_DOWN));
+            addAll(find((pt, el) -> new Hero(pt, UP), HERO_UP, OTHER_HERO_UP));
+            addAll(find((pt, el) -> new Hero(pt, LEFT), HERO_LEFT, OTHER_HERO_LEFT));
+            addAll(find((pt, el) -> new Hero(pt, RIGHT), HERO_RIGHT, OTHER_HERO_RIGHT));
         }};
     }
 

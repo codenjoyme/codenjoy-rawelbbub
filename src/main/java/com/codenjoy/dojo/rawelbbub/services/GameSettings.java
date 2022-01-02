@@ -43,20 +43,20 @@ public class GameSettings extends SettingsImpl
 
     public enum Keys implements Key {
 
-        AI_TICKS_PER_SHOOT("[Game] Ticks until the next AI Tank shoot"),
-        TANK_TICKS_PER_SHOOT("[Game] Ticks until the next Tank shoot"),
-        SLIPPERINESS("[Game] Value of tank sliding on ice"),
+        AI_TICKS_PER_SHOOT("[Game] Ticks until the next AI shoot"),
+        HERO_TICKS_PER_SHOOT("[Game] Ticks until the next hero shoot"),
+        SLIPPERINESS("[Game] Value of hero sliding on ice"),
         PENALTY_WALKING_ON_WATER("[Game] Penalty time when walking on water"),
-        SHOW_MY_TANK_UNDER_TREE("[Game] Show my tank under tree"),
+        SHOW_MY_HERO_UNDER_TREE("[Game] Show my hero under tree"),
         WALL_REGENERATE_TIME("[Game] Wall regenerate time"),
-        TICKS_STUCK_BY_RIVER("[Game] Ticks AI Tank gets stuck by river"),
+        TICKS_STUCK_BY_RIVER("[Game] Ticks AI gets stuck by river"),
 
-        SPAWN_AI_PRIZE("[Prize] Count spawn for AI Tank with prize"),
-        KILL_HITS_AI_PRIZE("[Prize] Hits to kill AI Tank with prize"),
+        SPAWN_AI_PRIZE("[Prize] Count spawn for AI with prize"),
+        KILL_HITS_AI_PRIZE("[Prize] Hits to kill AI with prize"),
         PRIZE_ON_FIELD("[Prize] The period of prize validity on the field after the appearance"),
         PRIZE_WORKING("[Prize] Working time of the prize after catch up"),
-        AI_PRIZE_LIMIT("[Prize] The total number of prize tanks and prizes on the board"),
-        AI_PRIZE_SPRITE_CHANGE_TICKS("[Prize] AI Tank sprite changes every ticks"),
+        AI_PRIZE_LIMIT("[Prize] The total number of prize AI and prizes on the board"),
+        AI_PRIZE_SPRITE_CHANGE_TICKS("[Prize] AI sprite changes every ticks"),
         PRIZE_SPRITE_CHANGE_TICKS("[Prize] Prize sprite changes every ticks"),
 
         CHANCE_IMMORTALITY("[Chance] Prize immortality"),
@@ -65,9 +65,9 @@ public class GameSettings extends SettingsImpl
         CHANCE_VISIBILITY("[Chance] Prize visibility"),
         CHANCE_NO_SLIDING("[Chance] Prize no sliding"),
 
-        KILL_YOUR_TANK_PENALTY("[Score] Kill your tank penalty"),
-        KILL_OTHER_HERO_TANK_SCORE("[Score] Kill other hero tank score"),
-        KILL_OTHER_AI_TANK_SCORE("[Score] Kill other AI tank score"),
+        HERO_DIED_PENALTY("[Score] Kill your hero penalty"),
+        KILL_OTHER_HERO_SCORE("[Score] Kill other hero score"),
+        KILL_AI_SCORE("[Score] Kill other AI score"),
 
         SCORE_COUNTING_TYPE(ScoresImpl.SCORE_COUNTING_TYPE.key());
 
@@ -95,10 +95,10 @@ public class GameSettings extends SettingsImpl
         playersPerRoom().update(20);
 
         integer(AI_TICKS_PER_SHOOT, 10);
-        integer(TANK_TICKS_PER_SHOOT, 4);
+        integer(HERO_TICKS_PER_SHOOT, 4);
         integer(SLIPPERINESS, 3);
         integer(PENALTY_WALKING_ON_WATER, 2);
-        bool(SHOW_MY_TANK_UNDER_TREE, false);
+        bool(SHOW_MY_HERO_UNDER_TREE, false);
         integer(WALL_REGENERATE_TIME, 30);
         integer(TICKS_STUCK_BY_RIVER, 5);
 
@@ -117,9 +117,9 @@ public class GameSettings extends SettingsImpl
         integer(CHANCE_VISIBILITY, 20);
         integer(CHANCE_NO_SLIDING, 20);
 
-        integer(KILL_YOUR_TANK_PENALTY, -0);
-        integer(KILL_OTHER_HERO_TANK_SCORE, 50);
-        integer(KILL_OTHER_AI_TANK_SCORE, 25);
+        integer(HERO_DIED_PENALTY, -0);
+        integer(KILL_OTHER_HERO_SCORE, 50);
+        integer(KILL_AI_SCORE, 25);
 
 
         Levels.setup(this);

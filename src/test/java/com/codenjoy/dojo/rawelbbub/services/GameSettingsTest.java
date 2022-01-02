@@ -32,10 +32,10 @@ public class GameSettingsTest {
     @Test
     public void shouldGetAllKeys() {
         assertEquals("[AI_TICKS_PER_SHOOT, \n" +
-                        "TANK_TICKS_PER_SHOOT, \n" +
+                        "HERO_TICKS_PER_SHOOT, \n" +
                         "SLIPPERINESS, \n" +
                         "PENALTY_WALKING_ON_WATER, \n" +
-                        "SHOW_MY_TANK_UNDER_TREE, \n" +
+                        "SHOW_MY_HERO_UNDER_TREE, \n" +
                         "WALL_REGENERATE_TIME, \n" +
                         "TICKS_STUCK_BY_RIVER, \n" +
                         "SPAWN_AI_PRIZE, \n" +
@@ -50,9 +50,9 @@ public class GameSettingsTest {
                         "CHANCE_WALKING_ON_WATER, \n" +
                         "CHANCE_VISIBILITY, \n" +
                         "CHANCE_NO_SLIDING, \n" +
-                        "KILL_YOUR_TANK_PENALTY, \n" +
-                        "KILL_OTHER_HERO_TANK_SCORE, \n" +
-                        "KILL_OTHER_AI_TANK_SCORE, \n" +
+                        "HERO_DIED_PENALTY, \n" +
+                        "KILL_OTHER_HERO_SCORE, \n" +
+                        "KILL_AI_SCORE, \n" +
                         "SCORE_COUNTING_TYPE]",
                 Utils.split(new GameSettings().allKeys(), ", \n"));
     }

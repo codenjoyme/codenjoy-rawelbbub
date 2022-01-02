@@ -32,13 +32,13 @@ public class Scores extends ScoresMap<Integer> {
     public Scores(SettingsReader settings) {
         super(settings);
 
-        put(Event.Type.KILL_YOUR_TANK,
-                value -> settings.integer(KILL_YOUR_TANK_PENALTY));
+        put(Event.Type.HERO_DIED,
+                value -> settings.integer(HERO_DIED_PENALTY));
 
-        put(Event.Type.KILL_OTHER_HERO_TANK,
-                value -> value * settings.integer(KILL_OTHER_HERO_TANK_SCORE));
+        put(Event.Type.KILL_OTHER_HERO,
+                value -> value * settings.integer(KILL_OTHER_HERO_SCORE));
 
-        put(Event.Type.KILL_OTHER_AI_TANK,
-                value -> settings.integer(KILL_OTHER_AI_TANK_SCORE));
+        put(Event.Type.KILL_AI,
+                value -> settings.integer(KILL_AI_SCORE));
     }
 }

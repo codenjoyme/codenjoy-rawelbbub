@@ -71,7 +71,7 @@ public class AIPrize extends AI {
     @Override
     public Element subState() {
         if (ticks % changeEveryTicks() == 0 && !wounded) {
-            return Element.AI_TANK_PRIZE;
+            return Element.AI_PRIZE;
         }
 
         if (wounded) {

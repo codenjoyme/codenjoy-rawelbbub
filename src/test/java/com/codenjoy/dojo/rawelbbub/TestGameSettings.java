@@ -45,9 +45,9 @@ public class TestGameSettings extends GameSettings {
          integer(SPAWN_AI_PRIZE, 4);
          integer(KILL_HITS_AI_PRIZE, 3);
          integer(AI_TICKS_PER_SHOOT, 10);
-         integer(TANK_TICKS_PER_SHOOT, 1);
+         integer(HERO_TICKS_PER_SHOOT, 1);
          integer(SLIPPERINESS, 3);
-         bool(SHOW_MY_TANK_UNDER_TREE, false);
+         bool(SHOW_MY_HERO_UNDER_TREE, false);
          integer(PRIZE_ON_FIELD, 3);
          integer(PRIZE_WORKING, 10);
          integer(AI_PRIZE_LIMIT, 10);
@@ -56,6 +56,6 @@ public class TestGameSettings extends GameSettings {
          integer(CHANCE_WALKING_ON_WATER, CHANCE);
          integer(CHANCE_VISIBILITY, CHANCE);
          integer(CHANCE_NO_SLIDING, CHANCE);
-         integer(KILL_YOUR_TANK_PENALTY, -10);
+         integer(HERO_DIED_PENALTY, -10);
     }
 }

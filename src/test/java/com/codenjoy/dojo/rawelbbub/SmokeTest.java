@@ -35,7 +35,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.SHOW_MY_TANK_UNDER_TREE;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.SHOW_MY_HERO_UNDER_TREE;
 
 public class SmokeTest {
 
@@ -81,7 +81,7 @@ public class SmokeTest {
                                         "☼ ╬   ╬╬╬   ╬ ☼\n" +
                                         "☼     ╬ ╬     ☼\n" +
                                         "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n")
-                                .bool(SHOW_MY_TANK_UNDER_TREE, true);
+                                .bool(SHOW_MY_HERO_UNDER_TREE, true);
                     }
                 },
                 Arrays.asList(new AISolver(dice), new AISolver(dice)),

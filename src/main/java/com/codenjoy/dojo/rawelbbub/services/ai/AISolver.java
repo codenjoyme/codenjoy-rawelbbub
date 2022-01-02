@@ -104,14 +104,14 @@ public class AISolver implements Solver<Board> {
         int size = board.size();
         Point from = board.getMe();
         List<Point> to = board.get(
-                Element.AI_TANK_DOWN,
-                Element.AI_TANK_LEFT,
-                Element.AI_TANK_RIGHT,
-                Element.AI_TANK_UP,
-                Element.OTHER_TANK_DOWN,
-                Element.OTHER_TANK_LEFT,
-                Element.OTHER_TANK_RIGHT,
-                Element.OTHER_TANK_UP);
+                Element.AI_DOWN,
+                Element.AI_LEFT,
+                Element.AI_RIGHT,
+                Element.AI_UP,
+                Element.OTHER_HERO_DOWN,
+                Element.OTHER_HERO_LEFT,
+                Element.OTHER_HERO_RIGHT,
+                Element.OTHER_HERO_UP);
 
         // TODO #768 этот подход должен быть идентичным
         // way.getPossibleWays(size, withBarriers(board));

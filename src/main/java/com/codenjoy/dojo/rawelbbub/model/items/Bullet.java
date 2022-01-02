@@ -44,11 +44,11 @@ public class Bullet extends MovingObject implements State<Element, Player> {
     private boolean heavy;
     private int tick;
 
-    public Bullet(Field field, Direction tankDirection,
+    public Bullet(Field field, Direction direction,
                   Point from, Hero owner,
                   Consumer<Object> onDestroy)
     {
-        super(from.getX(), from.getY(), tankDirection);
+        super(from.getX(), from.getY(), direction);
         this.field = field;
         this.owner = owner;
         moving = true;

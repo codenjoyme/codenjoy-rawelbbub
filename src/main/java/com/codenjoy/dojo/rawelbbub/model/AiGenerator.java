@@ -89,9 +89,9 @@ public class AiGenerator {
         return findFreePosition(field.size() - 2, field.size());
     }
 
-    private AI tank(Point pt) {
+    private AI ai(Point pt) {
         AI result;
-        if (isPrizeTankTurn() && canDrop()) {
+        if (isPrizeAiTurn() && canDrop()) {
             result = new AIPrize(pt, Direction.DOWN);
         } else {
             result = new AI(pt, Direction.DOWN);
@@ -100,7 +100,7 @@ public class AiGenerator {
         return result;
     }
 
-    private boolean isPrizeTankTurn() {
+    private boolean isPrizeAiTurn() {
         if (settings.integer(SPAWN_AI_PRIZE) == 0) {
             return false;
         }
@@ -117,13 +117,13 @@ public class AiGenerator {
     }
 
     private AI checkDropPt(Point pt) {
-        AI tank;
+        AI ai;
         if (field.isRiver(pt)) {
-            tank = tank(freePosition());
+            ai = ai(freePosition());
         } else {
-            tank = tank(pt);
+            ai = ai(pt);
         }
-        return tank;
+        return ai;
     }
 
     public void dropAll(List<? extends Point> points) {

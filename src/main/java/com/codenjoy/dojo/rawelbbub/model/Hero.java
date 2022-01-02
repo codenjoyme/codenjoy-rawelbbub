@@ -142,7 +142,7 @@ public class Hero extends RoundPlayerHero<Field>
 
     @Override
     public void die() {
-        die(Event.KILL_YOUR_TANK);
+        die(Event.HERO_DIED);
     }
 
     public Collection<Bullet> getBullets() {
@@ -150,7 +150,7 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     protected int ticksPerShoot() {
-        return settings().integer(TANK_TICKS_PER_SHOOT);
+        return settings().integer(HERO_TICKS_PER_SHOOT);
     }
 
     public void kill(Bullet bullet) {
@@ -188,19 +188,19 @@ public class Hero extends RoundPlayerHero<Field>
 
         if (player.getHero() != this) {
             switch (direction) {
-                case LEFT:  return Element.OTHER_TANK_LEFT;
-                case RIGHT: return Element.OTHER_TANK_RIGHT;
-                case UP:    return Element.OTHER_TANK_UP;
-                case DOWN:  return Element.OTHER_TANK_DOWN;
+                case LEFT:  return Element.OTHER_HERO_LEFT;
+                case RIGHT: return Element.OTHER_HERO_RIGHT;
+                case UP:    return Element.OTHER_HERO_UP;
+                case DOWN:  return Element.OTHER_HERO_DOWN;
                 default:    throw new RuntimeException("Неправильное состояние танка!");
             }
         }
 
         switch (direction) {
-            case LEFT:  return Element.TANK_LEFT;
-            case RIGHT: return Element.TANK_RIGHT;
-            case UP:    return Element.TANK_UP;
-            case DOWN:  return Element.TANK_DOWN;
+            case LEFT:  return Element.HERO_LEFT;
+            case RIGHT: return Element.HERO_RIGHT;
+            case UP:    return Element.HERO_UP;
+            case DOWN:  return Element.HERO_DOWN;
             default:    throw new RuntimeException("Неправильное состояние танка!");
         }
     }
@@ -215,7 +215,7 @@ public class Hero extends RoundPlayerHero<Field>
             return null;
         }
 
-        if (hero == this && settings().bool(SHOW_MY_TANK_UNDER_TREE)) {
+        if (hero == this && settings().bool(SHOW_MY_HERO_UNDER_TREE)) {
             return null;
         }
 

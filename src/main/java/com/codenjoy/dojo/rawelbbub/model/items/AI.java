@@ -120,10 +120,10 @@ public class AI extends Hero {
         }
 
         switch (direction) {
-            case LEFT:  return Element.AI_TANK_LEFT;
-            case RIGHT: return Element.AI_TANK_RIGHT;
-            case UP:    return Element.AI_TANK_UP;
-            case DOWN:  return Element.AI_TANK_DOWN;
+            case LEFT:  return Element.AI_LEFT;
+            case RIGHT: return Element.AI_RIGHT;
+            case UP:    return Element.AI_UP;
+            case DOWN:  return Element.AI_DOWN;
             default: throw new RuntimeException(
                     "Неправильное состояние танка!");
         }

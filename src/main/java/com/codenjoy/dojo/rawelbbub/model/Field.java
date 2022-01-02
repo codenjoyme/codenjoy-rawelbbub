@@ -39,7 +39,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     boolean isRiver(Point pt);
 
-    boolean isTree(Point pt);
+    boolean isSeaweed(Point pt);
 
     boolean isOil(Point pt);
 
@@ -49,7 +49,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Accessor<Prize> prizes();
 
-    Accessor<Tree> trees();
+    Accessor<Seaweed> seaweed();
 
     Accessor<Oil> oil();
 

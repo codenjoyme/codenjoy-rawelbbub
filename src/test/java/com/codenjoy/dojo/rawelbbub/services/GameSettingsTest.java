@@ -35,7 +35,7 @@ public class GameSettingsTest {
                         "HERO_TICKS_PER_SHOOT, \n" +
                         "OIL_SLIPPERINESS, \n" +
                         "PENALTY_WALKING_ON_WATER, \n" +
-                        "SHOW_MY_HERO_UNDER_TREE, \n" +
+                        "SHOW_MY_HERO_UNDER_SEAWEED, \n" +
                         "WALL_REGENERATE_TIME, \n" +
                         "TICKS_STUCK_BY_RIVER, \n" +
                         "SPAWN_AI_PRIZE, \n" +

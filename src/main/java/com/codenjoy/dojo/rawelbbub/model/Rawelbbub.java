@@ -209,7 +209,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     @Override
     public boolean isFree(Point pt) {
         return !isBarrier(pt)
-                && !isTree(pt)
+                && !isSeaweed(pt)
                 && !isRiver(pt)
                 && !isOil(pt);
     }
@@ -228,7 +228,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     public BoardReader<Player> reader() {
         return field.reader(
                 Reefs.class,
-                Tree.class,
+                Seaweed.class,
                 Hero.class,
                 AI.class,
                 AIPrize.class,
@@ -325,8 +325,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public boolean isTree(Point pt) {
-        return trees().contains(pt);
+    public boolean isSeaweed(Point pt) {
+        return seaweed().contains(pt);
     }
 
     @Override
@@ -381,8 +381,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<Tree> trees() {
-        return field.of(Tree.class);
+    public Accessor<Seaweed> seaweed() {
+        return field.of(Seaweed.class);
     }
 
     @Override

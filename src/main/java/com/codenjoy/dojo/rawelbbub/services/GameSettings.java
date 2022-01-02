@@ -47,7 +47,7 @@ public class GameSettings extends SettingsImpl
         HERO_TICKS_PER_SHOOT("[Game] Ticks until the next hero shoot"),
         OIL_SLIPPERINESS("[Game] The amount of leaked oil. The more - the more naughty the submarine."),
         PENALTY_WALKING_ON_WATER("[Game] Penalty time when walking on water"),
-        SHOW_MY_HERO_UNDER_TREE("[Game] Show my hero under tree"),
+        SHOW_MY_HERO_UNDER_SEAWEED("[Game] Show my hero under seaweed"),
         WALL_REGENERATE_TIME("[Game] Wall regenerate time"),
         TICKS_STUCK_BY_RIVER("[Game] Ticks AI gets stuck by river"),
 
@@ -98,7 +98,7 @@ public class GameSettings extends SettingsImpl
         integer(HERO_TICKS_PER_SHOOT, 4);
         integer(OIL_SLIPPERINESS, 3);
         integer(PENALTY_WALKING_ON_WATER, 2);
-        bool(SHOW_MY_HERO_UNDER_TREE, false);
+        bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
         integer(WALL_REGENERATE_TIME, 30);
         integer(TICKS_STUCK_BY_RIVER, 5);
 

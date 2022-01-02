@@ -51,8 +51,8 @@ public class Level extends AbstractLevel {
         return find(Oil::new, OIL);
     }
 
-    public List<Tree> trees() {
-        return find(Tree::new, TREE);
+    public List<Seaweed> seaweed() {
+        return find(Seaweed::new, SEAWEED);
     }
 
     public List<Hero> ais() {
@@ -86,6 +86,6 @@ public class Level extends AbstractLevel {
         // field.addAll(ais());
         field.addAll(oil());
         field.addAll(rivers());
-        field.addAll(trees());
+        field.addAll(seaweed());
     }
 }

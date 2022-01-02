@@ -29,12 +29,12 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.State;
 
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.SHOW_MY_HERO_UNDER_TREE;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.SHOW_MY_HERO_UNDER_SEAWEED;
 import static com.codenjoy.dojo.services.StateUtils.filterOne;
 
-public class Tree extends PointImpl implements State<Element, Player> {
+public class Seaweed extends PointImpl implements State<Element, Player> {
 
-    public Tree(Point pt) {
+    public Seaweed(Point pt) {
         super(pt);
     }
 
@@ -61,11 +61,11 @@ public class Tree extends PointImpl implements State<Element, Player> {
         }
 
         if (hero == observer
-                && observer.settings().bool(SHOW_MY_HERO_UNDER_TREE))
+                && observer.settings().bool(SHOW_MY_HERO_UNDER_SEAWEED))
         {
             return null;
         }
 
-        return Element.TREE;
+        return Element.SEAWEED;
     }
 }

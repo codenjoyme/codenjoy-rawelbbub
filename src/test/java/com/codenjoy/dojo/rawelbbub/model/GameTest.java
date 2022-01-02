@@ -4722,9 +4722,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // дерево
+    // водоросли
     @Test
-    public void shouldBeWallTree_whenGameCreated() {
+    public void shouldBeWallSeaweed_whenGameCreated() {
         // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4734,7 +4734,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertEquals(1, field().trees().size());
+        assertEquals(1, field().seaweed().size());
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -4747,7 +4747,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBeWallTwoTree_whenGameCreated() {
+    public void shouldBeWallTwoSeaweed_whenGameCreated() {
         // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4758,7 +4758,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // then
-        assertEquals(2, field().trees().size());
+        assertEquals(2, field().seaweed().size());
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4769,9 +4769,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // При выстреле пуля должна пролетать сквозь дерево
+    // При выстреле пуля должна пролетать сквозь водоросли
     @Test
-    public void shouldBulletFlyUnderTree_right() {
+    public void shouldBulletFlyUnderSeaweed_right() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4884,7 +4884,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroyWallUnderTree_whenHittingTheWallUp_whenTwoWalls() {
+    public void shouldBulletDestroyWallUnderSeaweed_whenHittingTheWallUp_whenTwoWalls() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -5006,21 +5006,20 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // Когда пуля и дерево находятся в одной координате
-    // и я не вижу свой танк под деревом, то и пулю все равно не вижу
+    // Если я могу видеть себя под водорослями,
+    // то торпеду все равно не вижу
     @Test
-    public void shouldBulletFlyUnderTwoTree_up_caseShowMyHeroUnderTree() {
+    public void shouldBulletFlyUnderTwoSeaweed_up_caseShowMyHeroUnderSeaweed() {
         // given
-        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
         // when then
-        shouldBulletFlyUnderTwoTree_up();
+        shouldBulletFlyUnderTwoSeaweed_up();
     }
 
-    // Когда пуля и дерево находятся в одной координате
-    // я не вижу ее, дерево скрывает
+    // Торпеду не видно в водорослях
     @Test
-    public void shouldBulletFlyUnderTwoTree_up() {
+    public void shouldBulletFlyUnderTwoSeaweed_up() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5131,9 +5130,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // дерево - когда игрок заходит под него, там видно дерево и больше никакого движения
+    // в водорослях не видно подлодку
     @Test
-    public void shouldHeroMove_underTree_case2() {
+    public void shouldHeroMove_underSeaweed_case2() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5209,13 +5208,11 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // дерево - когда игрок заходит под него,
-    // и в настройках сказано, что свой танк виден под деревом
-    // я вижу свой танк
+    // настройками можно менять видимость моего героя в водорослях
     @Test
-    public void shouldHeroMove_underTree_caseShowMyHeroUnderTree_case2() {
+    public void shouldHeroMove_underSeaweed_caseShowMyHeroUnderSeaweed_case2() {
         // given
-        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5292,9 +5289,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletFlyUnderTree_jointly_shouldHeroMoveUnderTree() {
+    public void shouldBulletFlyUnderSeaweed_jointly_shouldHeroMoveUnderSeaweed() {
         // given
-        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5448,7 +5445,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletFlyUnderTree_jointly() {
+    public void shouldBulletFlyUnderSeaweed_jointly() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5601,9 +5598,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // так же не видно меня под деревом
+    // моего героя не видно в водорослях
     @Test
-    public void shouldHeroMove_underTree() {
+    public void shouldHeroMove_underSeaweed() {
 		// when
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
 				"☼▼        ☼\n" +
@@ -5686,11 +5683,11 @@ public class GameTest extends AbstractGameTest {
 				"☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // но если в сеттингах сказано что меня видно под деревьями, я - вижу
+    // но если в сеттингах сказано что меня видно в водоросляз, я - вижу
     @Test
-    public void shouldHeroMove_underTree_caseShowMyHeroUnderTree() {
+    public void shouldHeroMove_underSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
-        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5773,9 +5770,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // другого игрока не видно под деревом
+    // другого игрока не видно в водорослях
     @Test
-    public void shouldOtherHeroMove_underTree() {
+    public void shouldOtherHeroMove_underSeaweed() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5858,12 +5855,12 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // даже если в сеттингах сказано что меня видно под деревьями,
+    // даже если в сеттингах сказано что меня видно в водорослях,
     // другого танка я не вижу все равно
     @Test
-    public void shouldOtherHeroMove_underTree_caseShowMyHeroUnderTree() {
+    public void shouldOtherHeroMove_underSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
-        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -5946,9 +5943,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // под деревом не видно так же и ботов белых
+    // AI ботов не видно в водорослях
     @Test
-    public void shouldAIMove_underTree() {
+    public void shouldAIMove_underSeaweed() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼?        ☼\n" +
@@ -6031,7 +6028,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldEnemyCanKillHeroUnderTree() {
+    public void shouldEnemyCanKillHeroUnderSeaweed() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼        ☼\n" +
@@ -6108,12 +6105,12 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // два танка не могут проехать друг через друга под деревьями
+    // два танка не могут проехать друг через друга в водорослях
     // но мой танк видно - так сказано в настройках
     @Test
-    public void shouldTwoHeroCanPassThroughEachOtherUnderTree_caseShowMyHeroUnderTree() {
+    public void shouldTwoHeroCanPassThroughEachOtherUnderSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
-        settings().bool(SHOW_MY_HERO_UNDER_TREE, true);
+        settings().bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6172,10 +6169,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // два танка не могут проехать друг через друга под деревьями
+    // два танка не могут проехать друг через друга в водорослях
     // но мой танк видно - так сказано в настройках
     @Test
-    public void shouldTwoHeroCanPassThroughEachOtherUnderTree() {
+    public void shouldTwoHeroCanPassThroughEachOtherUnderSeaweed() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7583,7 +7580,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDropPrize_inPointKilledAiPrize_underTree() {
+    public void shouldDropPrize_inPointKilledAiPrize_underSeaweed() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1);
 
@@ -7908,10 +7905,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // приз над деревом должен исчезнуть через 2 тика, если его не подобрали
-    // после исчезновения приза видим дерево
+    // приз в водорослях должен исчезнуть через 2 тика, если его не подобрали
+    // после исчезновения приза видим все те же водоросли
     @Test
-    public void shouldExpirePrizeOnField_disappearOnTree() {
+    public void shouldExpirePrizeOnField_disappearOnSeaweed() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 2);
@@ -8231,13 +8228,13 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // герой берет приз под деревом - когда его видно под деревьями
+    // герой берет приз в водоросзяъ - когда его видно в водорослях
     @Test
-    public void shouldHeroTookPrize_underTree_caseShowMyHeroUnderTree() {
+    public void shouldHeroTookPrize_underSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3)
-                .bool(SHOW_MY_HERO_UNDER_TREE, true);
+                .bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -8308,9 +8305,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // герой берет приз под деревом - когда его не видно под деревьями
+    // герой берет приз в водорослях - когда его не видно в водорослях
     @Test
-    public void shouldHeroTookPrize_underTree() {
+    public void shouldHeroTookPrize_underSeaweed() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
@@ -8385,7 +8382,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldOtherTookPrize_underTree() {
+    public void shouldOtherTookPrize_underSeaweed() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 3);
@@ -11993,7 +11990,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroTakePrizeAndSeeAiUnderTree_visibility() {
+    public void shouldHeroTakePrizeAndSeeAiUnderSeaweed_visibility() {
         // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1);
@@ -12012,7 +12009,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroTakePrizeAndSeeEnemyUnderTree_visibility() {
+    public void shouldHeroTakePrizeAndSeeEnemyUnderSeaweed_visibility() {
         // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1);
@@ -12105,9 +12102,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroTakePrizeAndSeeBulletsUnderTree_visibility() {
+    public void shouldHeroTakePrizeAndSeeBulletsUnderSeaweed_visibility() {
         // given
-        shouldHeroTakePrizeAndSeeEnemyUnderTree_visibility();
+        shouldHeroTakePrizeAndSeeEnemyUnderSeaweed_visibility();
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -12160,9 +12157,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldEndPrizeWorkingDontSeeBulletsUnderTree_visibility() {
+    public void shouldEndPrizeWorkingDontSeeBulletsUnderSeaweed_visibility() {
         // given
-        shouldHeroTakePrizeAndSeeBulletsUnderTree_visibility();
+        shouldHeroTakePrizeAndSeeBulletsUnderSeaweed_visibility();
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -12214,7 +12211,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldEndPrizeWorkingDontSeeAiUnderTree_visibility() {
+    public void shouldEndPrizeWorkingDontSeeAiUnderSeaweed_visibility() {
         // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)
@@ -12336,7 +12333,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldEndPrizeWorkingDontSeeEnemyUnderTree_visibility() {
+    public void shouldEndPrizeWorkingDontSeeEnemyUnderSeaweed_visibility() {
         // given
         settings().integer(PRIZE_ON_FIELD, 5)
                 .integer(KILL_HITS_AI_PRIZE, 1)

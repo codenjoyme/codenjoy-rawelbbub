@@ -178,13 +178,8 @@ public class Hero extends RoundPlayerHero<Field>
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        Element tree = player.getHero().treeState(this, alsoAtPoint);
         if (!isAlive()) {
             return Element.BANG;
-        }
-
-        if (tree != null) {
-            return Element.TREE;
         }
 
         if (player.getHero() != this) {
@@ -204,23 +199,6 @@ public class Hero extends RoundPlayerHero<Field>
             case DOWN:  return Element.HERO_DOWN;
             default:    throw new RuntimeException("Неправильное состояние танка!");
         }
-    }
-
-    public Element treeState(Hero hero, Object[] alsoAtPoint) {
-        Tree tree = filterOne(alsoAtPoint, Tree.class);
-        if (tree == null) {
-            return null;
-        }
-
-        if (prizes.contains(Element.PRIZE_VISIBILITY)) {
-            return null;
-        }
-
-        if (hero == this && settings().bool(SHOW_MY_HERO_UNDER_TREE)) {
-            return null;
-        }
-
-        return Element.TREE;
     }
 
     public void reset() {

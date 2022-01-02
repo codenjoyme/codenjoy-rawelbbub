@@ -94,11 +94,6 @@ public class Bullet extends MovingObject implements State<Element, Player> {
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        Tree tree = filterOne(alsoAtPoint, Tree.class);
-        if (tree != null) {
-            return Element.TREE;
-        }
-
         if (destroyed()) {
             return Element.BANG;
         } else {

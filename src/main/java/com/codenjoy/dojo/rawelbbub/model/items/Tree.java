@@ -23,10 +23,14 @@ package com.codenjoy.dojo.rawelbbub.model.items;
  */
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.model.Player;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.State;
+
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.SHOW_MY_HERO_UNDER_TREE;
+import static com.codenjoy.dojo.services.StateUtils.filterOne;
 
 public class Tree extends PointImpl implements State<Element, Player> {
 
@@ -36,6 +40,32 @@ public class Tree extends PointImpl implements State<Element, Player> {
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
+        Hero observer = player.getHero();
+
+        Prize prize = filterOne(alsoAtPoint, Prize.class);
+        if (prize != null) {
+            return prize.state(player, alsoAtPoint);
+        }
+
+        Hero hero = filterOne(alsoAtPoint, Hero.class);
+        if (hero != null && !hero.isAlive()) {
+            return null;
+        }
+
+        if (observer.prizes().contains(Element.PRIZE_VISIBILITY)) {
+            AI ai = filterOne(alsoAtPoint, AI.class);
+            Bullet bullet = filterOne(alsoAtPoint, Bullet.class);
+            if (hero != null || ai != null || bullet != null) {
+                return null;
+            }
+        }
+
+        if (hero == observer
+                && observer.settings().bool(SHOW_MY_HERO_UNDER_TREE))
+        {
+            return null;
+        }
+
         return Element.TREE;
     }
 }

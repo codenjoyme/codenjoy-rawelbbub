@@ -105,11 +105,6 @@ public class AI extends Hero {
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        Element tree = player.getHero().treeState(this, alsoAtPoint);
-        if (tree != null) {
-            return tree;
-        }
-
         if (!isAlive()) {
             return Element.BANG;
         }

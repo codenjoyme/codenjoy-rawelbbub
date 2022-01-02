@@ -3,8 +3,8 @@
 ## Symbol breakdown
 | Sprite | Code | Description |
 | -------- | -------- | -------- |
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/none.png" style="width:40px;" /> | `NONE(' ')` | An empty space where hero can move. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/battle_wall.png" style="width:40px;" /> | `BATTLE_WALL('☼')` | The undestroyable wall. | 
+|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/water.png" style="width:40px;" /> | `WATER(' ')` | An empty space where hero can move. | 
+|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/reefs.png" style="width:40px;" /> | `REEFS('☼')` | Underwater reefs. They cannot be destroyed. | 
 |<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/bang.png" style="width:40px;" /> | `BANG('Ѡ')` | A destroyed hero. A new appears just in a second. | 
 |<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ice.png" style="width:40px;" /> | `ICE('#')` | Ice, having driven onto which hero will begin to drift. During a skid, hero will repeat the old commands for several ticks in a row, ignoring the current commands. | 
 |<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/tree.png" style="width:40px;" /> | `TREE('%')` | The trees hide heroes which can continue to shoot at the same time. The fired shells are also not visible under the trees. Only prizes can be seen from behind the trees. | 
@@ -43,5 +43,5 @@
 |<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_immortality.png" style="width:40px;" /> | `PRIZE_IMMORTALITY('1')` | A prize that gives the hero temporary invulnerability. | 
 |<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_breaking_walls.png" style="width:40px;" /> | `PRIZE_BREAKING_WALLS('2')` | A prize that allows you to temporarily destroy any walls with 1 shot, even indestructible ones (but not the border of the field). | 
 |<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_walking_on_water.png" style="width:40px;" /> | `PRIZE_WALKING_ON_WATER('3')` | A prize that allows the hero to temporarily walk on water. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_visibility.png" style="width:40px;" /> | `PRIZE_VISIBILITY('4')` | A prize that allows the hero to temporarily see all enemies under the trees. | 
+|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_visibility.png" style="width:40px;" /> | `PRIZE_VISIBILITY('4')` | A prize that allows the hero to temporarily see all enemies under the trees and their bullets. | 
 |<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_no_sliding.png" style="width:40px;" /> | `PRIZE_NO_SLIDING('5')` | A prize that allows the hero to temporarily not slide on the ice. | 

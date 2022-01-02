@@ -73,13 +73,13 @@ public class Level extends AbstractLevel {
         }};
     }
 
-    public List<Border> borders() {
-        return find(Border::new, BATTLE_WALL);
+    public List<Reefs> reefs() {
+        return find(Reefs::new, REEFS);
     }
 
     @Override
     protected void fill(PointField field) {
-        field.addAll(borders());
+        field.addAll(reefs());
         field.addAll(walls());
         // TODO это делается не тут, а позже потому что в каждой
         //      такой точке может возникнуть как простой AI так и призовой

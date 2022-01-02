@@ -186,8 +186,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             }
         }
 
-        for (Point border : borders()) {
-            if (border.itsMe(pt)) {
+        for (Point reefs : reefs()) {
+            if (reefs.itsMe(pt)) {
                 return true;
             }
         }
@@ -227,7 +227,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     @Override
     public BoardReader<Player> reader() {
         return field.reader(
-                Border.class,
+                Reefs.class,
                 Tree.class,
                 Hero.class,
                 AI.class,
@@ -270,7 +270,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
     @Override
     public void affect(Bullet bullet) {
-        if (borders().contains(bullet)) {
+        if (reefs().contains(bullet)) {
             bullet.remove();
             return;
         }
@@ -404,8 +404,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<Border> borders() {
-        return field.of(Border.class);
+    public Accessor<Reefs> reefs() {
+        return field.of(Reefs.class);
     }
 
     @Override

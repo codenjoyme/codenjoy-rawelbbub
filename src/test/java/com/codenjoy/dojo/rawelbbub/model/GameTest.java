@@ -1129,7 +1129,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroStayAtPreviousPositionWhenIsNearBorder() {
+    public void shouldHeroStayAtPreviousPosition_whenTryingToCrossReefs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -9592,7 +9592,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroNotBreakingBorder_breakingWalls() {
+    public void shouldHeroNotBreakingReefs_whenItFiresAtThem() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5);

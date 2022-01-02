@@ -57,7 +57,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Accessor<Wall> walls();
 
-    Accessor<Border> borders();
+    Accessor<Reefs> reefs();
 
     Accessor<AI> ais();
 

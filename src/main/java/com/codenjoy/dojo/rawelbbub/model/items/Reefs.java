@@ -29,14 +29,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.State;
 
-public class Border extends PointImpl implements State<Element, Player> {
+public class Reefs extends PointImpl implements State<Element, Player> {
 
-    public Border(Point point) {
+    public Reefs(Point point) {
         super(point);
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.BATTLE_WALL;
+        return Element.REEFS;
     }
 }

@@ -103,7 +103,7 @@ public class Wall extends PointImpl implements Tickable, Fieldable<Field>, State
         if (!destroyed()) {
             return ch;
         } else  {
-            return Element.NONE;
+            return Element.WATER;
         }
     }
 

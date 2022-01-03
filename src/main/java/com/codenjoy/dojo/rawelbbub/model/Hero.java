@@ -40,7 +40,7 @@ import com.codenjoy.dojo.services.round.Timer;
 
 import java.util.List;
 
-import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_WALLS;
+import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_BAD;
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_WALKING_ON_FISHNET;
 import static com.codenjoy.dojo.rawelbbub.services.Event.CATCH_PRIZE;
 import static com.codenjoy.dojo.rawelbbub.services.Event.HERO_DIED;
@@ -243,7 +243,7 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     private void gunType() {
-        if (prizes.contains(PRIZE_BREAKING_WALLS)) {
+        if (prizes.contains(PRIZE_BREAKING_BAD)) {
             gun.reset();
         }
     }

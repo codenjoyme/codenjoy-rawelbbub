@@ -55,7 +55,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Accessor<Fishnet> fishnet();
 
-    Accessor<Wall> walls();
+    Accessor<Iceberg> icebergs();
 
     Accessor<Reefs> reefs();
 

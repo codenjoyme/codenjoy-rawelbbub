@@ -39,8 +39,8 @@ public class Level extends AbstractLevel {
         super(map);
     }
 
-    public List<Wall> walls() {
-        return find(Wall::new, WALL);
+    public List<Iceberg> icebergs() {
+        return find(Iceberg::new, ICEBERG_HUGE);
     }
 
     public List<Fishnet> fishnet() {
@@ -80,7 +80,7 @@ public class Level extends AbstractLevel {
     @Override
     protected void fill(PointField field) {
         field.addAll(reefs());
-        field.addAll(walls());
+        field.addAll(icebergs());
         // TODO это делается не тут, а позже потому что в каждой
         //      такой точке может возникнуть как простой AI так и призовой
         // field.addAll(ais());

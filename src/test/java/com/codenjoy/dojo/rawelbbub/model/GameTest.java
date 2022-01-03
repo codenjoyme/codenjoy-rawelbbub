@@ -54,9 +54,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
     
-    // рисуем стенку
+    // рисуем айсберг
     @Test
-    public void shouldBeWall_whenGameCreated() {
+    public void shouldBeIceberg_whenGameCreated() {
         // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -67,7 +67,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
  
         // then
-        assertEquals(1, field().walls().size());
+        assertEquals(1, field().icebergs().size());
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -1231,7 +1231,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDisappear_whenHittingTheWallUp() {
+    public void shouldBulletDisappear_whenHittingTheReefUp() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1269,7 +1269,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDisappear_whenHittingTheWallRight() {
+    public void shouldBulletDisappear_whenHittingTheReefRight() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1307,7 +1307,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDisappear_whenHittingTheWallLeft() {
+    public void shouldBulletDisappear_whenHittingTheReefLeft() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ◄☼\n" +
@@ -1345,7 +1345,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDisappear_whenHittingTheWallDown() {
+    public void shouldBulletDisappear_whenHittingTheReefDown() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -1382,9 +1382,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // снарядом уничтожается стенка за три присеста - снизу
+    // торпедой уничтожается айсберг за три присеста - стреляем снизу
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallDown() {
+    public void shouldBulletDestroyIceberg_whenHittingItDown() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -1470,9 +1470,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // снарядом уничтожается стенка за три присеста - слева
+    // торпедой уничтожается айсберг за три присеста - стреляем слева
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallLeft() {
+    public void shouldBulletDestroyIceberg_whenHittingItLeft() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1558,9 +1558,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // снарядом уничтожается стенка за три присеста - справа
+    // торпедой уничтожается айсберг за три присеста - стреляем справа
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallRight() {
+    public void shouldBulletDestroyIceberg_whenHittingItRight() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1646,9 +1646,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // снарядом уничтожается стенка за три присеста - сверху
+    // торпедой уничтожается айсберг за три присеста - стреляем сверху
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallUp() {
+    public void shouldBulletDestroyIceberg_whenHittingItUp() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -1735,9 +1735,11 @@ public class GameTest extends AbstractGameTest {
 
     }
 
-    // снарядом уничтожается стенка за три присеста - снизу но сквозь стену
+    // торпедой уничтожается айсберг за три присеста - стреляем снизу, но 'сквозь' айсберг.
+    // 'сквозь' значит, что за 1 тик пуля пролетает 2 клетки (видимый маршрут) и 
+    // этот маршрут не попадает на ячейку с айсбергом
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallDown_overWall() {
+    public void shouldBulletDestroyIceberg_whenHittingItDown_overIceberg() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -1823,9 +1825,11 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // снарядом уничтожается стенка за три присеста - слева но сквозь стену
+    // торпедой уничтожается айсберг за три присеста - стреляем слева, но 'сквозь' айсберг
+    // 'сквозь' значит, что за 1 тик пуля пролетает 2 клетки (видимый маршрут) и 
+    // этот маршрут не попадает на ячейку с айсбергом
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallLeft_overWall() {
+    public void shouldBulletDestroyIceberg_whenHittingItLeft_overIceberg() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1912,9 +1916,11 @@ public class GameTest extends AbstractGameTest {
 
     }
 
-    // снарядом уничтожается стенка за три присеста - справа но через стену
+    // торпедой уничтожается айсберг за три присеста - стреляем справа, но 'сквозь' айсберг
+    // 'сквозь' значит, что за 1 тик пуля пролетает 2 клетки (видимый маршрут) и 
+    // этот маршрут не попадает на ячейку с айсбергом
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallRight_overWall() {
+    public void shouldBulletDestroyIceberg_whenHittingItRight_overIceberg() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2000,9 +2006,11 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // снарядом уничтожается стенка за три присеста - сверху но сквозь стену
+    // торпедой уничтожается айсберг за три присеста - стреляем сверху, но 'сквозь' айсберг
+    // 'сквозь' значит, что за 1 тик пуля пролетает 2 клетки (видимый маршрут) и 
+    // этот маршрут не попадает на ячейку с айсбергом
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallUp_overWall() {
+    public void shouldBulletDestroyIceberg_whenHittingItUp_overIceberg() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2089,7 +2097,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallUp_whenTwoWalls() {
+    public void shouldBulletDestroyIceberg_whenHittingItUp_whenTwoIcebergs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -2212,7 +2220,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallRight_whenTwoWalls() {
+    public void shouldBulletDestroyIceberg_whenHittingItRight_whenTwoIcebergs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2335,7 +2343,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallLeft_whenTwoWalls() {
+    public void shouldBulletDestroyIcebergs_whenHittingItLeft_whenTwoIcebergs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2458,7 +2466,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroyWall_whenHittingTheWallDown_whenTwoWalls() {
+    public void shouldBulletDestroy_whenHittingItDown_whenTwoIcebergs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -2580,9 +2588,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // если я иду, а спереди стена, то я не могу двигаться дальше
+    // если герой плывет, а спереди айсберг, то он не может двигаться дальше
     @Test
-    public void shouldDoNotMove_whenWallTaWay_goDownOrLeft() {
+    public void shouldDoNotMove_whenIcebergsOnWay_goDownOrLeft() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2747,7 +2755,7 @@ public class GameTest extends AbstractGameTest {
     // если я стреляю дважды, то выпускается два снаряда
     // при этом я проверяю, что они уничтожаются в порядке очереди
     @Test
-    public void shouldShotWithSeveralBullets_whenHittingTheWallDown() {
+    public void shouldShotWithSeveralBullets_whenHittingItDown() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -3603,9 +3611,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldRegenerateDestroyedWall() {
+    public void shouldRegenerateDestroyedIcebergs() {
         // given
-        shouldBulletDestroyWall_whenHittingTheWallUp_whenTwoWalls();
+        shouldBulletDestroyIceberg_whenHittingItUp_whenTwoIcebergs();
 
         // when
         hero(0).fire();
@@ -3625,7 +3633,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        for (int tick = 7; tick <= settings().integer(WALL_REGENERATE_TIME); tick++) {
+        for (int tick = 7; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
             tick();
         }
 
@@ -3668,7 +3676,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroCantGoIfWallAtWay() {
+    public void shouldHeroCantGo_whenReefAtWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3693,7 +3701,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletCantGoIfWallAtWay() {
+    public void shouldBulletCantGo_whenReefAtWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3825,7 +3833,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroCanGoIfDestroyWall() {
+    public void shouldHeroCanGo_whenIcebergOnWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3869,9 +3877,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldWallCantRegenerateOnHero() {
+    public void shouldIcebergCantRegenerateOnHero() {
         // given
-        shouldHeroCanGoIfDestroyWall();
+        shouldHeroCanGo_whenIcebergOnWay();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -3883,7 +3891,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        for (int tick = 3; tick <= settings().integer(WALL_REGENERATE_TIME); tick++) {
+        for (int tick = 3; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
             tick();
         }
 
@@ -3900,7 +3908,7 @@ public class GameTest extends AbstractGameTest {
         hero(0).right();
         tick();
 
-        for (int tick = 2; tick <= settings().integer(WALL_REGENERATE_TIME); tick++) {
+        for (int tick = 2; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
             // then
             assertF("☼☼☼☼☼☼☼\n" +
                     "☼     ☼\n" +
@@ -3926,7 +3934,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldWallCantRegenerateOnBullet() {
+    public void shouldIcebergCantRegenerateOnBullet() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3956,7 +3964,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        for (int tick = 3; tick <= settings().integer(WALL_REGENERATE_TIME); tick++) {
+        for (int tick = 3; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
             tick();
         }
 
@@ -4175,7 +4183,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldEnemyCanKillHeroOnWall() {
+    public void shouldEnemyCanKillHero_whenHeroIsAtTheSiteOfTheDestroyedIceberg() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4203,7 +4211,7 @@ public class GameTest extends AbstractGameTest {
 
         // when
         hero(1).fire();
-        hero(1).up();  // команда поигнорится потому что вначале ходят все танки, а потом летят все снаряды
+        hero(1).up();  // команда проигнорируется потому, что вначале ходят все танки, а потом летят все снаряды
         tick();
 
         // then
@@ -4390,9 +4398,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // если стенка недорушенная, снаряд летит, и ресетнули игру, то все конструкции восстанавливаются
+    // если айсберг недоразрушен, а торпеда летит и в этот момент ресетнули игру, 
+    // то все айсберги восстанавливаются.
     @Test
-    public void shouldRemoveBulletsAndResetWalls_whenReset() {
+    public void shouldRemoveBulletsAndResetIcebergs_whenClearScore() {
         // given
         settings().integer(HERO_TICKS_PER_SHOOT, 3);
 
@@ -4580,7 +4589,7 @@ public class GameTest extends AbstractGameTest {
         // но после рисета это поле чистится
         assertEquals(0, player.score());
 
-        // и стенки тоже ресетнулись
+        // и айсберги тоже ресетнулись
         // и снаряд полетел
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
@@ -4884,7 +4893,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroyWallUnderSeaweed_whenHittingTheWallUp_whenTwoWalls() {
+    public void shouldBulletDestroyIcebergUnderSeaweed_whenHittingItUp_whenTwoIcebergs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -9179,7 +9188,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_BREAKING_WALLS);
+        dice(DICE_BREAKING_BAD);
         tick();
 
         // then
@@ -9206,7 +9215,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/5)]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_BAD(0/5)]");
 
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
@@ -9387,7 +9396,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroTakePrize_breakingWalls() {
+    public void shouldHeroTakePrize_breakingBad() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
@@ -9414,7 +9423,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_BREAKING_WALLS);
+        dice(DICE_BREAKING_BAD);
         hero(0).up();
         tick();
 
@@ -9442,7 +9451,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/10)]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_BAD(0/10)]");
 
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
@@ -9504,7 +9513,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroTakePrizeEnemyWithoutPrize_breakingWalls() {
+    public void shouldHeroTakePrizeEnemyWithoutPrize_breakingBad() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5);
@@ -9530,7 +9539,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_BREAKING_WALLS);
+        dice(DICE_BREAKING_BAD);
         tick();
 
         // then
@@ -9547,7 +9556,7 @@ public class GameTest extends AbstractGameTest {
         hero(1).up();
         tick();
 
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/10)]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_BAD(0/10)]");
 
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[2]]\n");
@@ -9617,7 +9626,7 @@ public class GameTest extends AbstractGameTest {
         verifyAllEvents("");
 
         // when
-        dice(DICE_BREAKING_WALLS);
+        dice(DICE_BREAKING_BAD);
         tick();
 
         // then
@@ -9633,7 +9642,7 @@ public class GameTest extends AbstractGameTest {
         hero(0).up();
         tick();
 
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/10)]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_BAD(0/10)]");
 
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
@@ -9698,7 +9707,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldEndPrizeWorking_breakingWalls() {
+    public void shouldEndPrizeWorking_breakingBad() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
@@ -9727,7 +9736,7 @@ public class GameTest extends AbstractGameTest {
         verifyAllEvents("");
 
         // when
-        dice(DICE_BREAKING_WALLS);
+        dice(DICE_BREAKING_BAD);
         tick();
 
         // then
@@ -9744,7 +9753,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/1)]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_BAD(0/1)]");
 
         verifyAllEvents("[CATCH_PRIZE[2]]");
 
@@ -10577,9 +10586,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // если герой в ходе заноса уперся в стену, то занос прекращается
+    // если герой в ходе заноса уперся в айсберг, то занос прекращается
     @Test
-    public void shouldHeroAndSliding_ifBumpedWall() {
+    public void shouldHeroAndSliding_ifBumpedIceberg() {
         // given
         settings().integer(OIL_SLIPPERINESS, 5);
 
@@ -10633,7 +10642,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        // RIGHT -> UP -> wall -> Canceled sliding
+        // RIGHT -> UP -> iceberg -> Canceled sliding
         hero(0).right();
         tick();
 
@@ -11319,7 +11328,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroTakePrizeAndShootsEveryTick_breakingWalls() {
+    public void shouldHeroTakePrizeAndShootsEveryTick_breakingBad() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
@@ -11347,7 +11356,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_BREAKING_WALLS);
+        dice(DICE_BREAKING_BAD);
         tick();
 
         // then
@@ -11367,7 +11376,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_BREAKING_WALLS(0/3)]");
+        assertPrize(hero(0), "[PRIZE_BREAKING_BAD(0/3)]");
 
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[2]]\n");

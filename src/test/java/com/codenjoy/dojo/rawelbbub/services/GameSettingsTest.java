@@ -36,7 +36,7 @@ public class GameSettingsTest {
                         "OIL_SLIPPERINESS, \n" +
                         "PENALTY_WALKING_ON_FISHNET, \n" +
                         "SHOW_MY_HERO_UNDER_SEAWEED, \n" +
-                        "WALL_REGENERATE_TIME, \n" +
+                        "ICEBERG_REGENERATE_TIME, \n" +
                         "TICKS_STUCK_BY_FISHNET, \n" +
                         "SPAWN_AI_PRIZE, \n" +
                         "KILL_HITS_AI_PRIZE, \n" +
@@ -46,7 +46,7 @@ public class GameSettingsTest {
                         "AI_PRIZE_SPRITE_CHANGE_TICKS, \n" +
                         "PRIZE_SPRITE_CHANGE_TICKS, \n" +
                         "CHANCE_IMMORTALITY, \n" +
-                        "CHANCE_BREAKING_WALLS, \n" +
+                        "CHANCE_BREAKING_BAD, \n" +
                         "CHANCE_WALKING_ON_FISHNET, \n" +
                         "CHANCE_VISIBILITY, \n" +
                         "CHANCE_NO_SLIDING, \n" +

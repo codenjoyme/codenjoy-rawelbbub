@@ -40,7 +40,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_WALLS;
+import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_BAD;
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_IMMORTALITY;
 import static com.codenjoy.dojo.rawelbbub.services.Event.*;
 import static java.util.function.Predicate.not;
@@ -132,7 +132,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
                 hero.tryFire();
             }
 
-            if (hero.prizes().contains(PRIZE_BREAKING_WALLS)) {
+            if (hero.prizes().contains(PRIZE_BREAKING_BAD)) {
                 hero.getBullets().forEach(Bullet::heavy);
             }
         }
@@ -154,9 +154,9 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             bullet.move();
         }
 
-        for (Wall wall : walls()) {
-            if (!heroes.contains(wall) && !bullets().contains(wall)) {
-                wall.tick();
+        for (Iceberg iceberg : icebergs()) {
+            if (!heroes.contains(iceberg) && !bullets().contains(iceberg)) {
+                iceberg.tick();
             }
         }
 
@@ -180,8 +180,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     public boolean isBarrier(Point pt) {
-        for (Wall wall : walls()) {
-            if (wall.itsMe(pt) && !wall.destroyed()) {
+        for (Iceberg iceberg : icebergs()) {
+            if (iceberg.itsMe(pt) && !iceberg.destroyed()) {
                 return true;
             }
         }
@@ -234,7 +234,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
                 AIPrize.class,
                 Prize.class,
                 Bullet.class,
-                Wall.class,
+                Iceberg.class,
                 Oil.class,
                 Fishnet.class);
     }
@@ -304,10 +304,10 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             }
         }
 
-        if (walls().contains(bullet)) {
-            Wall wall = walls().getFirstAt(bullet);
-            if (!wall.destroyed()) {
-                wall.destroy(bullet);
+        if (icebergs().contains(bullet)) {
+            Iceberg iceberg = icebergs().getFirstAt(bullet);
+            if (!iceberg.destroyed()) {
+                iceberg.destroy(bullet);
                 bullet.remove();  // TODO заимплементить взрыв
                 return;
             }
@@ -396,11 +396,11 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<Wall> walls() {
+    public Accessor<Iceberg> icebergs() {
 //        TODO
-//         .filter(not(Wall::destroyed))
+//         .filter(not(Iceberg::destroyed))
 //                .collect(toList());
-        return field.of(Wall.class);
+        return field.of(Iceberg.class);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class TestGameSettings extends GameSettings {
 
     public static final int CHANCE = 20;
     public static final int DICE_IMMORTALITY = 0*CHANCE;
-    public static final int DICE_BREAKING_WALLS = 1*CHANCE;
+    public static final int DICE_BREAKING_BAD = 1*CHANCE;
     public static final int DICE_WALKING_ON_FISHNET = 2*CHANCE;
     public static final int DICE_VISIBILITY = 3*CHANCE;
     public static final int DICE_NO_SLIDING = 4*CHANCE;
@@ -52,7 +52,7 @@ public class TestGameSettings extends GameSettings {
          integer(PRIZE_WORKING, 10);
          integer(AI_PRIZE_LIMIT, 10);
          integer(CHANCE_IMMORTALITY, CHANCE);
-         integer(CHANCE_BREAKING_WALLS, CHANCE);
+         integer(CHANCE_BREAKING_BAD, CHANCE);
          integer(CHANCE_WALKING_ON_FISHNET, CHANCE);
          integer(CHANCE_VISIBILITY, CHANCE);
          integer(CHANCE_NO_SLIDING, CHANCE);

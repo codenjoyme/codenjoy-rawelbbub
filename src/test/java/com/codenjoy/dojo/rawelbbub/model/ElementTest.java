@@ -30,9 +30,9 @@ import static org.junit.Assert.assertEquals;
 public class ElementTest {
 
     @Test
-    public void getWalls() {
+    public void icebergs() {
         assertEquals("[╬, ╩, ╦, ╠, ╣, ╨, ╥, ╞, ╡, │, ─, ┌, ┐, └, ┘,  ]",
-                Element.getWalls().toString());
+                Element.icebergs().toString());
     }
 
 }

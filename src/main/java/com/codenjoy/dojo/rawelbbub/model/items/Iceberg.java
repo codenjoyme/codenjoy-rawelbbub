@@ -30,16 +30,17 @@ import com.codenjoy.dojo.services.*;
 import com.codenjoy.dojo.services.field.Fieldable;
 import com.codenjoy.dojo.services.settings.SettingsReader;
 
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.WALL_REGENERATE_TIME;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.ICEBERG_REGENERATE_TIME;
+import static com.codenjoy.dojo.services.Direction.*;
 
-public class Wall extends PointImpl implements Tickable, Fieldable<Field>, State<Element, Player> {
+public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, State<Element, Player> {
 
     private Element ch;
     private int timer;
     private boolean overDamage;
     private SettingsReader settings;
 
-    public Wall(Point pt) {
+    public Iceberg(Point pt) {
         super(pt);
         reset();
         overDamage = false;
@@ -60,40 +61,40 @@ public class Wall extends PointImpl implements Tickable, Fieldable<Field>, State
 
     public void destroyFrom(Direction bulletDirection) {
         if (ch.power() == 1 || overDamage) {
-            ch = Element.WALL_DESTROYED;
+            ch = Element.ICEBERG_DESTROYED;
             return;
         }
-        if (bulletDirection.equals(Direction.UP)) {
+        if (bulletDirection.equals(UP)) {
             switch (ch) {
-                case WALL: ch = Element.WALL_DESTROYED_DOWN; break;
-                case WALL_DESTROYED_DOWN: ch = Element.WALL_DESTROYED_DOWN_TWICE; break;
-                case WALL_DESTROYED_UP: ch = Element.WALL_DESTROYED_UP_DOWN; break;
-                case WALL_DESTROYED_LEFT: ch = Element.WALL_DESTROYED_DOWN_LEFT; break;
-                case WALL_DESTROYED_RIGHT: ch = Element.WALL_DESTROYED_DOWN_RIGHT; break;
+                case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_DOWN; break;
+                case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_DOWN_DOWN; break;
+                case ICEBERG_MEDIUM_UP: ch = Element.ICEBERG_SMALL_UP_DOWN; break;
+                case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_DOWN_LEFT; break;
+                case ICEBERG_MEDIUM_RIGHT: ch = Element.ICEBERG_SMALL_DOWN_RIGHT; break;
             }
-        } else if (bulletDirection.equals(Direction.RIGHT)) {
+        } else if (bulletDirection.equals(RIGHT)) {
             switch (ch) {
-                case WALL: ch = Element.WALL_DESTROYED_LEFT; break;
-                case WALL_DESTROYED_LEFT: ch = Element.WALL_DESTROYED_LEFT_TWICE; break;
-                case WALL_DESTROYED_RIGHT: ch = Element.WALL_DESTROYED_LEFT_RIGHT; break;
-                case WALL_DESTROYED_UP: ch = Element.WALL_DESTROYED_UP_LEFT; break;
-                case WALL_DESTROYED_DOWN: ch = Element.WALL_DESTROYED_DOWN_LEFT; break;
+                case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_LEFT; break;
+                case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_LEFT_LEFT; break;
+                case ICEBERG_MEDIUM_RIGHT: ch = Element.ICEBERG_SMALL_LEFT_RIGHT; break;
+                case ICEBERG_MEDIUM_UP: ch = Element.ICEBERG_SMALL_UP_LEFT; break;
+                case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_DOWN_LEFT; break;
             }
-        } else if (bulletDirection.equals(Direction.LEFT)) {
+        } else if (bulletDirection.equals(LEFT)) {
             switch (ch) {
-                case WALL: ch = Element.WALL_DESTROYED_RIGHT; break;
-                case WALL_DESTROYED_RIGHT: ch = Element.WALL_DESTROYED_RIGHT_TWICE; break;
-                case WALL_DESTROYED_UP: ch = Element.WALL_DESTROYED_RIGHT_UP; break;
-                case WALL_DESTROYED_DOWN: ch = Element.WALL_DESTROYED_DOWN_RIGHT; break;
-                case WALL_DESTROYED_LEFT: ch = Element.WALL_DESTROYED_LEFT_RIGHT; break;
+                case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_RIGHT; break;
+                case ICEBERG_MEDIUM_RIGHT: ch = Element.ICEBERG_SMALL_RIGHT_RIGHT; break;
+                case ICEBERG_MEDIUM_UP: ch = Element.ICEBERG_SMALL_UP_RIGHT; break;
+                case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_DOWN_RIGHT; break;
+                case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_LEFT_RIGHT; break;
             }
-        } else if (bulletDirection.equals(Direction.DOWN)) {
+        } else if (bulletDirection.equals(DOWN)) {
             switch (ch) {
-                case WALL: ch = Element.WALL_DESTROYED_UP; break;
-                case WALL_DESTROYED_UP: ch = Element.WALL_DESTROYED_UP_TWICE; break;
-                case WALL_DESTROYED_RIGHT: ch = Element.WALL_DESTROYED_RIGHT_UP; break;
-                case WALL_DESTROYED_DOWN: ch = Element.WALL_DESTROYED_UP_DOWN; break;
-                case WALL_DESTROYED_LEFT: ch = Element.WALL_DESTROYED_UP_LEFT; break;
+                case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_UP; break;
+                case ICEBERG_MEDIUM_UP: ch = Element.ICEBERG_SMALL_UP_UP; break;
+                case ICEBERG_MEDIUM_RIGHT: ch = Element.ICEBERG_SMALL_UP_RIGHT; break;
+                case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_UP_DOWN; break;
+                case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_UP_LEFT; break;
             }
         }
     }
@@ -109,7 +110,7 @@ public class Wall extends PointImpl implements Tickable, Fieldable<Field>, State
 
     @Override
     public void tick() {
-        if (timer == settings.integer(WALL_REGENERATE_TIME)) {
+        if (timer == settings.integer(ICEBERG_REGENERATE_TIME)) {
             timer = 0;
             reset();
         }
@@ -119,7 +120,7 @@ public class Wall extends PointImpl implements Tickable, Fieldable<Field>, State
     }
 
     public void reset() {
-        ch = Element.WALL;
+        ch = Element.ICEBERG_HUGE;
     }
 
     public boolean destroyed() {

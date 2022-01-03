@@ -74,7 +74,7 @@ public class AiGenerator {
         do {
             pt.setX(dice.next(size));
 
-        } while ((field.isBarrier(pt) || field.isRiver(pt)) && c++ < size);
+        } while ((field.isBarrier(pt) || field.isFishnet(pt)) && c++ < size);
 
         if (field.isBarrier(pt)) {
             return null;
@@ -87,7 +87,7 @@ public class AiGenerator {
     }
 
     private AI create(Point pt) {
-        if (field.isRiver(pt)) {
+        if (field.isFishnet(pt)) {
             pt = freePosition();
         }
 

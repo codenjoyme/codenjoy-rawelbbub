@@ -46,10 +46,10 @@ public class GameSettings extends SettingsImpl
         AI_TICKS_PER_SHOOT("[Game] Ticks until the next AI shoot"),
         HERO_TICKS_PER_SHOOT("[Game] Ticks until the next hero shoot"),
         OIL_SLIPPERINESS("[Game] The amount of leaked oil. The more - the more naughty the submarine."),
-        PENALTY_WALKING_ON_WATER("[Game] Penalty time when walking on water"),
+        PENALTY_WALKING_ON_FISHNET("[Game] Penalty time when walking on fishnet"),
         SHOW_MY_HERO_UNDER_SEAWEED("[Game] Show my hero under seaweed"),
         WALL_REGENERATE_TIME("[Game] Wall regenerate time"),
-        TICKS_STUCK_BY_RIVER("[Game] Ticks AI gets stuck by river"),
+        TICKS_STUCK_BY_FISHNET("[Game] Ticks AI gets stuck by fishnet"),
 
         SPAWN_AI_PRIZE("[Prize] Count spawn for AI with prize"),
         KILL_HITS_AI_PRIZE("[Prize] Hits to kill AI with prize"),
@@ -61,7 +61,7 @@ public class GameSettings extends SettingsImpl
 
         CHANCE_IMMORTALITY("[Chance] Prize immortality"),
         CHANCE_BREAKING_WALLS("[Chance] Prize breaking walls"),
-        CHANCE_WALKING_ON_WATER("[Chance] Prize walking on water"),
+        CHANCE_WALKING_ON_FISHNET("[Chance] Prize walking on fishnet"),
         CHANCE_VISIBILITY("[Chance] Prize visibility"),
         CHANCE_NO_SLIDING("[Chance] Prize no sliding"),
 
@@ -97,10 +97,10 @@ public class GameSettings extends SettingsImpl
         integer(AI_TICKS_PER_SHOOT, 10);
         integer(HERO_TICKS_PER_SHOOT, 4);
         integer(OIL_SLIPPERINESS, 3);
-        integer(PENALTY_WALKING_ON_WATER, 2);
+        integer(PENALTY_WALKING_ON_FISHNET, 2);
         bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
         integer(WALL_REGENERATE_TIME, 30);
-        integer(TICKS_STUCK_BY_RIVER, 5);
+        integer(TICKS_STUCK_BY_FISHNET, 5);
 
         integer(SPAWN_AI_PRIZE, 4);
         integer(KILL_HITS_AI_PRIZE, 3);
@@ -113,7 +113,7 @@ public class GameSettings extends SettingsImpl
         integer(CHANCE_RESERVED, 30);
         integer(CHANCE_IMMORTALITY, 20);
         integer(CHANCE_BREAKING_WALLS, 20);
-        integer(CHANCE_WALKING_ON_WATER, 20);
+        integer(CHANCE_WALKING_ON_FISHNET, 20);
         integer(CHANCE_VISIBILITY, 20);
         integer(CHANCE_NO_SLIDING, 20);
 
@@ -129,7 +129,7 @@ public class GameSettings extends SettingsImpl
         return new Chance<Element>(dice, this)
             .put(CHANCE_IMMORTALITY, PRIZE_IMMORTALITY)
             .put(CHANCE_BREAKING_WALLS, PRIZE_BREAKING_WALLS)
-            .put(CHANCE_WALKING_ON_WATER, PRIZE_WALKING_ON_WATER)
+            .put(CHANCE_WALKING_ON_FISHNET, PRIZE_WALKING_ON_FISHNET)
             .put(CHANCE_VISIBILITY, PRIZE_VISIBILITY)
             .put(CHANCE_NO_SLIDING, PRIZE_NO_SLIDING)
             .run();

@@ -28,14 +28,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.State;
 
-public class River extends PointImpl implements State<Element, Player> {
+public class Fishnet extends PointImpl implements State<Element, Player> {
 
-	public River(Point pt) {
+	public Fishnet(Point pt) {
 		super(pt);
 	}
 
 	@Override
 	public Element state(Player player, Object... alsoAtPoint) {
-		return Element.RIVER;
+		return Element.FISHNET;
 	}
 }

@@ -37,7 +37,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     void affect(Bullet bullet);
 
-    boolean isRiver(Point pt);
+    boolean isFishnet(Point pt);
 
     boolean isSeaweed(Point pt);
 
@@ -53,7 +53,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Accessor<Oil> oil();
 
-    Accessor<River> rivers();
+    Accessor<Fishnet> fishnet();
 
     Accessor<Wall> walls();
 

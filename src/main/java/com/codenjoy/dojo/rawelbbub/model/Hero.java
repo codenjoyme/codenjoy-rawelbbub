@@ -41,11 +41,11 @@ import com.codenjoy.dojo.services.round.Timer;
 import java.util.List;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_WALLS;
-import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_WALKING_ON_WATER;
+import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_WALKING_ON_FISHNET;
 import static com.codenjoy.dojo.rawelbbub.services.Event.CATCH_PRIZE;
 import static com.codenjoy.dojo.rawelbbub.services.Event.HERO_DIED;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.HERO_TICKS_PER_SHOOT;
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.PENALTY_WALKING_ON_WATER;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.PENALTY_WALKING_ON_FISHNET;
 import static java.util.stream.Collectors.toList;
 
 public class Hero extends RoundPlayerHero<Field> 
@@ -61,7 +61,7 @@ public class Hero extends RoundPlayerHero<Field>
 
     private Prizes prizes;
 
-    private Timer onWater;
+    private Timer onFishnet;
     private Dice dice;
 
     public Hero(Point pt, Direction direction) {
@@ -120,7 +120,7 @@ public class Hero extends RoundPlayerHero<Field>
         gun.tick();
         prizes.tick();
 
-        checkOnWater();
+        checkOnFishnet();
     }
 
     public Direction getDirection() {
@@ -170,15 +170,15 @@ public class Hero extends RoundPlayerHero<Field>
         }
     }
 
-    public void checkOnWater() {
-        if (field.isRiver(this) && !prizes.contains(PRIZE_WALKING_ON_WATER)) {
-            if (onWater == null || onWater.done()) {
-                onWater = new Timer(settings().integerValue(PENALTY_WALKING_ON_WATER));
-                onWater.start();
+    public void checkOnFishnet() {
+        if (field.isFishnet(this) && !prizes.contains(PRIZE_WALKING_ON_FISHNET)) {
+            if (onFishnet == null || onFishnet.done()) {
+                onFishnet = new Timer(settings().integerValue(PENALTY_WALKING_ON_FISHNET));
+                onFishnet.start();
             }
-            onWater.tick(() -> {});
+            onFishnet.tick(() -> {});
         } else {
-            onWater = null;
+            onFishnet = null;
         }
     }
 
@@ -248,9 +248,9 @@ public class Hero extends RoundPlayerHero<Field>
         }
     }
 
-    public boolean canWalkOnWater() {
-        return prizes.contains(PRIZE_WALKING_ON_WATER)
-                || (onWater != null && onWater.done());
+    public boolean canWalkOnFishnet() {
+        return prizes.contains(PRIZE_WALKING_ON_FISHNET)
+                || (onFishnet != null && onFishnet.done());
     }
 
     @Override

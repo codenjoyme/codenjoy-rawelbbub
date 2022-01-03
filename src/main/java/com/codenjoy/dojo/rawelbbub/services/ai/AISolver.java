@@ -68,13 +68,13 @@ public class AISolver implements Solver<Board> {
     public DeikstraFindWay.Possible withBarriersAndBullets(Board board) {
         List<Point> barriers = board.getBarriers();
         List<Point> bullets = board.getBullets();
-        List<Point> river = board.getRiver();
+        List<Point> fishnet = board.getFishnet();
 
         return new DeikstraFindWay.Possible() {
             @Override
             public boolean possible(Point point) {
                 if (barriers.contains(point)) return false;
-                if (river.contains(point)) return false;
+                if (fishnet.contains(point)) return false;
                 return true;
             }
 

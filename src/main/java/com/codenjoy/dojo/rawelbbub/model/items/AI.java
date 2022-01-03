@@ -30,7 +30,7 @@ import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.AI_TICKS_PER_SHOOT;
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.TICKS_STUCK_BY_RIVER;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.TICKS_STUCK_BY_FISHNET;
 
 public class AI extends Hero {
 
@@ -58,8 +58,8 @@ public class AI extends Hero {
         return settings().integer(AI_TICKS_PER_SHOOT);
     }
 
-    public int ticksStuckByRiver() {
-        return settings().integer(TICKS_STUCK_BY_RIVER);
+    public int ticksStuckByFishnet() {
+        return settings().integer(TICKS_STUCK_BY_FISHNET);
     }
 
     @Override
@@ -97,12 +97,12 @@ public class AI extends Hero {
                 direction = Direction.random(dice());
             }
 
-            if (count == ticksStuckByRiver()) {
+            if (count == ticksStuckByFishnet()) {
                 direction = Direction.random(dice());
                 count = 0;
             }
 
-            if (field.isRiver(pt)) {
+            if (field.isFishnet(pt)) {
                 count++;
             }
 

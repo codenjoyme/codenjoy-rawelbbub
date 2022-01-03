@@ -34,10 +34,10 @@ public class GameSettingsTest {
         assertEquals("[AI_TICKS_PER_SHOOT, \n" +
                         "HERO_TICKS_PER_SHOOT, \n" +
                         "OIL_SLIPPERINESS, \n" +
-                        "PENALTY_WALKING_ON_WATER, \n" +
+                        "PENALTY_WALKING_ON_FISHNET, \n" +
                         "SHOW_MY_HERO_UNDER_SEAWEED, \n" +
                         "WALL_REGENERATE_TIME, \n" +
-                        "TICKS_STUCK_BY_RIVER, \n" +
+                        "TICKS_STUCK_BY_FISHNET, \n" +
                         "SPAWN_AI_PRIZE, \n" +
                         "KILL_HITS_AI_PRIZE, \n" +
                         "PRIZE_ON_FIELD, \n" +
@@ -47,7 +47,7 @@ public class GameSettingsTest {
                         "PRIZE_SPRITE_CHANGE_TICKS, \n" +
                         "CHANCE_IMMORTALITY, \n" +
                         "CHANCE_BREAKING_WALLS, \n" +
-                        "CHANCE_WALKING_ON_WATER, \n" +
+                        "CHANCE_WALKING_ON_FISHNET, \n" +
                         "CHANCE_VISIBILITY, \n" +
                         "CHANCE_NO_SLIDING, \n" +
                         "HERO_DIED_PENALTY, \n" +

@@ -242,7 +242,7 @@ public class MultiplayerTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldRandomPosition_atFreeSpace_whenTrySpawnUnderSeaweedRiverOrIce() {
+    public void shouldRandomPosition_atFreeSpace_whenTrySpawnUnderSeaweedFishnetOrIce() {
         // given
         givenFl("☼☼☼☼☼\n" +
                 "☼  %☼\n" +
@@ -274,7 +274,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         // when
         dice(3, 3, // skipped, not free, because seaweed
-            3, 2, // skipped, not free, because river
+            3, 2, // skipped, not free, because fishnet
             3, 1, // skipped, not free, because oil leak
             2, 2);
         game(1).newGame();

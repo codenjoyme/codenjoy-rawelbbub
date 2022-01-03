@@ -4724,7 +4724,7 @@ public class GameTest extends AbstractGameTest {
 
     // водоросли
     @Test
-    public void shouldBeWallSeaweed_whenGameCreated() {
+    public void shouldBeSeaweed_whenGameCreated() {
         // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4747,7 +4747,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBeWallTwoSeaweed_whenGameCreated() {
+    public void shouldBeTwoSeaweed_whenGameCreated() {
         // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4769,7 +4769,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // При выстреле пуля должна пролетать сквозь водоросли
+    // При выстреле торпеда должна проплывать сквозь водоросли
     @Test
     public void shouldBulletFlyUnderSeaweed_right() {
         // given
@@ -5683,7 +5683,7 @@ public class GameTest extends AbstractGameTest {
 				"☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // но если в сеттингах сказано что меня видно в водоросляз, я - вижу
+    // но если в сеттингах сказано, что меня видно в водорослях, я - вижу
     @Test
     public void shouldHeroMove_underSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
@@ -5855,7 +5855,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // даже если в сеттингах сказано что меня видно в водорослях,
+    // даже если в сеттингах сказано, что меня видно в водорослях,
     // другого танка я не вижу все равно
     @Test
     public void shouldOtherHeroMove_underSeaweed_caseShowMyHeroUnderSeaweed() {
@@ -6555,9 +6555,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // Река
+    // Рыболовецкая сеть
     @Test
-    public void shouldBeWallWater_whenGameCreated() {
+    public void shouldBeWater_whenGameCreated() {
         // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6568,7 +6568,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // then
-        assertEquals(1, field().rivers().size());
+        assertEquals(1, field().fishnet().size());
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6579,9 +6579,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-	// Река - через нее герою нельзя пройти, но можно стрелять
+	// Рыболовецкая сеть - через нее герою нельзя пройти, но можно стрелять
 	@Test
-	public void shouldHeroCanGoIfRiverAtWay() {
+	public void shouldHeroCanGoIfFishnetAtWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6609,7 +6609,7 @@ public class GameTest extends AbstractGameTest {
     }
 
 	@Test
-	public void shouldBulletCanGoIfRiverAtWay() {
+	public void shouldBulletCanGoIfFishnetAtWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6673,7 +6673,7 @@ public class GameTest extends AbstractGameTest {
 	}
 
     @Test
-    public void shouldDoNotMove_whenRiverToWay_goRightOrUpOrLeftOrDown() {
+    public void shouldDoNotMove_whenFishnetToWay_goRightOrUpOrLeftOrDown() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6736,9 +6736,9 @@ public class GameTest extends AbstractGameTest {
 				"☼☼☼☼☼☼☼\n");
     }
 
-    // река - через нее врагу нельзя пройти. но можно стрелять
+    // Рыболовецкая сеть - через нее врагу нельзя пройти. но можно стрелять
     @Test
-    public void shouldOtherHeroBullet_canGoIfRiverAtWay() {
+    public void shouldOtherHeroBullet_canGoIfFishnetAtWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6792,7 +6792,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldOtherHeroDoNotMove_whenRiverToWay_goRightOrUpOrLeftOrDown() {
+    public void shouldOtherHeroDoNotMove_whenFishnetToWay_goRightOrUpOrLeftOrDown() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6855,9 +6855,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // Река - через нее боту нельзя пройти. но можно стрелять
+    // Рыболовецкая сеть - через нее боту нельзя пройти. но можно стрелять
     @Test
-    public void shouldAIBullet_canGoIfRiverAtWay() {
+    public void shouldAIBullet_canGoIfFishnetAtWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6903,7 +6903,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldAIDoNotMove_whenRiverToWay_goRightOrUpOrLeftOrDown() {
+    public void shouldAIDoNotMove_whenFishnetToWay_goRightOrUpOrLeftOrDown() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10662,7 +10662,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroCanGoIfRiverAtWay_whenHeroTakePrize() {
+    public void shouldHeroCanGoIfFishnetAtWay_whenHeroTakePrize() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
@@ -10689,7 +10689,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_WALKING_ON_WATER);
+        dice(DICE_WALKING_ON_FISHNET);
         tick();
 
         // then
@@ -10759,7 +10759,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroTakePrize_walkOnWater() {
+    public void shouldHeroTakePrize_walkOnFishnet() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
@@ -10786,7 +10786,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_WALKING_ON_WATER);
+        dice(DICE_WALKING_ON_FISHNET);
         hero(0).up();
         hero(1).up();
         tick();
@@ -10808,7 +10808,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER(0/3)]");
+        assertPrize(hero(0), "[PRIZE_WALKING_ON_FISHNET(0/3)]");
         verifyAllEvents(
                 "listener(0) => [CATCH_PRIZE[3]]\n");
 
@@ -10849,9 +10849,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // когда заканчивается действие приза движение по воде отключается
+    // когда заканчивается действие приза движение через рыболовецкие сети отключается
     @Test
-    public void shouldHeroCanGoIfRiverAtWay_whenPrizeIsOver() {
+    public void shouldHeroCanGoIfFishnetAtWay_whenPrizeIsOver() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
@@ -10878,7 +10878,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_WALKING_ON_WATER);
+        dice(DICE_WALKING_ON_FISHNET);
         tick();
 
         // then
@@ -10956,17 +10956,17 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // если во время окончание приза танк оказался на воде, он получает штраф.
-    // N тиков он не может ходить по клеточкам но может менять направление движение и стрелять,
-    // на N+1 тик он может сместится на позицию указанной команды и продолжать движение.
-    // За исключением - если после смещения он оказался снова на воде, то процедура повторяется до тех пор,
-    // пока танк не выйдет полностью из воды.
+    // если во время окончание приза танк оказался в рыболовецких сетях, он получает штраф.
+    // N тиков он не может ходить по клеткам, но может менять направление движение и стрелять,
+    // на N+1 тик он может переместиться на позицию указанной команды и продолжать движение.
+    // За исключением - если после смещения он снова оказался в сетях, то процедура повторяется до тех пор,
+    // пока герой не выйдет полностью из рыболовецких сетей.
     @Test
-    public void shouldHeroCanGoIfRiverAtWay_whenPrizeIsOver_butHeroOnWater() {
+    public void shouldHeroCanGoIfFishnetAtWay_whenPrizeIsOver_butHeroStillOnFishnet() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
-                .integer(PENALTY_WALKING_ON_WATER, 4)
+                .integer(PENALTY_WALKING_ON_FISHNET, 4)
                 .integer(PRIZE_WORKING, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -10990,7 +10990,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_WALKING_ON_WATER);
+        dice(DICE_WALKING_ON_FISHNET);
         tick();
 
         // then
@@ -11019,7 +11019,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER(0/2)]");
+        assertPrize(hero(0), "[PRIZE_WALKING_ON_FISHNET(0/2)]");
 
         verifyAllEvents("[CATCH_PRIZE[3]]");
 
@@ -11036,7 +11036,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER(1/2)]");
+        assertPrize(hero(0), "[PRIZE_WALKING_ON_FISHNET(1/2)]");
 
         // when
         hero(0).up();
@@ -11051,7 +11051,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertPrize(hero(0), "[PRIZE_WALKING_ON_WATER(2/2)]");
+        assertPrize(hero(0), "[PRIZE_WALKING_ON_FISHNET(2/2)]");
 
         // when
         // действие приза закончилось
@@ -11132,7 +11132,7 @@ public class GameTest extends AbstractGameTest {
         assertPrize(hero(0), "[]");
 
         // when
-        // штраф еще 4 тика, так как герой снова на воде
+        // штраф еще 4 тика, так как герой все так же в сетях
         hero(0).left();
         tick();
 
@@ -11209,7 +11209,7 @@ public class GameTest extends AbstractGameTest {
         assertPrize(hero(0), "[]");
 
         // when
-        // штраф еще 4 тика, так как герой снова на воде
+        // штраф еще 4 тика, так как герой все так же в сетях
         hero(0).down();
         tick();
         tick();
@@ -11243,7 +11243,7 @@ public class GameTest extends AbstractGameTest {
         assertPrize(hero(0), "[]");
 
         // when
-        // мы все так же на воде, а потому не можем двигаться 4 тика
+        // мы все так же в сетях, а потому не можем двигаться 4 тика
         hero(0).up();
         tick();
 
@@ -11453,8 +11453,8 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // когда бот упирается в водоем -> он останавливается на 5 тиков и отстреливается
-    // после этого меняет направление и уезжает
+    // когда бот упирается в рыболовецкие сети -> он останавливается
+    // на 5 тиков и отстреливается, после этого меняет направление и уплывает
     @Test
     public void shouldAiMoveAfterFiveTicks() {
         // given
@@ -11622,9 +11622,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // мы не можем дропнуть танк на воду
+    // мы не можем дропнуть танк на рыболовецкие сети
     @Test
-    public void shouldCantDropAiInRiver() {
+    public void shouldCantDropAiInFishnet() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +

@@ -176,7 +176,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     @Override
     public boolean isBarrierFor(Hero hero, Point pt) {
         return isBarrier(pt)
-                || (isRiver(pt) && !hero.canWalkOnWater());
+                || (isFishnet(pt) && !hero.canWalkOnFishnet());
     }
 
     public boolean isBarrier(Point pt) {
@@ -210,7 +210,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     public boolean isFree(Point pt) {
         return !isBarrier(pt)
                 && !isSeaweed(pt)
-                && !isRiver(pt)
+                && !isFishnet(pt)
                 && !isOil(pt);
     }
 
@@ -236,7 +236,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
                 Bullet.class,
                 Wall.class,
                 Oil.class,
-                River.class);
+                Fishnet.class);
     }
 
     @Override
@@ -320,8 +320,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public boolean isRiver(Point pt) {
-        return rivers().contains(pt);
+    public boolean isFishnet(Point pt) {
+        return fishnet().contains(pt);
     }
 
     @Override
@@ -391,8 +391,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<River> rivers() {
-        return field.of(River.class);
+    public Accessor<Fishnet> fishnet() {
+        return field.of(Fishnet.class);
     }
 
     @Override

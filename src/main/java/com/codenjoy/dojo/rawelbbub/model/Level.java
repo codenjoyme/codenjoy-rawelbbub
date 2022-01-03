@@ -43,8 +43,8 @@ public class Level extends AbstractLevel {
         return find(Wall::new, WALL);
     }
 
-    public List<River> rivers() {
-        return find(River::new, RIVER);
+    public List<Fishnet> fishnet() {
+        return find(Fishnet::new, FISHNET);
     }
 
     public List<Oil> oil() {
@@ -85,7 +85,7 @@ public class Level extends AbstractLevel {
         //      такой точке может возникнуть как простой AI так и призовой
         // field.addAll(ais());
         field.addAll(oil());
-        field.addAll(rivers());
+        field.addAll(fishnet());
         field.addAll(seaweed());
     }
 }

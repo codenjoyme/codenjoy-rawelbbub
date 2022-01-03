@@ -24,7 +24,7 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
-import com.codenjoy.dojo.rawelbbub.model.items.Bullet;
+import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import com.codenjoy.dojo.rawelbbub.model.items.Prize;
 import com.codenjoy.dojo.rawelbbub.model.items.Prizes;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
@@ -154,9 +154,9 @@ public class Hero extends RoundPlayerHero<Field>
         die(HERO_DIED);
     }
 
-    public List<Bullet> getBullets() {
-        return field.bullets().stream()
-                .filter(bullet -> bullet.owner() == this)
+    public List<Torpedo> torpedoes() {
+        return field.torpedoes().stream()
+                .filter(torpedo -> torpedo.owner() == this)
                 .collect(toList());
     }
 
@@ -164,7 +164,7 @@ public class Hero extends RoundPlayerHero<Field>
         return settings().integer(HERO_TICKS_PER_SHOOT);
     }
 
-    public void kill(Bullet bullet) {
+    public void kill(Torpedo torpedo) {
         if (isAlive()) {
             die();
         }
@@ -194,7 +194,7 @@ public class Hero extends RoundPlayerHero<Field>
                 case RIGHT: return Element.OTHER_HERO_RIGHT;
                 case UP:    return Element.OTHER_HERO_UP;
                 case DOWN:  return Element.OTHER_HERO_DOWN;
-                default:    throw new RuntimeException("Неправильное состояние танка!");
+                default:    throw new RuntimeException("Неправильное состояние героя!");
             }
         }
 
@@ -203,7 +203,7 @@ public class Hero extends RoundPlayerHero<Field>
             case RIGHT: return Element.HERO_RIGHT;
             case UP:    return Element.HERO_UP;
             case DOWN:  return Element.HERO_DOWN;
-            default:    throw new RuntimeException("Неправильное состояние танка!");
+            default:    throw new RuntimeException("Неправильное состояние героя!");
         }
     }
 
@@ -225,11 +225,11 @@ public class Hero extends RoundPlayerHero<Field>
         if (sliding.active(this) && !sliding.lastSlipperiness()) {
             direction = sliding.getPreviousDirection();
         }
-        Bullet bullet = new Bullet(field, direction, copy(), this,
-                it -> field.bullets().removeExact(it));
+        Torpedo torpedo = new Torpedo(field, direction, this, this,
+                it -> field.torpedoes().removeExact(it));
 
-        if (!field.bullets().contains(bullet)) {
-            field.bullets().add(bullet);
+        if (!field.torpedoes().contains(torpedo)) {
+            field.torpedoes().add(torpedo);
         }
     }
 

@@ -23,7 +23,7 @@ package com.codenjoy.dojo.rawelbbub.model;
  */
 
 
-import com.codenjoy.dojo.rawelbbub.model.items.Bullet;
+import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.rawelbbub.TestGameSettings.*;
@@ -79,7 +79,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // рисуем мой танк
+    // рисуем героя игрока
     @Test
     public void shouldBeHeroOnFieldWhenGameCreated() {
         // given when
@@ -312,7 +312,7 @@ public class GameTest extends AbstractGameTest {
     }
     
     @Test
-    public void bulletDirectionShouldBeAffectedBySliding() {
+    public void torpedoDirectionShouldBeAffectedBySliding() {
         // given
         settings().integer(OIL_SLIPPERINESS, 2);
 
@@ -405,7 +405,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void bulletDirectionShouldBeAffectedBySliding2() {
+    public void torpedoDirectionShouldBeAffectedBySliding2() {
         // given
         settings().integer(OIL_SLIPPERINESS, 2);
 
@@ -569,7 +569,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -681,7 +681,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
@@ -904,7 +904,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -1173,7 +1173,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletHasSameDirectionAsHero() {
+    public void shouldTorpedoHasSameDirectionAsHero() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1188,12 +1188,12 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertEquals(hero(0).getBullets().iterator().next().getDirection(),
+        assertEquals(hero(0).torpedoes().iterator().next().getDirection(),
                 hero(0).getDirection());
     }
 
     @Test
-    public void shouldBulletGoInertiaWhenHeroChangeDirection() {
+    public void shouldTorpedoGoInertiaWhenHeroChangeDirection() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1231,7 +1231,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDisappear_whenHittingTheReefUp() {
+    public void shouldTorpedoDisappear_whenHittingTheReefUp() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1269,7 +1269,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDisappear_whenHittingTheReefRight() {
+    public void shouldTorpedoDisappear_whenHittingTheReefRight() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1307,7 +1307,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDisappear_whenHittingTheReefLeft() {
+    public void shouldTorpedoDisappear_whenHittingTheReefLeft() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ◄☼\n" +
@@ -1345,7 +1345,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDisappear_whenHittingTheReefDown() {
+    public void shouldTorpedoDisappear_whenHittingTheReefDown() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -1384,7 +1384,7 @@ public class GameTest extends AbstractGameTest {
 
     // торпедой уничтожается айсберг за три присеста - стреляем снизу
     @Test
-    public void shouldBulletDestroyIceberg_whenHittingItDown() {
+    public void shouldTorpedoDestroyIceberg_whenHittingItDown() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -1472,7 +1472,7 @@ public class GameTest extends AbstractGameTest {
 
     // торпедой уничтожается айсберг за три присеста - стреляем слева
     @Test
-    public void shouldBulletDestroyIceberg_whenHittingItLeft() {
+    public void shouldTorpedoDestroyIceberg_whenHittingItLeft() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1560,7 +1560,7 @@ public class GameTest extends AbstractGameTest {
 
     // торпедой уничтожается айсберг за три присеста - стреляем справа
     @Test
-    public void shouldBulletDestroyIceberg_whenHittingItRight() {
+    public void shouldTorpedoDestroyIceberg_whenHittingItRight() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1648,7 +1648,7 @@ public class GameTest extends AbstractGameTest {
 
     // торпедой уничтожается айсберг за три присеста - стреляем сверху
     @Test
-    public void shouldBulletDestroyIceberg_whenHittingItUp() {
+    public void shouldTorpedoDestroyIceberg_whenHittingItUp() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -1736,10 +1736,10 @@ public class GameTest extends AbstractGameTest {
     }
 
     // торпедой уничтожается айсберг за три присеста - стреляем снизу, но 'сквозь' айсберг.
-    // 'сквозь' значит, что за 1 тик пуля пролетает 2 клетки (видимый маршрут) и 
+    // 'сквозь' значит, что за 1 тик торпеда пролетает 2 клетки (видимый маршрут) и
     // этот маршрут не попадает на ячейку с айсбергом
     @Test
-    public void shouldBulletDestroyIceberg_whenHittingItDown_overIceberg() {
+    public void shouldTorpedoDestroyIceberg_whenHittingItDown_overIceberg() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -1826,10 +1826,10 @@ public class GameTest extends AbstractGameTest {
     }
 
     // торпедой уничтожается айсберг за три присеста - стреляем слева, но 'сквозь' айсберг
-    // 'сквозь' значит, что за 1 тик пуля пролетает 2 клетки (видимый маршрут) и 
+    // 'сквозь' значит, что за 1 тик торпеда пролетает 2 клетки (видимый маршрут) и
     // этот маршрут не попадает на ячейку с айсбергом
     @Test
-    public void shouldBulletDestroyIceberg_whenHittingItLeft_overIceberg() {
+    public void shouldTorpedoDestroyIceberg_whenHittingItLeft_overIceberg() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1917,10 +1917,10 @@ public class GameTest extends AbstractGameTest {
     }
 
     // торпедой уничтожается айсберг за три присеста - стреляем справа, но 'сквозь' айсберг
-    // 'сквозь' значит, что за 1 тик пуля пролетает 2 клетки (видимый маршрут) и 
+    // 'сквозь' значит, что за 1 тик торпеда пролетает 2 клетки (видимый маршрут) и
     // этот маршрут не попадает на ячейку с айсбергом
     @Test
-    public void shouldBulletDestroyIceberg_whenHittingItRight_overIceberg() {
+    public void shouldTorpedoDestroyIceberg_whenHittingItRight_overIceberg() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2007,10 +2007,10 @@ public class GameTest extends AbstractGameTest {
     }
 
     // торпедой уничтожается айсберг за три присеста - стреляем сверху, но 'сквозь' айсберг
-    // 'сквозь' значит, что за 1 тик пуля пролетает 2 клетки (видимый маршрут) и 
+    // 'сквозь' значит, что за 1 тик торпеда пролетает 2 клетки (видимый маршрут) и
     // этот маршрут не попадает на ячейку с айсбергом
     @Test
-    public void shouldBulletDestroyIceberg_whenHittingItUp_overIceberg() {
+    public void shouldTorpedoDestroyIceberg_whenHittingItUp_overIceberg() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2097,7 +2097,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroyIceberg_whenHittingItUp_whenTwoIcebergs() {
+    public void shouldTorpedoDestroyIceberg_whenHittingItUp_whenTwoIcebergs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -2220,7 +2220,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroyIceberg_whenHittingItRight_whenTwoIcebergs() {
+    public void shouldTorpedoDestroyIceberg_whenHittingItRight_whenTwoIcebergs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2343,7 +2343,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroyIcebergs_whenHittingItLeft_whenTwoIcebergs() {
+    public void shouldTorpedoDestroyIcebergs_whenHittingItLeft_whenTwoIcebergs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -2466,7 +2466,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroy_whenHittingItDown_whenTwoIcebergs() {
+    public void shouldTorpedoDestroy_whenHittingItDown_whenTwoIcebergs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼    ▼☼\n" +
@@ -2752,10 +2752,10 @@ public class GameTest extends AbstractGameTest {
         tick();
     }
 
-    // если я стреляю дважды, то выпускается два снаряда
+    // если я стреляю дважды, то выпускается две торпеды
     // при этом я проверяю, что они уничтожаются в порядке очереди
     @Test
-    public void shouldShotWithSeveralBullets_whenHittingItDown() {
+    public void shouldShotWithSeveralTorpedoes_whenHittingItDown() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ▼☼\n" +
@@ -3040,7 +3040,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // стоять, если спереди другой танк
+    // стоять, если спереди другой герой
     @Test
     public void shouldStopWhenBeforeOtherHero() {
         // given
@@ -3067,7 +3067,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // геймовер, если убили не бот-танк
+    // геймовер, если убили не AI-субмарину
     @Test
     public void shouldDieWhenOtherHeroKillMe() {
         // given
@@ -3232,7 +3232,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDieOnce_whenIsDamagedByManyBullets() {
+    public void shouldDieOnce_whenIsDamagedByManyTorpedoes() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -3361,7 +3361,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDestroyBullet() {
+    public void shouldDestroyTorpedo() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼▼      ☼\n" +
@@ -3419,7 +3419,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDestroyBullet2() {
+    public void shouldDestroyTorpedo2() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3613,7 +3613,7 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldRegenerateDestroyedIcebergs() {
         // given
-        shouldBulletDestroyIceberg_whenHittingItUp_whenTwoIcebergs();
+        shouldTorpedoDestroyIceberg_whenHittingItUp_whenTwoIcebergs();
 
         // when
         hero(0).fire();
@@ -3701,7 +3701,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletCantGo_whenReefAtWay() {
+    public void shouldTorpedoCantGo_whenReefAtWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3753,7 +3753,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldOnlyOneBulletPerTick() {
+    public void shouldOnlyOneTorpedoPerTick() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3807,7 +3807,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroCanFireIfAtWayEnemyBullet() {
+    public void shouldHeroCanFireIfAtWayEnemyTorpedo() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -3934,7 +3934,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldIcebergCantRegenerateOnBullet() {
+    public void shouldIcebergCantRegenerateOnTorpedo() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4016,7 +4016,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldNTicksPerBullet() {
+    public void shouldNTicksPerTorpedo() {
         // given
         settings().integer(HERO_TICKS_PER_SHOOT, 4);
 
@@ -4211,7 +4211,7 @@ public class GameTest extends AbstractGameTest {
 
         // when
         hero(1).fire();
-        hero(1).up();  // команда проигнорируется потому, что вначале ходят все танки, а потом летят все снаряды
+        hero(1).up();  // команда проигнорируется потому, что вначале ходят все герои, а потом летят все торпеды
         tick();
 
         // then
@@ -4255,7 +4255,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDieWhenMoveOnBullet() {
+    public void shouldDieWhenMoveOnTorpedo() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -4303,7 +4303,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDieWhenMoveOnBullet2() {
+    public void shouldDieWhenMoveOnTorpedo2() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -4351,7 +4351,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDieWhenMoveOnBullet3() {
+    public void shouldDieWhenMoveOnTorpedo3() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -4401,7 +4401,7 @@ public class GameTest extends AbstractGameTest {
     // если айсберг недоразрушен, а торпеда летит и в этот момент ресетнули игру, 
     // то все айсберги восстанавливаются.
     @Test
-    public void shouldRemoveBulletsAndResetIcebergs_whenClearScore() {
+    public void shouldRemoveTorpedoesAndResetIcebergs_whenClearScore() {
         // given
         settings().integer(HERO_TICKS_PER_SHOOT, 3);
 
@@ -4574,7 +4574,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        // допустим за игру он прибил 5 танков
+        // допустим за игру он прибил 5 героев
         Player player = player(0);
         player.setKilled(5);
 
@@ -4590,7 +4590,7 @@ public class GameTest extends AbstractGameTest {
         assertEquals(0, player.score());
 
         // и айсберги тоже ресетнулись
-        // и снаряд полетел
+        // и торпеда полетела
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
                 "☼╬        ☼\n" +
@@ -4780,7 +4780,7 @@ public class GameTest extends AbstractGameTest {
 
     // При выстреле торпеда должна проплывать сквозь водоросли
     @Test
-    public void shouldBulletFlyUnderSeaweed_right() {
+    public void shouldTorpedoFlyUnderSeaweed_right() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4893,7 +4893,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletDestroyIcebergUnderSeaweed_whenHittingItUp_whenTwoIcebergs() {
+    public void shouldTorpedoDestroyIcebergUnderSeaweed_whenHittingItUp_whenTwoIcebergs() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -5018,17 +5018,17 @@ public class GameTest extends AbstractGameTest {
     // Если я могу видеть себя под водорослями,
     // то торпеду все равно не вижу
     @Test
-    public void shouldBulletFlyUnderTwoSeaweed_up_caseShowMyHeroUnderSeaweed() {
+    public void shouldTorpedoFlyUnderTwoSeaweed_up_caseShowMyHeroUnderSeaweed() {
         // given
         settings().bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
         // when then
-        shouldBulletFlyUnderTwoSeaweed_up();
+        shouldTorpedoFlyUnderTwoSeaweed_up();
     }
 
     // Торпеду не видно в водорослях
     @Test
-    public void shouldBulletFlyUnderTwoSeaweed_up() {
+    public void shouldTorpedoFlyUnderTwoSeaweed_up() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5298,7 +5298,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletFlyUnderSeaweed_jointly_shouldHeroMoveUnderSeaweed() {
+    public void shouldTorpedoFlyUnderSeaweed_jointly_shouldHeroMoveUnderSeaweed() {
         // given
         settings().bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
@@ -5454,7 +5454,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldBulletFlyUnderSeaweed_jointly() {
+    public void shouldTorpedoFlyUnderSeaweed_jointly() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -5865,7 +5865,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     // даже если в сеттингах сказано, что меня видно в водорослях,
-    // другого танка я не вижу все равно
+    // другого героя я не вижу все равно
     @Test
     public void shouldOtherHeroMove_underSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
@@ -6114,8 +6114,8 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // два танка не могут проехать друг через друга в водорослях
-    // но мой танк видно - так сказано в настройках
+    // два героя не могут проехать друг через друга в водорослях
+    // но моего героя видно - так сказано в настройках
     @Test
     public void shouldTwoHeroCanPassThroughEachOtherUnderSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
@@ -6154,7 +6154,7 @@ public class GameTest extends AbstractGameTest {
         hero(1).up();
         
         // then
-        // Два танка не могут проехать через друг друга
+        // Два героя не могут проехать через друг друга
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6178,8 +6178,8 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // два танка не могут проехать друг через друга в водорослях
-    // но мой танк видно - так сказано в настройках
+    // два героя не могут проехать друг через друга в водорослях
+    // но мойего героя видно - так сказано в настройках
     @Test
     public void shouldTwoHeroCanPassThroughEachOtherUnderSeaweed() {
         // given
@@ -6216,7 +6216,7 @@ public class GameTest extends AbstractGameTest {
         hero(1).up();
         
         // then
-        // Два танка не могут проехать через друг друга
+        // Два героя не могут проехать через друг друга
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -6303,7 +6303,7 @@ public class GameTest extends AbstractGameTest {
 
         // when
         // находимся на льду
-        // выполнили команду right(), но танк не реагирует, так как происходит скольжение,Э
+        // выполнили команду right(), но герой не реагирует, так как происходит скольжение,
         // двигается дальше с предыдущей командой up()
         // RIGHT -> UP (скольжение)
         hero(0).right();
@@ -6342,7 +6342,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        // выполнили команду right(), но танк не реагирует, так как происходит скольжение,
+        // выполнили команду right(), но герой не реагирует, так как происходит скольжение,
         // двигается дальше с предыдущей командой up()
         // RIGHT -> UP (скольжение)
         hero(0).right();
@@ -6618,7 +6618,7 @@ public class GameTest extends AbstractGameTest {
     }
 
 	@Test
-	public void shouldBulletCanGoIfFishnetAtWay() {
+	public void shouldTorpedoCanGoIfFishnetAtWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6747,7 +6747,7 @@ public class GameTest extends AbstractGameTest {
 
     // Рыболовецкая сеть - через нее врагу нельзя пройти. но можно стрелять
     @Test
-    public void shouldOtherHeroBullet_canGoIfFishnetAtWay() {
+    public void shouldOtherHeroTorpedo_canGoIfFishnetAtWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -6866,7 +6866,7 @@ public class GameTest extends AbstractGameTest {
 
     // Рыболовецкая сеть - через нее боту нельзя пройти. но можно стрелять
     @Test
-    public void shouldAIBullet_canGoIfFishnetAtWay() {
+    public void shouldAITorpedo_canGoIfFishnetAtWay() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -7222,7 +7222,7 @@ public class GameTest extends AbstractGameTest {
 
     // если spawnAiPrize = 3, а 3 AIа спаунятся по 1-му за каждый ход,
     // то AI с призами спаунится после 2-го хода
-    // так же проверяем что призовой танк меняет свой символ каждые 4 тика
+    // так же проверяем что AI-субмарина меняет свой символ каждые 4 тика
     @Test
     public void shouldSpawnAiPrize_whenAddOneByOneAI() {
         // given
@@ -7373,7 +7373,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // в AI-танк с призами надо попасть 3 раза, чтобы убить
+    // в AI-субмарина с призами надо попасть 3 раза, чтобы убить
     @Test
     public void shouldKillAiPrizeInThreeHits() {
         // given
@@ -7487,7 +7487,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldMyBulletsRemovesWhenKillMe() {
+    public void shouldMyTorpedoesRemovesWhenKillMe() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼▼    ☼\n" +
@@ -7564,7 +7564,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -7624,7 +7624,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -7684,7 +7684,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -7724,7 +7724,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
         tick();
 
         // then
@@ -7777,7 +7777,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -7853,7 +7853,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
         tick();
 
         // then
@@ -7953,7 +7953,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8040,7 +8040,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8103,7 +8103,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8176,7 +8176,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8268,7 +8268,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
         dice(DICE_IMMORTALITY);
         tick();
 
@@ -8344,7 +8344,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
         dice(DICE_IMMORTALITY);
         tick();
 
@@ -8419,7 +8419,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
         dice(DICE_IMMORTALITY);
         tick();
 
@@ -8497,7 +8497,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
 
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
         dice(DICE_IMMORTALITY);
         tick();
 
@@ -8572,7 +8572,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
         dice(DICE_IMMORTALITY);
         tick();
 
@@ -8636,7 +8636,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
         ai(1).dontShoot = true;
         ai(1).up();
 
@@ -8688,7 +8688,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // если я подстрелил танк, а в следующий тик в эту ячейку въезжаю сам,
+    // если я подстрелил героя, а в следующий тик в эту ячейку въезжаю сам,
     // то приз считается подобраным и не отбражается на филде
     @Test
     public void shouldHeroTookPrize_inPointKillAi() {
@@ -8705,7 +8705,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8755,9 +8755,9 @@ public class GameTest extends AbstractGameTest {
         assertEquals(expected, hero.prizes().toString());
     }
 
-    // если в момент подбора приза прилетает снаряд, то умирает танк, а приз остается
+    // если в момент подбора приза прилетает торпеда, то умирает герой, а приз остается
     @Test
-    public void shouldKillHero_whenHeroTookPrizeAndComesBullet() {
+    public void shouldKillHero_whenHeroTookPrizeAndComesTorpedo() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 6);
@@ -8772,7 +8772,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼☼\n" +
@@ -8920,7 +8920,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8989,7 +8989,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9176,7 +9176,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9411,7 +9411,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9527,7 +9527,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9612,7 +9612,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9722,7 +9722,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9819,7 +9819,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9908,7 +9908,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10041,7 +10041,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10142,7 +10142,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
         ai(1).dontShoot = true;
 
         // then
@@ -10686,7 +10686,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10783,7 +10783,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10875,7 +10875,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10965,7 +10965,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // если во время окончание приза танк оказался в рыболовецких сетях, он получает штраф.
+    // если во время окончание приза герой оказался в рыболовецких сетях, он получает штраф.
     // N тиков он не может ходить по клеткам, но может менять направление движение и стрелять,
     // на N+1 тик он может переместиться на позицию указанной команды и продолжать движение.
     // За исключением - если после смещения он снова оказался в сетях, то процедура повторяется до тех пор,
@@ -10987,7 +10987,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -11344,7 +11344,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -11563,7 +11563,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // если дропнуть танк на нефть, то случался NPE
+    // если дропнуть AI на нефть, то случался NPE
     // теперь все нормально
     @Test
     public void shouldDropAiOnOilLeak() {
@@ -11631,7 +11631,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // мы не можем дропнуть танк на рыболовецкие сети
+    // мы не можем дропнуть AI на рыболовецкие сети
     @Test
     public void shouldCantDropAiInFishnet() {
         // given
@@ -11928,7 +11928,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void bulletWithTick0ShouldNotAffectHero(){
+    public void torpedoWithTick0ShouldNotAffectHero(){
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -11963,7 +11963,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void bulletWithTick0ShouldNotAffectOtherBullet(){
+    public void torpedoWithTick0ShouldNotAffectOtherTorpedo(){
         // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -12046,7 +12046,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Bullet.class));
+        ai(0).kill(mock(Torpedo.class));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -12111,7 +12111,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroTakePrizeAndSeeBulletsUnderSeaweed_visibility() {
+    public void shouldHeroTakePrizeAndSeeTorpedoesUnderSeaweed_visibility() {
         // given
         shouldHeroTakePrizeAndSeeEnemyUnderSeaweed_visibility();
 
@@ -12166,9 +12166,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldEndPrizeWorkingDontSeeBulletsUnderSeaweed_visibility() {
+    public void shouldEndPrizeWorkingDontSeeTorpedoesUnderSeaweed_visibility() {
         // given
-        shouldHeroTakePrizeAndSeeBulletsUnderSeaweed_visibility();
+        shouldHeroTakePrizeAndSeeTorpedoesUnderSeaweed_visibility();
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  %% ☼\n" +
@@ -12291,7 +12291,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(1).kill(mock(Bullet.class));
+        ai(1).kill(mock(Torpedo.class));
         ai(0).left();
 
         // then

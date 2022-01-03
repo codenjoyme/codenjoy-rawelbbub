@@ -51,20 +51,20 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
         settings = field.settings();
     }
 
-    public void destroy(Bullet bullet) {
-        if (bullet.isHeavy()) {
+    public void destroy(Torpedo torpedo) {
+        if (torpedo.isHeavy()) {
             overDamage = true;
         }
 
-        destroyFrom(bullet.getDirection());
+        destroyFrom(torpedo.getDirection());
     }
 
-    public void destroyFrom(Direction bulletDirection) {
+    public void destroyFrom(Direction direction) {
         if (ch.power() == 1 || overDamage) {
             ch = Element.ICEBERG_DESTROYED;
             return;
         }
-        if (bulletDirection.equals(UP)) {
+        if (direction.equals(UP)) {
             switch (ch) {
                 case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_DOWN; break;
                 case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_DOWN_DOWN; break;
@@ -72,7 +72,7 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
                 case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_DOWN_LEFT; break;
                 case ICEBERG_MEDIUM_RIGHT: ch = Element.ICEBERG_SMALL_DOWN_RIGHT; break;
             }
-        } else if (bulletDirection.equals(RIGHT)) {
+        } else if (direction.equals(RIGHT)) {
             switch (ch) {
                 case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_LEFT; break;
                 case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_LEFT_LEFT; break;
@@ -80,7 +80,7 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
                 case ICEBERG_MEDIUM_UP: ch = Element.ICEBERG_SMALL_UP_LEFT; break;
                 case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_DOWN_LEFT; break;
             }
-        } else if (bulletDirection.equals(LEFT)) {
+        } else if (direction.equals(LEFT)) {
             switch (ch) {
                 case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_RIGHT; break;
                 case ICEBERG_MEDIUM_RIGHT: ch = Element.ICEBERG_SMALL_RIGHT_RIGHT; break;
@@ -88,7 +88,7 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
                 case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_DOWN_RIGHT; break;
                 case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_LEFT_RIGHT; break;
             }
-        } else if (bulletDirection.equals(DOWN)) {
+        } else if (direction.equals(DOWN)) {
             switch (ch) {
                 case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_UP; break;
                 case ICEBERG_MEDIUM_UP: ch = Element.ICEBERG_SMALL_UP_UP; break;

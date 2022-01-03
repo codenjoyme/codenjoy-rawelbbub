@@ -53,21 +53,21 @@ public class AISolver implements Solver<Board> {
         };
     }
 
-    public DeikstraFindWay.Possible withBullets(Board board) {
+    public DeikstraFindWay.Possible withTorpedoes(Board board) {
         return new DeikstraFindWay.Possible() {
             @Override
             public boolean possible(Point from, Direction where) {
                 Point to = where.change(from);
-                if (board.isBulletAt(to.getX(), to.getY())) return false;
+                if (board.isTorpedoAt(to.getX(), to.getY())) return false;
 
                 return true;
             }
         };
     }
 
-    public DeikstraFindWay.Possible withBarriersAndBullets(Board board) {
+    public DeikstraFindWay.Possible withBarriersAndTorpedoes(Board board) {
         List<Point> barriers = board.getBarriers();
-        List<Point> bullets = board.getBullets();
+        List<Point> torpedoes = board.getTorpedoes();
         List<Point> fishnet = board.getFishnet();
 
         return new DeikstraFindWay.Possible() {
@@ -81,7 +81,7 @@ public class AISolver implements Solver<Board> {
             @Override
             public boolean possible(Point from, Direction where) {
                 Point to = where.change(from);
-                if (bullets.contains(to)) return false;
+                if (torpedoes.contains(to)) return false;
 
                 return true;
             }
@@ -115,8 +115,8 @@ public class AISolver implements Solver<Board> {
 
         // TODO #768 этот подход должен быть идентичным
         // way.getPossibleWays(size, withBarriers(board));
-        // way.updateWays(withBullets(board));
-        way.getPossibleWays(size, withBarriersAndBullets(board));
+        // way.updateWays(withTorpedoes(board));
+        way.getPossibleWays(size, withBarriersAndTorpedoes(board));
 
         return way.buildPath(from, to);
     }

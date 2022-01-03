@@ -35,7 +35,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     boolean isBarrier(Point pt);
 
-    void affect(Bullet bullet);
+    void affect(Torpedo torpedo);
 
     boolean isFishnet(Point pt);
 
@@ -71,7 +71,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Accessor<AIPrize> prizeAis();
 
-    Accessor<Bullet> bullets();
+    Accessor<Torpedo> torpedoes();
 
     Dice dice();
 }

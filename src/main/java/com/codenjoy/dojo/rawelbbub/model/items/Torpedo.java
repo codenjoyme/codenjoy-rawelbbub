@@ -34,19 +34,19 @@ import com.codenjoy.dojo.services.State;
 
 import java.util.function.Consumer;
 
-public class Bullet extends MovingObject implements State<Element, Player> {
+public class Torpedo extends MovingObject implements State<Element, Player> {
 
     private final Field field;
     private Hero owner;
-    private Consumer<Bullet> onDestroy;
+    private Consumer<Torpedo> onDestroy;
     private boolean heavy;
     private int tick;
 
-    public Bullet(Field field, Direction direction,
-                  Point from, Hero owner,
-                  Consumer<Bullet> onDestroy)
+    public Torpedo(Field field, Direction direction,
+                   Point pt, Hero owner,
+                   Consumer<Torpedo> onDestroy)
     {
-        super(from.getX(), from.getY(), direction);
+        super(pt, direction);
         this.field = field;
         this.owner = owner;
         moving = true;
@@ -95,7 +95,7 @@ public class Bullet extends MovingObject implements State<Element, Player> {
         if (destroyed()) {
             return Element.EXPLOSION;
         } else {
-            return Element.BULLET;
+            return Element.TORPEDO;
         }
     }
 

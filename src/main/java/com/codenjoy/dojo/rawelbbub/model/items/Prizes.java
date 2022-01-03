@@ -72,8 +72,8 @@ public class Prizes implements Tickable {
         prize.taken(item -> prizes().removeExact(item));
     }
 
-    public boolean affect(Bullet bullet) {
-        Prize prize = prizeAt(bullet);
+    public boolean affect(Torpedo torpedo) {
+        Prize prize = prizeAt(torpedo);
         if (prize != null) {
             prize.kill();
             return true;

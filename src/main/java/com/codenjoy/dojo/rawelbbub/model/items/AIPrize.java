@@ -58,13 +58,13 @@ public class AIPrize extends AI {
         wounded = false;
     }
 
-    public void kill(Bullet bullet) {
+    public void kill(Torpedo torpedo) {
         damage++;
         wounded = true;
 
         if (damage == vitality()) {
             damage = 0;
-            super.kill(bullet);
+            super.kill(torpedo);
         }
     }
 

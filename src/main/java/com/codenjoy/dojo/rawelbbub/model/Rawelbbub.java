@@ -97,7 +97,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     protected void onRemove(Player player) {
         Hero hero = player.getHero();
         heroes().removeExact(hero);
-        bullets().removeIf(bullet -> bullet.owner() == hero);
+        torpedoes().removeIf(torpedo -> torpedo.owner() == hero);
     }
 
     @Override
@@ -121,9 +121,9 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             hero.tick();
         }
 
-        for (Bullet bullet : bullets().copy()) {
-            if (bullet.destroyed()) {
-                bullet.remove();
+        for (Torpedo torpedo : torpedoes().copy()) {
+            if (torpedo.destroyed()) {
+                torpedo.remove();
             }
         }
 
@@ -133,7 +133,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             }
 
             if (hero.prizes().contains(PRIZE_BREAKING_BAD)) {
-                hero.getBullets().forEach(Bullet::heavy);
+                hero.torpedoes().forEach(Torpedo::heavy);
             }
         }
 
@@ -141,21 +141,21 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             if (hero.isAlive()) {
                 hero.move();
 
-                Bullet bullet = bullets().getFirstAt(hero);
-                if (bullet != null) {
-                    if (bullet.getTick() != 0) {
-                        affect(bullet);
+                Torpedo torpedo = torpedoes().getFirstAt(hero);
+                if (torpedo != null) {
+                    if (torpedo.getTick() != 0) {
+                        affect(torpedo);
                     }
                 }
             }
         }
 
-        for (Bullet bullet : bullets().copy()) {
-            bullet.move();
+        for (Torpedo torpedo : torpedoes().copy()) {
+            torpedo.move();
         }
 
         for (Iceberg iceberg : icebergs()) {
-            if (!heroes.contains(iceberg) && !bullets().contains(iceberg)) {
+            if (!heroes.contains(iceberg) && !torpedoes().contains(iceberg)) {
                 iceberg.tick();
             }
         }
@@ -192,7 +192,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             }
         }
 
-        for (Hero hero : heroesAndAis()) {   //  TODO проверить как один танк не может проходить мимо другого танка игрока (не AI)
+        for (Hero hero : heroesAndAis()) {   //  TODO проверить как один герой не может проходить мимо другого игрока (не AI)
             if (hero.itsMe(pt)) {
                 return true;
             }
@@ -233,7 +233,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
                 AI.class,
                 AIPrize.class,
                 Prize.class,
-                Bullet.class,
+                Torpedo.class,
                 Iceberg.class,
                 Oil.class,
                 Fishnet.class);
@@ -269,52 +269,52 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public void affect(Bullet bullet) {
-        if (reefs().contains(bullet)) {
-            bullet.remove();
+    public void affect(Torpedo torpedo) {
+        if (reefs().contains(torpedo)) {
+            torpedo.remove();
             return;
         }
 
-        if (heroesAndAis().contains(bullet)) {
-            int index = heroesAndAis().indexOf(bullet);
+        if (heroesAndAis().contains(torpedo)) {
+            int index = heroesAndAis().indexOf(torpedo);
             Hero prey = heroesAndAis().get(index);
-            if (prey == bullet.owner()) {
+            if (prey == torpedo.owner()) {
                 return;
             }
 
             if (!prey.prizes().contains(PRIZE_IMMORTALITY)) {
-                prey.kill(bullet);
+                prey.kill(torpedo);
             }
 
             if (!prey.isAlive()) {
-                scoresForKill(bullet, prey);
+                scoresForKill(torpedo, prey);
             }
 
-            bullet.remove();  // TODO заимплементить взрыв
+            torpedo.remove();  // TODO заимплементить взрыв
             return;
         }
 
-        for (Bullet bullet2 : bullets().copy()) {
-            if (bullet != bullet2
-                    && bullet.equals(bullet2)
-                    && bullet2.getTick() != 0) {
-                bullet.boom();
-                bullet2.boom();
+        for (Torpedo torpedo2 : torpedoes().copy()) {
+            if (torpedo != torpedo2
+                    && torpedo.equals(torpedo2)
+                    && torpedo2.getTick() != 0) {
+                torpedo.boom();
+                torpedo2.boom();
                 return;
             }
         }
 
-        if (icebergs().contains(bullet)) {
-            Iceberg iceberg = icebergs().getFirstAt(bullet);
+        if (icebergs().contains(torpedo)) {
+            Iceberg iceberg = icebergs().getFirstAt(torpedo);
             if (!iceberg.destroyed()) {
-                iceberg.destroy(bullet);
-                bullet.remove();  // TODO заимплементить взрыв
+                iceberg.destroy(torpedo);
+                torpedo.remove();  // TODO заимплементить взрыв
                 return;
             }
         }
 
-        if (prizes.affect(bullet)) {
-            bullet.remove();
+        if (prizes.affect(torpedo)) {
+            torpedo.remove();
             return;
         }
     }
@@ -340,8 +340,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         prizes.add(prize);
     }
 
-    private void scoresForKill(Bullet bullet, Hero prey) {
-        Player hunter = (Player) bullet.owner().getPlayer();
+    private void scoresForKill(Torpedo torpedo, Hero prey) {
+        Player hunter = (Player) torpedo.owner().getPlayer();
         if (!players.contains(hunter)) {
             return;
         }
@@ -419,7 +419,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<Bullet> bullets() {
-        return field.of(Bullet.class);
+    public Accessor<Torpedo> torpedoes() {
+        return field.of(Torpedo.class);
     }
 }

@@ -135,7 +135,7 @@ public class AI extends Hero {
                 return Element.AI_DOWN;
             default:
                 throw new RuntimeException(
-                        "Неправильное состояние танка!");
+                        "Неправильное состояние героя!");
         }
     }
 

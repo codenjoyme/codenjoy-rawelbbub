@@ -54,8 +54,8 @@ public class Seaweed extends PointImpl implements State<Element, Player> {
 
         if (observer.prizes().contains(Element.PRIZE_VISIBILITY)) {
             AI ai = filterOne(alsoAtPoint, AI.class);
-            Bullet bullet = filterOne(alsoAtPoint, Bullet.class);
-            if (hero != null || ai != null || bullet != null) {
+            Torpedo torpedo = filterOne(alsoAtPoint, Torpedo.class);
+            if (hero != null || ai != null || torpedo != null) {
                 return null;
             }
         }

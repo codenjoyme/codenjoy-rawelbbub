@@ -39,11 +39,11 @@ public class AI extends Hero {
     public boolean dontShoot = false;
     public boolean dontMove = false;
     private int act;
-    private int count;
+    private int stuck;
 
     public AI(Point pt, Direction direction) {
         super(pt, direction);
-        this.count = 0;
+        this.stuck = 0;
         setActive(true);
         setAlive(true);
     }
@@ -89,7 +89,7 @@ public class AI extends Hero {
     }
 
     private void aIMove() {
-        int c = 0;
+        int count = 0;
         Point pt;
         do {
             pt = direction.change(this);
@@ -97,16 +97,16 @@ public class AI extends Hero {
                 direction = Direction.random(dice());
             }
 
-            if (count == ticksStuckByFishnet()) {
+            if (stuck == ticksStuckByFishnet()) {
                 direction = Direction.random(dice());
-                count = 0;
+                stuck = 0;
             }
 
             if (field.isFishnet(pt)) {
-                count++;
+                stuck++;
             }
 
-        } while (field.isBarrier(pt) && c++ < MAX);
+        } while (field.isBarrier(pt) && count++ < MAX);
 
         moving = true;
     }

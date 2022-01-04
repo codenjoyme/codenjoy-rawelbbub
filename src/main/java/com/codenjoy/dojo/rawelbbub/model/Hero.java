@@ -42,8 +42,7 @@ import java.util.List;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_BAD;
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_WALKING_ON_FISHNET;
-import static com.codenjoy.dojo.rawelbbub.services.Event.CATCH_PRIZE;
-import static com.codenjoy.dojo.rawelbbub.services.Event.HERO_DIED;
+import static com.codenjoy.dojo.rawelbbub.services.Event.*;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.HERO_TICKS_PER_SHOOT;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.PENALTY_WALKING_ON_FISHNET;
 import static java.util.stream.Collectors.toList;
@@ -63,6 +62,7 @@ public class Hero extends RoundPlayerHero<Field>
 
     private Timer onFishnet;
     private Dice dice;
+    private int killed;
 
     public Hero(Point pt, Direction direction) {
         super(pt);
@@ -211,6 +211,7 @@ public class Hero extends RoundPlayerHero<Field>
         setAlive(true);
         gun.reset();
         prizes.clear();
+        killed = 0;
     }
 
     public void tryFire() {
@@ -266,5 +267,18 @@ public class Hero extends RoundPlayerHero<Field>
 
     public void dice(Dice dice) {
         this.dice = dice;
+    }
+
+    public void killHero() {
+        killed++;
+        getPlayer().event(KILL_OTHER_HERO.apply(killed));
+    }
+
+    public void killed(int killed) {
+        this.killed = killed;
+    }
+
+    public int killed() {
+        return killed;
     }
 }

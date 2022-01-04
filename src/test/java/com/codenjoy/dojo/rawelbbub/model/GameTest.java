@@ -4575,8 +4575,7 @@ public class GameTest extends AbstractGameTest {
 
         // when
         // допустим за игру он прибил 5 героев
-        Player player = player(0);
-        player.setKilled(5);
+        hero(0).killed(5);
 
         dice(1, 1);
         field().clearScore();
@@ -4587,7 +4586,7 @@ public class GameTest extends AbstractGameTest {
  
         // then
         // но после рисета это поле чистится
-        assertEquals(0, player.score());
+        assertEquals(0, hero(0).killed());
 
         // и айсберги тоже ресетнулись
         // и торпеда полетела

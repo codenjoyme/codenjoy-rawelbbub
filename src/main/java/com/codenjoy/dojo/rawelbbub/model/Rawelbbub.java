@@ -82,8 +82,9 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
         addAis(level.ais());
 
-        players.forEach(Player::reset);
-        heroesAndAis().forEach(Hero::reset);
+        // TODO Это точно тут надо, heros пересоздадутся в строчке ниже?
+        //      а AI пересоздали выше
+        heroesAndAis().forEach(Hero::reset); 
 
         super.clearScore();
     }
@@ -349,8 +350,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         if (prey.isAI()) {
             hunter.event(KILL_AI);
         } else {
-            hunter.killHero();
-            hunter.event(KILL_OTHER_HERO.apply(hunter.score()));
+            hunter.getHero().killHero();
         }
     }
 

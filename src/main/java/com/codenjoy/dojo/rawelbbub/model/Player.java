@@ -34,23 +34,16 @@ import com.codenjoy.dojo.services.round.RoundGamePlayer;
 public class Player extends RoundGamePlayer<Hero, Field> {
 
     private Calculator<Integer> calculator;
-    private int killed;
 
     public Player(EventListener listener, GameSettings settings){
         super(listener, settings);
         calculator = settings().calculator();
-        reset();
     }
 
     @Override
     public void start(int round, Object startEvent) {
         super.start(round, startEvent);
         // hero.reset(); // TODO test me
-        // reset(); // TODO test me
-    }
-
-    public void reset() {
-        killed = 0;
     }
 
     public boolean isDestroyed() {
@@ -62,22 +55,9 @@ public class Player extends RoundGamePlayer<Hero, Field> {
         super.event(event);
     }
 
-    public int killHero() {
-        return killed++;
-    }
-
     @Override
     public Hero createHero(Point pt) {
-        reset();
         return new Hero(pt, Direction.UP);
-    }
-
-    public int score() {
-        return killed;
-    }
-
-    void setKilled(int killed) {
-        this.killed = killed;
     }
 
     private GameSettings settings() {

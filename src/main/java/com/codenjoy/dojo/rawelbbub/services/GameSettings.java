@@ -91,9 +91,6 @@ public class GameSettings extends SettingsImpl
     public GameSettings() {
         initAll();
 
-        // сколько участников в комнате
-        playersPerRoom().update(20);
-
         integer(AI_TICKS_PER_SHOOT, 10);
         integer(HERO_TICKS_PER_SHOOT, 4);
         integer(OIL_SLIPPERINESS, 3);
@@ -120,7 +117,6 @@ public class GameSettings extends SettingsImpl
         integer(HERO_DIED_PENALTY, -0);
         integer(KILL_OTHER_HERO_SCORE, 50);
         integer(KILL_AI_SCORE, 25);
-
 
         Levels.setup(this);
     }

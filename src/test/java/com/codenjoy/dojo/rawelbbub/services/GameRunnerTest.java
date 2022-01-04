@@ -39,11 +39,11 @@ public class GameRunnerTest {
     public void testNoNPE() {
         GameType runner = new GameRunner();
         Settings settings = runner.getSettings();
-        assertEquals(34, runner.getBoardSize(settings).getValue());
+        assertEquals(23, runner.getBoardSize(settings).getValue());
 
         TestUtils.buildGame(runner,
                 Mockito.mock(EventListener.class),
                 new PrinterFactoryImpl());
-        assertEquals(34, runner.getBoardSize(settings).getValue());
+        assertEquals(23, runner.getBoardSize(settings).getValue());
     }
 }

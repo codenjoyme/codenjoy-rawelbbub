@@ -9596,6 +9596,114 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
+    // После восстановления айсберг разрушенный за 1 выстрел будет
+    // разрушаться так же как тот, который разрушался несколькими выстрелами
+    @Test
+    public void afterRecoveryIcebergDestroyedInOneShot_willBeDestroyedInSameWayAsOther() {
+        // given
+        settings().integer(ICEBERG_REGENERATE_TIME, 10);
+
+        shouldHeroTakePrizeEnemyWithoutPrize_breakingBad();
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼ ╬╩  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        for (int count = 0; count < 10; count++) {
+            tick();
+        }
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬╬╩  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        hero(1).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬╬╩  ☼\n" +
+                "☼• •  ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╩╬╨  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        hero(1).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╩╬╨  ☼\n" +
+                "☼• •  ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╨╬   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        hero(1).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╨╬   ☼\n" +
+                "☼• •  ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼ ╬   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
     @Test
     public void shouldHeroNotBreakingReefs_whenItFiresAtThem() {
         // given

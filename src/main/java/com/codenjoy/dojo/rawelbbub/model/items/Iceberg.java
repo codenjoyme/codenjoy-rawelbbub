@@ -36,13 +36,11 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
 
     private Element element;
     private int timer;
-    private boolean overDamage;
     private SettingsReader settings;
 
     public Iceberg(Point pt) {
         super(pt);
         reset();
-        overDamage = false;
     }
 
     @Override
@@ -52,10 +50,6 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
 
     public void destroy(Torpedo torpedo) {
         if (torpedo.isHeavy()) {
-            overDamage = true;
-        }
-
-        if (overDamage) {
             element = Element.ICEBERG_DESTROYED;
         } else {
             element = element.destroyFrom(torpedo.getDirection().inverted());
@@ -64,11 +58,7 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        if (!destroyed()) {
-            return element;
-        } else  {
-            return Element.WATER;
-        }
+        return element;
     }
 
     @Override

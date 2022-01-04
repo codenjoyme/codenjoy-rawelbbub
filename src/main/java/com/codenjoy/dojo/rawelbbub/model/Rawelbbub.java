@@ -118,12 +118,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             hero.tick();
         }
 
-        for (Torpedo torpedo : torpedoes().copy()) {
-            if (torpedo.destroyed()) {
-                torpedo.remove();
-            }
-        }
-
         for (Hero hero : heroes) {
             if (hero.isAlive()) {
                 hero.tryFire();
@@ -249,12 +243,20 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     private void removeDeadItems() {
         removeDeadAi();
         prizes.removeDead();
+        removeTorpedoes();
+    }
+
+    private void removeTorpedoes() {
+        torpedoes().copy().forEach(torpedo -> {
+            if (torpedo.destroyed()) {
+                torpedo.remove();
+            }
+        });
     }
 
     private void removeDeadAi() {
         removeDeadAnd(ais())
-                .forEach(ai -> {
-                });
+                .forEach(ai -> {});
         removeDeadAnd(prizeAis())
                 .forEach(ai -> prizeGen.drop(ai));
     }
@@ -294,7 +296,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         for (Torpedo torpedo2 : torpedoes().copy()) {
             if (torpedo != torpedo2
                     && torpedo.equals(torpedo2)
-                    && torpedo2.getTick() != 0) {
+                    && torpedo2.getTick() != 0)
+            {
                 torpedo.boom();
                 torpedo2.boom();
                 return;
@@ -305,7 +308,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             Iceberg iceberg = icebergs().getFirstAt(torpedo);
             if (!iceberg.destroyed()) {
                 iceberg.destroy(torpedo);
-                torpedo.remove();  // TODO заимплементить взрыв
+                torpedo.boom();
                 return;
             }
         }

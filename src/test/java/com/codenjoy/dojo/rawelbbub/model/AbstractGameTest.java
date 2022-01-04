@@ -40,6 +40,8 @@ import java.util.LinkedList;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.codenjoy.dojo.client.Utils.split;
+
 public class AbstractGameTest
         extends AbstractBaseGameTest<Player, Rawelbbub, GameSettings, Level, Hero> {
 
@@ -110,5 +112,9 @@ public class AbstractGameTest
         }};
         Collections.sort(all, Comparator.reverseOrder());
         return all.get(index);
+    }
+
+    protected void assertIcebergs(String expected) {
+        assertEquals(expected, split(field().icebergs(), "], \nIceberg"));
     }
 }

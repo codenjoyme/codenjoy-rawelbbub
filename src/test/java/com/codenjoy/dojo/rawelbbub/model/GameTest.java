@@ -26,6 +26,7 @@ package com.codenjoy.dojo.rawelbbub.model;
 import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import org.junit.Test;
 
+import static com.codenjoy.dojo.client.Utils.split;
 import static com.codenjoy.dojo.rawelbbub.TestGameSettings.*;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.PointImpl.pt;
@@ -1412,7 +1413,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╩    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1437,7 +1438,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╨    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1453,6 +1454,43 @@ public class GameTest extends AbstractGameTest {
                 "☼╨    ☼\n" +
                 "☼     ☼\n" +
                 "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
@@ -1504,7 +1542,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼►   ╠☼\n" +
+                "☼►   Ѡ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1529,7 +1567,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼►   ╞☼\n" +
+                "☼►   Ѡ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1545,6 +1583,42 @@ public class GameTest extends AbstractGameTest {
                 "☼► • ╞☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼►   Ѡ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼► •  ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼►   •☼\n" +
+                "☼☼☼☼☼☼☼\n");
         // when
         tick();
 
@@ -1592,7 +1666,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╣   ◄☼\n" +
+                "☼Ѡ   ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1617,7 +1691,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╡   ◄☼\n" +
+                "☼Ѡ   ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1631,6 +1705,43 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼╡ • ◄☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ   ◄☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  • ◄☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼•   ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1680,7 +1791,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╦    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1705,7 +1816,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╥    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1730,9 +1841,44 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼▼    ☼\n" +
+                "☼     ☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼▼    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼•    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼▼    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
     }
 
     // торпедой уничтожается айсберг за три присеста - стреляем снизу, но 'сквозь' айсберг.
@@ -1767,7 +1913,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╩    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -1792,7 +1938,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╨    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -1806,6 +1952,31 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╨    ☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
                 "☼•    ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -1861,7 +2032,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼ ►  ╠☼\n" +
+                "☼ ►  Ѡ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1886,7 +2057,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼ ►  ╞☼\n" +
+                "☼ ►  Ѡ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1900,6 +2071,31 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼ ► •╞☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼ ►  Ѡ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼ ► • ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1952,7 +2148,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╣  ◄ ☼\n" +
+                "☼Ѡ  ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1977,7 +2173,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╡  ◄ ☼\n" +
+                "☼Ѡ  ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1991,6 +2187,31 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼╡• ◄ ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ  ◄ ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼ • ◄ ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -2042,7 +2263,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╦    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -2067,7 +2288,7 @@ public class GameTest extends AbstractGameTest {
                 "☼▼    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╥    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -2081,6 +2302,18 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼•    ☼\n" +
                 "☼╥    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼▼    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -2137,7 +2370,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
-                "☼╩    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -2157,25 +2390,25 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬    ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
         tick();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╨    ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
-        hero(0).fire();
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼╬    ☼\n" +
-                "☼╨    ☼\n" +
                 "☼•    ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -2187,7 +2420,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
-                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -2207,11 +2440,98 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
         tick();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
+                "☼     ☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╨    ☼\n" +
+                "☼     ☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -2263,7 +2583,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼►  ╠╬☼\n" +
+                "☼►  Ѡ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -2288,7 +2608,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼►  ╞╬☼\n" +
+                "☼►  Ѡ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -2313,7 +2633,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼►   ╬☼\n" +
+                "☼►  Ѡ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -2338,7 +2658,94 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼►   ╠☼\n" +
+                "☼►   Ѡ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼► • ╠☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼►   Ѡ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼► • ╞☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼►   Ѡ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼► •  ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼►   •☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼►    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
 
@@ -2386,7 +2793,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╬╣  ◄☼\n" +
+                "☼╬Ѡ  ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -2411,7 +2818,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╬╡  ◄☼\n" +
+                "☼╬Ѡ  ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -2436,7 +2843,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╬   ◄☼\n" +
+                "☼╬Ѡ  ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -2461,7 +2868,94 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼╣   ◄☼\n" +
+                "☼Ѡ   ◄☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╣ • ◄☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ   ◄☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╡ • ◄☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ   ◄☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  • ◄☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼•   ◄☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼    ◄☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
 
@@ -2508,7 +3002,7 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼    ╦☼\n" +
+                "☼    Ѡ☼\n" +
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -2533,24 +3027,24 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
+                "☼    Ѡ☼\n" +
+                "☼    ╬☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    ▼☼\n" +
+                "☼     ☼\n" +
+                "☼    •☼\n" +
                 "☼    ╥☼\n" +
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(0).fire();
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼    ▼☼\n" +
-                "☼     ☼\n" +
-                "☼    •☼\n" +
-                "☼    ╥☼\n" +
-                "☼    ╬☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
         tick();
 
         // then
@@ -2558,7 +3052,7 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼     ☼\n" +
+                "☼    Ѡ☼\n" +
                 "☼    ╬☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -2583,8 +3077,95 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼    Ѡ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    ▼☼\n" +
+                "☼     ☼\n" +
+                "☼    •☼\n" +
                 "☼     ☼\n" +
                 "☼    ╦☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    ▼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼    Ѡ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    ▼☼\n" +
+                "☼     ☼\n" +
+                "☼    •☼\n" +
+                "☼     ☼\n" +
+                "☼    ╥☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    ▼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼    Ѡ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    ▼☼\n" +
+                "☼     ☼\n" +
+                "☼    •☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    ▼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼    •☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    ▼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
 
@@ -2750,6 +3331,7 @@ public class GameTest extends AbstractGameTest {
         tick();
         hero(0).fire();
         tick();
+        tick();
     }
 
     // если я стреляю дважды, то выпускается две торпеды
@@ -2808,7 +3390,7 @@ public class GameTest extends AbstractGameTest {
                 "☼      •☼\n" +
                 "☼       ☼\n" +
                 "☼      •☼\n" +
-                "☼      ╦☼\n" +
+                "☼      Ѡ☼\n" +
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
@@ -2822,22 +3404,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼      •☼\n" +
-                "☼      ╥☼\n" +
-                "☼      ╬☼\n" +
-                "☼☼☼☼☼☼☼☼☼\n");
-
-        // when
-        hero(0).fire();
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼      ▼☼\n" +
-                "☼       ☼\n" +
-                "☼      •☼\n" +
-                "☼       ☼\n" +
-                "☼       ☼\n" +
-                "☼       ☼\n" +
+                "☼      Ѡ☼\n" +
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
@@ -2851,8 +3418,8 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼      •☼\n" +
                 "☼       ☼\n" +
-                "☼      •☼\n" +
                 "☼       ☼\n" +
+                "☼      Ѡ☼\n" +
                 "☼      ╬☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
@@ -2868,7 +3435,22 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼      •☼\n" +
                 "☼       ☼\n" +
-                "☼      ╦☼\n" +
+                "☼      ╬☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼      ▼☼\n" +
+                "☼       ☼\n" +
+                "☼      •☼\n" +
+                "☼       ☼\n" +
+                "☼      •☼\n" +
+                "☼       ☼\n" +
+                "☼      Ѡ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
         // when
@@ -2882,7 +3464,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼      •☼\n" +
                 "☼       ☼\n" +
-                "☼      ╥☼\n" +
+                "☼      Ѡ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
         // when
@@ -2897,7 +3479,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
-                "☼       ☼\n" +
+                "☼      Ѡ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
         // when
@@ -2973,7 +3555,8 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // стоит проверить, как будут себя вести полуразрушенные конструкции, если их растреливать со всех других сторон
+    // стоит проверить, как будут себя вести полуразрушенные
+    // конструкции, если их растреливать со всех других сторон
     @Test
     public void shouldDestroyFromUpAndDownTwice() {
         // given
@@ -2993,7 +3576,7 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ▼  ☼\n" +
-                "☼  ╦  ☼\n" +
+                "☼  Ѡ  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
@@ -3014,7 +3597,29 @@ public class GameTest extends AbstractGameTest {
         hero(0).up();
         tick();
 
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ╦  ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
         hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  Ѡ  ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
         tick();
 
         // then
@@ -3028,6 +3633,18 @@ public class GameTest extends AbstractGameTest {
 
         // when
         hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  Ѡ  ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
         tick();
 
         // then
@@ -3615,14 +4232,6 @@ public class GameTest extends AbstractGameTest {
         // given
         shouldTorpedoDestroyIceberg_whenHittingItUp_whenTwoIcebergs();
 
-        // when
-        hero(0).fire();
-        tick();
-        
-        hero(0).fire();
-        tick();
-        tick();
-
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -3632,8 +4241,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        assertIcebergs(
+                "[Iceberg[[1,5]=' ',timer=2,destroyed=true], \n" +
+                "Iceberg[[1,4]=' ',timer=9,destroyed=true]]");
+
         // when
-        for (int tick = 7; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
+        for (int tick = 10; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
             tick();
         }
 
@@ -3646,6 +4259,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        assertIcebergs(
+                "[Iceberg[[1,5]=' ',timer=23,destroyed=true], \n" +
+                "Iceberg[[1,4]=' ',timer=30,destroyed=true]]");
+
         // when
         tick();
 
@@ -3658,11 +4275,32 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        assertIcebergs(
+                "[Iceberg[[1,5]=' ',timer=24,destroyed=true], \n" +
+                "Iceberg[[1,4]='╬',timer=0,destroyed=false]]");
+
         // when
         tick();
         tick();
         tick();
         tick();
+        tick();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,5]=' ',timer=30,destroyed=true], \n" +
+                "Iceberg[[1,4]='╬',timer=0,destroyed=false]]");
+
+        // when
         tick();
 
         // then
@@ -3673,6 +4311,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,5]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,4]='╬',timer=0,destroyed=false]]");
     }
 
     @Test
@@ -3774,6 +4416,18 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼╬    ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
                 "☼╩    ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
@@ -3789,7 +4443,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼╬    ☼\n" +
-                "☼╨    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -3858,9 +4512,15 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼╬    ☼\n" +
-                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
+
+        // после заезда картинка не изменится, айсберг не будет тикаться
+        String same =
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]=' ',timer=0,destroyed=true]]";
+        assertIcebergs(same);
 
         // when
         hero(0).up();
@@ -3874,6 +4534,171 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(same);
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(same);
+    }
+
+    @Test
+    public void shouldHeroCanFire_whenIcebergOnWay() {
+        // given
+        shouldHeroCanGo_whenIcebergOnWay();
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╩    ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╨    ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]=' ',timer=0,destroyed=true], \n" +
+                "Iceberg[[1,2]=' ',timer=0,destroyed=true]]");
+
+        // when
+        tick();
+
+        // then
+        // только что уничтоженный айсберг будет тикаться, а тот на котором я стою - нет
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]=' ',timer=1,destroyed=true], \n" +
+                "Iceberg[[1,2]=' ',timer=0,destroyed=true]]");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]=' ',timer=2,destroyed=true], \n" +
+                "Iceberg[[1,2]=' ',timer=0,destroyed=true]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]=' ',timer=3,destroyed=true], \n" +
+                "Iceberg[[1,2]=' ',timer=0,destroyed=true]]");
+
+        // when
+        // но когда герой слиняет, тики продолжатся
+        hero().right();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼ ►   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]=' ',timer=4,destroyed=true], \n" +
+                "Iceberg[[1,2]=' ',timer=1,destroyed=true]]");
     }
 
     @Test
@@ -3890,6 +4715,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]=' ',timer=0,destroyed=true]]");
+
         // when
         for (int tick = 3; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
             tick();
@@ -3903,6 +4732,10 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]=' ',timer=0,destroyed=true]]");
 
         // when
         hero(0).right();
@@ -3927,10 +4760,29 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼╬    ☼\n" +
+                "☼ ►   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]=' ',timer=30,destroyed=true]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
                 "☼╬►   ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]='╬',timer=0,destroyed=false]]");
     }
 
     @Test
@@ -3944,6 +4796,8 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        assertIcebergs("[Iceberg[[1,3]='╬',timer=0,destroyed=false]]");
+
         // when
         hero(0).fire();
         tick();
@@ -3958,13 +4812,29 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs("[Iceberg[[1,3]=' ',timer=0,destroyed=true]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        assertIcebergs("[Iceberg[[1,3]=' ',timer=1,destroyed=true]]");
+
         // when
-        for (int tick = 3; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
+        for (int tick = 2; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
             tick();
         }
 
@@ -3977,9 +4847,12 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        String same = "[Iceberg[[1,3]=' ',timer=30,destroyed=true]]";
+        assertIcebergs(same);
+
         // when
         hero(0).fire();
-        tick();
+        tick(); // по таймингам должна бы тут сгенериться, но не может - сгенерится в следующем тике
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -3990,29 +4863,21 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        // when
-        tick();
- 
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼•    ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        assertIcebergs(same);
 
         // when
         tick();
  
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
+                "☼•    ☼\n" +
                 "☼     ☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs("[Iceberg[[1,3]='╬',timer=0,destroyed=false]]");
     }
 
     @Test
@@ -4033,6 +4898,18 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
         String field =
                 "☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -4043,9 +4920,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n";
         assertF(field);
 
-        for (int tick = 1; tick < settings().integer(HERO_TICKS_PER_SHOOT); tick++) {
+        for (int tick = 2; tick < settings().integer(HERO_TICKS_PER_SHOOT); tick++) {
             // when
-            hero(0).fire();
+            hero(0).fire(); // ничего не будет происходить, т.к. снарядов нет
             tick();
 
             // then
@@ -4053,6 +4930,21 @@ public class GameTest extends AbstractGameTest {
         }
 
         // when
+        // а теперь выстрел получится
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        // и снова тишина
         hero(0).fire();
         tick();
 
@@ -4205,7 +5097,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
-                "☼╨    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -4219,7 +5111,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▼    ☼\n" +
-                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -4473,7 +5365,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
-                "☼╩        ☼\n" +
+                "☼Ѡ        ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4523,7 +5415,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
-                "☼╨        ☼\n" +
+                "☼Ѡ        ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4536,6 +5428,19 @@ public class GameTest extends AbstractGameTest {
         // when
         tick();
         tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
+                "☼╬        ☼\n" +
+                "☼╨        ☼\n" +
+                "☼•        ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼▲        ☼\n" +
+                "☼☼☼☼☼☼☼☼☼☼☼\n");
         
         hero(0).fire();
         tick();
@@ -4543,7 +5448,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
-                "☼         ☼\n" +
+                "☼Ѡ        ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4562,7 +5467,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
-                "☼╩        ☼\n" +
+                "☼Ѡ        ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4612,7 +5517,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╬        ☼\n" +
-                "☼╩        ☼\n" +
+                "☼Ѡ        ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4932,7 +5837,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
-                "☼╩    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
                 "☼▲    ☼\n" +
@@ -4952,25 +5857,25 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬    ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼%    ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
         tick();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
                 "☼╨    ☼\n" +
-                "☼     ☼\n" +
-                "☼%    ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
-        hero(0).fire();
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼╬    ☼\n" +
-                "☼╨    ☼\n" +
                 "☼•    ☼\n" +
                 "☼%    ☼\n" +
                 "☼▲    ☼\n" +
@@ -4982,7 +5887,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
-                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
                 "☼▲    ☼\n" +
@@ -5006,7 +5911,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╩    ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼%    ☼\n" +
@@ -9475,9 +10380,9 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
+                "☼  Ѡ  ☼\n" +
                 "☼  ▲  ☼\n" +
-                "☼╬    ☼\n" +
+                "☼╬   Ѡ☼\n" +
                 "☼     ☼\n" +
                 "☼  ╬  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
@@ -9505,9 +10410,9 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼ ◄   ☼\n" +
+                "☼Ѡ◄   ☼\n" +
                 "☼     ☼\n" +
-                "☼     ☼\n" +
+                "☼  Ѡ  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
 
@@ -9588,6 +10493,18 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ╬Ѡ  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
                 "☼ ╬╩  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -9644,7 +10561,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╩╬╨  ☼\n" +
+                "☼Ѡ╬Ѡ  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲ ˄  ☼\n" +
@@ -9670,7 +10587,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╨╬   ☼\n" +
+                "☼Ѡ╬Ѡ  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲ ˄  ☼\n" +
@@ -9685,6 +10602,32 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╨╬   ☼\n" +
+                "☼• •  ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ╬   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        hero(1).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼ ╬   ☼\n" +
                 "☼• •  ☼\n" +
                 "☼     ☼\n" +
                 "☼▲ ˄  ☼\n" +
@@ -9780,7 +10723,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼ ╬╬  ☼\n" +
+                "☼Ѡ╬╬  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -9879,7 +10822,7 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
-                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼     ☼\n" +
@@ -9903,7 +10846,57 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
                 "☼╩    ☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╨    ☼\n" +
+                "☼•    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -11517,7 +12510,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼ ╬╩  ☼\n" +
+                "☼Ѡ╬Ѡ  ☼\n" +
                 "☼•    ☼\n" +
                 "☼     ☼\n" +
                 "☼▲ ˄  ☼\n" +
@@ -11561,7 +12554,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼ ╬╨  ☼\n" +
+                "☼ ╬Ѡ  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲ ˄  ☼\n" +
@@ -12503,6 +13496,48 @@ public class GameTest extends AbstractGameTest {
                 "☼  %% ☼\n" +
                 "☼▲ %% ☼\n" +
                 "☼  %% ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    // что если герой одновременно выстрелит и поедет вперед?
+    // ничего, он не умрет и будет стрелять дальше
+    @Test
+    public void shouldDoNotKillYourself_whenShotAndMoveForward() {
+        // given
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        hero(0).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  •  ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        hero(0).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  •  ☼\n" +
+                "☼  •  ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }

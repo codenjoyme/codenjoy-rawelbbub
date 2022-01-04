@@ -55,16 +55,11 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
             overDamage = true;
         }
 
-        destroyFrom(torpedo.getDirection().inverted());
-    }
-
-    public void destroyFrom(Direction direction) {
-        if (element.power() == 1 || overDamage) {
+        if (overDamage) {
             element = Element.ICEBERG_DESTROYED;
-            return;
+        } else {
+            element = element.destroyFrom(torpedo.getDirection().inverted());
         }
-
-        element = Element.icebergsMap.get(element).get(direction);
     }
 
     @Override

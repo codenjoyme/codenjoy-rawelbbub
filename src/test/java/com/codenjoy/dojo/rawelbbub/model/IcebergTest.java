@@ -24,6 +24,7 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 
 import com.codenjoy.dojo.rawelbbub.model.items.Iceberg;
+import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import com.codenjoy.dojo.services.Direction;
 import org.junit.Test;
 
@@ -101,9 +102,13 @@ public class IcebergTest {
     private void assertDestroyFrom(char expected, Direction... directions) {
         Iceberg iceberg = new Iceberg(pt(0, 0));
         for (Direction direction : directions) {
-            iceberg.destroyFrom(direction);
+            iceberg.destroy(torpedo(direction));
         }
         assertEquals(String.valueOf(expected),
                 String.valueOf(iceberg.state(null).ch()));
+    }
+
+    private Torpedo torpedo(Direction direction) {
+        return new Torpedo(null, direction.inverted(), pt(0, 0), null, null);
     }
 }

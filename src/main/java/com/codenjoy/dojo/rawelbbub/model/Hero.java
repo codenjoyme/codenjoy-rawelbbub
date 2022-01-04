@@ -83,7 +83,12 @@ public class Hero extends RoundPlayerHero<Field>
         sliding = new Sliding(field, direction, settings());
         prizes = new Prizes(new PointField().size(field.size()));
 
-        reset();
+        moving = false;
+        fire = false;
+        setAlive(true);
+        gun.reset();
+        prizes.clear();
+        killed = 0;
         setAlive(true);
     }
 
@@ -203,15 +208,6 @@ public class Hero extends RoundPlayerHero<Field>
             case DOWN:  return Element.HERO_DOWN;
             default:    throw new RuntimeException("Неправильное состояние героя!");
         }
-    }
-
-    public void reset() {
-        moving = false;
-        fire = false;
-        setAlive(true);
-        gun.reset();
-        prizes.clear();
-        killed = 0;
     }
 
     public void tryFire() {

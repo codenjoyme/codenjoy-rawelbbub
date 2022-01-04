@@ -31,11 +31,10 @@ import com.codenjoy.dojo.services.field.Fieldable;
 import com.codenjoy.dojo.services.settings.SettingsReader;
 
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.ICEBERG_REGENERATE_TIME;
-import static com.codenjoy.dojo.services.Direction.*;
 
 public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, State<Element, Player> {
 
-    private Element ch;
+    private Element element;
     private int timer;
     private boolean overDamage;
     private SettingsReader settings;
@@ -56,53 +55,22 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
             overDamage = true;
         }
 
-        destroyFrom(torpedo.getDirection());
+        destroyFrom(torpedo.getDirection().inverted());
     }
 
     public void destroyFrom(Direction direction) {
-        if (ch.power() == 1 || overDamage) {
-            ch = Element.ICEBERG_DESTROYED;
+        if (element.power() == 1 || overDamage) {
+            element = Element.ICEBERG_DESTROYED;
             return;
         }
-        if (direction.equals(UP)) {
-            switch (ch) {
-                case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_DOWN; break;
-                case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_DOWN_DOWN; break;
-                case ICEBERG_MEDIUM_UP: ch = Element.ICEBERG_SMALL_UP_DOWN; break;
-                case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_DOWN_LEFT; break;
-                case ICEBERG_MEDIUM_RIGHT: ch = Element.ICEBERG_SMALL_DOWN_RIGHT; break;
-            }
-        } else if (direction.equals(RIGHT)) {
-            switch (ch) {
-                case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_LEFT; break;
-                case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_LEFT_LEFT; break;
-                case ICEBERG_MEDIUM_RIGHT: ch = Element.ICEBERG_SMALL_LEFT_RIGHT; break;
-                case ICEBERG_MEDIUM_UP: ch = Element.ICEBERG_SMALL_UP_LEFT; break;
-                case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_DOWN_LEFT; break;
-            }
-        } else if (direction.equals(LEFT)) {
-            switch (ch) {
-                case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_RIGHT; break;
-                case ICEBERG_MEDIUM_RIGHT: ch = Element.ICEBERG_SMALL_RIGHT_RIGHT; break;
-                case ICEBERG_MEDIUM_UP: ch = Element.ICEBERG_SMALL_UP_RIGHT; break;
-                case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_DOWN_RIGHT; break;
-                case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_LEFT_RIGHT; break;
-            }
-        } else if (direction.equals(DOWN)) {
-            switch (ch) {
-                case ICEBERG_HUGE: ch = Element.ICEBERG_MEDIUM_UP; break;
-                case ICEBERG_MEDIUM_UP: ch = Element.ICEBERG_SMALL_UP_UP; break;
-                case ICEBERG_MEDIUM_RIGHT: ch = Element.ICEBERG_SMALL_UP_RIGHT; break;
-                case ICEBERG_MEDIUM_DOWN: ch = Element.ICEBERG_SMALL_UP_DOWN; break;
-                case ICEBERG_MEDIUM_LEFT: ch = Element.ICEBERG_SMALL_UP_LEFT; break;
-            }
-        }
+
+        element = Element.icebergsMap.get(element).get(direction);
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
         if (!destroyed()) {
-            return ch;
+            return element;
         } else  {
             return Element.WATER;
         }
@@ -120,10 +88,10 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
     }
 
     public void reset() {
-        ch = Element.ICEBERG_HUGE;
+        element = Element.ICEBERG_HUGE;
     }
 
     public boolean destroyed() {
-        return ch.power() == 0;
+        return element.power() == 0;
     }
 }

@@ -25,6 +25,7 @@ package com.codenjoy.dojo.rawelbbub.model;
 import com.codenjoy.dojo.games.rawelbbub.Element;
 import org.junit.Test;
 
+import static com.codenjoy.dojo.client.Utils.split;
 import static org.junit.Assert.assertEquals;
 
 public class ElementTest {
@@ -32,7 +33,16 @@ public class ElementTest {
     @Test
     public void icebergs() {
         assertEquals("[╬, ╩, ╦, ╠, ╣, ╨, ╥, ╞, ╡, │, ─, ┌, ┐, └, ┘,  ]",
-                Element.icebergs().toString());
+                Element.icebergs.toString());
     }
 
+    @Test
+    public void icebergsMap() {
+        assertEquals("{╬={LEFT=╠, RIGHT=╣, UP=╦, DOWN=╩}, \n" +
+                        "╠={LEFT=╞, RIGHT=│, UP=┌, DOWN=└}, \n" +
+                        "╣={LEFT=│, RIGHT=╡, UP=┐, DOWN=┘}, \n" +
+                        "╦={LEFT=┌, RIGHT=┐, UP=╥, DOWN=─}, \n" +
+                        "╩={LEFT=└, RIGHT=┘, UP=─, DOWN=╨}}",
+                split(Element.icebergsMap, "}, \n"));
+    }
 }

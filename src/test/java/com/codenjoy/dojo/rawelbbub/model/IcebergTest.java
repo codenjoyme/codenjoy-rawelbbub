@@ -35,45 +35,45 @@ public class IcebergTest {
 
     @Test
     public void shouldDestroyOnce() {
-        assertDestroyFrom('╩', UP);
-        assertDestroyFrom('╦', DOWN);
-        assertDestroyFrom('╣', LEFT);
-        assertDestroyFrom('╠', RIGHT);
+        assertDestroyFrom('╠', LEFT);
+        assertDestroyFrom('╣', RIGHT);
+        assertDestroyFrom('╦', UP);
+        assertDestroyFrom('╩', DOWN);
     }
 
     @Test
     public void shouldDestroyTwice() {
-        assertDestroyFrom('╨', UP, UP);
-        assertDestroyFrom('╥', DOWN, DOWN);
-        assertDestroyFrom('╡', LEFT, LEFT);
-        assertDestroyFrom('╞', RIGHT, RIGHT);
+        assertDestroyFrom('╞', LEFT, LEFT);
+        assertDestroyFrom('╡', RIGHT, RIGHT);
+        assertDestroyFrom('╥', UP, UP);
+        assertDestroyFrom('╨', DOWN, DOWN);
     }
 
     @Test
     public void shouldDestroyFromOneSideThreeTimes() {
-        assertDestroyFrom(' ', UP, UP, UP);
-        assertDestroyFrom(' ', DOWN, DOWN, DOWN);
         assertDestroyFrom(' ', LEFT, LEFT, LEFT);
         assertDestroyFrom(' ', RIGHT, RIGHT, RIGHT);
+        assertDestroyFrom(' ', UP, UP, UP);
+        assertDestroyFrom(' ', DOWN, DOWN, DOWN);
     }
 
     @Test
     public void shouldDestroyOnceAndFromOtherSideAnother() {
-        assertDestroyFrom('┐', DOWN, LEFT);
-        assertDestroyFrom('┌', DOWN, RIGHT);
-        assertDestroyFrom('─', DOWN, UP);
-
-        assertDestroyFrom('┘', UP, LEFT);
-        assertDestroyFrom('└', UP, RIGHT);
+        assertDestroyFrom('┌', UP, LEFT);
+        assertDestroyFrom('┐', UP, RIGHT);
         assertDestroyFrom('─', UP, DOWN);
 
-        assertDestroyFrom('└', RIGHT, UP);
-        assertDestroyFrom('│', RIGHT, LEFT);
-        assertDestroyFrom('┌', RIGHT, DOWN);
+        assertDestroyFrom('└', DOWN, LEFT);
+        assertDestroyFrom('┘', DOWN, RIGHT);
+        assertDestroyFrom('─', DOWN, UP);
 
-        assertDestroyFrom('┘', LEFT, UP);
         assertDestroyFrom('│', LEFT, RIGHT);
-        assertDestroyFrom('┐', LEFT, DOWN);
+        assertDestroyFrom('┌', LEFT, UP);
+        assertDestroyFrom('└', LEFT, DOWN);
+
+        assertDestroyFrom('│', RIGHT, LEFT);
+        assertDestroyFrom('┐', RIGHT, UP);
+        assertDestroyFrom('┘', RIGHT, DOWN);
     }
 
     @Test
@@ -103,6 +103,7 @@ public class IcebergTest {
         for (Direction direction : directions) {
             iceberg.destroyFrom(direction);
         }
-        assertEquals(expected, iceberg.state(null).ch());
+        assertEquals(String.valueOf(expected),
+                String.valueOf(iceberg.state(null).ch()));
     }
 }

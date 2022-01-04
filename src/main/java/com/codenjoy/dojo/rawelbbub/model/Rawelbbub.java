@@ -82,10 +82,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
         addAis(level.ais());
 
-        // TODO Это точно тут надо, heros пересоздадутся в строчке ниже?
-        //      а AI пересоздали выше
-        heroesAndAis().forEach(Hero::reset); 
-
         super.clearScore();
     }
 

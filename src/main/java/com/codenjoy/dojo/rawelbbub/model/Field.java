@@ -35,23 +35,23 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     boolean isBarrier(Point pt);
 
-    void affect(Torpedo torpedo);
-
     boolean isFishnet(Point pt);
 
     boolean isSeaweed(Point pt);
 
     boolean isOil(Point pt);
 
-    void add(Prize prize);
-
-    int size();
-
     boolean isBarrierFor(Hero hero, Point pt);
 
     boolean isFree(Point pt);
 
     Optional<Point> freeRandom(Player player);
+
+    void add(Prize prize);
+
+    void affect(Torpedo torpedo);
+
+    int size();
 
     Dice dice();
 

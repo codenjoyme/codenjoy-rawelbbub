@@ -134,7 +134,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
                 Torpedo torpedo = torpedoes().getFirstAt(hero);
                 if (torpedo != null) {
-                    if (torpedo.getTick() != 0) {
+                    if (!torpedo.justFired()) {
                         affect(torpedo);
                     }
                 }
@@ -296,7 +296,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         for (Torpedo torpedo2 : torpedoes().copy()) {
             if (torpedo != torpedo2
                     && torpedo.equals(torpedo2)
-                    && torpedo2.getTick() != 0)
+                    && !torpedo2.justFired())
             {
                 torpedo.boom();
                 torpedo2.boom();

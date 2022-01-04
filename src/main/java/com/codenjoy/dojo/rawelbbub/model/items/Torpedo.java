@@ -55,10 +55,6 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
         heavy = false;
     }
 
-    public int getTick() {
-        return tick;
-    }
-
     public void remove() {
         moving = false;
         if (onDestroy != null) {
@@ -90,6 +86,10 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
         return owner == null;
     }
 
+    public boolean justFired() {
+        return tick == 0;
+    }
+
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
         if (destroyed()) {
@@ -106,4 +106,5 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
     public boolean isHeavy() {
         return heavy;
     }
+
 }

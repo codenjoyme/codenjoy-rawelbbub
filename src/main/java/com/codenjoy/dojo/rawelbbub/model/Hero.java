@@ -121,7 +121,7 @@ public class Hero extends RoundPlayerHero<Field>
         checkOnFishnet();
     }
 
-    public Direction getDirection() {
+    public Direction direction() {
         return direction;
     }
 

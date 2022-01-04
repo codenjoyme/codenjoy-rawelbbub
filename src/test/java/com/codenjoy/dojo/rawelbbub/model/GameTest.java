@@ -1189,7 +1189,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertEquals(hero(0).torpedoes().iterator().next().getDirection(),
-                hero(0).getDirection());
+                hero(0).direction());
     }
 
     @Test

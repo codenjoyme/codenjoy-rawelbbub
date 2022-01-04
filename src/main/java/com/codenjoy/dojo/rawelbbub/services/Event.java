@@ -67,11 +67,8 @@ public class Event implements EventObject<Event.Type, Integer> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event events = (Event) o;
-        if (isKillOtherHero()) {
-            return Objects.equals(type, events.type) &&
-                    value == events.value;
-        }
-        return Objects.equals(type, events.type);
+        return type == events.type &&
+                value == events.value;
     }
 
     @Override

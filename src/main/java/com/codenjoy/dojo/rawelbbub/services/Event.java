@@ -25,8 +25,11 @@ package com.codenjoy.dojo.rawelbbub.services;
 
 import com.codenjoy.dojo.services.event.EventObject;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static java.util.Arrays.asList;
 
 public class Event implements EventObject<Event.Type, Integer> {
 
@@ -76,25 +79,9 @@ public class Event implements EventObject<Event.Type, Integer> {
         return Objects.hash(type);
     }
 
-    public boolean isHeroDied() {
-        return type == Type.HERO_DIED;
-    }
-
-    public boolean isCatchPrize() {
-        return type == Type.CATCH_PRIZE;
-    }
-
-    public boolean isKillOtherHero() {
-        return type == Type.KILL_OTHER_HERO;
-    }
-
-    public boolean isKillAI() {
-        return type == Type.KILL_AI;
-    }
-
     @Override
     public String toString() {
-        if (isKillOtherHero() || isCatchPrize()) {
+        if (asList(Type.KILL_OTHER_HERO, Type.CATCH_PRIZE).contains(type)) {
             return String.format("%s[%s]", type, value);
         }
         return type.name();

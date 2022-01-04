@@ -51,8 +51,8 @@ public class AIPrize extends AI {
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    public void tickHero() {
+        super.tickHero();
 
         ticks++;
         wounded = false;

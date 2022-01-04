@@ -63,14 +63,14 @@ public class AI extends Hero {
     }
 
     @Override
-    public void tick() {
+    public void tickHero() {
         if (!dontShoot) {
             shootIfReady();
         }
         if (!dontMove) {
             aIMove();
         }
-        super.tick();
+        super.tickHero();
     }
 
     @Override

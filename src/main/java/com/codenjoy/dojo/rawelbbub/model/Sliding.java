@@ -22,10 +22,10 @@ package com.codenjoy.dojo.rawelbbub.model;
  * #L%
  */
 
-import com.codenjoy.dojo.games.rawelbbub.Element;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Direction;
 
+import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_NO_SLIDING;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.OIL_SLIPPERINESS;
 
 public class Sliding {
@@ -42,7 +42,7 @@ public class Sliding {
         this.settings = settings;
     }
 
-    public Direction getPreviousDirection() {
+    public Direction previousDirection() {
         return before;
     }
 
@@ -70,7 +70,7 @@ public class Sliding {
     public boolean active(Hero hero) {
         return field.isOil(hero)
                 && slipperiness() != 0
-                && !hero.prizes().contains(Element.PRIZE_NO_SLIDING);
+                && !hero.prizes().contains(PRIZE_NO_SLIDING);
     }
 
     public void stop() {

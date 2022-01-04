@@ -45,6 +45,16 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     void add(Prize prize);
 
+    int size();
+
+    boolean isBarrierFor(Hero hero, Point pt);
+
+    boolean isFree(Point pt);
+
+    Optional<Point> freeRandom(Player player);
+
+    Dice dice();
+
     Accessor<Hero> heroes();
 
     Accessor<Prize> prizes();
@@ -61,17 +71,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Accessor<AI> ais();
 
-    int size();
-
-    boolean isBarrierFor(Hero hero, Point pt);
-
-    boolean isFree(Point pt);
-
-    Optional<Point> freeRandom(Player player);
-
     Accessor<AIPrize> prizeAis();
 
     Accessor<Torpedo> torpedoes();
-
-    Dice dice();
 }

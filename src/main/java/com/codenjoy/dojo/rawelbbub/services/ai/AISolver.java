@@ -58,7 +58,7 @@ public class AISolver implements Solver<Board> {
             @Override
             public boolean possible(Point from, Direction where) {
                 Point to = where.change(from);
-                if (board.isTorpedoAt(to.getX(), to.getY())) return false;
+                if (board.isTorpedoAt(to)) return false;
 
                 return true;
             }
@@ -66,23 +66,18 @@ public class AISolver implements Solver<Board> {
     }
 
     public DeikstraFindWay.Possible withBarriersAndTorpedoes(Board board) {
-        List<Point> barriers = board.getBarriers();
-        List<Point> torpedoes = board.getTorpedoes();
-        List<Point> fishnet = board.getFishnet();
-
         return new DeikstraFindWay.Possible() {
             @Override
             public boolean possible(Point point) {
-                if (barriers.contains(point)) return false;
-                if (fishnet.contains(point)) return false;
+                if (board.isBarrierAt(point)) return false;
+                if (board.isFishnetAt(point)) return false;
                 return true;
             }
 
             @Override
             public boolean possible(Point from, Direction where) {
                 Point to = where.change(from);
-                if (torpedoes.contains(to)) return false;
-
+                if (board.isTorpedoAt(to)) return false;
                 return true;
             }
         };
@@ -102,16 +97,8 @@ public class AISolver implements Solver<Board> {
 
     public List<Direction> getDirections(Board board) {
         int size = board.size();
-        Point from = board.getMe();
-        List<Point> to = board.get(
-                Element.AI_DOWN,
-                Element.AI_LEFT,
-                Element.AI_RIGHT,
-                Element.AI_UP,
-                Element.OTHER_HERO_DOWN,
-                Element.OTHER_HERO_LEFT,
-                Element.OTHER_HERO_RIGHT,
-                Element.OTHER_HERO_UP);
+        Point from = board.getHero();
+        List<Point> to = board.getEnemies();
 
         // TODO #768 этот подход должен быть идентичным
         // way.getPossibleWays(size, withBarriers(board));

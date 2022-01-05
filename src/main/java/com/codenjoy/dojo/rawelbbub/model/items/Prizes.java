@@ -55,22 +55,13 @@ public class Prizes implements Tickable {
         prizes().removeExact(prize);
     }
 
-    public Prize prizeAt(Point pt) {
-        return prizes().getFirstAt(pt);
-    }
-
     public void add(Prize prize, boolean onField) {
         prizes().add(prize);
         prize.start(onField);
     }
 
     public boolean affect(Torpedo torpedo) {
-        Prize prize = prizeAt(torpedo);
-        boolean killed = prize != null;
-        if (killed) {
-            prize.kill();
-        }
-        return killed;
+        return prizes().hasAt(torpedo, Prize::kill);
     }
 
     public boolean contains(Element elements) {

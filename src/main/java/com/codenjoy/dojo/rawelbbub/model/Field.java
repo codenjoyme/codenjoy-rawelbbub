@@ -47,8 +47,6 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Optional<Point> freeRandom(Player player);
 
-    void add(Prize prize);
-
     void affect(Torpedo torpedo);
 
     int size();

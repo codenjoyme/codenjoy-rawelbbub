@@ -43,8 +43,8 @@ public class Prizes implements Tickable {
 
     @Override
     public void tick() {
-        prizes().copy()
-                .forEach(Prize::tick);
+        prizes().forEach(Prize::tick);
+        removeDead();
     }
 
     private Accessor<Prize> prizes() {
@@ -59,7 +59,7 @@ public class Prizes implements Tickable {
         prizes().removeExact(prize);
     }
 
-    public void removeDead() {
+    private void removeDead() {
         prizes().removeIf(Prize::destroyed);
     }
 
@@ -67,9 +67,9 @@ public class Prizes implements Tickable {
         return prizes().getFirstAt(pt);
     }
 
-    public void add(Prize prize) {
+    public void add(Prize prize, boolean onField) {
         prizes().add(prize);
-        prize.taken(item -> prizes().removeExact(item));
+        prize.start(onField);
     }
 
     public boolean affect(Torpedo torpedo) {

@@ -24,6 +24,7 @@ package com.codenjoy.dojo.rawelbbub.model.items;
 
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.rawelbbub.model.Field;
 import com.codenjoy.dojo.rawelbbub.model.Player;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Point;
@@ -31,32 +32,21 @@ import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.State;
 import com.codenjoy.dojo.services.Tickable;
 
-import java.util.function.Consumer;
-
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.PRIZE_SPRITE_CHANGE_TICKS;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
 
 public class Prize extends PointImpl implements Tickable, State<Element, Player> {
 
     private final Element element;
-    private final int prizeOnField;
-    private final int prizeWorking;
-
     private boolean active;
-    private Consumer<Prize> onDestroy;
     private int timeout;
     private int ticks;
     private GameSettings settings;
 
-    public Prize(Point pt, int prizeOnField, int prizeWorking, Element element) {
+    public Prize(Point pt, Field field) {
         super(pt);
-        this.element = element;
-        this.prizeOnField = prizeOnField;
-        this.prizeWorking = prizeWorking;
+        this.settings = (GameSettings) field.settings();
+        this.element = settings.chance(field.dice()).any();
         active = true;
-    }
-
-    public void init(GameSettings settings) {
-        this.settings = settings;
     }
 
     @Override
@@ -68,8 +58,16 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
         return element;
     }
 
-    public int changeEveryTicks() {
+    private int changeEveryTicks() {
         return settings.integer(PRIZE_SPRITE_CHANGE_TICKS);
+    }
+
+    private int prizeWorking() {
+        return settings.integer(PRIZE_WORKING);
+    }
+
+    private int prizeOnField() {
+        return settings.integer(PRIZE_ON_FIELD);
     }
 
     @Override
@@ -77,14 +75,10 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
         if (!active) {
             return;
         }
-        if (ticks == timeout) {
-            active = false;
-
-            if (onDestroy != null) {
-                onDestroy.accept(this);
-            }
-        } else {
+        if (ticks != timeout) {
             ticks++;
+        } else {
+            kill();
         }
     }
 
@@ -100,14 +94,9 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
         return element;
     }
 
-    public void taken(Consumer<Prize> onDestroy) {
-        if (this.onDestroy == null) {
-            timeout = prizeOnField;
-        } else {
-            timeout = prizeWorking;
-        }
+    public void start(boolean onField) {
+        timeout = onField ? prizeOnField() : prizeWorking();
         ticks = 0;
-        this.onDestroy = onDestroy;
     }
 
     public int value() {

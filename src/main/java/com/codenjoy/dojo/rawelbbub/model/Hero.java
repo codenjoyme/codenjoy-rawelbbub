@@ -24,9 +24,9 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
-import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import com.codenjoy.dojo.rawelbbub.model.items.Prize;
 import com.codenjoy.dojo.rawelbbub.model.items.Prizes;
+import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
@@ -234,7 +234,7 @@ public class Hero extends RoundPlayerHero<Field>
 
     public void take(Prize prize) {
         getPlayer().event(CATCH_PRIZE.apply(prize.value()));
-        prizes.add(prize);
+        prizes.add(prize, false);
     }
 
     private void gunType() {

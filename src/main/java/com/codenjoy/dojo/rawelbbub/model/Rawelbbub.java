@@ -54,7 +54,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     private GameSettings settings;
 
     private Prizes prizes;
-    private PrizeGenerator prizeGen;
     private AiGenerator aiGen;
 
     public Rawelbbub(Dice dice, Level level, GameSettings settings) {
@@ -77,7 +76,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         level.saveTo(field);
         field.init(this);
 
-        prizeGen = new PrizeGenerator(this, dice, settings);
         aiGen = new AiGenerator(this, dice, settings);
 
         addAis(level.ais());
@@ -242,7 +240,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
     private void removeDeadItems() {
         removeDeadAi();
-        prizes.removeDead();
         removeTorpedoes();
     }
 
@@ -258,7 +255,11 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         removeDeadAnd(ais())
                 .forEach(ai -> {});
         removeDeadAnd(prizeAis())
-                .forEach(ai -> prizeGen.drop(ai));
+                .forEach(this::dropPrize);
+    }
+
+    private void dropPrize(Point pt) {
+        prizes.add(new Prize(pt, this), true);
     }
 
     private <E extends AI> Stream<E> removeDeadAnd(Accessor<E> accessor) {
@@ -332,12 +333,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     @Override
     public boolean isOil(Point pt) {
         return oil().contains(pt);
-    }
-
-    @Override
-    public void add(Prize prize) {
-        prize.init(settings);
-        prizes.add(prize);
     }
 
     private void scoresForKill(Torpedo torpedo, Hero prey) {

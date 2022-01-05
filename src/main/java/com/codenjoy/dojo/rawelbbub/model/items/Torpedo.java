@@ -40,7 +40,7 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
     private Hero owner;
     private Consumer<Torpedo> onDestroy;
     private boolean heavy;
-    private int tick; // TODO тут избыточно int
+    private boolean justFired;
 
     public Torpedo(Field field, Direction direction,
                    Point pt, Hero owner,
@@ -53,6 +53,7 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
         this.onDestroy = onDestroy;
         speed = 2;
         heavy = false;
+        justFired = true;
     }
 
     public void remove() {
@@ -64,7 +65,7 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
 
     @Override
     public void moving(Point pt) {
-        tick++;
+        justFired = false;
         if (pt.isOutOf(field.size())) {
             remove();
         } else {
@@ -87,7 +88,7 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
     }
 
     public boolean justFired() {
-        return tick == 0;
+        return justFired;
     }
 
     @Override

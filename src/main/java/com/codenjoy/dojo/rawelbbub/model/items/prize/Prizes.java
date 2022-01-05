@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.rawelbbub.model.items;
+package com.codenjoy.dojo.rawelbbub.model.items.prize;
 
 /*-
  * #%L
@@ -24,7 +24,7 @@ package com.codenjoy.dojo.rawelbbub.model.items;
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
 import com.codenjoy.dojo.rawelbbub.model.Hero;
-import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.field.Accessor;
 import com.codenjoy.dojo.services.field.PointField;

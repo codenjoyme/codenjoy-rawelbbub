@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.rawelbbub.model;
+package com.codenjoy.dojo.rawelbbub.model.items;
 
 /*-
  * #%L

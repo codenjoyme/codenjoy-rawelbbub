@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.rawelbbub.model;
+package com.codenjoy.dojo.rawelbbub.model.items.ai;
 
 /*-
  * #%L
@@ -22,8 +22,7 @@ package com.codenjoy.dojo.rawelbbub.model;
  * #L%
  */
 
-import com.codenjoy.dojo.rawelbbub.model.items.AI;
-import com.codenjoy.dojo.rawelbbub.model.items.AIPrize;
+import com.codenjoy.dojo.rawelbbub.model.Field;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;

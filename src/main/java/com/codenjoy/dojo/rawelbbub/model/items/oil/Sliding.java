@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.rawelbbub.model;
+package com.codenjoy.dojo.rawelbbub.model.items.oil;
 
 /*-
  * #%L
@@ -22,6 +22,8 @@ package com.codenjoy.dojo.rawelbbub.model;
  * #L%
  */
 
+import com.codenjoy.dojo.rawelbbub.model.Field;
+import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Direction;
 

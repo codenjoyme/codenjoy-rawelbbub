@@ -25,6 +25,8 @@ package com.codenjoy.dojo.rawelbbub.model.items;
 import com.codenjoy.dojo.games.rawelbbub.Element;
 import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.model.Player;
+import com.codenjoy.dojo.rawelbbub.model.items.ai.AI;
+import com.codenjoy.dojo.rawelbbub.model.items.prize.Prize;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.State;

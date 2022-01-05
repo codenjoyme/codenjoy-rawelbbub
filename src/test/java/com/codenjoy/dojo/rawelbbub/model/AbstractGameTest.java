@@ -23,7 +23,7 @@ package com.codenjoy.dojo.rawelbbub.model;
  */
 
 import com.codenjoy.dojo.rawelbbub.TestGameSettings;
-import com.codenjoy.dojo.rawelbbub.model.items.AI;
+import com.codenjoy.dojo.rawelbbub.model.items.ai.AI;
 import com.codenjoy.dojo.rawelbbub.services.Event;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;

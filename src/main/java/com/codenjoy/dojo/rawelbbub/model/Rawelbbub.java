@@ -24,6 +24,12 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 
 import com.codenjoy.dojo.rawelbbub.model.items.*;
+import com.codenjoy.dojo.rawelbbub.model.items.ai.AI;
+import com.codenjoy.dojo.rawelbbub.model.items.ai.AIPrize;
+import com.codenjoy.dojo.rawelbbub.model.items.ai.AiGenerator;
+import com.codenjoy.dojo.rawelbbub.model.items.oil.Oil;
+import com.codenjoy.dojo.rawelbbub.model.items.prize.Prize;
+import com.codenjoy.dojo.rawelbbub.model.items.prize.Prizes;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.BoardUtils;
 import com.codenjoy.dojo.services.Dice;
@@ -33,7 +39,6 @@ import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.round.RoundField;
-import com.codenjoy.dojo.services.round.RoundGamePlayer;
 import com.codenjoy.dojo.utils.whatsnext.WhatsNextUtils;
 
 import java.util.LinkedList;

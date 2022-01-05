@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.rawelbbub.model;
+package com.codenjoy.dojo.rawelbbub.model.items;
 
 /*-
  * #%L
@@ -24,6 +24,7 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 
 import com.codenjoy.dojo.rawelbbub.TestGameSettings;
+import com.codenjoy.dojo.rawelbbub.model.items.Gun;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import org.junit.Before;
 import org.junit.Test;

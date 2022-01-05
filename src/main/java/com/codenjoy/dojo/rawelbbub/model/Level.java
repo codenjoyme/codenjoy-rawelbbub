@@ -24,6 +24,8 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 
 import com.codenjoy.dojo.rawelbbub.model.items.*;
+import com.codenjoy.dojo.rawelbbub.model.items.ai.AI;
+import com.codenjoy.dojo.rawelbbub.model.items.oil.Oil;
 import com.codenjoy.dojo.services.field.AbstractLevel;
 import com.codenjoy.dojo.services.field.PointField;
 

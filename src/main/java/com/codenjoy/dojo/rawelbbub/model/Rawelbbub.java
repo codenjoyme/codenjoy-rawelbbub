@@ -30,6 +30,7 @@ import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.Accessor;
 import com.codenjoy.dojo.services.field.PointField;
+import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.round.RoundField;
 import com.codenjoy.dojo.services.round.RoundGamePlayer;
@@ -39,7 +40,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_BAD;
@@ -103,7 +103,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public boolean hasPlayer(RoundGamePlayer player) {
+    public boolean hasPlayer(GamePlayer player) {
         return players.contains(player);
     }
 
@@ -114,7 +114,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
     @Override
     public void tickField() {
-        aiGen.allHave(withPrize()); // TODO порефачить тут
         aiGen.dropAll();
 
         List<Hero> heroes = heroesAndAis();
@@ -343,7 +342,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
                 .collect(toList());
     }
 
-    private int withPrize() {
+    @Override
+    public int totalPrizes() {
         return prizes().size() + prizeAis().size();
     }
 

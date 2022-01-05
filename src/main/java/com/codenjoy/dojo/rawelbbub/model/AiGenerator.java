@@ -39,11 +39,8 @@ public class AiGenerator {
 
     private final Field field;
     private final Dice dice;
-
     private int capacity;
     private int spawn;
-    private int haveWithPrize;
-    private int aiPrize;
 
     private GameSettings settings;
 
@@ -52,7 +49,6 @@ public class AiGenerator {
         this.dice = dice;
         this.settings = settings;
         this.spawn = 0;
-        this.aiPrize = 0;
     }
 
     public void dropAll() {
@@ -70,11 +66,10 @@ public class AiGenerator {
     private Point findFreePosition(int y, int size) {
         Point pt = pt(0, y);
 
-        int c = 0;
+        int count = 0;
         do {
             pt.setX(dice.next(size));
-
-        } while ((field.isBarrier(pt) || field.isFishnet(pt)) && c++ < size);
+        } while ((field.isBarrier(pt) || field.isFishnet(pt)) && count++ < size);
 
         if (field.isBarrier(pt)) {
             return null;
@@ -91,7 +86,7 @@ public class AiGenerator {
             pt = freePosition();
         }
 
-        if (isPrizeAiTurn() && canDrop()) {
+        if (isPrizeAiTurn() && prizeNeeded()) {
             return new AIPrize(pt, Direction.DOWN);
         } else {
             return new AI(pt, Direction.DOWN);
@@ -99,10 +94,18 @@ public class AiGenerator {
     }
 
     private boolean isPrizeAiTurn() {
-        if (settings.integer(SPAWN_AI_PRIZE) == 0) {
+        if (spawnAiPrize() == 0) {
             return false;
         }
-        return spawn % settings.integer(SPAWN_AI_PRIZE) == 0;
+        return spawn % spawnAiPrize() == 0;
+    }
+
+    private int spawnAiPrize() {
+        return settings.integer(SPAWN_AI_PRIZE);
+    }
+
+    private int aiPrizeLimit() {
+        return settings.integer(AI_PRIZE_LIMIT);
     }
 
     public AI drop(Point pt) {
@@ -119,34 +122,7 @@ public class AiGenerator {
         }
     }
 
-    public void allHave(int haveWithPrize) {
-        this.haveWithPrize = haveWithPrize;
-    }
-
-    private int neededWithPrize() {
-        if (settings.integer(AI_PRIZE_LIMIT) == 0) {
-            aiPrize = 0;
-        }
-        int neededWithPrize = settings.integer(AI_PRIZE_LIMIT) - haveWithPrize;
-
-        if (aiPrize < neededWithPrize) {
-            aiPrize++;
-        } else {
-            aiPrize = 0;
-        }
-        return aiPrize;
-    }
-
-    private boolean canDrop() {
-        int moreWithPrize = neededWithPrize();
-
-        if(moreWithPrize == 0) {
-            return false;
-        }
-
-        if (moreWithPrize > 0) {
-            return true;
-        }
-       return false;
+    private boolean prizeNeeded() {
+        return (aiPrizeLimit() - field.totalPrizes()) > 0;
     }
 }

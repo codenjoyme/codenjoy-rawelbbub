@@ -27,6 +27,7 @@ import com.codenjoy.dojo.rawelbbub.model.items.*;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.Accessor;
+import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 import com.codenjoy.dojo.services.round.RoundGameField;
 import com.codenjoy.dojo.services.round.RoundGamePlayer;
 
@@ -54,7 +55,9 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Dice dice();
 
-    boolean hasPlayer(RoundGamePlayer player);
+    int totalPrizes();
+
+    boolean hasPlayer(GamePlayer player);
 
     Accessor<Hero> heroes();
 

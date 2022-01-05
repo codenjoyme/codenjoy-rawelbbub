@@ -127,16 +127,7 @@ public class AI extends Hero {
             return sub;
         }
 
-        switch (direction) {
-            case LEFT:  return Element.AI_LEFT;
-            case RIGHT: return Element.AI_RIGHT;
-            case UP:    return Element.AI_UP;
-            case DOWN:
-                return Element.AI_DOWN;
-            default:
-                throw new RuntimeException(
-                        "Неправильное состояние героя!");
-        }
+        return Element.ai(direction);
     }
 
     protected Element subState() {

@@ -32,7 +32,7 @@ public class ElementTest {
 
     @Test
     public void icebergs() {
-        assertEquals("[╬, ╩, ╦, ╠, ╣, ╨, ╥, ╞, ╡, │, ─, ┌, ┐, └, ┘,  ]",
+        assertEquals("[╬, ╠, ╣, ╦, ╩, ╞, ╡, ╥, ╨, │, ─, ┌, ┐, └, ┘]",
                 Element.icebergs.toString());
     }
 

@@ -88,9 +88,8 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
     public Element state(Player player, Object... alsoAtPoint) {
         if (destroyed()) {
             return Element.EXPLOSION;
-        } else {
-            return Element.TORPEDO;
         }
+        return Element.torpedo(direction);
     }
 
     public void heavy() {

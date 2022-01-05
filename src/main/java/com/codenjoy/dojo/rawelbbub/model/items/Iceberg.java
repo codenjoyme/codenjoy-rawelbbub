@@ -54,9 +54,9 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
         }
 
         if (torpedo.isHeavy()) {
-            element = Element.ICEBERG_DESTROYED;
+            element = Element.WATER;
         } else {
-            element = element.destroyFrom(torpedo.getDirection().inverted());
+            element = element.destroyFrom(torpedo.direction().inverted());
         }
         return true;
     }

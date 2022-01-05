@@ -289,5 +289,4 @@ public class Hero extends RoundPlayerHero<Field>
             killHero();
         }
     }
-
 }

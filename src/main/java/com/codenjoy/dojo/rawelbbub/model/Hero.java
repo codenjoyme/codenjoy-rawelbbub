@@ -213,8 +213,7 @@ public class Hero extends RoundPlayerHero<Field>
         if (sliding.active(this) && !sliding.lastSlipperiness()) {
             direction = sliding.previousDirection();
         }
-        Torpedo torpedo = new Torpedo(field, direction, this, this,
-                it -> field.torpedoes().removeExact(it));
+        Torpedo torpedo = new Torpedo(field, direction, this, this);
 
         if (!field.torpedoes().contains(torpedo)) {
             field.torpedoes().add(torpedo);

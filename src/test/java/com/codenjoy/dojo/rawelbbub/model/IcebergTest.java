@@ -109,6 +109,6 @@ public class IcebergTest {
     }
 
     private Torpedo torpedo(Direction direction) {
-        return new Torpedo(null, direction.inverted(), pt(0, 0), null, null);
+        return new Torpedo(null, direction.inverted(), pt(0, 0), null);
     }
 }

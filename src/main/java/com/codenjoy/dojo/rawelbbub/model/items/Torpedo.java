@@ -32,25 +32,20 @@ import com.codenjoy.dojo.services.MovingObject;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.State;
 
-import java.util.function.Consumer;
-
 public class Torpedo extends MovingObject implements State<Element, Player> {
 
     private final Field field;
     private Hero owner;
-    private Consumer<Torpedo> onDestroy;
     private boolean heavy;
     private boolean justFired;
 
     public Torpedo(Field field, Direction direction,
-                   Point pt, Hero owner,
-                   Consumer<Torpedo> onDestroy)
+                   Point pt, Hero owner)
     {
         super(pt, direction);
         this.field = field;
         this.owner = owner;
         moving = true;
-        this.onDestroy = onDestroy;
         speed = 2;
         heavy = false;
         justFired = true;
@@ -58,9 +53,7 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
 
     public void remove() {
         moving = false;
-        if (onDestroy != null) {
-            onDestroy.accept(this);
-        }
+        field.torpedoes().removeExact(this);
     }
 
     @Override

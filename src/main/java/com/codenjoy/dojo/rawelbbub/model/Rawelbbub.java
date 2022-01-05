@@ -114,7 +114,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
     @Override
     public void tickField() {
-        aiGen.allHave(withPrize());
+        aiGen.allHave(withPrize()); // TODO порефачить тут
         aiGen.dropAll();
 
         List<Hero> heroes = heroesAndAis();
@@ -224,7 +224,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     @Override
     public BoardReader<Player> reader() {
         return field.reader(
-                Reefs.class,
                 Seaweed.class,
                 Hero.class,
                 AI.class,
@@ -233,7 +232,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
                 Prize.class,
                 Iceberg.class,
                 Oil.class,
-                Fishnet.class);
+                Fishnet.class,
+                Reefs.class);
     }
 
     @Override
@@ -279,7 +279,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     @Override
     public boolean affect(Torpedo torpedo) {
         if (reefs().contains(torpedo)) {
-            torpedo.remove();
+            torpedo.boom();
             return true;
         }
 
@@ -294,6 +294,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             if (torpedo2.affect(torpedo)) {
                 torpedo.boom();
                 torpedo2.boom();
+                // return тут, а не строчкой ниже потому что может быть torpedo2 == torpedo
                 return true;
             }
         }

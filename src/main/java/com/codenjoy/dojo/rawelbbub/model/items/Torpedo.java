@@ -40,7 +40,7 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
     private Hero owner;
     private Consumer<Torpedo> onDestroy;
     private boolean heavy;
-    private int tick;
+    private int tick; // TODO тут избыточно int
 
     public Torpedo(Field field, Direction direction,
                    Point pt, Hero owner,
@@ -66,7 +66,7 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
     public void moving(Point pt) {
         tick++;
         if (pt.isOutOf(field.size())) {
-            remove(); // TODO заимплементить взрыв
+            remove();
         } else {
             move(pt);
             field.affect(this);

@@ -39,11 +39,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_BAD;
 import static com.codenjoy.dojo.rawelbbub.services.Event.*;
 import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.toList;
 
 public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
@@ -281,10 +283,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             return true;
         }
 
-        if (heroesAndAis().contains(torpedo)) {
-            int index = heroesAndAis().indexOf(torpedo);
-            Hero prey = heroesAndAis().get(index);
-
+        for (Hero prey : heroesAndAisAt(torpedo)) {
             if (prey.affect(torpedo)) {
                 torpedo.remove();
             }
@@ -335,6 +334,12 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         result.addAll(prizeAis().all());
         result.addAll(heroes().all());
         return result;
+    }
+
+    private List<Hero> heroesAndAisAt(Point pt) {
+        return heroesAndAis().stream()
+                .filter(it -> it.equals(pt))
+                .collect(toList());
     }
 
     private int withPrize() {

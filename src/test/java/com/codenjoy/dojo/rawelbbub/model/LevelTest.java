@@ -68,7 +68,7 @@ public class LevelTest {
         // when then
         assertEquals(
                 "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
-                "☼%%  ◘     ¿     ¿  %%☼\n" +
+                "☼%%  w     ¿     ¿  %%☼\n" +
                 "☼%                   %☼\n" +
                 "☼    %  ╬╬    ╬╬      ☼\n" +
                 "☼╬╬╬ %     %%    ###  ☼\n" +

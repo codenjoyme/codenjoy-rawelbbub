@@ -56,7 +56,6 @@ public class GameSettings extends SettingsImpl
         PRIZE_ON_FIELD("[Prize] The period of prize validity on the field after the appearance"),
         PRIZE_WORKING("[Prize] Working time of the prize after catch up"),
         AI_PRIZE_LIMIT("[Prize] The total number of prize AI and prizes on the board"),
-        AI_PRIZE_SPRITE_CHANGE_TICKS("[Prize] AI sprite changes every ticks"),
         PRIZE_SPRITE_CHANGE_TICKS("[Prize] Prize sprite changes every ticks"),
 
         CHANCE_IMMORTALITY("[Chance] Prize immortality"),
@@ -104,7 +103,6 @@ public class GameSettings extends SettingsImpl
         integer(PRIZE_ON_FIELD, 50);
         integer(PRIZE_WORKING, 30);
         integer(AI_PRIZE_LIMIT, 3);
-        integer(AI_PRIZE_SPRITE_CHANGE_TICKS, 4);
         integer(PRIZE_SPRITE_CHANGE_TICKS, 2);
 
         integer(CHANCE_RESERVED, 30);

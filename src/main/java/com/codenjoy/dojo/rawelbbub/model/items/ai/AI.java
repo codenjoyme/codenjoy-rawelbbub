@@ -68,7 +68,7 @@ public class AI extends Hero {
             shootIfReady();
         }
         if (!dontMove) {
-            aIMove();
+            changeDirection();
         }
         super.tickHero();
     }
@@ -88,7 +88,7 @@ public class AI extends Hero {
         }
     }
 
-    private void aIMove() {
+    private void changeDirection() {
         int count = 0;
         Point pt;
         do {
@@ -105,7 +105,6 @@ public class AI extends Hero {
             if (field.isFishnet(pt)) {
                 stuck++;
             }
-
         } while (field.isBarrier(pt) && count++ < MAX);
 
         moving = true;
@@ -121,17 +120,7 @@ public class AI extends Hero {
         if (!isAlive()) {
             return Element.EXPLOSION;
         }
-
-        Element sub = subState();
-        if (sub != null) {
-            return sub;
-        }
-
         return Element.ai(direction);
-    }
-
-    protected Element subState() {
-        return null;
     }
 
     public boolean withPrize() {

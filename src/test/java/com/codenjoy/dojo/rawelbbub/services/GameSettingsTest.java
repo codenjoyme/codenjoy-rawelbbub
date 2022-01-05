@@ -43,7 +43,6 @@ public class GameSettingsTest {
                         "PRIZE_ON_FIELD, \n" +
                         "PRIZE_WORKING, \n" +
                         "AI_PRIZE_LIMIT, \n" +
-                        "AI_PRIZE_SPRITE_CHANGE_TICKS, \n" +
                         "PRIZE_SPRITE_CHANGE_TICKS, \n" +
                         "CHANCE_IMMORTALITY, \n" +
                         "CHANCE_BREAKING_BAD, \n" +

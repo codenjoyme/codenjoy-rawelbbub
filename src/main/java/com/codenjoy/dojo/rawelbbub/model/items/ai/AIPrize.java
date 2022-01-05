@@ -24,10 +24,10 @@ package com.codenjoy.dojo.rawelbbub.model.items.ai;
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
 import com.codenjoy.dojo.rawelbbub.model.Field;
+import com.codenjoy.dojo.rawelbbub.model.Player;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.AI_PRIZE_SPRITE_CHANGE_TICKS;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.KILL_HITS_AI_PRIZE;
 
 public class AIPrize extends AI {
@@ -72,20 +72,12 @@ public class AIPrize extends AI {
         return settings().integer(KILL_HITS_AI_PRIZE);
     }
 
-    private int changeEveryTicks() {
-        return settings().integer(AI_PRIZE_SPRITE_CHANGE_TICKS);
-    }
-
     @Override
-    public Element subState() {
-        if (ticks % changeEveryTicks() == 0 && !wounded) {
-            return Element.AI_PRIZE;
-        }
-
-        if (wounded) {
+    public Element state(Player player, Object... alsoAtPoint) {
+        if (!isAlive() || wounded) {
             return Element.EXPLOSION;
         }
-        return null;
+        return Element.aiPrize(direction);
     }
 
     @Override

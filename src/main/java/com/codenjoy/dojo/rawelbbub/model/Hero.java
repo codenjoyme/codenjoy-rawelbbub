@@ -184,23 +184,9 @@ public class Hero extends RoundPlayerHero<Field>
             return Element.EXPLOSION;
         }
 
-        if (player.getHero() != this) {
-            switch (direction) {
-                case LEFT:  return Element.OTHER_HERO_LEFT;
-                case RIGHT: return Element.OTHER_HERO_RIGHT;
-                case UP:    return Element.OTHER_HERO_UP;
-                case DOWN:  return Element.OTHER_HERO_DOWN;
-                default:    throw new RuntimeException("Неправильное состояние героя!");
-            }
-        }
-
-        switch (direction) {
-            case LEFT:  return Element.HERO_LEFT;
-            case RIGHT: return Element.HERO_RIGHT;
-            case UP:    return Element.HERO_UP;
-            case DOWN:  return Element.HERO_DOWN;
-            default:    throw new RuntimeException("Неправильное состояние героя!");
-        }
+        return player.getHero() == this
+                ? Element.hero(direction)
+                : Element.otherHero(direction);
     }
 
     public void tryFire() {

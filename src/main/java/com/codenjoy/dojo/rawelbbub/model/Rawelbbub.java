@@ -285,11 +285,10 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             int index = heroesAndAis().indexOf(torpedo);
             Hero prey = heroesAndAis().get(index);
 
-            boolean affect = prey.affect(torpedo);
-            if (affect) {
+            if (prey.affect(torpedo)) {
                 torpedo.remove();
             }
-            return affect;
+            return true;
         }
 
         for (Torpedo torpedo2 : torpedoes().getAt(torpedo)) {
@@ -300,8 +299,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             }
         }
 
-        if (icebergs().contains(torpedo)) {
-            Iceberg iceberg = icebergs().getFirstAt(torpedo);
+        for (Iceberg iceberg : icebergs().getAt(torpedo)) {
             if (iceberg.affect(torpedo)) {
                 torpedo.boom();
                 return true;

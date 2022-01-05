@@ -48,12 +48,17 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
         settings = field.settings();
     }
 
-    public void destroy(Torpedo torpedo) {
+    public boolean affect(Torpedo torpedo) {
+        if (destroyed()) {
+            return false;
+        }
+
         if (torpedo.isHeavy()) {
             element = Element.ICEBERG_DESTROYED;
         } else {
             element = element.destroyFrom(torpedo.getDirection().inverted());
         }
+        return true;
     }
 
     @Override

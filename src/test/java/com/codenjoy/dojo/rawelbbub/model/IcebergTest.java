@@ -102,7 +102,7 @@ public class IcebergTest {
     private void assertDestroyFrom(char expected, Direction... directions) {
         Iceberg iceberg = new Iceberg(pt(0, 0));
         for (Direction direction : directions) {
-            iceberg.destroy(torpedo(direction));
+            iceberg.affect(torpedo(direction));
         }
         assertEquals(String.valueOf(expected),
                 String.valueOf(iceberg.state(null).ch()));

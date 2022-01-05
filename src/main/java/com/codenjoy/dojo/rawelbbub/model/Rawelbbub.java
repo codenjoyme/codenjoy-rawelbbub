@@ -305,8 +305,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
         if (icebergs().contains(torpedo)) {
             Iceberg iceberg = icebergs().getFirstAt(torpedo);
-            if (!iceberg.destroyed()) {
-                iceberg.destroy(torpedo);
+            if (iceberg.affect(torpedo)) {
                 torpedo.boom();
                 return true;
             }

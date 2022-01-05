@@ -44,11 +44,7 @@ public class Prizes implements Tickable {
     @Override
     public void tick() {
         prizes().forEach(Prize::tick);
-        removeDead();
-    }
-
-    private Accessor<Prize> prizes() {
-        return field.of(Prize.class);
+        prizes().removeIf(Prize::destroyed);
     }
 
     public void takeBy(Hero hero) {
@@ -57,10 +53,6 @@ public class Prizes implements Tickable {
 
         hero.take(prize);
         prizes().removeExact(prize);
-    }
-
-    private void removeDead() {
-        prizes().removeIf(Prize::destroyed);
     }
 
     public Prize prizeAt(Point pt) {
@@ -74,11 +66,11 @@ public class Prizes implements Tickable {
 
     public boolean affect(Torpedo torpedo) {
         Prize prize = prizeAt(torpedo);
-        if (prize != null) {
+        boolean killed = prize != null;
+        if (killed) {
             prize.kill();
-            return true;
         }
-        return false;
+        return killed;
     }
 
     public boolean contains(Element elements) {
@@ -100,5 +92,9 @@ public class Prizes implements Tickable {
                 .map(Objects::toString)
                 .collect(toList())
                 .toString();
+    }
+
+    private Accessor<Prize> prizes() {
+        return field.of(Prize.class);
     }
 }

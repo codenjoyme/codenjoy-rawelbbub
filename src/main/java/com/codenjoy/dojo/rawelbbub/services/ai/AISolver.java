@@ -43,12 +43,10 @@ public class AISolver implements Solver<Board> {
     }
 
     public DeikstraFindWay.Possible withBarriers(Board board) {
-        List<Point> barriers = board.getBarriers();
-
         return new DeikstraFindWay.Possible() {
             @Override
             public boolean possible(Point point) {
-                return !barriers.contains(point);
+                return !board.isBarrierAt(point);
             }
         };
     }

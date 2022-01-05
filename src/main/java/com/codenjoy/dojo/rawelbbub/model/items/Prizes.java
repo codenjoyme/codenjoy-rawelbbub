@@ -60,7 +60,7 @@ public class Prizes implements Tickable {
     }
 
     public void removeDead() {
-        prizes().removeIf(Prize::isDestroyed);
+        prizes().removeIf(Prize::destroyed);
     }
 
     public Prize prizeAt(Point pt) {

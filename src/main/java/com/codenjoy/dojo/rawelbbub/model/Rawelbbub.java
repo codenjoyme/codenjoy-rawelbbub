@@ -223,8 +223,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
                 Hero.class,
                 AI.class,
                 AIPrize.class,
-                Prize.class,
                 Torpedo.class,
+                Prize.class,
                 Iceberg.class,
                 Oil.class,
                 Fishnet.class);
@@ -314,7 +314,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         }
 
         if (prizes.affect(torpedo)) {
-            torpedo.remove();
+            torpedo.boom();
             return;
         }
     }

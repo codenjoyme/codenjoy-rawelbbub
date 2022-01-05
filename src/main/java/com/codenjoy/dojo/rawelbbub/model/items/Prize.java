@@ -41,7 +41,6 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
     private final int prizeOnField;
     private final int prizeWorking;
 
-    private boolean destroyed;
     private boolean active;
     private Consumer<Prize> onDestroy;
     private int timeout;
@@ -53,7 +52,6 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
         this.element = element;
         this.prizeOnField = prizeOnField;
         this.prizeWorking = prizeWorking;
-        destroyed = false;
         active = true;
     }
 
@@ -63,10 +61,6 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        if (destroyed) {
-            return Element.EXPLOSION;
-        }
-
         if (ticks % changeEveryTicks() == 0) {
             return Element.PRIZE;
         }
@@ -80,7 +74,7 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
 
     @Override
     public void tick() {
-        if (destroyed || !active) {
+        if (!active) {
             return;
         }
         if (ticks == timeout) {
@@ -94,12 +88,12 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
         }
     }
 
-    public boolean isDestroyed() {
-        return destroyed;
+    public boolean destroyed() {
+        return !active;
     }
 
     public void kill() {
-        destroyed = true;
+        active = false;
     }
 
     public Element element() {

@@ -9141,7 +9141,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // герой берет приз в водоросзяъ - когда его видно в водорослях
+    // герой берет приз в водорослях - когда героя видно в водорослях
     @Test
     public void shouldHeroTookPrize_underSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
@@ -9149,34 +9149,8 @@ public class GameTest extends AbstractGameTest {
                 .integer(PRIZE_ON_FIELD, 3)
                 .bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
-        givenFl("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
-                "☼¿    ☼\n" +
-                "☼%%   ☼\n" +
-                "☼     ☼\n" +
-                "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+        givenPrizeUnderSeaweed();
 
-        // when
-        ai(0).down();
-        hero(0).up();
-        tick();
-
-        // then
-        assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼%%   ☼\n" +
-                "☼▲    ☼\n" +
-                "☼     ☼\n" +
-                "☼☼☼☼☼☼☼\n");
-
-        // when
-        ai(0).kill(mock(Torpedo.class));
-        dice(DICE_IMMORTALITY);
-        tick();
-
-        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -9184,8 +9158,6 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
-
-        verifyAllEvents("");
 
         // when
         hero(0).up();
@@ -9218,13 +9190,51 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // герой берет приз в водорослях - когда его не видно в водорослях
+    // герой подстреливает приз в водорослях - когда самого героя видно в водорослях
     @Test
-    public void shouldHeroTookPrize_underSeaweed() {
+    public void shouldHeroDestroyPrize_underSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
         settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+                .integer(PRIZE_ON_FIELD, 3)
+                .bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
+        givenPrizeUnderSeaweed();
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼1%   ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero().fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ%   ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼%%   ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    private void givenPrizeUnderSeaweed() {
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼¿    ☼\n" +
@@ -9262,6 +9272,25 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         verifyAllEvents("");
+    }
+
+    // герой берет приз в водорослях - когда героя не видно в водорослях
+    @Test
+    public void shouldHeroTookPrize_underSeaweed_caseDontShowMyHeroUnderSeaweed() {
+        // given
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
+                .integer(PRIZE_ON_FIELD, 3)
+                .bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
+
+        givenPrizeUnderSeaweed();
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼1%   ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
         // when
         hero(0).up();
@@ -9290,6 +9319,50 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼%%   ☼\n" +
                 "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    // герой подстреливает приз в водорослях - когда самого героя не видно в водорослях
+    @Test
+    public void shouldHeroDestroyPrize_underSeaweed_caseDontShowMyHeroUnderSeaweed() {
+        // given
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
+                .integer(PRIZE_ON_FIELD, 3)
+                .bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
+
+        givenPrizeUnderSeaweed();
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼1%   ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero().fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ%   ☼\n" +
+                "☼▲    ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼%%   ☼\n" +
+                "☼▲    ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
@@ -13537,6 +13610,130 @@ public class GameTest extends AbstractGameTest {
                 "☼  •  ☼\n" +
                 "☼  •  ☼\n" +
                 "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    // призы можно взрывать, после чего они пропадают и ничего не дают герою
+    // наехавшему на место взрыва
+    @Test
+    public void theBlownUpPrizeGivesNoAdvantage() {
+        // given
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
+                .integer(PRIZE_ON_FIELD, 5)
+                .integer(PRIZE_WORKING, 3)
+                .integer(HERO_TICKS_PER_SHOOT, 3);
+
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼╬╬╬  ☼\n" +
+                "☼     ☼\n" +
+                "☼¿    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).kill(mock(Torpedo.class));
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬╬╬  ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        dice(DICE_BREAKING_BAD);
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬╬╬  ☼\n" +
+                "☼     ☼\n" +
+                "☼2    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        verifyAllEvents("");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬╬╬  ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        verifyAllEvents("");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬╬╬  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        verifyAllEvents("");
+
+        // when
+        hero(0).up();
+        hero(1).up();
+        tick();
+
+        hero(0).up();
+        hero(1).up();
+        tick();
+
+        // then
+        assertPrize(hero(0), "[]");
+
+        verifyAllEvents("");
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬╬╬  ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        hero(1).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ╬Ѡ  ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        // герои стреляют обычными
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╩╬╩  ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");

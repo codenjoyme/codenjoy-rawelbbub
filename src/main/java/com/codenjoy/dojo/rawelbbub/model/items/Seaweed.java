@@ -42,6 +42,11 @@ public class Seaweed extends PointImpl implements State<Element, Player> {
     public Element state(Player player, Object... alsoAtPoint) {
         Hero observer = player.getHero();
 
+        Torpedo torpedo = filterOne(alsoAtPoint, Torpedo.class);
+        if (torpedo != null && torpedo.destroyed()) {
+            return torpedo.state(player, alsoAtPoint);
+        }
+
         Prize prize = filterOne(alsoAtPoint, Prize.class);
         if (prize != null) {
             return prize.state(player, alsoAtPoint);
@@ -54,7 +59,6 @@ public class Seaweed extends PointImpl implements State<Element, Player> {
 
         if (observer.prizes().contains(Element.PRIZE_VISIBILITY)) {
             AI ai = filterOne(alsoAtPoint, AI.class);
-            Torpedo torpedo = filterOne(alsoAtPoint, Torpedo.class);
             if (hero != null || ai != null || torpedo != null) {
                 return null;
             }

@@ -301,8 +301,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         for (Iceberg iceberg : icebergs().getAt(torpedo)) {
             if (iceberg.affect(torpedo)) {
                 torpedo.boom();
-                return true;
             }
+            return true;
         }
 
         if (prizes.affect(torpedo)) {

@@ -40,8 +40,7 @@ import com.codenjoy.dojo.services.round.Timer;
 
 import java.util.List;
 
-import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_BAD;
-import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_WALKING_ON_FISHNET;
+import static com.codenjoy.dojo.games.rawelbbub.Element.*;
 import static com.codenjoy.dojo.rawelbbub.services.Event.*;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.HERO_TICKS_PER_SHOOT;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.PENALTY_WALKING_ON_FISHNET;
@@ -167,12 +166,6 @@ public class Hero extends RoundPlayerHero<Field>
         return settings().integer(HERO_TICKS_PER_SHOOT);
     }
 
-    public void kill(Torpedo torpedo) {
-        if (isAlive()) {
-            die();
-        }
-    }
-
     public void checkOnFishnet() {
         if (field.isFishnet(this) && !prizes.contains(PRIZE_WALKING_ON_FISHNET)) {
             if (onFishnet == null || onFishnet.done()) {
@@ -277,4 +270,37 @@ public class Hero extends RoundPlayerHero<Field>
     public int killed() {
         return killed;
     }
+
+    public boolean affect(Torpedo torpedo) {
+        Hero hunter = torpedo.owner();
+        if (this == hunter) {
+            return false;
+        }
+
+        if (!prizes().contains(PRIZE_IMMORTALITY)) {
+            // если у героя (или ai) нет приза бессмертия, то ему суждено на покой
+            die();
+        }
+
+        if (isAlive()) {
+            // нас таки подстрелили, но мы живы
+            return true;
+        }
+
+        // если мы не живы больше, то охотнику положен приз
+        if (field.hasPlayer(hunter.getPlayer())) {
+            hunter.kill(this);
+        }
+
+        return true;
+    }
+
+    public void kill(Hero prey) {
+        if (prey.isAI()) {
+            event(KILL_AI);
+        } else {
+            killHero();
+        }
+    }
+
 }

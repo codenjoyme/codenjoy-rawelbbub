@@ -32,6 +32,7 @@ import com.codenjoy.dojo.services.field.Accessor;
 import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.round.RoundField;
+import com.codenjoy.dojo.services.round.RoundGamePlayer;
 import com.codenjoy.dojo.utils.whatsnext.WhatsNextUtils;
 
 import java.util.LinkedList;
@@ -41,7 +42,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_BAD;
-import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_IMMORTALITY;
 import static com.codenjoy.dojo.rawelbbub.services.Event.*;
 import static java.util.function.Predicate.not;
 
@@ -101,6 +101,11 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
+    public boolean hasPlayer(RoundGamePlayer player) {
+        return players.contains(player);
+    }
+
+    @Override
     public void cleanStuff() {
         removeDeadItems();
     }
@@ -132,7 +137,9 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
                 torpedoes().hasAt(hero, torpedo -> {
                     if (!torpedo.justFired()) {
-                        affect(torpedo);
+                        if (hero.affect(torpedo)) {
+                            torpedo.remove();
+                        }
                     }
                 });
             }
@@ -268,29 +275,21 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public void affect(Torpedo torpedo) {
+    public boolean affect(Torpedo torpedo) {
         if (reefs().contains(torpedo)) {
             torpedo.remove();
-            return;
+            return true;
         }
 
         if (heroesAndAis().contains(torpedo)) {
             int index = heroesAndAis().indexOf(torpedo);
             Hero prey = heroesAndAis().get(index);
-            if (prey == torpedo.owner()) {
-                return;
-            }
 
-            if (!prey.prizes().contains(PRIZE_IMMORTALITY)) {
-                prey.kill(torpedo);
+            boolean affect = prey.affect(torpedo);
+            if (affect) {
+                torpedo.remove();
             }
-
-            if (!prey.isAlive()) {
-                scoresForKill(torpedo, prey);
-            }
-
-            torpedo.remove();  // TODO заимплементить взрыв
-            return;
+            return affect;
         }
 
         for (Torpedo torpedo2 : torpedoes().copy()) {
@@ -300,7 +299,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             {
                 torpedo.boom();
                 torpedo2.boom();
-                return;
+                return true;
             }
         }
 
@@ -309,14 +308,16 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             if (!iceberg.destroyed()) {
                 iceberg.destroy(torpedo);
                 torpedo.boom();
-                return;
+                return true;
             }
         }
 
         if (prizes.affect(torpedo)) {
             torpedo.boom();
-            return;
+            return true;
         }
+
+        return false;
     }
 
     @Override
@@ -332,19 +333,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     @Override
     public boolean isOil(Point pt) {
         return oil().contains(pt);
-    }
-
-    private void scoresForKill(Torpedo torpedo, Hero prey) {
-        Player hunter = (Player) torpedo.owner().getPlayer();
-        if (!players.contains(hunter)) {
-            return;
-        }
-
-        if (prey.isAI()) {
-            hunter.event(KILL_AI);
-        } else {
-            hunter.getHero().killHero();
-        }
     }
 
     public List<Hero> heroesAndAis() {

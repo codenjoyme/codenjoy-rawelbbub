@@ -28,6 +28,7 @@ import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.Accessor;
 import com.codenjoy.dojo.services.round.RoundGameField;
+import com.codenjoy.dojo.services.round.RoundGamePlayer;
 
 import java.util.Optional;
 
@@ -47,11 +48,13 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Optional<Point> freeRandom(Player player);
 
-    void affect(Torpedo torpedo);
+    boolean affect(Torpedo torpedo);
 
     int size();
 
     Dice dice();
+
+    boolean hasPlayer(RoundGamePlayer player);
 
     Accessor<Hero> heroes();
 

@@ -570,7 +570,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -682,7 +682,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
@@ -905,7 +905,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -8468,7 +8468,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8528,7 +8528,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8588,7 +8588,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8628,7 +8628,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
         tick();
 
         // then
@@ -8681,7 +8681,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8757,7 +8757,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
         tick();
 
         // then
@@ -8857,7 +8857,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -8944,7 +8944,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9007,7 +9007,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9080,7 +9080,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9258,7 +9258,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
         dice(DICE_IMMORTALITY);
         tick();
 
@@ -9396,7 +9396,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
         dice(DICE_IMMORTALITY);
         tick();
 
@@ -9474,7 +9474,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
 
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
         dice(DICE_IMMORTALITY);
         tick();
 
@@ -9549,7 +9549,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
         dice(DICE_IMMORTALITY);
         tick();
 
@@ -9613,7 +9613,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
         ai(1).dontShoot = true;
         ai(1).up();
 
@@ -9682,7 +9682,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9749,7 +9749,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼☼\n" +
@@ -9897,7 +9897,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -9966,7 +9966,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10153,7 +10153,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10388,7 +10388,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10504,7 +10504,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10735,7 +10735,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10845,7 +10845,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -10992,7 +10992,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -11081,7 +11081,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -11214,7 +11214,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -11315,7 +11315,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
         ai(1).dontShoot = true;
 
         // then
@@ -11859,7 +11859,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -11956,7 +11956,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -12048,7 +12048,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -12160,7 +12160,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -12517,7 +12517,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -13219,7 +13219,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -13464,7 +13464,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(1).kill(mock(Torpedo.class));
+        ai(1).die();
         ai(0).left();
 
         // then
@@ -13634,7 +13634,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).kill(mock(Torpedo.class));
+        ai(0).die();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +

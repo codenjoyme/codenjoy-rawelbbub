@@ -292,11 +292,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
             return affect;
         }
 
-        for (Torpedo torpedo2 : torpedoes().copy()) {
-            if (torpedo != torpedo2
-                    && torpedo.equals(torpedo2)
-                    && !torpedo2.justFired())
-            {
+        for (Torpedo torpedo2 : torpedoes().getAt(torpedo)) {
+            if (torpedo2.affect(torpedo)) {
                 torpedo.boom();
                 torpedo2.boom();
                 return true;

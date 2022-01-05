@@ -107,4 +107,9 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
         return heavy;
     }
 
+    public boolean affect(Torpedo torpedo) {
+        return torpedo != this
+                && torpedo.equals(this)
+                && !this.justFired();
+    }
 }

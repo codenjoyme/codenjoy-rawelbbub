@@ -25,34 +25,34 @@ package com.codenjoy.dojo.rawelbbub.model.items.ai;
 import com.codenjoy.dojo.rawelbbub.model.Field;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.dice.DiceRandomWrapper;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.AI_PRIZE_LIMIT;
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.SPAWN_AI_PRIZE;
-import static com.codenjoy.dojo.services.PointImpl.pt;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
+import static com.codenjoy.dojo.services.Direction.DOWN;
 
 public class AiGenerator {
 
+    public static final int NO_MORE_AIS = -1;
     private final Field field;
     private final Dice dice;
-    private int capacity;
-    private int spawn;
-
     private GameSettings settings;
+    private int spawnIteration;
+    private List<Point> spawn;
 
     public AiGenerator(Field field, Dice dice, GameSettings settings) {
         this.field = field;
         this.dice = dice;
         this.settings = settings;
-        this.spawn = 0;
     }
 
     public void dropAll() {
         int actual = field.ais().size() + field.prizeAis().size();
-        int needed = capacity - actual;
+        int needed = capacity() - actual;
 
         for (int count = 0; count < needed; count++) {
             Point pt = freePosition();
@@ -62,33 +62,35 @@ public class AiGenerator {
         }
     }
 
-    private Point findFreePosition(int y, int size) {
-        Point pt = pt(0, y);
-
-        int count = 0;
+    private Point freePosition() {
+        List<Point> places = new LinkedList<>(spawn);
+        Point pt;
         do {
-            pt.setX(dice.next(size));
-        } while ((field.isBarrier(pt) || field.isFishnet(pt)) && count++ < size);
+            int index = dice.next(places.size());
+            if (index == NO_MORE_AIS || index >= places.size()) return null; // для тестов только
+            pt = places.remove(index);
+        } while (isBusy(pt) && !places.isEmpty());
 
-        if (field.isBarrier(pt)) {
+        if (isBusy(pt)) {
             return null;
         }
         return pt;
     }
 
-    private Point freePosition() {
-        return findFreePosition(field.size() - 2, field.size());
+    private boolean isBusy(Point pt) {
+        return field.isBarrier(pt)
+                || field.isFishnet(pt);
     }
 
     private AI create(Point pt) {
-        if (field.isFishnet(pt)) {
+        if (isBusy(pt)) {
             pt = freePosition();
         }
 
         if (isPrizeAiTurn() && prizeNeeded()) {
-            return new AIPrize(pt, Direction.DOWN);
+            return new AIPrize(pt, DOWN);
         } else {
-            return new AI(pt, Direction.DOWN);
+            return new AI(pt, DOWN);
         }
     }
 
@@ -96,7 +98,7 @@ public class AiGenerator {
         if (spawnAiPrize() == 0) {
             return false;
         }
-        return spawn % spawnAiPrize() == 0;
+        return spawnIteration % spawnAiPrize() == 0;
     }
 
     private int spawnAiPrize() {
@@ -107,21 +109,23 @@ public class AiGenerator {
         return settings.integer(AI_PRIZE_LIMIT);
     }
 
+    private int capacity() {
+        return settings.integer(COUNT_AIS);
+    }
+
     public AI drop(Point pt) {
         AI result = create(pt);
         result.init(field);
-        spawn++;
+        spawnIteration++;
         return result;
-    }
-
-    public void dropAll(List<? extends Point> points) {
-        capacity = points.size();
-        for (Point pt : points) {
-            drop(pt);
-        }
     }
 
     private boolean prizeNeeded() {
         return (aiPrizeLimit() - field.totalPrizes()) > 0;
+    }
+
+    public void spawnOn(List<Point> spawn) {
+        Collections.shuffle(spawn, new DiceRandomWrapper(dice));
+        this.spawn = spawn;
     }
 }

@@ -26,14 +26,17 @@ package com.codenjoy.dojo.rawelbbub.model;
 import com.codenjoy.dojo.rawelbbub.model.items.*;
 import com.codenjoy.dojo.rawelbbub.model.items.ai.AI;
 import com.codenjoy.dojo.rawelbbub.model.items.oil.Oil;
+import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.AbstractLevel;
 import com.codenjoy.dojo.services.field.PointField;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.*;
 import static com.codenjoy.dojo.services.Direction.*;
+import static java.util.function.Function.identity;
 
 public class Level extends AbstractLevel {
 
@@ -57,13 +60,8 @@ public class Level extends AbstractLevel {
         return find(Seaweed::new, SEAWEED);
     }
 
-    public List<Hero> ais() {
-        return new LinkedList<>(){{
-            addAll(find((pt, el) -> new AI(pt, DOWN), AI_DOWN));
-            addAll(find((pt, el) -> new AI(pt, UP), AI_UP));
-            addAll(find((pt, el) -> new AI(pt, LEFT), AI_LEFT));
-            addAll(find((pt, el) -> new AI(pt, RIGHT), AI_RIGHT));
-        }};
+    public List<Point> aisSpawn() {
+        return find(identity(), AI_LEFT, AI_RIGHT, AI_UP, AI_DOWN);
     }
 
     public List<Hero> heroes() {

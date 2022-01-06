@@ -35,6 +35,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.COUNT_AIS;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.SHOW_MY_HERO_UNDER_SEAWEED;
 
 public class SmokeTest {
@@ -65,9 +66,10 @@ public class SmokeTest {
                         int level = LevelProgress.levelsStartsFrom1;
                         return new TestGameSettings()
                                 .clearLevelMaps(level)
+                                .integer(COUNT_AIS, 4)
                                 .setLevelMap(level,
                                         "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
-                                        "☼¿ ¿ ¿   ¿ ¿ ¿☼\n" +
+                                        "☼¿ ¿ ¿ ¿ ¿ ¿ ¿☼\n" +
                                         "☼ ╬ ╬%╬ ╬%╬ ╬ ☼\n" +
                                         "☼ ╬~╬%╬☼╬%╬~╬ ☼\n" +
                                         "☼#╬~╬%╬ ╬%╬~╬#☼\n" +

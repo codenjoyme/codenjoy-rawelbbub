@@ -41,6 +41,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.codenjoy.dojo.client.Utils.split;
+import static com.codenjoy.dojo.rawelbbub.model.items.ai.AiGenerator.NO_MORE_AIS;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.COUNT_AIS;
 
 public class AbstractGameTest
         extends AbstractBaseGameTest<Player, Rawelbbub, GameSettings, Level, Hero> {
@@ -58,6 +60,16 @@ public class AbstractGameTest
     @Override
     protected void afterCreateField() {
         stopAllAis();
+    }
+
+    @Override
+    protected void beforeCreateField() {
+        int spawn = level().aisSpawn().size();
+        if (settings().integer(COUNT_AIS) > spawn) {
+            settings().integer(COUNT_AIS, spawn);
+        } else {
+            // спавн мест больше чем будет AI, все ок
+        }
     }
 
     @Override
@@ -93,6 +105,7 @@ public class AbstractGameTest
     }
 
     public AI dropAI(Point pt) {
+        settings().integer(COUNT_AIS, settings().integer(COUNT_AIS) + 1);
         AI result = field().getAiGenerator().drop(pt);
         result.stop();
         return result;
@@ -105,7 +118,7 @@ public class AbstractGameTest
                         field().heroesAndAis().size()));
     }
 
-    protected AI ai(int index) {
+    public AI ai(int index) {
         LinkedList<AI> all = new LinkedList<>() {{
             addAll(field().ais().copy());
             addAll(field().prizeAis().copy());
@@ -114,7 +127,20 @@ public class AbstractGameTest
         return all.get(index);
     }
 
-    protected void assertIcebergs(String expected) {
+    public void assertIcebergs(String expected) {
         assertEquals(expected, split(field().icebergs(), "], \nIceberg"));
+    }
+
+    public void willPrize(int diceValue) {
+        willPrize(diceValue,  // вероятность приза
+                NO_MORE_AIS); // больше AI генерить не будем
+    }
+
+    public void willPrize(int diceValue, int newAiSpawnIndex) {
+        dice(diceValue, newAiSpawnIndex);
+    }
+
+    public void noMoreAi() {
+        dice(NO_MORE_AIS); // больше AI генерить не будем
     }
 }

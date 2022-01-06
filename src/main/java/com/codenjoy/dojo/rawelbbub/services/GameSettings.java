@@ -47,9 +47,10 @@ public class GameSettings extends SettingsImpl
         HERO_TICKS_PER_SHOOT("[Game] Ticks until the next hero shoot"),
         OIL_SLIPPERINESS("[Game] The amount of leaked oil. The more - the more naughty the submarine."),
         PENALTY_WALKING_ON_FISHNET("[Game] Penalty time when walking on fishnet"),
-        SHOW_MY_HERO_UNDER_SEAWEED("[Game] Show my tank under tree"),
+        SHOW_MY_HERO_UNDER_SEAWEED("[Game] Show my tank under seaweed"),
         ICEBERG_REGENERATE_TIME("[Game] Iceberg regenerate time"),
         TICKS_STUCK_BY_FISHNET("[Game] Ticks AI gets stuck by fishnet"),
+        COUNT_AIS("[Game] Count AIs on the board"),
 
         SPAWN_AI_PRIZE("[Prize] Count spawn for AI with prize"),
         KILL_HITS_AI_PRIZE("[Prize] Hits to kill AI with prize"),
@@ -97,6 +98,7 @@ public class GameSettings extends SettingsImpl
         bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
         integer(ICEBERG_REGENERATE_TIME, 30);
         integer(TICKS_STUCK_BY_FISHNET, 5);
+        integer(COUNT_AIS, 3);
 
         integer(SPAWN_AI_PRIZE, 4);
         integer(KILL_HITS_AI_PRIZE, 3);

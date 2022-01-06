@@ -30,7 +30,7 @@ public class Levels {
         int level = LevelProgress.levelsStartsFrom1;
         settings.setLevelMaps(level,
                 "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
-                "☼%%  ¿     ¿     ¿  %%☼\n" +
+                "☼%%¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿%%☼\n" +
                 "☼%                   %☼\n" +
                 "☼    %  ╬╬    ╬╬      ☼\n" +
                 "☼╬╬╬ %     %%    ###  ☼\n" +

@@ -582,7 +582,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_NO_SLIDING);
+        willPrize(DICE_NO_SLIDING);
         tick();
         verifyAllEvents("");
 
@@ -681,6 +681,7 @@ public class GameTest extends AbstractGameTest {
         // when
         ai(0).die();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼    #    ☼\n" +
                 "☼    #    ☼\n" +
@@ -694,7 +695,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_NO_SLIDING);
+        willPrize(DICE_NO_SLIDING);
         tick();
         verifyAllEvents("");
 
@@ -918,7 +919,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_NO_SLIDING);
+        willPrize(DICE_NO_SLIDING);
         tick();
 
         // then
@@ -4958,11 +4959,14 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldNewAIWhenKillOther() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1);
+        settings().integer(KILL_HITS_AI_PRIZE, 1)
+                .integer(COUNT_AIS, 2);
 
+        dice(2,    // соль для shuffle spawn позиций
+            1, 1); // индексы свободных spawn мест для генерации новых ai
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿¿   ☼\n" +
-                "☼     ☼\n" +
+                "☼    ¿☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -4996,29 +5000,29 @@ public class GameTest extends AbstractGameTest {
         verifyAllEvents("[KILL_AI]");
 
         // when
+        willPrize(DICE_IMMORTALITY, 0);
         tick();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼1¿   ☼\n" +
                 "☼     ☼\n" +
-                "☼     ☼\n" +
-                "☼     ☼\n" +
+                "☼    ¿☼\n" +
+                "☼    ×☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(5, 5);
         tick();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼!¿   ☼\n" +
-                "☼    ¿☼\n" +
-                "☼    ×☼\n" +
                 "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼    ¿☼\n" +
                 "☼▲    ☼\n" +
-                "☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼Ѡ☼\n");
     }
 
     @Test
@@ -8085,7 +8089,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
         // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼ w  ¿ ¿☼\n" +
+                "☼ ¿  ¿ w☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
@@ -8105,7 +8109,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldSpawnTwoAiPrizeWhenSixAi() {
         // given
-        settings().integer(SPAWN_AI_PRIZE, 3);
+        settings().integer(SPAWN_AI_PRIZE, 3)
+                .integer(COUNT_AIS, 6);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿¿¿☼\n" +
@@ -8118,7 +8123,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼ w¿¿w¿¿☼\n" +
+                "☼ ¿¿¿¿ww☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
@@ -8385,6 +8390,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -8489,6 +8495,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -8549,6 +8556,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -8609,6 +8617,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -8638,6 +8647,7 @@ public class GameTest extends AbstractGameTest {
 
         // when
         ai(0).die();
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -8702,6 +8712,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -8767,6 +8778,7 @@ public class GameTest extends AbstractGameTest {
 
         // when
         ai(0).die();
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -8878,6 +8890,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -8965,6 +8978,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -9028,7 +9042,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         hero(0).up();
         tick();
 
@@ -9101,7 +9115,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         hero(1).up();
         tick();
 
@@ -9268,7 +9282,7 @@ public class GameTest extends AbstractGameTest {
 
         // when
         ai(0).die();
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -9406,7 +9420,7 @@ public class GameTest extends AbstractGameTest {
 
         // when
         ai(0).die();
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -9484,7 +9498,7 @@ public class GameTest extends AbstractGameTest {
 
 
         ai(0).die();
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -9559,7 +9573,7 @@ public class GameTest extends AbstractGameTest {
 
         // when
         ai(0).die();
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -9635,7 +9649,7 @@ public class GameTest extends AbstractGameTest {
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -9705,7 +9719,7 @@ public class GameTest extends AbstractGameTest {
         verifyAllEvents("");
 
         // when
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         hero(0).up();
         tick();
 
@@ -9773,8 +9787,7 @@ public class GameTest extends AbstractGameTest {
         verifyAllEvents("");
 
         // when
-        dice(DICE_IMMORTALITY,
-                6, 6); // новый AI генерим так, чтобы не мешался
+        willPrize(DICE_IMMORTALITY);
         hero(0).up();
         hero(1).fire();
         tick();
@@ -9782,8 +9795,8 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
-                "☼     ¿☼\n" +
-                "☼     ×☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
                 "☼1 • ˂ ☼\n" +
                 "☼▲     ☼\n" +
                 "☼      ☼\n" +
@@ -9800,9 +9813,9 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
-                "☼     ¿☼\n" +
+                "☼      ☼\n" +
                 "☼Ѡ  ˂  ☼\n" +
-                "☼     ×☼\n" +
+                "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
 
@@ -9810,7 +9823,7 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [HERO_DIED]\n" +
-                        "listener(1) => [KILL_OTHER_HERO[1]]\n");
+                "listener(1) => [KILL_OTHER_HERO[1]]\n");
 
         // when
         newGameFor(player(0), 5, 1);
@@ -9819,9 +9832,9 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
-                "☼     ¿☼\n" +
+                "☼      ☼\n" +
                 "☼!  ˂  ☼\n" +
-                "☼     ×☼\n" +
+                "☼      ☼\n" +
                 "☼    ▲ ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
 
@@ -9834,10 +9847,10 @@ public class GameTest extends AbstractGameTest {
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
-                "☼1 ˂  ¿☼\n" +
+                "☼1 ˂   ☼\n" +
                 "☼      ☼\n" +
                 "☼    ▲ ☼\n" +
-                "☼☼☼☼☼☼Ѡ☼\n");
+                "☼☼☼☼☼☼☼☼\n");
 
         // when
         hero(1).left();
@@ -9849,7 +9862,7 @@ public class GameTest extends AbstractGameTest {
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼!˂    ☼\n" +
-                "☼     ¿☼\n" +
+                "☼      ☼\n" +
                 "☼    ▲ ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
 
@@ -9866,7 +9879,7 @@ public class GameTest extends AbstractGameTest {
                 "☼      ☼\n" +
                 "☼˂     ☼\n" +
                 "☼      ☼\n" +
-                "☼    ▲¿☼\n" +
+                "☼    ▲ ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(1), "[PRIZE_IMMORTALITY(0/10)]");
@@ -9885,7 +9898,7 @@ public class GameTest extends AbstractGameTest {
                 "☼˄     ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
-                "☼    ▲»☼\n" +
+                "☼    ▲ ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
 
         assertPrize(hero(1), "[PRIZE_IMMORTALITY(1/10)]");
@@ -9918,7 +9931,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         hero(0).fire();
         tick();
 
@@ -9987,7 +10000,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -10117,6 +10130,7 @@ public class GameTest extends AbstractGameTest {
         verifyAllEvents("[KILL_AI]");
 
         // when
+        willPrize(DICE_IMMORTALITY);
         hero(0).fire();
         tick();
 
@@ -10174,7 +10188,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_BREAKING_BAD);
+        willPrize(DICE_BREAKING_BAD);
         tick();
 
         // then
@@ -10409,7 +10423,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_BREAKING_BAD);
+        willPrize(DICE_BREAKING_BAD);
         hero(0).up();
         tick();
 
@@ -10525,7 +10539,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_BREAKING_BAD);
+        willPrize(DICE_BREAKING_BAD);
         tick();
 
         // then
@@ -11008,7 +11022,7 @@ public class GameTest extends AbstractGameTest {
         verifyAllEvents("");
 
         // when
-        dice(DICE_BREAKING_BAD);
+        willPrize(DICE_BREAKING_BAD);
         tick();
 
         // then
@@ -11118,7 +11132,7 @@ public class GameTest extends AbstractGameTest {
         verifyAllEvents("");
 
         // when
-        dice(DICE_BREAKING_BAD);
+        willPrize(DICE_BREAKING_BAD);
         tick();
 
         // then
@@ -11263,7 +11277,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         hero(1).up();
         tick();
 
@@ -11352,7 +11366,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         hero(1).up();
         tick();
 
@@ -11469,7 +11483,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼     ☼\n" +
-                "☼?    ☼\n" +
+                "☼¿    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -11485,7 +11499,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -11587,7 +11601,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_IMMORTALITY);
+        willPrize(DICE_IMMORTALITY);
         tick();
 
         // then
@@ -12130,7 +12144,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_WALKING_ON_FISHNET);
+        willPrize(DICE_WALKING_ON_FISHNET);
         tick();
 
         // then
@@ -12227,7 +12241,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_WALKING_ON_FISHNET);
+        willPrize(DICE_WALKING_ON_FISHNET);
         hero(0).up();
         hero(1).up();
         tick();
@@ -12319,7 +12333,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_WALKING_ON_FISHNET);
+        willPrize(DICE_WALKING_ON_FISHNET);
         tick();
 
         // then
@@ -12431,7 +12445,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_WALKING_ON_FISHNET);
+        willPrize(DICE_WALKING_ON_FISHNET);
         tick();
 
         // then
@@ -12788,7 +12802,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_BREAKING_BAD);
+        willPrize(DICE_BREAKING_BAD);
         tick();
 
         // then
@@ -13068,35 +13082,49 @@ public class GameTest extends AbstractGameTest {
     public void shouldCantDropAiInFishnet() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
-                "☼~    ☼\n" +
+                "☼~??  ☼\n" +
                 "☼~    ☼\n" +
                 "☼~    ☼\n" +
                 "☼~    ☼\n" +
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        ai(1).down();
+        tick();
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼~ ¿  ☼\n" +
+                "☼~w   ☼\n" +
+                "☼~    ☼\n" +
+                "☼~    ☼\n" +
+                "☼    ▲☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
         // when
-        dice(2);
+        dice(1,  // выбираем занятый AI спот
+             0); // выбираем свободный спот
         dropAI(pt(1, 5));
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
+                "☼~¿¿  ☼\n" +
                 "☼~w   ☼\n" +
-                "☼~    ☼\n" +
                 "☼~    ☼\n" +
                 "☼~    ☼\n" +
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).down();
+        ai(0).right();
+        ai(1).left();
+        ai(2).down();
         tick();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
+                "☼~« » ☼\n" +
                 "☼~    ☼\n" +
                 "☼~w   ☼\n" +
-                "☼~    ☼\n" +
                 "☼~    ☼\n" +
                 "☼    ▲☼\n" +
                 "☼☼☼☼☼☼☼\n");
@@ -13108,7 +13136,8 @@ public class GameTest extends AbstractGameTest {
     public void shouldSpawnTwoAiPrize() {
         // given
         settings().integer(SPAWN_AI_PRIZE, 2)
-                .integer(AI_PRIZE_LIMIT, 2);
+                .integer(AI_PRIZE_LIMIT, 2)
+                .integer(COUNT_AIS, 6);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿¿¿¿¿¿☼\n" +
@@ -13121,7 +13150,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼ w¿w¿¿¿☼\n" +
+                "☼ ¿¿w¿w¿☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
@@ -13146,8 +13175,11 @@ public class GameTest extends AbstractGameTest {
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(SPAWN_AI_PRIZE, 2)
-                .integer(AI_PRIZE_LIMIT, 2);
+                .integer(AI_PRIZE_LIMIT, 2)
+                .integer(COUNT_AIS, 5);
 
+        dice(1, // соль для shuffle spawn позиций
+            0); // индексы свободных spawn мест для генерации новых ai
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼¿¿¿¿¿¿ ☼\n" +
                 "☼       ☼\n" +
@@ -13159,7 +13191,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼w¿w¿¿¿ ☼\n" +
+                "☼w¿¿ w¿ ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
@@ -13168,7 +13200,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertPrize("2 prizes with 7 heroes");
+        assertPrize("2 prizes with 6 heroes");
 
         // when
         hero(0).fire();
@@ -13176,7 +13208,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼w¿w¿¿¿ ☼\n" +
+                "☼w¿¿ w¿ ☼\n" +
                 "☼       ☼\n" +
                 "☼ø      ☼\n" +
                 "☼       ☼\n" +
@@ -13190,7 +13222,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼Ѡ¿w¿¿¿ ☼\n" +
+                "☼Ѡ¿¿ w¿ ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
@@ -13200,13 +13232,15 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         // when
+        dice(3); // место для нового ai
         tick();
 
         // then
+        // новый ai поедет потому что по умолчанию их не стопает никто
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼1¿w¿¿¿ ☼\n" +
-                "☼       ☼\n" +
-                "☼       ☼\n" +
+                "☼1¿¿ w¿ ☼\n" +
+                "☼   ¿   ☼\n" +
+                "☼   ×   ☼\n" +
                 "☼       ☼\n" +
                 "☼▲      ☼\n" +
                 "☼       ☼\n" +
@@ -13222,12 +13256,13 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
+        // не появился новый призовой ai потоу что приз на поле
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼!¿w¿¿¿ ☼\n" +
-                "☼   ¿¿¿ ☼\n" +
+                "☼!¿¿¿w¿ ☼\n" +
+                "☼    ¿¿ ☼\n" +
+                "☼   ¿   ☼\n" +
                 "☼       ☼\n" +
-                "☼       ☼\n" +
-                "☼▲      ☼\n" +
+                "☼▲  ×   ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
@@ -13241,8 +13276,11 @@ public class GameTest extends AbstractGameTest {
         settings().integer(KILL_HITS_AI_PRIZE, 1)
                 .integer(PRIZE_ON_FIELD, 5)
                 .integer(SPAWN_AI_PRIZE, 2)
-                .integer(AI_PRIZE_LIMIT, 2);
+                .integer(AI_PRIZE_LIMIT, 2)
+                .integer(COUNT_AIS, 5);
 
+        dice(1, // соль для shuffle spawn позиций
+            0); // индексы свободных spawn мест для генерации новых ai
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼¿¿¿¿¿¿ ☼\n" +
                 "☼       ☼\n" +
@@ -13254,7 +13292,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
 
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼w¿w¿¿¿ ☼\n" +
+                "☼w¿¿ w¿ ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
@@ -13263,7 +13301,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-        assertPrize("2 prizes with 7 heroes");
+        assertPrize("2 prizes with 6 heroes");
 
         // when
         hero(0).fire();
@@ -13271,7 +13309,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼w¿w¿¿¿ ☼\n" +
+                "☼w¿¿ w¿ ☼\n" +
                 "☼       ☼\n" +
                 "☼ø      ☼\n" +
                 "☼       ☼\n" +
@@ -13285,7 +13323,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼Ѡ¿w¿¿¿ ☼\n" +
+                "☼Ѡ¿¿ w¿ ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
@@ -13296,13 +13334,15 @@ public class GameTest extends AbstractGameTest {
 
         // when
         hero(0).fire();
+        dice(3); // место для нового ai
         tick();
 
         // then
+        // новый ai поедет потому что по умолчанию их не стопает никто
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼1¿w¿¿¿ ☼\n" +
-                "☼       ☼\n" +
-                "☼ø      ☼\n" +
+                "☼1¿¿ w¿ ☼\n" +
+                "☼   ¿   ☼\n" +
+                "☼ø  ×   ☼\n" +
                 "☼       ☼\n" +
                 "☼▲      ☼\n" +
                 "☼       ☼\n" +
@@ -13316,11 +13356,11 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼Ѡ¿w¿¿¿ ☼\n" +
+                "☼Ѡ¿¿ w¿ ☼\n" +
                 "☼       ☼\n" +
+                "☼   ¿   ☼\n" +
                 "☼       ☼\n" +
-                "☼       ☼\n" +
-                "☼▲      ☼\n" +
+                "☼▲  ×   ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
@@ -13330,13 +13370,13 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼ ¿w¿¿¿ ☼\n" +
+                "☼ ¿¿ w¿ ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
-                "☼       ☼\n" +
+                "☼   ¿   ☼\n" +
                 "☼▲      ☼\n" +
                 "☼       ☼\n" +
-                "☼       ☼\n" +
+                "☼   ×   ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
         // when
@@ -13347,14 +13387,14 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
-                "☼ ¿w¿¿¿ ☼\n" +
+                "☼ ¿¿ w¿ ☼\n" +
                 "☼   w¿¿ ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
-                "☼▲      ☼\n" +
+                "☼▲  ¿   ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
-                "☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼Ѡ☼☼☼☼\n");
 
         assertPrize("2 prizes with 9 heroes");
     }
@@ -13490,7 +13530,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_VISIBILITY);
+        willPrize(DICE_VISIBILITY);
         hero(1).up();
         tick();
 
@@ -13736,7 +13776,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_VISIBILITY);
+        willPrize(DICE_VISIBILITY);
         tick();
 
         // then
@@ -13905,7 +13945,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        dice(DICE_BREAKING_BAD);
+        willPrize(DICE_BREAKING_BAD);
         tick();
 
         // then

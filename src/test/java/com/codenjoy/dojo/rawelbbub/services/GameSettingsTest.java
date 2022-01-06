@@ -38,6 +38,7 @@ public class GameSettingsTest {
                         "SHOW_MY_HERO_UNDER_SEAWEED, \n" +
                         "ICEBERG_REGENERATE_TIME, \n" +
                         "TICKS_STUCK_BY_FISHNET, \n" +
+                        "COUNT_AIS, \n" +
                         "SPAWN_AI_PRIZE, \n" +
                         "KILL_HITS_AI_PRIZE, \n" +
                         "PRIZE_ON_FIELD, \n" +

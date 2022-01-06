@@ -84,8 +84,8 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
         field.init(this);
 
         aiGen = new AiGenerator(this, dice, settings);
-
-        addAis(level.ais());
+        aiGen.spawnOn(level.aisSpawn());
+        aiGen.dropAll();
 
         super.clearScore();
     }
@@ -244,10 +244,6 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
     public List<Player> load(String board, Function<Hero, Player> player) {
         level = new Level(board);
         return WhatsNextUtils.load(this, level.heroes(), player);
-    }
-
-    public void addAis(List<? extends Point> ais) {
-        aiGen.dropAll(ais);
     }
 
     private void removeDeadItems() {

@@ -44,15 +44,16 @@ import java.util.List;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.*;
 import static com.codenjoy.dojo.rawelbbub.services.Event.*;
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.HERO_TICKS_PER_SHOOT;
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.PENALTY_WALKING_ON_FISHNET;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.MODE_FORWARD_BACKWARD;
+import static com.codenjoy.dojo.services.Direction.*;
 import static java.util.stream.Collectors.toList;
 
 public class Hero extends RoundPlayerHero<Field> 
         implements RoundsDirectionActJoystick, State<Element, Player> {
 
     protected Direction direction;
-    protected boolean moving;
+    protected Direction moving;
     private boolean fire;
     private int score;
 
@@ -84,7 +85,7 @@ public class Hero extends RoundPlayerHero<Field>
         sliding = new Sliding(field, direction, settings());
         prizes = new Prizes(new PointField().size(field.size()));
 
-        moving = false;
+        moving = null;
         fire = false;
         setAlive(true);
         gun.reset();
@@ -105,7 +106,7 @@ public class Hero extends RoundPlayerHero<Field>
     @Override
     public void change(Direction direction) {
         this.direction = direction;
-        moving = true;
+        moving = UP;
     }
 
     @Override
@@ -115,6 +116,37 @@ public class Hero extends RoundPlayerHero<Field>
 
     protected void fire() {
         act();
+    }
+
+    protected void forward() {
+        validateTurnMode();
+
+        moving = UP;
+    }
+
+    private void validateTurnMode() {
+        if (settings().integer(TURN_MODE) != MODE_FORWARD_BACKWARD) {
+            throw new IllegalStateException("Please fix settings:\n" +
+                    "\t settings().integer(TURN_MODE, MODE_FORWARD_BACKWARD);");
+        }
+    }
+
+    protected void backward() {
+        validateTurnMode();
+
+        moving = DOWN;
+    }
+
+    protected void turnLeft() {
+        validateTurnMode();
+
+        moving = LEFT;
+    }
+
+    protected void turnRight() {
+        validateTurnMode();
+
+        moving = RIGHT;
     }
 
     @Override
@@ -132,8 +164,30 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     public void move() {
-        moving = moving || field.isOil(this);
-        if (!moving) return;
+        boolean willMove = moving != null || field.isOil(this);
+        if (!willMove) return;
+
+        if (moving == null) {
+            // если занос, то полный ход, куда бы не были направлены
+            moving = UP;
+        }
+
+        switch (moving) {
+            case LEFT:  // поворот налево
+                direction = direction.counterClockwise();
+                break;
+
+            case RIGHT: // поворот налево
+                direction = direction.clockwise();
+                break;
+
+            case UP:   // полный ход
+                break;
+
+            case DOWN: // задний ход
+                direction = direction.inverted();
+                break;
+        }
 
         if (sliding.active(this)) {
             direction = sliding.affect(direction);
@@ -141,7 +195,25 @@ public class Hero extends RoundPlayerHero<Field>
             sliding.reset(direction);
         }
 
-        moving(direction.change(this));
+        switch (moving) {
+            // повороты не влияют на изменения положения
+            case LEFT:
+            case RIGHT:
+                break;
+
+            // полный ход (в направлении direction)
+            case UP:
+                moving(direction.change(this));
+                break;
+
+            // задний ход (в направлении противоположном direction)
+            case DOWN:
+                moving(direction.change(this));
+                direction = direction.inverted();
+                break;
+        }
+
+        moving = null;
     }
 
     public void moving(Point pt) {
@@ -150,7 +222,6 @@ public class Hero extends RoundPlayerHero<Field>
         } else {
             move(pt);
         }
-        moving = false;
     }
 
     @Override

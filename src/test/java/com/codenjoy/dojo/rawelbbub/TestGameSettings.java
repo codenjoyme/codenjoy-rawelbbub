@@ -41,21 +41,22 @@ public class TestGameSettings extends GameSettings {
      * Here you can override the settings for all tests.
      */
     public TestGameSettings() {
-         bool(ROUNDS_ENABLED, false);
-         integer(SPAWN_AI_PRIZE, 4);
-         integer(KILL_HITS_AI_PRIZE, 3);
-         integer(AI_TICKS_PER_SHOOT, 10);
-         integer(HERO_TICKS_PER_SHOOT, 1);
-         integer(OIL_SLIPPERINESS, 3);
-         bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
-         integer(PRIZE_ON_FIELD, 3);
-         integer(PRIZE_WORKING, 10);
-         integer(AI_PRIZE_LIMIT, 10);
-         integer(CHANCE_IMMORTALITY, CHANCE);
-         integer(CHANCE_BREAKING_BAD, CHANCE);
-         integer(CHANCE_WALKING_ON_FISHNET, CHANCE);
-         integer(CHANCE_VISIBILITY, CHANCE);
-         integer(CHANCE_NO_SLIDING, CHANCE);
-         integer(HERO_DIED_PENALTY, -10);
+        bool(ROUNDS_ENABLED, false);
+        integer(TURN_MODE, MODE_ALL_DIRECTIONS);
+        integer(SPAWN_AI_PRIZE, 4);
+        integer(KILL_HITS_AI_PRIZE, 3);
+        integer(AI_TICKS_PER_SHOOT, 10);
+        integer(HERO_TICKS_PER_SHOOT, 1);
+        integer(OIL_SLIPPERINESS, 3);
+        bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
+        integer(PRIZE_ON_FIELD, 3);
+        integer(PRIZE_WORKING, 10);
+        integer(AI_PRIZE_LIMIT, 10);
+        integer(CHANCE_IMMORTALITY, CHANCE);
+        integer(CHANCE_BREAKING_BAD, CHANCE);
+        integer(CHANCE_WALKING_ON_FISHNET, CHANCE);
+        integer(CHANCE_VISIBILITY, CHANCE);
+        integer(CHANCE_NO_SLIDING, CHANCE);
+        integer(HERO_DIED_PENALTY, -10);
     }
 }

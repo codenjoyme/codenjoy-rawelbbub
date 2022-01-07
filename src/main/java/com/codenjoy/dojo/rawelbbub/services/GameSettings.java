@@ -41,6 +41,9 @@ import static com.codenjoy.dojo.services.settings.Chance.CHANCE_RESERVED;
 public class GameSettings extends SettingsImpl
         implements AllSettings<GameSettings> {
 
+    public static final int MODE_ALL_DIRECTIONS = 0;
+    public static final int MODE_FORWARD_BACKWARD = 1;
+
     public enum Keys implements Key {
 
         AI_TICKS_PER_SHOOT("[Game] Ticks until the next AI shoot"),
@@ -51,6 +54,7 @@ public class GameSettings extends SettingsImpl
         ICEBERG_REGENERATE_TIME("[Game] Iceberg regenerate time"),
         TICKS_STUCK_BY_FISHNET("[Game] Ticks AI gets stuck by fishnet"),
         COUNT_AIS("[Game] Count AIs on the board"),
+        TURN_MODE("[Game] Turn mode"),
 
         SPAWN_AI_PRIZE("[Prize] Count spawn for AI with prize"),
         KILL_HITS_AI_PRIZE("[Prize] Hits to kill AI with prize"),
@@ -99,6 +103,7 @@ public class GameSettings extends SettingsImpl
         integer(ICEBERG_REGENERATE_TIME, 30);
         integer(TICKS_STUCK_BY_FISHNET, 5);
         integer(COUNT_AIS, 3);
+        integer(TURN_MODE, MODE_ALL_DIRECTIONS);
 
         integer(SPAWN_AI_PRIZE, 4);
         integer(KILL_HITS_AI_PRIZE, 3);

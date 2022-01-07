@@ -1064,14 +1064,16 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldHeroMove() {
+    public void shouldHeroMove_modeAllDirections() {
         // given
+        settings().integer(TURN_MODE, MODE_ALL_DIRECTIONS);
+
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
+                "☼  ▲  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1081,9 +1083,9 @@ public class GameTest extends AbstractGameTest {
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
+                "☼  ▲  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼▲    ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
@@ -1095,9 +1097,9 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
+                "☼  ▼  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼▼    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1108,9 +1110,9 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
+                "☼   ► ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼ ►   ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         // when
@@ -1121,9 +1123,206 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
+                "☼  ◄  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
-                "☼◄    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void shouldHeroMove_modeForwardBackward() {
+        // given
+        settings().integer(TURN_MODE, MODE_FORWARD_BACKWARD);
+
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).forward();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).backward();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).backward();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).turnRight();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ►  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).forward();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼   ► ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).turnRight();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼   ▼ ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).backward();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼   ▼ ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).turnRight();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼   ◄ ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).forward();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ◄  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).turnLeft();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ▼  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).backward();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ▼  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).turnLeft();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ►  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).turnLeft();
+        hero(0).turnLeft();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).forward();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
     }
 

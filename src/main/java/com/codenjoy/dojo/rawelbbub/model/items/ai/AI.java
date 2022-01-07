@@ -31,6 +31,7 @@ import com.codenjoy.dojo.services.Point;
 
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.AI_TICKS_PER_SHOOT;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.TICKS_STUCK_BY_FISHNET;
+import static com.codenjoy.dojo.services.Direction.UP;
 
 public class AI extends Hero {
 
@@ -107,7 +108,7 @@ public class AI extends Hero {
             }
         } while (field.isBarrier(pt) && count++ < MAX);
 
-        moving = true;
+        moving = UP;
     }
 
     @Override

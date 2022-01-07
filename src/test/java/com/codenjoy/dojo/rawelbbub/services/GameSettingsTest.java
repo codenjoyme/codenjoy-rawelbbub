@@ -39,6 +39,7 @@ public class GameSettingsTest {
                         "ICEBERG_REGENERATE_TIME, \n" +
                         "TICKS_STUCK_BY_FISHNET, \n" +
                         "COUNT_AIS, \n" +
+                        "TURN_MODE, \n" +
                         "SPAWN_AI_PRIZE, \n" +
                         "KILL_HITS_AI_PRIZE, \n" +
                         "PRIZE_ON_FIELD, \n" +

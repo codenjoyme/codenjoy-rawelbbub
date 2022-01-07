@@ -87,7 +87,7 @@ public class Hero extends RoundPlayerHero<Field>
             field.heroes().add(this);
         }
 
-        if (isModeSideView()) {
+        if (isSideViewMode()) {
             noUpDownDirection();
         }
 
@@ -120,8 +120,13 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     @Override
-    public boolean isModeSideView() {
-        return settings().isModeSideView();
+    public boolean isSideViewMode() {
+        return settings().isSideViewMode();
+    }
+
+    @Override
+    public boolean isTurnForwardMode() {
+        return settings().isTurnForwardMode();
     }
 
     @Override
@@ -140,7 +145,7 @@ public class Hero extends RoundPlayerHero<Field>
 
     @Override
     public void validateTurnModeEnabled() {
-        if (!settings().isModeForwardBackward()) {
+        if (!settings().isTurnForwardMode()) {
             throw new IllegalStateException("Please fix settings:\n" +
                     "\t settings().integer(TURN_MODE, MODE_FORWARD_BACKWARD);");
         }
@@ -219,8 +224,8 @@ public class Hero extends RoundPlayerHero<Field>
         }
 
         return player.getHero() == this
-                ? Element.hero(direction, settings().isModeSideView())
-                : Element.otherHero(direction, settings().isModeSideView());
+                ? Element.hero(direction, settings().isSideViewMode())
+                : Element.otherHero(direction, settings().isSideViewMode());
     }
 
     public void tryFire() {

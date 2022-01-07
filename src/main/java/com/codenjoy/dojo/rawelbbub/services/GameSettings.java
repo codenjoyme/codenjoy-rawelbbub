@@ -137,11 +137,11 @@ public class GameSettings extends SettingsImpl
             .run();
     }
 
-    public boolean isModeForwardBackward() {
+    public boolean isTurnForwardMode() {
         return integer(TURN_MODE) == MODE_FORWARD_BACKWARD;
     }
 
-    public boolean isModeSideView() {
+    public boolean isSideViewMode() {
         return integer(TURN_MODE) == MODE_SIDE_VIEW;
     }
 

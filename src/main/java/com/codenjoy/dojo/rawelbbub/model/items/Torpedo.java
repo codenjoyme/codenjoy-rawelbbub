@@ -89,7 +89,7 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
         if (destroyed()) {
             return Element.EXPLOSION;
         }
-        return Element.torpedo(direction, field.settings().isModeSideView());
+        return Element.torpedo(direction, field.settings().isSideViewMode());
     }
 
     public void heavy() {

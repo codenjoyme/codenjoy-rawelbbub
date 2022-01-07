@@ -101,7 +101,7 @@ public class GameSettings extends SettingsImpl
         integer(OIL_SLIPPERINESS, 3);
         integer(PENALTY_WALKING_ON_FISHNET, 2);
         bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
-        integer(ICEBERG_REGENERATE_TIME, 30);
+        integer(ICEBERG_REGENERATE_TIME, 10);
         integer(TICKS_STUCK_BY_FISHNET, 5);
         integer(COUNT_AIS, 3);
         integer(TURN_MODE, MODE_ALL_DIRECTIONS);

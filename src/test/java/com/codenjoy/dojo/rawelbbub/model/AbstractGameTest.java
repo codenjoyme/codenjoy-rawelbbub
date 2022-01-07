@@ -140,7 +140,9 @@ public class AbstractGameTest
         dice(diceValue, newAiSpawnIndex);
     }
 
-    public void noMoreAi() {
-        dice(NO_MORE_AIS); // больше AI генерить не будем
+    public void ticks(int fromInclusive, int tillExclusive) {
+        for (int tick = fromInclusive; tick < tillExclusive; tick++) {
+            tick();
+        }
     }
 }

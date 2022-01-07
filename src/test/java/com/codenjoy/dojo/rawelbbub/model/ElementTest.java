@@ -37,12 +37,19 @@ public class ElementTest {
     }
 
     @Test
-    public void icebergsMap() {
+    public void destroyIceberg() {
         assertEquals("{╬={LEFT=╠, RIGHT=╣, UP=╦, DOWN=╩}, \n" +
                         "╠={LEFT=╞, RIGHT=│, UP=┌, DOWN=└}, \n" +
                         "╣={LEFT=│, RIGHT=╡, UP=┐, DOWN=┘}, \n" +
                         "╦={LEFT=┌, RIGHT=┐, UP=╥, DOWN=─}, \n" +
                         "╩={LEFT=└, RIGHT=┘, UP=─, DOWN=╨}}",
-                split(Element.icebergsMap, "}, \n"));
+                split(Element.destroyIceberg, "}, \n"));
+    }
+
+    @Test
+    public void growIceberg() {
+        assertEquals("{╬=╬, ╠=╬, ╣=╬, ╦=╬, ╩=╬, ╞=╠, ╡=╣, ╥=╣, " +
+                        "╨=╩, │=╣, ─=╦, ┌=╠, ┐=╣, └=╩, ┘=╣,  =│}",
+                Element.growIceberg.toString());
     }
 }

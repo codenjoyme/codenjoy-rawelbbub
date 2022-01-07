@@ -57,6 +57,7 @@ public class TestGameSettings extends GameSettings {
         integer(CHANCE_WALKING_ON_FISHNET, CHANCE);
         integer(CHANCE_VISIBILITY, CHANCE);
         integer(CHANCE_NO_SLIDING, CHANCE);
+        integer(ICEBERG_REGENERATE_TIME, 30);
         integer(HERO_DIED_PENALTY, -10);
     }
 }

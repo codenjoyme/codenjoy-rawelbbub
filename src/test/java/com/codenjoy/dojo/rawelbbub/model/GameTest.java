@@ -5100,14 +5100,28 @@ public class GameTest extends AbstractGameTest {
                 "Iceberg[[1,4]=' ',timer=9,destroyed=true]]");
 
         // when
-        for (int tick = 10; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
-            tick();
-        }
+        ticks(9, settings().integer(ICEBERG_REGENERATE_TIME) - 1);
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,5]=' ',timer=22,destroyed=true], \n" +
+                "Iceberg[[1,4]=' ',timer=29,destroyed=true]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼│    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
@@ -5115,14 +5129,126 @@ public class GameTest extends AbstractGameTest {
 
         assertIcebergs(
                 "[Iceberg[[1,5]=' ',timer=23,destroyed=true], \n" +
-                "Iceberg[[1,4]=' ',timer=30,destroyed=true]]");
+                "Iceberg[[1,4]='│',timer=30,destroyed=false]]");
+
+        // when
+        ticks(23, 29);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼│    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,5]=' ',timer=29,destroyed=true], \n" +
+                "Iceberg[[1,4]='│',timer=36,destroyed=false]]");
 
         // when
         tick();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
+                "☼│    ☼\n" +
+                "☼│    ☼\n" +
                 "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,5]='│',timer=30,destroyed=false], \n" +
+                "Iceberg[[1,4]='│',timer=37,destroyed=false]]");
+
+        // when
+        ticks(37, 2 * settings().integer(ICEBERG_REGENERATE_TIME) - 1);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼│    ☼\n" +
+                "☼│    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,5]='│',timer=52,destroyed=false], \n" +
+                "Iceberg[[1,4]='│',timer=59,destroyed=false]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼│    ☼\n" +
+                "☼╣    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,5]='│',timer=53,destroyed=false], \n" +
+                "Iceberg[[1,4]='╣',timer=60,destroyed=false]]");
+
+        // when
+        ticks(53, 59);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼│    ☼\n" +
+                "☼╣    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,5]='│',timer=59,destroyed=false], \n" +
+                "Iceberg[[1,4]='╣',timer=66,destroyed=false]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╣    ☼\n" +
+                "☼╣    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,5]='╣',timer=60,destroyed=false], \n" +
+                "Iceberg[[1,4]='╣',timer=67,destroyed=false]]");
+
+        // when
+        ticks(67, 3 * settings().integer(ICEBERG_REGENERATE_TIME) - 1);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╣    ☼\n" +
+                "☼╣    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,5]='╣',timer=82,destroyed=false], \n" +
+                "Iceberg[[1,4]='╣',timer=89,destroyed=false]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╣    ☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5130,20 +5256,24 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertIcebergs(
-                "[Iceberg[[1,5]=' ',timer=24,destroyed=true], \n" +
-                "Iceberg[[1,4]='╬',timer=0,destroyed=false]]");
+                "[Iceberg[[1,5]='╣',timer=83,destroyed=false], \n" +
+                "Iceberg[[1,4]='╬',timer=90,destroyed=false]]");
 
         // when
         tick();
-        tick();
-        tick();
-        tick();
-        tick();
-        tick();
+
+        // then
+        // один айсберг больше не тикается, так как зарос полностью
+        assertIcebergs(
+                "[Iceberg[[1,5]='╣',timer=84,destroyed=false], \n" +
+                "Iceberg[[1,4]='╬',timer=0,destroyed=false]]");
+
+        // when
+        ticks(84, 89);
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼     ☼\n" +
+                "☼╣    ☼\n" +
                 "☼╬    ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5151,7 +5281,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         assertIcebergs(
-                "[Iceberg[[1,5]=' ',timer=30,destroyed=true], \n" +
+                "[Iceberg[[1,5]='╣',timer=89,destroyed=false], \n" +
                 "Iceberg[[1,4]='╬',timer=0,destroyed=false]]");
 
         // when
@@ -5166,6 +5296,23 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        assertIcebergs(
+                "[Iceberg[[1,5]='╬',timer=90,destroyed=false], \n" +
+                "Iceberg[[1,4]='╬',timer=0,destroyed=false]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬    ☼\n" +
+                "☼╬    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // второй айсберг тоже больше не тикается, так как зарос полностью
         assertIcebergs(
                 "[Iceberg[[1,5]='╬',timer=0,destroyed=false], \n" +
                 "Iceberg[[1,4]='╬',timer=0,destroyed=false]]");
@@ -5338,6 +5485,127 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼˄    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void shouldGrow_whenPartiallyDestroyedIceberg() {
+        // given
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼Ѡ    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╨',timer=0,destroyed=false]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╨    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╨',timer=1,destroyed=false]]");
+
+        // when
+        ticks(1, settings().integer(ICEBERG_REGENERATE_TIME) - 1);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╨    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╨',timer=29,destroyed=false]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╩    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╩',timer=30,destroyed=false]]");
+
+        // when
+        ticks(30, 2 * settings().integer(ICEBERG_REGENERATE_TIME) - 1);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╩    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╩',timer=59,destroyed=false]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=60,destroyed=false]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼     ☼\n" +
+                "☼▲    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false]]");
     }
 
     @Test
@@ -5574,11 +5842,10 @@ public class GameTest extends AbstractGameTest {
                 "Iceberg[[1,2]=' ',timer=0,destroyed=true]]");
 
         // when
-        for (int tick = 3; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
-            tick();
-        }
+        ticks(0, 10 * settings().integer(ICEBERG_REGENERATE_TIME));
 
         // then
+        // сколько не тикай, айсберг под гроем не будет зарастать
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5595,19 +5862,20 @@ public class GameTest extends AbstractGameTest {
         hero(0).right();
         tick();
 
-        for (int tick = 2; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
-            // then
-            assertF("☼☼☼☼☼☼☼\n" +
-                    "☼     ☼\n" +
-                    "☼     ☼\n" +
-                    "☼╬    ☼\n" +
-                    "☼ ►   ☼\n" +
-                    "☼     ☼\n" +
-                    "☼☼☼☼☼☼☼\n");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼ ►   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-            // when
-            tick();
-        }
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]=' ',timer=1,destroyed=true]]");
+
+        // when
+        ticks(1, settings().integer(ICEBERG_REGENERATE_TIME) - 1);
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -5620,7 +5888,7 @@ public class GameTest extends AbstractGameTest {
 
         assertIcebergs(
                 "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
-                "Iceberg[[1,2]=' ',timer=30,destroyed=true]]");
+                "Iceberg[[1,2]=' ',timer=29,destroyed=true]]");
 
         // when
         tick();
@@ -5630,18 +5898,104 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼╬    ☼\n" +
-                "☼╬►   ☼\n" +
+                "☼│►   ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
         assertIcebergs(
                 "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
-                "Iceberg[[1,2]='╬',timer=0,destroyed=false]]");
+                "Iceberg[[1,2]='│',timer=30,destroyed=false]]");
+    }
+
+    @Test
+    public void shouldClearGrowTimer_whenShootOnGrowIceberg() {
+        // given
+        shouldIcebergCantRegenerateOnHero();
+
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼│►   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]='│',timer=30,destroyed=false]]");
+
+        // when
+        hero().left();
+        hero().fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼Ѡ◄   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]=' ',timer=0,destroyed=true]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼ ◄   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]=' ',timer=1,destroyed=true]]");
+
+        // when
+        ticks(1, settings().integer(ICEBERG_REGENERATE_TIME) - 1);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼ ◄   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]=' ',timer=29,destroyed=true]]");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼╬    ☼\n" +
+                "☼│◄   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        assertIcebergs(
+                "[Iceberg[[1,3]='╬',timer=0,destroyed=false], \n" +
+                "Iceberg[[1,2]='│',timer=30,destroyed=false]]");
     }
 
     @Test
     public void shouldIcebergCantRegenerateOnTorpedo() {
         // given
+        settings().integer(ICEBERG_REGENERATE_TIME, 5);
+
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -5688,9 +6042,9 @@ public class GameTest extends AbstractGameTest {
         assertIcebergs("[Iceberg[[1,3]=' ',timer=1,destroyed=true]]");
 
         // when
-        for (int tick = 2; tick <= settings().integer(ICEBERG_REGENERATE_TIME); tick++) {
-            tick();
-        }
+        tick();
+        tick();
+        tick();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -5701,12 +6055,14 @@ public class GameTest extends AbstractGameTest {
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        String same = "[Iceberg[[1,3]=' ',timer=30,destroyed=true]]";
+        String same = "[Iceberg[[1,3]=' ',timer=4,destroyed=true]]";
         assertIcebergs(same);
 
         // when
+        // по таймингам должна бы тут сгенериться на 30м тике,
+        // но не может - сгенерится в следующем тике
         hero(0).fire();
-        tick(); // по таймингам должна бы тут сгенериться, но не может - сгенерится в следующем тике
+        tick();
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
@@ -5726,12 +6082,12 @@ public class GameTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼ø    ☼\n" +
                 "☼     ☼\n" +
-                "☼╬    ☼\n" +
+                "☼│    ☼\n" +
                 "☼     ☼\n" +
                 "☼▲    ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertIcebergs("[Iceberg[[1,3]='╬',timer=0,destroyed=false]]");
+        assertIcebergs("[Iceberg[[1,3]='│',timer=5,destroyed=false]]");
     }
 
     @Test
@@ -11472,7 +11828,7 @@ public class GameTest extends AbstractGameTest {
     // После восстановления айсберг разрушенный за 1 выстрел будет
     // разрушаться так же как тот, который разрушался несколькими выстрелами
     @Test
-    public void afterRecoveryIcebergDestroyedInOneShot_willBeDestroyedInSameWayAsOther() {
+    public void afterRecoveryIcebergDestroyedInOneShot_willEveryoneGrowAtTheirOwnPace() {
         // given
         settings().integer(ICEBERG_REGENERATE_TIME, 10);
 
@@ -11486,12 +11842,36 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        for (int count = 0; count < 10; count++) {
-            tick();
-        }
+        // when
+        ticks(0, 10);
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╬╬╩  ☼\n" +
+                "☼│╬╬  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ticks(0, 10);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╣╬╬  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼▲ ˄  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ticks(0, 10);
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼╬╬╬  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲ ˄  ☼\n" +
@@ -11505,7 +11885,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╬╬╩  ☼\n" +
+                "☼╬╬╬  ☼\n" +
                 "☼ø ø  ☼\n" +
                 "☼     ☼\n" +
                 "☼▲ ˄  ☼\n" +
@@ -11531,7 +11911,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╩╬╨  ☼\n" +
+                "☼╩╬╩  ☼\n" +
                 "☼ø ø  ☼\n" +
                 "☼     ☼\n" +
                 "☼▲ ˄  ☼\n" +
@@ -11557,7 +11937,7 @@ public class GameTest extends AbstractGameTest {
 
         // then
         assertF("☼☼☼☼☼☼☼\n" +
-                "☼╨╬   ☼\n" +
+                "☼╨╬╨  ☼\n" +
                 "☼ø ø  ☼\n" +
                 "☼     ☼\n" +
                 "☼▲ ˄  ☼\n" +
@@ -11568,8 +11948,8 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        assertF("☼☼☼Ѡ☼☼☼\n" +
-                "☼Ѡ╬   ☼\n" +
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼Ѡ╬Ѡ  ☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼▲ ˄  ☼\n" +
@@ -14518,9 +14898,7 @@ public class GameTest extends AbstractGameTest {
         assertPrize(hero(0), "[PRIZE_VISIBILITY(3/10)]");
 
         // when
-        for (int count = 0; count < 7; count++) {
-            tick();
-        }
+        ticks(3, 10);
 
         // then
         assertPrize(hero(0), "[PRIZE_VISIBILITY(10/10)]");

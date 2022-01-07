@@ -139,7 +139,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
         for (Hero hero : heroes) {
             if (hero.isAlive()) {
-                hero.move();
+                hero.processMove();
 
                 torpedoes().hasAt(hero, torpedo -> {
                     if (!torpedo.justFired()) {

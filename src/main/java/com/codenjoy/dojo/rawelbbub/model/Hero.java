@@ -30,15 +30,14 @@ import com.codenjoy.dojo.rawelbbub.model.items.prize.Prize;
 import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import com.codenjoy.dojo.rawelbbub.model.items.prize.Prizes;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.Direction;
-import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.*;
 import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.joystick.Act;
 import com.codenjoy.dojo.services.joystick.RoundsDirectionActJoystick;
 import com.codenjoy.dojo.services.round.RoundPlayerHero;
 import com.codenjoy.dojo.services.round.Timer;
+import com.codenjoy.dojo.services.route.Route;
+import com.codenjoy.dojo.services.route.RouteProcessor;
 
 import java.util.List;
 
@@ -46,14 +45,19 @@ import static com.codenjoy.dojo.games.rawelbbub.Element.*;
 import static com.codenjoy.dojo.rawelbbub.services.Event.*;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.MODE_FORWARD_BACKWARD;
-import static com.codenjoy.dojo.services.Direction.*;
+import static com.codenjoy.dojo.services.route.Route.FORWARD;
 import static java.util.stream.Collectors.toList;
 
 public class Hero extends RoundPlayerHero<Field> 
-        implements RoundsDirectionActJoystick, State<Element, Player> {
+        implements RoundsDirectionActJoystick, State<Element, Player>,
+                   RouteProcessor {
 
+    // ориентация героя по сторонам света
     protected Direction direction;
-    protected Direction moving;
+
+    // команда герою
+    protected Route route;
+
     private boolean fire;
     private int score;
 
@@ -85,7 +89,7 @@ public class Hero extends RoundPlayerHero<Field>
         sliding = new Sliding(field, direction, settings());
         prizes = new Prizes(new PointField().size(field.size()));
 
-        moving = null;
+        route(null);
         fire = false;
         setAlive(true);
         gun.reset();
@@ -106,7 +110,7 @@ public class Hero extends RoundPlayerHero<Field>
     @Override
     public void change(Direction direction) {
         this.direction = direction;
-        moving = UP;
+        route(FORWARD);
     }
 
     @Override
@@ -118,35 +122,12 @@ public class Hero extends RoundPlayerHero<Field>
         act();
     }
 
-    protected void forward() {
-        validateTurnMode();
-
-        moving = UP;
-    }
-
-    private void validateTurnMode() {
+    @Override
+    public void validateTurnModeEnabled() {
         if (settings().integer(TURN_MODE) != MODE_FORWARD_BACKWARD) {
             throw new IllegalStateException("Please fix settings:\n" +
                     "\t settings().integer(TURN_MODE, MODE_FORWARD_BACKWARD);");
         }
-    }
-
-    protected void backward() {
-        validateTurnMode();
-
-        moving = DOWN;
-    }
-
-    protected void turnLeft() {
-        validateTurnMode();
-
-        moving = LEFT;
-    }
-
-    protected void turnRight() {
-        validateTurnMode();
-
-        moving = RIGHT;
     }
 
     @Override
@@ -159,69 +140,33 @@ public class Hero extends RoundPlayerHero<Field>
         checkOnFishnet();
     }
 
-    public Direction direction() {
-        return direction;
+    @Override
+    public boolean isSliding() {
+        return field.isOil(this);
     }
 
-    public void move() {
-        boolean willMove = moving != null || field.isOil(this);
-        if (!willMove) return;
-
-        if (moving == null) {
-            // если занос, то полный ход, куда бы не были направлены
-            moving = UP;
+    @Override
+    public boolean canMove(Point pt) {
+        if (field.isBarrierFor(this, pt)) {
+            sliding.stop();
+            return false;
         }
 
-        switch (moving) {
-            case LEFT:  // поворот налево
-                direction = direction.counterClockwise();
-                break;
+        return true;
+    }
 
-            case RIGHT: // поворот налево
-                direction = direction.clockwise();
-                break;
-
-            case UP:   // полный ход
-                break;
-
-            case DOWN: // задний ход
-                direction = direction.inverted();
-                break;
-        }
-
+    @Override
+    public void beforeMove() {
         if (sliding.active(this)) {
             direction = sliding.affect(direction);
         } else {
             sliding.reset(direction);
         }
-
-        switch (moving) {
-            // повороты не влияют на изменения положения
-            case LEFT:
-            case RIGHT:
-                break;
-
-            // полный ход (в направлении direction)
-            case UP:
-                moving(direction.change(this));
-                break;
-
-            // задний ход (в направлении противоположном direction)
-            case DOWN:
-                moving(direction.change(this));
-                direction = direction.inverted();
-                break;
-        }
-
-        moving = null;
     }
 
-    public void moving(Point pt) {
-        if (field.isBarrierFor(this, pt)) {
-            sliding.stop();
-        } else {
-            move(pt);
-        }
+    @Override
+    public void doMove(Point pt) {
+        move(pt);
     }
 
     @Override
@@ -359,5 +304,25 @@ public class Hero extends RoundPlayerHero<Field>
         } else {
             killHero();
         }
+    }
+
+    @Override
+    public Direction direction() {
+        return direction;
+    }
+
+    @Override
+    public void direction(Direction direction) {
+        this.direction = direction;
+    }
+
+    @Override
+    public void route(Route route) {
+        this.route = route;
+    }
+
+    @Override
+    public Route route() {
+        return route;
     }
 }

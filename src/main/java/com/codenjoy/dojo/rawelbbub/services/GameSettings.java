@@ -43,6 +43,7 @@ public class GameSettings extends SettingsImpl
 
     public static final int MODE_ALL_DIRECTIONS = 0;
     public static final int MODE_FORWARD_BACKWARD = 1;
+    public static final int MODE_SIDE_VIEW = 2;
 
     public enum Keys implements Key {
 

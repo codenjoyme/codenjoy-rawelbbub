@@ -104,7 +104,7 @@ public class Hero extends RoundPlayerHero<Field>
 
     @Override
     public GameSettings settings() {
-        return (GameSettings) field.settings();
+        return field.settings();
     }
 
     @Override

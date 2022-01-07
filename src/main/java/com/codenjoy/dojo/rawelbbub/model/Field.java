@@ -28,6 +28,7 @@ import com.codenjoy.dojo.rawelbbub.model.items.ai.AI;
 import com.codenjoy.dojo.rawelbbub.model.items.ai.AIPrize;
 import com.codenjoy.dojo.rawelbbub.model.items.oil.Oil;
 import com.codenjoy.dojo.rawelbbub.model.items.prize.Prize;
+import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.Accessor;
@@ -61,6 +62,8 @@ public interface Field extends RoundGameField<Player, Hero> {
     int totalPrizes();
 
     boolean hasPlayer(GamePlayer player);
+
+    GameSettings settings();
 
     Accessor<Hero> heroes();
 

@@ -1224,7 +1224,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).up();
+        ai(0).floats();
         tick();
 
         // then
@@ -1237,7 +1237,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).down();
+        ai(0).sink();
         tick();
 
         // then
@@ -1250,7 +1250,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).right();
+        ai(0).moveRight();
         tick();
 
         // then
@@ -1263,7 +1263,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).left();
+        ai(0).moveLeft();
         tick();
 
         // then
@@ -1276,7 +1276,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).left();
+        ai(0).moveLeft();
         tick();
 
         // then
@@ -1289,7 +1289,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).up();
+        ai(0).floats();
         tick();
 
         // then
@@ -1302,8 +1302,8 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).down();
-        ai(0).down();
+        ai(0).sink();
+        ai(0).sink();
         tick();
 
         // then
@@ -1316,7 +1316,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).right();
+        ai(0).moveRight();
         tick();
 
         // then
@@ -1353,7 +1353,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).up();
+        ai(0).floats();
         tick();
 
         // then
@@ -1366,7 +1366,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).down();
+        ai(0).sink();
         tick();
 
         // then
@@ -1379,7 +1379,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).right();
+        ai(0).moveRight();
         tick();
 
         // then
@@ -1392,7 +1392,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).left();
+        ai(0).moveLeft();
         tick();
 
         // then
@@ -1405,7 +1405,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).left();
+        ai(0).moveLeft();
         tick();
 
         // then
@@ -1418,7 +1418,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).up();
+        ai(0).floats();
         tick();
 
         // then
@@ -1431,8 +1431,8 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).down();
-        ai(0).down();
+        ai(0).sink();
+        ai(0).sink();
         tick();
 
         // then
@@ -1445,7 +1445,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        ai(0).right();
+        ai(0).moveRight();
         tick();
 
         // then
@@ -1553,7 +1553,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(0).up();
+        hero(0).floats();
         tick();
 
         // then
@@ -1566,7 +1566,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(0).down();
+        hero(0).sink();
         tick();
 
         // then
@@ -1579,7 +1579,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(0).right();
+        hero(0).moveRight();
         tick();
 
         // then
@@ -1592,7 +1592,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(0).left();
+        hero(0).moveLeft();
         tick();
 
         // then
@@ -1605,7 +1605,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(0).left();
+        hero(0).moveLeft();
         tick();
 
         // then
@@ -1618,7 +1618,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(0).up();
+        hero(0).floats();
         tick();
 
         // then
@@ -1631,8 +1631,8 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(0).down();
-        hero(0).down();
+        hero(0).sink();
+        hero(0).sink();
         tick();
 
         // then
@@ -1645,7 +1645,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(0).right();
+        hero(0).moveRight();
         tick();
 
         // then
@@ -1681,7 +1681,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(1).up();
+        hero(1).floats();
         tick();
 
         // then
@@ -1694,7 +1694,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(1).down();
+        hero(1).sink();
         tick();
 
         // then
@@ -1707,7 +1707,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(1).right();
+        hero(1).moveRight();
         tick();
 
         // then
@@ -1720,7 +1720,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(1).left();
+        hero(1).moveLeft();
         tick();
 
         // then
@@ -1733,7 +1733,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(1).left();
+        hero(1).moveLeft();
         tick();
 
         // then
@@ -1746,7 +1746,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(1).up();
+        hero(1).floats();
         tick();
 
         // then
@@ -1759,8 +1759,8 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(1).down();
-        hero(1).down();
+        hero(1).sink();
+        hero(1).sink();
         tick();
 
         // then
@@ -1773,7 +1773,7 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // when
-        hero(1).right();
+        hero(1).moveRight();
         tick();
 
         // then

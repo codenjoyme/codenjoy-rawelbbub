@@ -144,14 +144,6 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     @Override
-    public void validateTurnModeEnabled() {
-        if (!settings().isTurnForwardMode()) {
-            throw new IllegalStateException("Please fix settings:\n" +
-                    "\t settings().integer(TURN_MODE, MODE_FORWARD_BACKWARD);");
-        }
-    }
-
-    @Override
     public void tickHero() {
         gunType();
 

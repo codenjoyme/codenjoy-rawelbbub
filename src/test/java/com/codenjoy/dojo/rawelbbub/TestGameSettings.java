@@ -43,15 +43,15 @@ public class TestGameSettings extends GameSettings {
     public TestGameSettings() {
         bool(ROUNDS_ENABLED, false);
         integer(TURN_MODE, MODE_ALL_DIRECTIONS);
-        integer(SPAWN_AI_PRIZE, 4);
-        integer(KILL_HITS_AI_PRIZE, 3);
+        integer(AI_PRIZE_PROBABILITY, 4);
+        integer(AI_PRIZE_SURVIVABILITY, 3);
         integer(AI_TICKS_PER_SHOOT, 10);
         integer(HERO_TICKS_PER_SHOOT, 1);
         integer(OIL_SLIPPERINESS, 3);
         bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
-        integer(PRIZE_ON_FIELD, 3);
-        integer(PRIZE_WORKING, 10);
-        integer(AI_PRIZE_LIMIT, 10);
+        integer(PRIZE_AVAILABLE_TIMEOUT, 3);
+        integer(PRIZE_EFFECT_TIMEOUT, 10);
+        integer(PRIZES_COUNT, 10);
         integer(CHANCE_IMMORTALITY, CHANCE);
         integer(CHANCE_BREAKING_BAD, CHANCE);
         integer(CHANCE_WALKING_ON_FISHNET, CHANCE);

@@ -44,30 +44,30 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
 
     public Prize(Point pt, Field field) {
         super(pt);
-        this.settings = (GameSettings) field.settings();
+        this.settings = field.settings();
         this.element = settings.chance(field.dice()).any();
         active = true;
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        if (ticks % changeEveryTicks() == 0) {
+        if (ticks % blink() == 0) {
             return Element.PRIZE;
         }
 
         return element;
     }
 
-    private int changeEveryTicks() {
-        return settings.integer(PRIZE_SPRITE_CHANGE_TICKS);
+    private int blink() {
+        return settings.integer(PRIZE_BLINK_TIMEOUT);
     }
 
-    private int prizeWorking() {
-        return settings.integer(PRIZE_WORKING);
+    private int effect() {
+        return settings.integer(PRIZE_EFFECT_TIMEOUT);
     }
 
-    private int prizeOnField() {
-        return settings.integer(PRIZE_ON_FIELD);
+    private int available() {
+        return settings.integer(PRIZE_AVAILABLE_TIMEOUT);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class Prize extends PointImpl implements Tickable, State<Element, Player>
     }
 
     public void start(boolean onField) {
-        timeout = onField ? prizeOnField() : prizeWorking();
+        timeout = onField ? available() : effect();
         ticks = 0;
     }
 

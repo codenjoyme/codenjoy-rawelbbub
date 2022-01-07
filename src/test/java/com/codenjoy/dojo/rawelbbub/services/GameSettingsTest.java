@@ -40,12 +40,12 @@ public class GameSettingsTest {
                         "TICKS_STUCK_BY_FISHNET, \n" +
                         "COUNT_AIS, \n" +
                         "TURN_MODE, \n" +
-                        "SPAWN_AI_PRIZE, \n" +
-                        "KILL_HITS_AI_PRIZE, \n" +
-                        "PRIZE_ON_FIELD, \n" +
-                        "PRIZE_WORKING, \n" +
-                        "AI_PRIZE_LIMIT, \n" +
-                        "PRIZE_SPRITE_CHANGE_TICKS, \n" +
+                        "AI_PRIZE_PROBABILITY, \n" +
+                        "AI_PRIZE_SURVIVABILITY, \n" +
+                        "PRIZE_AVAILABLE_TIMEOUT, \n" +
+                        "PRIZE_EFFECT_TIMEOUT, \n" +
+                        "PRIZES_COUNT, \n" +
+                        "PRIZE_BLINK_TIMEOUT, \n" +
                         "CHANCE_IMMORTALITY, \n" +
                         "CHANCE_BREAKING_BAD, \n" +
                         "CHANCE_WALKING_ON_FISHNET, \n" +

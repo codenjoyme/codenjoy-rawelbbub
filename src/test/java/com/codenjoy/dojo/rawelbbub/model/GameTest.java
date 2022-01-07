@@ -549,9 +549,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroCanGoIfOilLeakAtWayWithoutSliding_whenHeroTakePrize() {
         // given
-        settings().integer(PRIZE_ON_FIELD, 5)
-                .integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_WORKING, 6)
+        settings().integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_EFFECT_TIMEOUT, 6)
                 .integer(OIL_SLIPPERINESS, 1);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -661,9 +661,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroCanGoIfAceAtWay_whenPrizeWorkingEnd() {
         // given
-        settings().integer(PRIZE_ON_FIELD, 5)
-                .integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_WORKING, 2)
+        settings().integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_EFFECT_TIMEOUT, 2)
                 .integer(OIL_SLIPPERINESS, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -849,9 +849,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroCanGoIfAceAtWay_whenHeroTackPrizeSlidingEnd() {
         // given
-        settings().integer(PRIZE_ON_FIELD, 4)
-                .integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_WORKING, 6)
+        settings().integer(PRIZE_AVAILABLE_TIMEOUT, 4)
+                .integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_EFFECT_TIMEOUT, 6)
                 .integer(OIL_SLIPPERINESS, 5);
 
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -1333,7 +1333,7 @@ public class GameTest extends AbstractGameTest {
     public void shouldAiMove_modeSideView() {
         // given
         settings().integer(TURN_MODE, MODE_SIDE_VIEW)
-                  .integer(AI_PRIZE_LIMIT, 0);
+                  .integer(PRIZES_COUNT, 0);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -5815,7 +5815,7 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldNewAIWhenKillOther() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
                 .integer(COUNT_AIS, 2);
 
         dice(2,    // соль для shuffle spawn позиций
@@ -8749,7 +8749,7 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldCreatedAiPrize() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ?☼\n" +
@@ -8793,7 +8793,7 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldSwapElementAfterFourTicks() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼      ?☼\n" +
@@ -8894,11 +8894,12 @@ public class GameTest extends AbstractGameTest {
         assertPrize("1 prizes with 2 heroes");
     }
 
-    // если spawnAiPrize = 3, а спаунится сразу 2 AIа, то 2-й должен быть AIом с призами
+    // если вероятность появления призового AI = 3,
+    // а спаунится сразу 2 AIа, то 2-й должен быть AI с призами
     @Test
-    public void shouldSpawnAiPrizeWhenTwoAi() {
+    public void shouldSpawnAiPrize_whenTwoAi() {
         // given
-        settings().integer(SPAWN_AI_PRIZE, 3);
+        settings().integer(AI_PRIZE_PROBABILITY, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿    ¿☼\n" +
@@ -8928,11 +8929,12 @@ public class GameTest extends AbstractGameTest {
         assertPrize("1 prizes with 3 heroes");
     }
 
-    // если spawnAiPrize = 3 и спаунится сразу 3 AIа, то 2-й должен быть AIом с призами
+    // если вероятность появления призового AI = 3,
+    // а спаунится сразу 3 AI, то 2-й должен быть AI с призами
     @Test
-    public void shouldSpawnAiPrizeWhenThreeAi() {
+    public void shouldSpawnAiPrize_whenThreeAi() {
         // given
-        settings().integer(SPAWN_AI_PRIZE, 3);
+        settings().integer(AI_PRIZE_PROBABILITY, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ¿  ¿ ¿☼\n" +
@@ -8961,11 +8963,12 @@ public class GameTest extends AbstractGameTest {
         assertPrize("1 prizes with 4 heroes");
     }
 
-    // если spawnAiPrize = 3, а спаунятся сразу 6 AIов, то должно быть 2 AIа с призами
+    // если вероятность появления призового AI = 3,
+    // а спаунятся сразу 6 AI, то должно быть 2 AI с призами
     @Test
-    public void shouldSpawnTwoAiPrizeWhenSixAi() {
+    public void shouldSpawnTwoAiPrize_whenSixAi() {
         // given
-        settings().integer(SPAWN_AI_PRIZE, 3)
+        settings().integer(AI_PRIZE_PROBABILITY, 3)
                 .integer(COUNT_AIS, 6);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
@@ -8995,13 +8998,14 @@ public class GameTest extends AbstractGameTest {
         assertPrize("2 prizes with 7 heroes");
     }
 
-    // если spawnAiPrize = 3, а 3 AIа спаунятся по 1-му за каждый ход,
+    // если вероятность появления призового AI = 3,
+    // а 3 AI спаунятся по 1-му за каждый ход,
     // то AI с призами спаунится после 2-го хода
     // так же проверяем что AI-субмарина меняет свой символ каждые 4 тика
     @Test
     public void shouldSpawnAiPrize_whenAddOneByOneAI() {
         // given
-        settings().integer(SPAWN_AI_PRIZE, 3);
+        settings().integer(AI_PRIZE_PROBABILITY, 3);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -9150,9 +9154,9 @@ public class GameTest extends AbstractGameTest {
 
     // в AI-субмарина с призами надо попасть 3 раза, чтобы убить
     @Test
-    public void shouldKillAiPrizeInThreeHits() {
+    public void shouldKillAiPrize_inThreeHits() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -9320,7 +9324,7 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldDropPrize_onlyInPointKilledAiPrize() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -9367,7 +9371,7 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldDropPrize_inPointKilledAiPrize_underSeaweed() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -9426,9 +9430,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDropPrize_InPointKilledAiPrize_onOilLeak() {
+    public void shouldDropPrize_inPointKilledAiPrize_onOilLeak() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -9490,8 +9494,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldExpirePrizeOnField_disappearTwoTicks() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 2);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -9544,8 +9548,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldExpirePrizeOnField_disappearThreeTicks() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -9621,8 +9625,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldExpirePrizeOnField_disappearFourTicks() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 4);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 4);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -9700,8 +9704,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldExpirePrizeOnField_disappearOnSeaweed() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 2);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -9788,8 +9792,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldExpirePrizeOnField_disappearOnOilLeak() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 2);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -9874,8 +9878,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTookPrize() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -9947,8 +9951,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldOtherTookPrize() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10024,8 +10028,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTookPrize_underSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3)
                 .bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
         givenPrizeUnderSeaweed();
@@ -10073,8 +10077,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroDestroyPrize_underSeaweed_caseShowMyHeroUnderSeaweed() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3)
                 .bool(SHOW_MY_HERO_UNDER_SEAWEED, true);
 
         givenPrizeUnderSeaweed();
@@ -10157,8 +10161,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTookPrize_underSeaweed_caseDontShowMyHeroUnderSeaweed() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3)
                 .bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
 
         givenPrizeUnderSeaweed();
@@ -10206,8 +10210,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroDestroyPrize_underSeaweed_caseDontShowMyHeroUnderSeaweed() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3)
                 .bool(SHOW_MY_HERO_UNDER_SEAWEED, false);
 
         givenPrizeUnderSeaweed();
@@ -10249,8 +10253,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldOtherTookPrize_underSeaweed() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10327,8 +10331,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTookPrize_onOilLeak() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10402,8 +10406,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldOtherTookPrize_onOilLeak() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10480,8 +10484,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldAiDontTookPrize() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10549,8 +10553,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTookPrize_inPointKillAi() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10615,8 +10619,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldKillHero_whenHeroTookPrizeAndComesTorpedo() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 6);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 6);
 
         givenFl("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
@@ -10763,8 +10767,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroKillPrize() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10832,8 +10836,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroKillPrize_dontTakeNextTick() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -10902,8 +10906,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldKilAIWithPrize_whenHitKillsIs2() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 2)
-                .integer(PRIZE_ON_FIELD, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 2)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -11017,9 +11021,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTakePrize_shouldShootWithDelayAfterPrizeEnd() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(PRIZE_WORKING, 5)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(PRIZE_EFFECT_TIMEOUT, 5)
                 .integer(HERO_TICKS_PER_SHOOT,3);
 
 
@@ -11254,9 +11258,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTakePrize_breakingBad() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(PRIZE_WORKING, 10);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(PRIZE_EFFECT_TIMEOUT, 10);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼  ╬  ☼\n" +
@@ -11371,8 +11375,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTakePrizeEnemyWithoutPrize_breakingBad() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
@@ -11852,8 +11856,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroNotBreakingReefs_whenItFiresAtThem_breakingBad() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬╬╬  ☼\n" +
@@ -11961,9 +11965,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldEndPrizeWorking_breakingBad() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(PRIZE_WORKING, 1);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(PRIZE_EFFECT_TIMEOUT, 1);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╬    ☼\n" +
@@ -12109,8 +12113,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTakePrizeEnemyShootsHero_immortality() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -12197,9 +12201,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldEndPrizeWorkingEnemyShootsHero_immortality() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(PRIZE_WORKING, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(PRIZE_EFFECT_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -12331,8 +12335,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTakePrizeAiShootsHero_immortality() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -12431,9 +12435,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldEndPrizeWorkingAiShootsHero_immortality() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(PRIZE_WORKING, 2);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(PRIZE_EFFECT_TIMEOUT, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼¿    ☼\n" +
@@ -12975,9 +12979,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroCanGoIfFishnetAtWay_whenHeroTakePrize() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(PRIZE_WORKING, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(PRIZE_EFFECT_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -13072,9 +13076,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTakePrize_walkOnFishnet() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(PRIZE_WORKING, 3);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(PRIZE_EFFECT_TIMEOUT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -13164,9 +13168,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroCanGoIfFishnetAtWay_whenPrizeIsOver() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(PRIZE_WORKING, 2);
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(PRIZE_EFFECT_TIMEOUT, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼~    ☼\n" +
@@ -13275,10 +13279,10 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroCanGoIfFishnetAtWay_whenPrizeIsOver_butHeroStillOnFishnet() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
                 .integer(PENALTY_WALKING_ON_FISHNET, 4)
-                .integer(PRIZE_WORKING, 2);
+                .integer(PRIZE_EFFECT_TIMEOUT, 2);
 
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼~~~~~☼\n" +
@@ -13632,9 +13636,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTakePrizeAndShootsEveryTick_breakingBad() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(PRIZE_WORKING, 3)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(PRIZE_EFFECT_TIMEOUT, 3)
                 .integer(HERO_TICKS_PER_SHOOT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -13986,13 +13990,15 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // если spawnAiPrize = 2, то должно быть 3 AIа с призами
-    // если aiPrizeLimit = 2, то будет на поле 2 AIа с призами
+    // если вероятность появления призового AI = 2,
+    // то должно быть 3 AI с призами,
+    // но если количество призов ограничено 2,
+    // то будет на поле 2 AI с призами
     @Test
     public void shouldSpawnTwoAiPrize() {
         // given
-        settings().integer(SPAWN_AI_PRIZE, 2)
-                .integer(AI_PRIZE_LIMIT, 2)
+        settings().integer(AI_PRIZE_PROBABILITY, 2)
+                .integer(PRIZES_COUNT, 2)
                 .integer(COUNT_AIS, 6);
 
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
@@ -14022,16 +14028,19 @@ public class GameTest extends AbstractGameTest {
         assertPrize("2 prizes with 7 heroes");
     }
 
-    // если spawnAiPrize = 2, то каждый второй AI будет с призами
-    // если на поле уже лежит приз и есть один AI с призом, то при aiPrizeLimit = 2,
-    // AIов с призами больше появляться не будет
+
+    // если вероятность появления призового AI = 2,
+    // то каждый второй AI будет с призами
+    // если на поле уже лежит приз и есть один AI с призом,
+    // то при ограниченнии на количество призов = 2,
+    // AI с призами больше появляться не будет
     @Test
     public void shouldNotSpawnAiPrize_ifPrizeOnField() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(SPAWN_AI_PRIZE, 2)
-                .integer(AI_PRIZE_LIMIT, 2)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(AI_PRIZE_PROBABILITY, 2)
+                .integer(PRIZES_COUNT, 2)
                 .integer(COUNT_AIS, 5);
 
         dice(1, // соль для shuffle spawn позиций
@@ -14129,10 +14138,10 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldSpawnAiPrize_ifKillPrize() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(SPAWN_AI_PRIZE, 2)
-                .integer(AI_PRIZE_LIMIT, 2)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(AI_PRIZE_PROBABILITY, 2)
+                .integer(PRIZES_COUNT, 2)
                 .integer(COUNT_AIS, 5);
 
         dice(1, // соль для shuffle spawn позиций
@@ -14329,8 +14338,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTakePrizeAndSeeAiUnderSeaweed_visibility() {
         // given
-        settings().integer(PRIZE_ON_FIELD, 5)
-                .integer(KILL_HITS_AI_PRIZE, 1);
+        settings().integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(AI_PRIZE_SURVIVABILITY, 1);
 
         catchVisibilityPrizeWithAIOnMap();
 
@@ -14348,8 +14357,8 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldHeroTakePrizeAndSeeEnemyUnderSeaweed_visibility() {
         // given
-        settings().integer(PRIZE_ON_FIELD, 5)
-                .integer(KILL_HITS_AI_PRIZE, 1);
+        settings().integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(AI_PRIZE_SURVIVABILITY, 1);
 
         catchVisibilityPrizeWithEnemyOnMap();
 
@@ -14550,9 +14559,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldEndPrizeWorkingDontSeeAiUnderSeaweed_visibility() {
         // given
-        settings().integer(PRIZE_ON_FIELD, 5)
-                .integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_WORKING, 2);
+        settings().integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_EFFECT_TIMEOUT, 2);
 
         catchVisibilityPrizeWithAIOnMap();
 
@@ -14672,9 +14681,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldEndPrizeWorkingDontSeeEnemyUnderSeaweed_visibility() {
         // given
-        settings().integer(PRIZE_ON_FIELD, 5)
-                .integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_WORKING, 2);
+        settings().integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_EFFECT_TIMEOUT, 2);
 
         catchVisibilityPrizeWithEnemyOnMap();
 
@@ -14775,9 +14784,9 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void theBlownUpPrizeGivesNoAdvantage() {
         // given
-        settings().integer(KILL_HITS_AI_PRIZE, 1)
-                .integer(PRIZE_ON_FIELD, 5)
-                .integer(PRIZE_WORKING, 3)
+        settings().integer(AI_PRIZE_SURVIVABILITY, 1)
+                .integer(PRIZE_AVAILABLE_TIMEOUT, 5)
+                .integer(PRIZE_EFFECT_TIMEOUT, 3)
                 .integer(HERO_TICKS_PER_SHOOT, 3);
 
         givenFl("☼☼☼☼☼☼☼\n" +

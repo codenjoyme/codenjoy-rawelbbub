@@ -57,18 +57,12 @@ public class GameSettings extends SettingsImpl
         COUNT_AIS("[Game] Count AIs on the board"),
         TURN_MODE("[Game] Turn mode"),
 
-        // TODO rename to AI_PRIZE_PROBABILITY
-        SPAWN_AI_PRIZE("[Prize] Count spawn for AI with prize"),
-        // TODO rename AI_PRIZE_SURVIVABILITY
-        KILL_HITS_AI_PRIZE("[Prize] Hits to kill AI with prize"),
-        // TODO rename to PRIZE_AVAILABLE_TIMEOUT
-        PRIZE_ON_FIELD("[Prize] The period of prize validity on the field after the appearance"),
-        // TODO rename to PRIZE_EFFECT_TIMEOUT
-        PRIZE_WORKING("[Prize] Working time of the prize after catch up"),
-        // TODO rename to PRIZES_COUNT
-        AI_PRIZE_LIMIT("[Prize] The total number of prize AI and prizes on the board"),
-        // TODO rename to PRIZE_BLINK_TIMEOUT
-        PRIZE_SPRITE_CHANGE_TICKS("[Prize] Prize sprite changes every ticks"),
+        AI_PRIZE_PROBABILITY("[Prize] Count spawn for AI with prize"),
+        AI_PRIZE_SURVIVABILITY("[Prize] Hits to kill AI with prize"),
+        PRIZE_AVAILABLE_TIMEOUT("[Prize] The period of prize validity on the field after the appearance"),
+        PRIZE_EFFECT_TIMEOUT("[Prize] Working time of the prize after catch up"),
+        PRIZES_COUNT("[Prize] The total number of prize AI and prizes on the board"),
+        PRIZE_BLINK_TIMEOUT("[Prize] Prize sprite changes every ticks"),
 
         CHANCE_IMMORTALITY("[Chance] Prize immortality"),
         CHANCE_BREAKING_BAD("[Chance] Prize breaking bad"),
@@ -112,12 +106,12 @@ public class GameSettings extends SettingsImpl
         integer(COUNT_AIS, 3);
         integer(TURN_MODE, MODE_ALL_DIRECTIONS);
 
-        integer(SPAWN_AI_PRIZE, 4);
-        integer(KILL_HITS_AI_PRIZE, 3);
-        integer(PRIZE_ON_FIELD, 50);
-        integer(PRIZE_WORKING, 30);
-        integer(AI_PRIZE_LIMIT, 3);
-        integer(PRIZE_SPRITE_CHANGE_TICKS, 2);
+        integer(AI_PRIZE_PROBABILITY, 4);
+        integer(AI_PRIZE_SURVIVABILITY, 3);
+        integer(PRIZE_AVAILABLE_TIMEOUT, 50);
+        integer(PRIZE_EFFECT_TIMEOUT, 30);
+        integer(PRIZES_COUNT, 3);
+        integer(PRIZE_BLINK_TIMEOUT, 2);
 
         integer(CHANCE_RESERVED, 30);
         integer(CHANCE_IMMORTALITY, 20);

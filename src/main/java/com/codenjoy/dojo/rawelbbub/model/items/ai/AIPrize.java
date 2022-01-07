@@ -28,7 +28,7 @@ import com.codenjoy.dojo.rawelbbub.model.Player;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.KILL_HITS_AI_PRIZE;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.AI_PRIZE_SURVIVABILITY;
 
 public class AIPrize extends AI {
 
@@ -69,7 +69,7 @@ public class AIPrize extends AI {
     }
 
     private int vitality() {
-        return settings().integer(KILL_HITS_AI_PRIZE);
+        return settings().integer(AI_PRIZE_SURVIVABILITY);
     }
 
     @Override

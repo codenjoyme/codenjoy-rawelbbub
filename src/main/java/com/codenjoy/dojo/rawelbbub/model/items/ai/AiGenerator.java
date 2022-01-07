@@ -95,18 +95,18 @@ public class AiGenerator {
     }
 
     private boolean isPrizeAiTurn() {
-        if (spawnAiPrize() == 0) {
+        if (probability() == 0) {
             return false;
         }
-        return spawnIteration % spawnAiPrize() == 0;
+        return spawnIteration % probability() == 0;
     }
 
-    private int spawnAiPrize() {
-        return settings.integer(SPAWN_AI_PRIZE);
+    public int probability() {
+        return settings.integer(AI_PRIZE_PROBABILITY);
     }
 
-    private int aiPrizeLimit() {
-        return settings.integer(AI_PRIZE_LIMIT);
+    private int prizesCount() {
+        return settings.integer(PRIZES_COUNT);
     }
 
     private int capacity() {
@@ -121,7 +121,7 @@ public class AiGenerator {
     }
 
     private boolean prizeNeeded() {
-        return (aiPrizeLimit() - field.totalPrizes()) > 0;
+        return (prizesCount() - field.totalPrizes()) > 0;
     }
 
     public void spawnOn(List<Point> spawn) {

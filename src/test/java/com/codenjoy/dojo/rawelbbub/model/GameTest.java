@@ -1130,6 +1130,663 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
+    public void shouldTorpedoMoveLeft_modeSideView() {
+        // given
+        settings().integer(TURN_MODE, MODE_SIDE_VIEW);
+
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼    ◄☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼    h☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  t h☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼t   h☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "Ѡ    h☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼    h☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void shouldPrizeAiMove_modeSideView() {
+        // given
+        settings().integer(TURN_MODE, MODE_SIDE_VIEW);
+
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ¿  ☼\n" +
+                "☼     ☼\n" +
+                "☼►    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  P  ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  P  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).down();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  P  ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).right();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼   P ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).left();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  p  ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).left();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼ p   ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ p   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).down();
+        ai(0).down();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼ p   ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).right();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  P  ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void shouldAiMove_modeSideView() {
+        // given
+        settings().integer(TURN_MODE, MODE_SIDE_VIEW)
+                  .integer(AI_PRIZE_LIMIT, 0);
+
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ¿  ☼\n" +
+                "☼     ☼\n" +
+                "☼►    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  A  ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  A  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).down();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  A  ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).right();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼   A ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).left();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  a  ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).left();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼ a   ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ a   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).down();
+        ai(0).down();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼ a   ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        ai(0).right();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  A  ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void shouldTorpedoMoveRight_modeSideView() {
+        // given
+        settings().integer(TURN_MODE, MODE_SIDE_VIEW);
+
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼►    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼H T  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼H   T☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼H    Ѡ\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼H    ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void shouldHeroMove_modeSideView() {
+        // given
+        settings().integer(TURN_MODE, MODE_SIDE_VIEW);
+
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  H  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  H  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).down();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  H  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).right();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼   H ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).left();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  h  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).left();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼ h   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ h   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).down();
+        hero(0).down();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼ h   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(0).right();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  H  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void shouldOtherHeroMove_modeSideView() {
+        // given
+        settings().integer(TURN_MODE, MODE_SIDE_VIEW);
+
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼    ▲☼\n" +
+                "☼     ☼\n" +
+                "☼  ▲  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    H☼\n" +
+                "☼     ☼\n" +
+                "☼  O  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(1).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    H☼\n" +
+                "☼  O  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(1).down();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    H☼\n" +
+                "☼     ☼\n" +
+                "☼  O  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(1).right();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    H☼\n" +
+                "☼     ☼\n" +
+                "☼   O ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(1).left();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    H☼\n" +
+                "☼     ☼\n" +
+                "☼  o  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(1).left();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    H☼\n" +
+                "☼     ☼\n" +
+                "☼ o   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(1).up();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    H☼\n" +
+                "☼ o   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(1).down();
+        hero(1).down();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    H☼\n" +
+                "☼     ☼\n" +
+                "☼ o   ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+
+        // when
+        hero(1).right();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    H☼\n" +
+                "☼     ☼\n" +
+                "☼  O  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
+    }
+
+    @Test
     public void shouldHeroMove_modeForwardBackward() {
         // given
         settings().integer(TURN_MODE, MODE_FORWARD_BACKWARD);

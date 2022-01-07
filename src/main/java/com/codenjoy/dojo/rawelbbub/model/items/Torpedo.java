@@ -34,7 +34,7 @@ import com.codenjoy.dojo.services.State;
 
 public class Torpedo extends MovingObject implements State<Element, Player> {
 
-    private final Field field;
+    private Field field;
     private Hero owner;
     private boolean heavy;
     private boolean justFired;
@@ -89,7 +89,7 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
         if (destroyed()) {
             return Element.EXPLOSION;
         }
-        return Element.torpedo(direction);
+        return Element.torpedo(direction, field.settings().isModeSideView());
     }
 
     public void heavy() {

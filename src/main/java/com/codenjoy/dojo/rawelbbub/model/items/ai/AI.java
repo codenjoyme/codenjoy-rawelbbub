@@ -121,7 +121,7 @@ public class AI extends Hero {
         if (!isAlive()) {
             return Element.EXPLOSION;
         }
-        return Element.ai(direction);
+        return Element.ai(direction, settings().isModeSideView());
     }
 
     public boolean withPrize() {

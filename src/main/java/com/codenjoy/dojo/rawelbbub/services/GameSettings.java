@@ -57,11 +57,17 @@ public class GameSettings extends SettingsImpl
         COUNT_AIS("[Game] Count AIs on the board"),
         TURN_MODE("[Game] Turn mode"),
 
+        // TODO rename to AI_PRIZE_PROBABILITY
         SPAWN_AI_PRIZE("[Prize] Count spawn for AI with prize"),
+        // TODO rename AI_PRIZE_SURVIVABILITY
         KILL_HITS_AI_PRIZE("[Prize] Hits to kill AI with prize"),
+        // TODO rename to PRIZE_AVAILABLE_TIMEOUT
         PRIZE_ON_FIELD("[Prize] The period of prize validity on the field after the appearance"),
+        // TODO rename to PRIZE_EFFECT_TIMEOUT
         PRIZE_WORKING("[Prize] Working time of the prize after catch up"),
+        // TODO rename to PRIZES_COUNT
         AI_PRIZE_LIMIT("[Prize] The total number of prize AI and prizes on the board"),
+        // TODO rename to PRIZE_BLINK_TIMEOUT
         PRIZE_SPRITE_CHANGE_TICKS("[Prize] Prize sprite changes every ticks"),
 
         CHANCE_IMMORTALITY("[Chance] Prize immortality"),
@@ -135,6 +141,14 @@ public class GameSettings extends SettingsImpl
             .put(CHANCE_VISIBILITY, PRIZE_VISIBILITY)
             .put(CHANCE_NO_SLIDING, PRIZE_NO_SLIDING)
             .run();
+    }
+
+    public boolean isModeForwardBackward() {
+        return integer(TURN_MODE) == MODE_FORWARD_BACKWARD;
+    }
+
+    public boolean isModeSideView() {
+        return integer(TURN_MODE) == MODE_SIDE_VIEW;
     }
 
     public Calculator<Integer> calculator() {

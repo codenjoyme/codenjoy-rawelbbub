@@ -25,12 +25,15 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
 import com.codenjoy.dojo.rawelbbub.model.items.Gun;
+import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import com.codenjoy.dojo.rawelbbub.model.items.oil.Sliding;
 import com.codenjoy.dojo.rawelbbub.model.items.prize.Prize;
-import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import com.codenjoy.dojo.rawelbbub.model.items.prize.Prizes;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
-import com.codenjoy.dojo.services.*;
+import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.services.Direction;
+import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.State;
 import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.joystick.Act;
 import com.codenjoy.dojo.services.joystick.RoundsDirectionActJoystick;
@@ -43,20 +46,20 @@ import java.util.List;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.*;
 import static com.codenjoy.dojo.rawelbbub.services.Event.*;
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
-import static com.codenjoy.dojo.rawelbbub.services.GameSettings.MODE_FORWARD_BACKWARD;
-import static com.codenjoy.dojo.services.route.Route.FORWARD;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.HERO_TICKS_PER_SHOOT;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.PENALTY_WALKING_ON_FISHNET;
+import static com.codenjoy.dojo.services.Direction.*;
 import static java.util.stream.Collectors.toList;
 
 public class Hero extends RoundPlayerHero<Field> 
-        implements RoundsDirectionActJoystick, State<Element, Player>,
-                   RouteProcessor {
+        implements RouteProcessor,
+                   RoundsDirectionActJoystick, State<Element, Player> {
 
     // ориентация героя по сторонам света
     protected Direction direction;
 
     // команда герою
-    protected Route route;
+    private Route route;
 
     private boolean fire;
     private int score;
@@ -84,6 +87,10 @@ public class Hero extends RoundPlayerHero<Field>
             field.heroes().add(this);
         }
 
+        if (isModeSideView()) {
+            noUpDownDirection();
+        }
+
         dice(field.dice());
         gun = new Gun(settings());
         sliding = new Sliding(field, direction, settings());
@@ -91,11 +98,16 @@ public class Hero extends RoundPlayerHero<Field>
 
         route(null);
         fire = false;
-        setAlive(true);
         gun.reset();
         prizes.clear();
         killed = 0;
         setAlive(true);
+    }
+
+    private void noUpDownDirection() {
+        if (direction == UP || direction == DOWN) {
+            direction = RIGHT;
+        }
     }
 
     public boolean isAI() {
@@ -108,9 +120,13 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     @Override
+    public boolean isModeSideView() {
+        return settings().isModeSideView();
+    }
+
+    @Override
     public void change(Direction direction) {
-        this.direction = direction;
-        route(FORWARD);
+        RouteProcessor.super.change(direction);
     }
 
     @Override
@@ -124,7 +140,7 @@ public class Hero extends RoundPlayerHero<Field>
 
     @Override
     public void validateTurnModeEnabled() {
-        if (settings().integer(TURN_MODE) != MODE_FORWARD_BACKWARD) {
+        if (!settings().isModeForwardBackward()) {
             throw new IllegalStateException("Please fix settings:\n" +
                     "\t settings().integer(TURN_MODE, MODE_FORWARD_BACKWARD);");
         }
@@ -203,8 +219,8 @@ public class Hero extends RoundPlayerHero<Field>
         }
 
         return player.getHero() == this
-                ? Element.hero(direction)
-                : Element.otherHero(direction);
+                ? Element.hero(direction, settings().isModeSideView())
+                : Element.otherHero(direction, settings().isModeSideView());
     }
 
     public void tryFire() {

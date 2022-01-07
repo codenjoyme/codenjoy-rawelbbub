@@ -77,7 +77,7 @@ public class AIPrize extends AI {
         if (!isAlive() || wounded) {
             return Element.EXPLOSION;
         }
-        return Element.aiPrize(direction);
+        return Element.aiPrize(direction, settings().isModeSideView());
     }
 
     @Override

@@ -25,6 +25,9 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 import org.junit.Test;
 
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.TURN_MODE;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.MODE_ALL_DIRECTIONS;
+import static com.codenjoy.dojo.rawelbbub.services.GameSettings.MODE_SIDE_VIEW;
 import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
 
 public class MultiplayerTest extends AbstractGameTest {
@@ -287,5 +290,333 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼ ˄~☼\n" +
                 "☼▲ #☼\n" +
                 "☼☼☼☼☼\n", 0);
+    }
+
+    @Test
+    public void shouldAllHeroes_whenSameTeam_modeAllDirections() {
+        // given
+        settings().integer(TURN_MODE, MODE_ALL_DIRECTIONS);
+
+        givenFl("☼☼☼☼☼\n" +
+                "☼▼ ▼☼\n" +
+                "☼   ☼\n" +
+                "☼▲ ▲☼\n" +
+                "☼☼☼☼☼\n");
+
+        player(0).inTeam(0);
+        player(1).inTeam(0);
+        player(2).inTeam(0);
+        player(3).inTeam(0);
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼▼ ˅☼\n" +
+                "☼   ☼\n" +
+                "☼˄ ˄☼\n" +
+                "☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼˅ ▼☼\n" +
+                "☼   ☼\n" +
+                "☼˄ ˄☼\n" +
+                "☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼˅ ˅☼\n" +
+                "☼   ☼\n" +
+                "☼▲ ˄☼\n" +
+                "☼☼☼☼☼\n", 2);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼˅ ˅☼\n" +
+                "☼   ☼\n" +
+                "☼˄ ▲☼\n" +
+                "☼☼☼☼☼\n", 3);
+
+        // when
+        hero(0).fire();
+        hero(3).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼▼ Ѡ☼\n" +
+                "☼   ☼\n" +
+                "☼Ѡ ˄☼\n" +
+                "☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼˅ Ѡ☼\n" +
+                "☼   ☼\n" +
+                "☼Ѡ ˄☼\n" +
+                "☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼˅ Ѡ☼\n" +
+                "☼   ☼\n" +
+                "☼Ѡ ˄☼\n" +
+                "☼☼☼☼☼\n", 2);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼˅ Ѡ☼\n" +
+                "☼   ☼\n" +
+                "☼Ѡ ▲☼\n" +
+                "☼☼☼☼☼\n", 3);
+
+        verifyAllEvents(
+                "listener(0) => [KILL_OTHER_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n" +
+                "listener(2) => [HERO_DIED]\n" +
+                "listener(3) => [KILL_OTHER_HERO[1]]\n");
+
+        assertScores(
+                "hero(0)=50\n" +
+                "hero(3)=50");
+    }
+
+    @Test
+    public void shouldAllHeroes_whenDifferentTeam_modeAllDirections_caseUpDown() {
+        // given
+        settings().integer(TURN_MODE, MODE_ALL_DIRECTIONS);
+
+        givenFl("☼☼☼☼☼\n" +
+                "☼▼ ▼☼\n" +
+                "☼   ☼\n" +
+                "☼▲ ▲☼\n" +
+                "☼☼☼☼☼\n");
+
+        player(0).inTeam(1);
+        player(1).inTeam(1);
+        player(2).inTeam(0);
+        player(3).inTeam(0);
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼▼ ˅☼\n" +
+                "☼   ☼\n" +
+                "☼Ô Ô☼\n" +
+                "☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼˅ ▼☼\n" +
+                "☼   ☼\n" +
+                "☼Ô Ô☼\n" +
+                "☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼Ç Ç☼\n" +
+                "☼   ☼\n" +
+                "☼▲ ˄☼\n" +
+                "☼☼☼☼☼\n", 2);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼Ç Ç☼\n" +
+                "☼   ☼\n" +
+                "☼˄ ▲☼\n" +
+                "☼☼☼☼☼\n", 3);
+
+        // when
+        hero(0).fire();
+        hero(3).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼▼ Ѡ☼\n" +
+                "☼   ☼\n" +
+                "☼Ѡ Ô☼\n" +
+                "☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼˅ Ѡ☼\n" +
+                "☼   ☼\n" +
+                "☼Ѡ Ô☼\n" +
+                "☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼Ç Ѡ☼\n" +
+                "☼   ☼\n" +
+                "☼Ѡ ˄☼\n" +
+                "☼☼☼☼☼\n", 2);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼Ç Ѡ☼\n" +
+                "☼   ☼\n" +
+                "☼Ѡ ▲☼\n" +
+                "☼☼☼☼☼\n", 3);
+
+        verifyAllEvents(
+                "listener(0) => [KILL_ENEMY_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n" +
+                "listener(2) => [HERO_DIED]\n" +
+                "listener(3) => [KILL_ENEMY_HERO[1]]\n");
+
+        assertScores(
+                "hero(0)=75\n" +
+                "hero(3)=75");
+    }
+
+    @Test
+    public void shouldAllHeroes_whenDifferentTeam_modeAllDirections_caseLeftRight() {
+        // given
+        settings().integer(TURN_MODE, MODE_ALL_DIRECTIONS);
+
+        givenFl("☼☼☼☼☼\n" +
+                "☼► ◄☼\n" +
+                "☼   ☼\n" +
+                "☼► ◄☼\n" +
+                "☼☼☼☼☼\n");
+
+        player(0).inTeam(1);
+        player(1).inTeam(1);
+        player(2).inTeam(0);
+        player(3).inTeam(0);
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼£ ◄☼\n" +
+                "☼   ☼\n" +
+                "☼£ ˂☼\n" +
+                "☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼£ ˂☼\n" +
+                "☼   ☼\n" +
+                "☼£ ◄☼\n" +
+                "☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼► Ð☼\n" +
+                "☼   ☼\n" +
+                "☼˃ Ð☼\n" +
+                "☼☼☼☼☼\n", 2);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼˃ Ð☼\n" +
+                "☼   ☼\n" +
+                "☼► Ð☼\n" +
+                "☼☼☼☼☼\n", 3);
+
+        // when
+        hero(0).fire();
+        hero(3).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼Ѡ ◄☼\n" +
+                "☼   ☼\n" +
+                "☼£ Ѡ☼\n" +
+                "☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼Ѡ ˂☼\n" +
+                "☼   ☼\n" +
+                "☼£ Ѡ☼\n" +
+                "☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼Ѡ Ð☼\n" +
+                "☼   ☼\n" +
+                "☼˃ Ѡ☼\n" +
+                "☼☼☼☼☼\n", 2);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼Ѡ Ð☼\n" +
+                "☼   ☼\n" +
+                "☼► Ѡ☼\n" +
+                "☼☼☼☼☼\n", 3);
+
+        verifyAllEvents(
+                "listener(0) => [KILL_ENEMY_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n" +
+                "listener(2) => [HERO_DIED]\n" +
+                "listener(3) => [KILL_ENEMY_HERO[1]]\n");
+
+        assertScores(
+                "hero(0)=75\n" +
+                "hero(3)=75");
+    }
+
+    @Test
+    public void shouldAllHeroes_whenDifferentTeam_modeSideView_caseLeftRight() {
+        // given
+        settings().integer(TURN_MODE, MODE_SIDE_VIEW);
+
+        givenFl("☼☼☼☼☼\n" +
+                "☼► ◄☼\n" +
+                "☼   ☼\n" +
+                "☼► ◄☼\n" +
+                "☼☼☼☼☼\n");
+
+        player(0).inTeam(1);
+        player(1).inTeam(1);
+        player(2).inTeam(0);
+        player(3).inTeam(0);
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼E h☼\n" +
+                "☼   ☼\n" +
+                "☼E o☼\n" +
+                "☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼E o☼\n" +
+                "☼   ☼\n" +
+                "☼E h☼\n" +
+                "☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼H e☼\n" +
+                "☼   ☼\n" +
+                "☼O e☼\n" +
+                "☼☼☼☼☼\n", 2);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼O e☼\n" +
+                "☼   ☼\n" +
+                "☼H e☼\n" +
+                "☼☼☼☼☼\n", 3);
+
+        // when
+        hero(0).fire();
+        hero(3).fire();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼Ѡ h☼\n" +
+                "☼   ☼\n" +
+                "☼E Ѡ☼\n" +
+                "☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼Ѡ o☼\n" +
+                "☼   ☼\n" +
+                "☼E Ѡ☼\n" +
+                "☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼Ѡ e☼\n" +
+                "☼   ☼\n" +
+                "☼O Ѡ☼\n" +
+                "☼☼☼☼☼\n", 2);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼Ѡ e☼\n" +
+                "☼   ☼\n" +
+                "☼H Ѡ☼\n" +
+                "☼☼☼☼☼\n", 3);
+
+        verifyAllEvents(
+                "listener(0) => [KILL_ENEMY_HERO[1]]\n" +
+                "listener(1) => [HERO_DIED]\n" +
+                "listener(2) => [HERO_DIED]\n" +
+                "listener(3) => [KILL_ENEMY_HERO[1]]\n");
+
+        assertScores(
+                "hero(0)=75\n" +
+                "hero(3)=75");
     }
 }

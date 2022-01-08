@@ -33,6 +33,7 @@ import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.printer.state.HeroState;
 import com.codenjoy.dojo.services.printer.state.State;
 import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.joystick.Act;
@@ -53,7 +54,8 @@ import static java.util.stream.Collectors.toList;
 
 public class Hero extends RoundPlayerHero<Field> 
         implements RouteProcessor,
-                   RoundsDirectionActJoystick, State<Element, Player> {
+                   RoundsDirectionActJoystick, State<Element, Player>,
+                   HeroState<Element, Hero, Player> {
 
     // ориентация героя по сторонам света
     protected Direction direction;
@@ -211,13 +213,16 @@ public class Hero extends RoundPlayerHero<Field>
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
+        return HeroState.super.state(player, alsoAtPoint);
+    }
+
+    @Override
+    public Element beforeState(Object... alsoAtPoint) {
         if (!isAlive()) {
             return Element.EXPLOSION;
         }
 
-        return player.getHero() == this
-                ? Element.hero(direction, settings().isSideViewMode())
-                : Element.otherHero(direction, settings().isSideViewMode());
+        return Element.hero(direction, settings().isSideViewMode());
     }
 
     public void tryFire() {
@@ -274,11 +279,6 @@ public class Hero extends RoundPlayerHero<Field>
         this.dice = dice;
     }
 
-    public void killHero() {
-        killed++;
-        getPlayer().event(KILL_OTHER_HERO.apply(killed));
-    }
-
     public void killed(int killed) {
         this.killed = killed;
     }
@@ -315,7 +315,7 @@ public class Hero extends RoundPlayerHero<Field>
         if (prey.isAI()) {
             event(KILL_AI);
         } else {
-            killHero();
+            fireKillHero(prey);
         }
     }
 
@@ -337,5 +337,18 @@ public class Hero extends RoundPlayerHero<Field>
     @Override
     public Route route() {
         return route;
+    }
+
+    public void clearScores() {
+        score = 0;
+    }
+
+    public void fireKillHero(Hero prey) {
+        killed++;
+        if (isMyTeam(prey)) {
+            event(KILL_OTHER_HERO.apply(killed));
+        } else {
+            event(KILL_ENEMY_HERO.apply(killed));
+        }
     }
 }

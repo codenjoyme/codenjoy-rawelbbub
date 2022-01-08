@@ -50,6 +50,10 @@ public class ScoresTest {
         scores.event(Event.KILL_OTHER_HERO.apply(amount));
     }
 
+    public void killEnemyHero(int amount) {
+        scores.event(Event.KILL_ENEMY_HERO.apply(amount));
+    }
+
     @Before
     public void setup() {
         settings = new TestGameSettings();
@@ -74,9 +78,13 @@ public class ScoresTest {
 
         heroDied();
 
+        killEnemyHero(1);
+        killEnemyHero(2);
+
         // then
         assertEquals(140
                     + (1 + 2 + 3) * settings.integer(KILL_OTHER_HERO_SCORE)
+                    + (1 + 2) * settings.integer(KILL_ENEMY_HERO_SCORE)
                     + 2 * settings.integer(KILL_AI_SCORE)
                     + settings.integer(HERO_DIED_PENALTY),
                 scores.getScore());
@@ -135,6 +143,36 @@ public class ScoresTest {
         // then
         assertEquals(140
                      + (1 + 2 + 3) * settings.integer(KILL_OTHER_HERO_SCORE),
+                scores.getScore());
+    }
+
+    @Test
+    public void shouldCollectScores_whenKillEnemyHero() {
+        // given
+        givenScores(140);
+
+        // when
+        killEnemyHero(1);
+
+        // then
+        assertEquals(140
+                    + settings.integer(KILL_ENEMY_HERO_SCORE),
+                scores.getScore());
+
+        // when
+        killEnemyHero(2);
+
+        // then
+        assertEquals(140
+                    + (1 + 2) * settings.integer(KILL_ENEMY_HERO_SCORE),
+                scores.getScore());
+
+        // when
+        killEnemyHero(3);
+
+        // then
+        assertEquals(140
+                    + (1 + 2 + 3) * settings.integer(KILL_ENEMY_HERO_SCORE),
                 scores.getScore());
     }
 

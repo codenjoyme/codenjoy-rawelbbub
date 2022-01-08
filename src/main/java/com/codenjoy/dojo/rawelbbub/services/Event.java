@@ -35,6 +35,7 @@ public class Event implements EventObject<Event.Type, Integer> {
 
     public static final Event HERO_DIED = new Event(Type.HERO_DIED);
     public static final Function<Integer, Event> KILL_OTHER_HERO = amount -> new Event(Type.KILL_OTHER_HERO, amount);
+    public static final Function<Integer, Event> KILL_ENEMY_HERO = amount -> new Event(Type.KILL_ENEMY_HERO, amount);
     public static final Event KILL_AI = new Event(Type.KILL_AI);
     public static final Event START_ROUND = new Event(Type.START_ROUND);
     public static final Event WIN_ROUND = new Event(Type.WIN_ROUND);
@@ -49,6 +50,7 @@ public class Event implements EventObject<Event.Type, Integer> {
         WIN_ROUND,
 
         KILL_OTHER_HERO,
+        KILL_ENEMY_HERO,
         KILL_AI,
         HERO_DIED,
 
@@ -81,7 +83,7 @@ public class Event implements EventObject<Event.Type, Integer> {
 
     @Override
     public String toString() {
-        if (asList(Type.KILL_OTHER_HERO, Type.CATCH_PRIZE).contains(type)) {
+        if (asList(Type.KILL_OTHER_HERO, Type.KILL_ENEMY_HERO, Type.CATCH_PRIZE).contains(type)) {
             return String.format("%s[%s]", type, value);
         }
         return type.name();

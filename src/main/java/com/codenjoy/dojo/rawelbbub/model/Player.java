@@ -23,7 +23,6 @@ package com.codenjoy.dojo.rawelbbub.model;
  */
 
 
-import com.codenjoy.dojo.rawelbbub.services.Event;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.EventListener;
@@ -43,14 +42,15 @@ public class Player extends RoundGamePlayer<Hero, Field> {
     @Override
     public void start(int round, Object startEvent) {
         super.start(round, startEvent);
-        // hero.reset(); // TODO test me
+        hero.clearScores();
     }
 
     public boolean isDestroyed() {
         return !isAlive();
     }
 
-    public void event(Event event) {
+    @Override
+    public void event(Object event) {
         hero.addScore(calculator.score(event));
         super.event(event);
     }

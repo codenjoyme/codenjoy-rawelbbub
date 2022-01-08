@@ -38,6 +38,9 @@ public class Scores extends ScoresMap<Integer> {
         put(Event.Type.KILL_OTHER_HERO,
                 value -> value * settings.integer(KILL_OTHER_HERO_SCORE));
 
+        put(Event.Type.KILL_ENEMY_HERO,
+                value -> value * settings.integer(KILL_ENEMY_HERO_SCORE));
+
         put(Event.Type.KILL_AI,
                 value -> settings.integer(KILL_AI_SCORE));
     }

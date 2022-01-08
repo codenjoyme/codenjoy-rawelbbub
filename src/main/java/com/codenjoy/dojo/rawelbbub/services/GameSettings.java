@@ -72,6 +72,7 @@ public class GameSettings extends SettingsImpl
 
         HERO_DIED_PENALTY("[Score] Kill your hero penalty"),
         KILL_OTHER_HERO_SCORE("[Score] Kill other hero score"),
+        KILL_ENEMY_HERO_SCORE("[Score] Kill enemy hero score"),
         KILL_AI_SCORE("[Score] Kill other AI score"),
 
         SCORE_COUNTING_TYPE(ScoresImpl.SCORE_COUNTING_TYPE.key());
@@ -122,6 +123,7 @@ public class GameSettings extends SettingsImpl
 
         integer(HERO_DIED_PENALTY, -0);
         integer(KILL_OTHER_HERO_SCORE, 50);
+        integer(KILL_ENEMY_HERO_SCORE, 75);
         integer(KILL_AI_SCORE, 25);
 
         Levels.setup(this);

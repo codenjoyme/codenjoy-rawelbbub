@@ -53,6 +53,7 @@ public class GameSettingsTest {
                         "CHANCE_NO_SLIDING, \n" +
                         "HERO_DIED_PENALTY, \n" +
                         "KILL_OTHER_HERO_SCORE, \n" +
+                        "KILL_ENEMY_HERO_SCORE, \n" +
                         "KILL_AI_SCORE, \n" +
                         "SCORE_COUNTING_TYPE]",
                 Utils.split(new GameSettings().allKeys(), ", \n"));

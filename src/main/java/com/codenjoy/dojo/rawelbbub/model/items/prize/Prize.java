@@ -29,7 +29,7 @@ import com.codenjoy.dojo.rawelbbub.model.Player;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
-import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.printer.state.State;
 import com.codenjoy.dojo.services.Tickable;
 
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;

@@ -30,7 +30,7 @@ import com.codenjoy.dojo.rawelbbub.model.Player;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.MovingObject;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.printer.state.State;
 
 public class Torpedo extends MovingObject implements State<Element, Player> {
 

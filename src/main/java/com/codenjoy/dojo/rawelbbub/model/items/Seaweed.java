@@ -29,10 +29,10 @@ import com.codenjoy.dojo.rawelbbub.model.items.ai.AI;
 import com.codenjoy.dojo.rawelbbub.model.items.prize.Prize;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
-import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.printer.state.State;
 
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.SHOW_MY_HERO_UNDER_SEAWEED;
-import static com.codenjoy.dojo.services.StateUtils.filterOne;
+import static com.codenjoy.dojo.services.printer.state.StateUtils.filterOne;
 
 public class Seaweed extends PointImpl implements State<Element, Player> {
 

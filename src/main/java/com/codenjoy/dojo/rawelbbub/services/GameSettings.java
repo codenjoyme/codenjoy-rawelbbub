@@ -69,6 +69,7 @@ public class GameSettings extends SettingsImpl
         CHANCE_WALKING_ON_FISHNET("[Chance] Prize walking on fishnet"),
         CHANCE_VISIBILITY("[Chance] Prize visibility"),
         CHANCE_NO_SLIDING("[Chance] Prize no sliding"),
+        CHANCE_RESERVED(Chance.CHANCE_RESERVED.key()),
 
         HERO_DIED_PENALTY("[Score] Kill your hero penalty"),
         KILL_OTHER_HERO_SCORE("[Score] Kill other hero score"),

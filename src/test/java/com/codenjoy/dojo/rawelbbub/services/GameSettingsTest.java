@@ -51,6 +51,7 @@ public class GameSettingsTest {
                         "CHANCE_WALKING_ON_FISHNET, \n" +
                         "CHANCE_VISIBILITY, \n" +
                         "CHANCE_NO_SLIDING, \n" +
+                        "CHANCE_RESERVED, \n" +
                         "HERO_DIED_PENALTY, \n" +
                         "KILL_OTHER_HERO_SCORE, \n" +
                         "KILL_ENEMY_HERO_SCORE, \n" +

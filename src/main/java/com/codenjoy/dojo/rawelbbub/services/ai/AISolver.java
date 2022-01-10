@@ -33,6 +33,8 @@ import com.codenjoy.dojo.services.algs.DeikstraFindWay;
 
 import java.util.List;
 
+import static com.codenjoy.dojo.services.Direction.ACT;
+
 public class AISolver implements Solver<Board> {
 
     private DeikstraFindWay way;
@@ -83,14 +85,10 @@ public class AISolver implements Solver<Board> {
 
     @Override
     public String get(Board board) {
-        if (board.isGameOver()) return act("");
+        if (board.isGameOver()) return ACT.toString();
         List<Direction> result = getDirections(board);
-        if (result.isEmpty()) return act("");
-        return act(result.get(0).toString());
-    }
-
-    private String act(String command) {
-        return ((command.equals("") ? "" : command + ", ") + "ACT");
+        if (result.isEmpty()) return ACT.toString();
+        return result.get(0).ACT(false);
     }
 
     public List<Direction> getDirections(Board board) {
@@ -105,5 +103,4 @@ public class AISolver implements Solver<Board> {
 
         return way.buildPath(from, to);
     }
-
 }

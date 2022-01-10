@@ -61,7 +61,11 @@ public class Level extends AbstractLevel {
     }
 
     public List<Point> aisSpawn() {
-        return find(identity(), AI_LEFT, AI_RIGHT, AI_UP, AI_DOWN);
+        return find(identity(),
+                AI_LEFT,
+                AI_RIGHT,
+                AI_UP,
+                AI_DOWN);
     }
 
     public List<Hero> heroes() {

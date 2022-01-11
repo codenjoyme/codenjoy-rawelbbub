@@ -54,7 +54,8 @@ import static java.util.stream.Collectors.toList;
 
 public class Hero extends RoundPlayerHero<Field> 
         implements RouteProcessor,
-                   RoundsDirectionActJoystick, State<Element, Player>,
+                   RoundsDirectionActJoystick,
+                   State<Element, Player>,
                    HeroState<Element, Hero, Player> {
 
     // ориентация героя по сторонам света

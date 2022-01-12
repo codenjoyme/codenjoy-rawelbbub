@@ -22,8 +22,10 @@ package com.codenjoy.dojo.rawelbbub;
  * #L%
  */
 
+import com.codenjoy.dojo.client.local.DiceGenerator;
 import com.codenjoy.dojo.rawelbbub.services.GameRunner;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
+import com.codenjoy.dojo.services.Dice;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.COUNT_AIS;
@@ -35,20 +37,26 @@ public class PerformanceTest {
     @Test
     public void test() {
 
-        // about 7.5 sec
+        // about 9 sec
         int ais = 20;
         int players = 50;
         int ticks = 1000;
 
-        int expectedCreation = 1000;
-        int expectedTick = 3000;
-        int expectedPrint = 3000;
+        int expectedCreation = 1100;
+        int expectedTick = 3500;
+        int expectedPrint = 4000;
 
+        Dice dice = new DiceGenerator().getDice(2000);
         GameRunner runner = new GameRunner(){
+
+            @Override
+            public Dice getDice() {
+                return dice;
+            }
+
             @Override
             public GameSettings getSettings() {
                 return new GameSettings()
-                    .bool(ROUNDS_ENABLED, false)
                     .integer(COUNT_AIS, ais);
             }
         };

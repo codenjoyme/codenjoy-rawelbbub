@@ -140,9 +140,4 @@ public class AbstractGameTest
         dice(diceValue, newAiSpawnIndex);
     }
 
-    public void ticks(int fromInclusive, int tillExclusive) {
-        for (int tick = fromInclusive; tick < tillExclusive; tick++) {
-            tick();
-        }
-    }
 }

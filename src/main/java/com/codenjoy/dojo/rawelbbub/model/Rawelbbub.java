@@ -31,10 +31,10 @@ import com.codenjoy.dojo.rawelbbub.model.items.oil.Oil;
 import com.codenjoy.dojo.rawelbbub.model.items.prize.Prize;
 import com.codenjoy.dojo.rawelbbub.model.items.prize.Prizes;
 import com.codenjoy.dojo.rawelbbub.services.GameSettings;
-import com.codenjoy.dojo.services.BoardUtils;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.Accessor;
+import com.codenjoy.dojo.services.field.Generator;
 import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 import com.codenjoy.dojo.services.printer.BoardReader;
@@ -48,7 +48,8 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.PRIZE_BREAKING_BAD;
-import static com.codenjoy.dojo.rawelbbub.services.Event.*;
+import static com.codenjoy.dojo.rawelbbub.services.Event.START_ROUND;
+import static com.codenjoy.dojo.rawelbbub.services.Event.WIN_ROUND;
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toList;
 
@@ -204,7 +205,7 @@ public class Rawelbbub extends RoundField<Player, Hero> implements Field {
 
     @Override
     public Optional<Point> freeRandom(Player player) {
-        return BoardUtils.freeRandom(size(), dice, this::isFree);
+        return Generator.freeRandom(size(), dice, this::isFree);
     }
 
     @Override

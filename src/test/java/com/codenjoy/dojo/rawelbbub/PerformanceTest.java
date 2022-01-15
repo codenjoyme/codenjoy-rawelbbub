@@ -29,14 +29,12 @@ import com.codenjoy.dojo.services.Dice;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.COUNT_AIS;
-import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
 import static com.codenjoy.dojo.utils.TestUtils.assertPerformance;
 
 public class PerformanceTest {
 
     @Test
     public void test() {
-
         // about 8.5 sec
         int ais = 20;
         int players = 50;

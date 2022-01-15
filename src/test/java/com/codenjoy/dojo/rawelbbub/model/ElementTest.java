@@ -31,12 +31,6 @@ import static org.junit.Assert.assertEquals;
 public class ElementTest {
 
     @Test
-    public void icebergs() {
-        assertEquals("[╬, ╠, ╣, ╦, ╩, ╞, ╡, ╥, ╨, │, ─, ┌, ┐, └, ┘]",
-                Element.icebergs.toString());
-    }
-
-    @Test
     public void destroyIceberg() {
         assertEquals("{╬={LEFT=╠, RIGHT=╣, UP=╦, DOWN=╩}, \n" +
                         "╠={LEFT=╞, RIGHT=│, UP=┌, DOWN=└}, \n" +

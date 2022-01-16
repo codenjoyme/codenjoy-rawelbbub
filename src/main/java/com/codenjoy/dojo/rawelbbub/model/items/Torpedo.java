@@ -51,20 +51,22 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
         justFired = true;
     }
 
+    @Override
     public void remove() {
         moving = false;
         field.torpedoes().removeExact(this);
     }
 
     @Override
-    public void moving(Point pt) {
+    protected Field field() {
+        return field;
+    }
+
+    @Override
+    protected void moving(Point pt) {
         justFired = false;
-        if (pt.isOutOf(field.size())) {
-            remove();
-        } else {
-            move(pt);
-            field.affect(this);
-        }
+        move(pt);
+        field.affect(this);
     }
 
     public Hero owner() {

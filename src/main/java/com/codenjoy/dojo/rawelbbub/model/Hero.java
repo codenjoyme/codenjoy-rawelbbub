@@ -33,11 +33,11 @@ import com.codenjoy.dojo.rawelbbub.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.printer.state.HeroState;
-import com.codenjoy.dojo.services.printer.state.State;
 import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.joystick.Act;
 import com.codenjoy.dojo.services.joystick.RoundsDirectionActJoystick;
+import com.codenjoy.dojo.services.printer.state.HeroState;
+import com.codenjoy.dojo.services.printer.state.State;
 import com.codenjoy.dojo.services.round.RoundPlayerHero;
 import com.codenjoy.dojo.services.round.Timer;
 import com.codenjoy.dojo.services.route.Route;
@@ -78,8 +78,12 @@ public class Hero extends RoundPlayerHero<Field>
 
     public Hero(Point pt, Direction direction) {
         super(pt);
-        score = 0;
         this.direction = direction;
+        clearScores();
+    }
+
+    public void clearScores() {
+        score = 0;
     }
 
     @Override
@@ -338,10 +342,6 @@ public class Hero extends RoundPlayerHero<Field>
     @Override
     public Route route() {
         return route;
-    }
-
-    public void clearScores() {
-        score = 0;
     }
 
     public void fireKillHero(Hero prey) {

@@ -85,7 +85,7 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
     }
 
     public boolean destroyed() {
-        return element.power() == 0;
+        return ElementUtils.power.get(element) == 0;
     }
 
     @Override

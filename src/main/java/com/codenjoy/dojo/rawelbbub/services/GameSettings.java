@@ -26,9 +26,9 @@ package com.codenjoy.dojo.rawelbbub.services;
 import com.codenjoy.dojo.games.rawelbbub.Element;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.event.ScoresImpl;
 import com.codenjoy.dojo.services.settings.AllSettings;
 import com.codenjoy.dojo.services.settings.Chance;
+import com.codenjoy.dojo.services.settings.PropertiesKey;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
 
 import java.util.Arrays;
@@ -45,43 +45,39 @@ public class GameSettings extends SettingsImpl
     public static final int MODE_FORWARD_BACKWARD = 1;
     public static final int MODE_SIDE_VIEW = 2;
 
-    public enum Keys implements Key {
+    public enum Keys implements PropertiesKey {
 
-        AI_TICKS_PER_SHOOT("[Game] Ticks until the next AI shoot"),
-        HERO_TICKS_PER_SHOOT("[Game] Ticks until the next hero shoot"),
-        OIL_SLIPPERINESS("[Game] The amount of leaked oil. The more - the more naughty the submarine."),
-        PENALTY_WALKING_ON_FISHNET("[Game] Penalty time when walking on fishnet"),
-        SHOW_MY_HERO_UNDER_SEAWEED("[Game] Show my tank under seaweed"),
-        ICEBERG_REGENERATE_TIME("[Game] Iceberg regenerate time"),
-        TICKS_STUCK_BY_FISHNET("[Game] Ticks AI gets stuck by fishnet"),
-        COUNT_AIS("[Game] Count AIs on the board"),
-        TURN_MODE("[Game] Turn mode"),
-
-        AI_PRIZE_PROBABILITY("[Prize] Count spawn for AI with prize"),
-        AI_PRIZE_SURVIVABILITY("[Prize] Hits to kill AI with prize"),
-        PRIZE_AVAILABLE_TIMEOUT("[Prize] The period of prize validity on the field after the appearance"),
-        PRIZE_EFFECT_TIMEOUT("[Prize] Working time of the prize after catch up"),
-        PRIZES_COUNT("[Prize] The total number of prize AI and prizes on the board"),
-        PRIZE_BLINK_TIMEOUT("[Prize] Prize sprite changes every ticks"),
-
-        CHANCE_IMMORTALITY("[Chance] Prize immortality"),
-        CHANCE_BREAKING_BAD("[Chance] Prize breaking bad"),
-        CHANCE_WALKING_ON_FISHNET("[Chance] Prize walking on fishnet"),
-        CHANCE_VISIBILITY("[Chance] Prize visibility"),
-        CHANCE_NO_SLIDING("[Chance] Prize no sliding"),
-        CHANCE_RESERVED(Chance.CHANCE_RESERVED.key()),
-
-        HERO_DIED_PENALTY("[Score] Kill your hero penalty"),
-        KILL_OTHER_HERO_SCORE("[Score] Kill other hero score"),
-        KILL_ENEMY_HERO_SCORE("[Score] Kill enemy hero score"),
-        KILL_AI_SCORE("[Score] Kill other AI score"),
-
-        SCORE_COUNTING_TYPE(ScoresImpl.SCORE_COUNTING_TYPE.key());
+        AI_TICKS_PER_SHOOT,
+        HERO_TICKS_PER_SHOOT,
+        OIL_SLIPPERINESS,
+        PENALTY_WALKING_ON_FISHNET,
+        SHOW_MY_HERO_UNDER_SEAWEED,
+        ICEBERG_REGENERATE_TIME,
+        TICKS_STUCK_BY_FISHNET,
+        COUNT_AIS,
+        TURN_MODE,
+        AI_PRIZE_PROBABILITY,
+        AI_PRIZE_SURVIVABILITY,
+        PRIZE_AVAILABLE_TIMEOUT,
+        PRIZE_EFFECT_TIMEOUT,
+        PRIZES_COUNT,
+        PRIZE_BLINK_TIMEOUT,
+        CHANCE_IMMORTALITY,
+        CHANCE_BREAKING_BAD,
+        CHANCE_WALKING_ON_FISHNET,
+        CHANCE_VISIBILITY,
+        CHANCE_NO_SLIDING,
+        CHANCE_RESERVED,
+        HERO_DIED_PENALTY,
+        KILL_OTHER_HERO_SCORE,
+        KILL_ENEMY_HERO_SCORE,
+        KILL_AI_SCORE,
+        SCORE_COUNTING_TYPE;
 
         private String key;
 
-        Keys(String key) {
-            this.key = key;
+        Keys() {
+            this.key = key(GameRunner.GAME_NAME);
         }
 
         @Override

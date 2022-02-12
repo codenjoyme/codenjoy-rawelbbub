@@ -23,6 +23,7 @@ package com.codenjoy.dojo.rawelbbub.model.items.ai;
  */
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.games.rawelbbub.ElementUtils;
 import com.codenjoy.dojo.rawelbbub.model.Field;
 import com.codenjoy.dojo.rawelbbub.model.Player;
 import com.codenjoy.dojo.services.Direction;
@@ -73,7 +74,7 @@ public class AIPrize extends AI {
         if (!isAlive() || wounded) {
             return Element.EXPLOSION;
         }
-        return Element.aiPrize(direction, settings().isSideViewMode());
+        return ElementUtils.aiPrize(direction, settings().isSideViewMode());
     }
 
     @Override

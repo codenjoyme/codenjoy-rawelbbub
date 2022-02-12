@@ -22,10 +22,11 @@ package com.codenjoy.dojo.rawelbbub.model;
  * #L%
  */
 
-import com.codenjoy.dojo.games.rawelbbub.Element;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.client.Utils.split;
+import static com.codenjoy.dojo.games.rawelbbub.ElementUtils.destroyIceberg;
+import static com.codenjoy.dojo.games.rawelbbub.ElementUtils.growIceberg;
 import static org.junit.Assert.assertEquals;
 
 public class ElementTest {
@@ -37,13 +38,13 @@ public class ElementTest {
                         "╣={LEFT=│, RIGHT=╡, UP=┐, DOWN=┘}, \n" +
                         "╦={LEFT=┌, RIGHT=┐, UP=╥, DOWN=─}, \n" +
                         "╩={LEFT=└, RIGHT=┘, UP=─, DOWN=╨}}",
-                split(Element.destroyIceberg, "}, \n"));
+                split(destroyIceberg, "}, \n"));
     }
 
     @Test
     public void growIceberg() {
         assertEquals("{╬=╬, ╠=╬, ╣=╬, ╦=╬, ╩=╬, ╞=╠, ╡=╣, ╥=╣, " +
                         "╨=╩, │=╣, ─=╦, ┌=╠, ┐=╣, └=╩, ┘=╣,  =│}",
-                Element.growIceberg.toString());
+                growIceberg.toString());
     }
 }

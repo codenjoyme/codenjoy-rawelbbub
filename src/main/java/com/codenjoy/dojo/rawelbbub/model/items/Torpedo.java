@@ -24,6 +24,7 @@ package com.codenjoy.dojo.rawelbbub.model.items;
 
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.games.rawelbbub.ElementUtils;
 import com.codenjoy.dojo.rawelbbub.model.Field;
 import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.model.Player;
@@ -91,7 +92,7 @@ public class Torpedo extends MovingObject implements State<Element, Player> {
         if (destroyed()) {
             return Element.EXPLOSION;
         }
-        return Element.torpedo(direction, field.settings().isSideViewMode());
+        return ElementUtils.torpedo(direction, field.settings().isSideViewMode());
     }
 
     public void heavy() {

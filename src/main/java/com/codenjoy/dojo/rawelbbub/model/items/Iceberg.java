@@ -24,13 +24,14 @@ package com.codenjoy.dojo.rawelbbub.model.items;
 
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.games.rawelbbub.ElementUtils;
 import com.codenjoy.dojo.rawelbbub.model.Field;
 import com.codenjoy.dojo.rawelbbub.model.Player;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
-import com.codenjoy.dojo.services.printer.state.State;
 import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.field.Fieldable;
+import com.codenjoy.dojo.services.printer.state.State;
 import com.codenjoy.dojo.services.settings.SettingsReader;
 
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.ICEBERG_REGENERATE_TIME;
@@ -59,7 +60,7 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
         if (torpedo.isHeavy()) {
             element = Element.WATER;
         } else {
-            element = element.destroyFrom(torpedo.direction().inverted());
+            element = ElementUtils.destroyFrom(element, torpedo.direction().inverted());
         }
         timer = 0;
         return true;
@@ -79,7 +80,7 @@ public class Iceberg extends PointImpl implements Tickable, Fieldable<Field>, St
 
         timer++;
         if (timer % settings.integer(ICEBERG_REGENERATE_TIME) == 0) {
-            element = element.grow();
+            element = ElementUtils.grow(element);
         }
     }
 

@@ -24,6 +24,7 @@ package com.codenjoy.dojo.rawelbbub.model;
 
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.games.rawelbbub.ElementUtils;
 import com.codenjoy.dojo.rawelbbub.model.items.Gun;
 import com.codenjoy.dojo.rawelbbub.model.items.Torpedo;
 import com.codenjoy.dojo.rawelbbub.model.items.oil.Sliding;
@@ -46,6 +47,7 @@ import com.codenjoy.dojo.services.route.RouteProcessor;
 import java.util.List;
 
 import static com.codenjoy.dojo.games.rawelbbub.Element.*;
+import static com.codenjoy.dojo.games.rawelbbub.ElementUtils.TEAM_ELEMENT;
 import static com.codenjoy.dojo.rawelbbub.services.Event.*;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.HERO_TICKS_PER_SHOOT;
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.PENALTY_WALKING_ON_FISHNET;
@@ -218,7 +220,7 @@ public class Hero extends RoundPlayerHero<Field>
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return HeroState.super.state(player, alsoAtPoint);
+        return HeroState.super.state(player, TEAM_ELEMENT, alsoAtPoint);
     }
 
     @Override
@@ -227,7 +229,7 @@ public class Hero extends RoundPlayerHero<Field>
             return Element.EXPLOSION;
         }
 
-        return Element.hero(direction, settings().isSideViewMode());
+        return ElementUtils.hero(direction, settings().isSideViewMode());
     }
 
     public void tryFire() {

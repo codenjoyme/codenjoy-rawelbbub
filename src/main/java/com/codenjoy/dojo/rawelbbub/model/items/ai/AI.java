@@ -23,6 +23,7 @@ package com.codenjoy.dojo.rawelbbub.model.items.ai;
  */
 
 import com.codenjoy.dojo.games.rawelbbub.Element;
+import com.codenjoy.dojo.games.rawelbbub.ElementUtils;
 import com.codenjoy.dojo.rawelbbub.model.Field;
 import com.codenjoy.dojo.rawelbbub.model.Hero;
 import com.codenjoy.dojo.rawelbbub.model.Player;
@@ -121,7 +122,7 @@ public class AI extends Hero {
         if (!isAlive()) {
             return Element.EXPLOSION;
         }
-        return Element.ai(direction, settings().isSideViewMode());
+        return ElementUtils.ai(direction, settings().isSideViewMode());
     }
 
     public boolean withPrize() {

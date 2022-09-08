@@ -277,6 +277,8 @@ If you don't know where to start, try implementing the following algorithms:
 * Try to avoid enemy submarines and other heroes.
 * Try to shoot at other heroes.
 
+## FAQ
+
 ## <a id=""ask""></a> Ask Sensei
 
 You can always see the settings of the current game
@@ -320,8 +322,6 @@ All languages in one way or another have a similar set of methods:
   How many elements of the given type are there around the cell with point?
 * `Element getAt(Point point);`
   Element in the current cell.
-
-## FAQ
 
 ## Want to host an event?
 

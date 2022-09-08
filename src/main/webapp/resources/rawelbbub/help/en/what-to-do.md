@@ -48,7 +48,7 @@ of the game, as chosen by Sensei at the time of the game:
   
 ## Settings
 
-The settings will change[*](#ask) as the game progresses.
+The settings will change[(?)](#ask) as the game progresses.
 
 ## Cases
 

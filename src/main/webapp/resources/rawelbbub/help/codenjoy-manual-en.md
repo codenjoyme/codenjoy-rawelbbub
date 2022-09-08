@@ -136,7 +136,7 @@ and the torpedo (symbol `-`) is `[11, 7]`.
 
 What this field looks like in real life:
 
-![](board.png)
+![](/codenjoy-contest/resources/rawelbbub/help/board.png)
 
 <meta charset="UTF-8">
 

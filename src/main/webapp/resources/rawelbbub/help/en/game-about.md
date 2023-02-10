@@ -7,15 +7,15 @@ The hero can also shoot a torpedo, which explodes when
 hit an obstacle. The torpedo moves twice as fast as the hero.
 
 The player's bot receives points[*] (#ask) for killing enemies. 
-Penalty points[*](#ask) are awarded for the hero's death. 
+Penalty points[(?)](#ask) are awarded for the hero's death. 
 
 The dead hero immediately appears in a random location on the field.
 
 In addition to normal enemy submarines, there are prize submarines. In order to destroy
-such a hero must be hit several[*](#ask) times. After you have killed 
+such a hero must be hit several[(?)](#ask) times. After you have killed 
 prize submarine a prize will fall from it, which must be picked up. If 
-do not do this, after some time [*](#ask) it will disappear. 
-The player also receives points[*](#ask) for killing the prize submarine. 
+do not do this, after some time [(?)](#ask) it will disappear. 
+The player also receives points[(?)](#ask) for killing the prize submarine. 
 Be careful, the prize can be accidentally destroyed by a torpedo. 
 if this happens, it will also disappear from the field.
 
@@ -36,5 +36,5 @@ The prize lasts for some time. Every even tick of the game the prize 'flickers' 
 The points are added up. The player with the most points (before the agreed 
 time).
 
-[*](#ask)The exact number of points for any action as well as other 
+[(?)](#ask)The exact number of points for any action as well as other 
 settings at this point in the game, check with Sensei.

@@ -18,16 +18,16 @@
 Так же герой может выстрелить торпедой, которая взорвется при
 попадании в препятствие. Торпеда движется быстрее героя в два раза.
 
-За убийство врагов боту игрока начисляются очки[*](#ask). 
-За смерть геройа начисляются штрафные очки[*](#ask). 
+За убийство врагов боту игрока начисляются очки[(?)](#ask). 
+За смерть геройа начисляются штрафные очки[(?)](#ask). 
 
 Мертвый герой тут же появляется в random месте на поле.
 
 Помимо обычных вражеских субмарин есть субмарины с призами. Чтобы уничтожить
-такого героя надо попасть несколько[*](#ask) раз. После убийства 
+такого героя надо попасть несколько[(?)](#ask) раз. После убийства 
 призовую субмарину из него выпадает приз, который нужно подобрать. Если 
-этого не сделать, то через некоторое время[*](#ask) он исчезнет. 
-За убийство призовой субмарины игроку также начисляются очки[*](#ask). 
+этого не сделать, то через некоторое время[(?)](#ask) он исчезнет. 
+За убийство призовой субмарины игроку также начисляются очки[(?)](#ask). 
 Стоит быть внимательным, приз случайно можно уничтожить торпедой - 
 если это случится, он так же исчезнет с поля.
 
@@ -48,23 +48,30 @@
 Очки суммируются. Побеждает игрок с большим числом очков (до условленного 
 времени).
 
-[*](#ask)Точное количество очков за любое действие, а так же другие 
+[(?)](#ask)Точное количество очков за любое действие, а так же другие 
 настройки на данный момент игры уточни у Сенсея.
 
 ## Подключение к серверу
 
 Игроку необходимо зарегистрироваться(или залогиниться на сервере) и войти в игру.
 
-Затем вам необходимо подключиться к серверу со своего клиента используя вебсокет. Тут [коллекция клиентов](https://github.com/codenjoyme/codenjoy-clients.git) для различных языков программирования, где уже реализована базовая логика и подключение к серверу. Для старта ознакомьтесь с файлом README.md в корневой директории проекта. 
+Затем вам необходимо подключиться к серверу со своего клиента используя вебсокет. 
+Тут [коллекция клиентов](https://github.com/codenjoyme/codenjoy-clients.git) 
+для различных языков программирования, где уже реализована базовая логика 
+и подключение к серверу. Для старта ознакомьтесь с файлом README.md в 
+корневой директории проекта. 
 
-Если вы не можете найти ваш язык программирования, вы можете написать свой клиент и отправить его нам по почте: 
+Если вы не можете найти ваш язык программирования, вы можете написать 
+свой клиент и отправить его нам по почте: 
 [oleksandr_baglai@epam.com](mailto:oleksandr_baglai@epam.com)
 
 Адрес для подключения к серверу должен выглядеть так:
 `https://[server]/codenjoy-contest/board/player/[user]?code=[code]`
 Вы можете найти его в игровой комнате. 
 
-Здесь `[server]` - домен/ip сервера, `[user]` id игрока `[code]` ваш секретный токен. Храните его в секрете от других игроков. Любой, кто знает ваш код, сможет управлять вашим ботом. 
+Здесь `[server]` - домен/ip сервера, `[user]` id игрока `[code]` ваш 
+секретный токен. Храните его в секрете от других игроков. Любой, кто 
+знает ваш код, сможет управлять вашим ботом. 
 
 ## Формат сообщений
 
@@ -111,76 +118,76 @@ C помощью этого regexp можно выкусить строку до
 
 Как это поле выглядит в реале:
 
-![](https://dojorena.io/codenjoy-contest/resources/rawelbbub/help/board.png)
+<img src="/codenjoy-contest/resources/rawelbbub/help/board.png" style="height:auto;" />
 
 <meta charset="UTF-8">
 
 ## Symbol breakdown
 | Sprite | Code | Description |
 | -------- | -------- | -------- |
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/water.png" style="width:40px;" /> | `WATER(' ')` | An empty space where hero can move. If there was an iceberg in this place before, it can grow again  | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/reefs.png" style="width:40px;" /> | `REEFS('☼')` | Underwater reefs. They cannot be destroyed without prize PRIZE_BREAKING_BAD. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/explosion.png" style="width:40px;" /> | `EXPLOSION('Ѡ')` | Explosion site. It disappears in a second. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/oil.png" style="width:40px;" /> | `OIL('#')` | Oil leak, hitting which the hero partially loses control. During the passage, the field of view is limited and the hero will repeat the old commands for several ticks in a row, ignoring the current commands. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/seaweed.png" style="width:40px;" /> | `SEAWEED('%')` | Seaweed hide heroes which can continue to shoot at the same time. The fired shells are also not visible under the weed. Only prizes can be seen from behind seaweed. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/fishnet.png" style="width:40px;" /> | `FISHNET('~')` | Fishnet does not allow to pass through itself without the PRIZE_WALKING_ON_FISHNET prize, but the shells fly freely through the water. Hero stuck in the middle of the fishnet, after canceling the PRIZE_WALKING_ON_FISHNET prize, can move 1 cell in the fishnet only every N ticks. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_huge.png" style="width:40px;" /> | `ICEBERG_HUGE('╬')` | An iceberg that hasn't been shot yet. It takes 3 shots to completely destroy. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_medium_left.png" style="width:40px;" /> | `ICEBERG_MEDIUM_LEFT('╠')` | Partially destroyed iceberg. For complete destruction, 2 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_medium_right.png" style="width:40px;" /> | `ICEBERG_MEDIUM_RIGHT('╣')` | Partially destroyed iceberg. For complete destruction, 2 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_medium_up.png" style="width:40px;" /> | `ICEBERG_MEDIUM_UP('╦')` | Partially destroyed iceberg. For complete destruction, 2 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_medium_down.png" style="width:40px;" /> | `ICEBERG_MEDIUM_DOWN('╩')` | Partially destroyed iceberg. For complete destruction, 2 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_small_left_left.png" style="width:40px;" /> | `ICEBERG_SMALL_LEFT_LEFT('╞')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_small_right_right.png" style="width:40px;" /> | `ICEBERG_SMALL_RIGHT_RIGHT('╡')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_small_up_up.png" style="width:40px;" /> | `ICEBERG_SMALL_UP_UP('╥')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_small_down_down.png" style="width:40px;" /> | `ICEBERG_SMALL_DOWN_DOWN('╨')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_small_left_right.png" style="width:40px;" /> | `ICEBERG_SMALL_LEFT_RIGHT('│')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_small_up_down.png" style="width:40px;" /> | `ICEBERG_SMALL_UP_DOWN('─')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_small_up_left.png" style="width:40px;" /> | `ICEBERG_SMALL_UP_LEFT('┌')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_small_up_right.png" style="width:40px;" /> | `ICEBERG_SMALL_UP_RIGHT('┐')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_small_down_left.png" style="width:40px;" /> | `ICEBERG_SMALL_DOWN_LEFT('└')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/iceberg_small_down_right.png" style="width:40px;" /> | `ICEBERG_SMALL_DOWN_RIGHT('┘')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/torpedo_left.png" style="width:40px;" /> | `TORPEDO_LEFT('•')` | Torpedo - is a self-propelled underwater missile designed to be fired from a submarine and to explode on reaching a target. The target can be an iceberg, another submarine and other elements under water. This torpedo moves to the left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/torpedo_right.png" style="width:40px;" /> | `TORPEDO_RIGHT('¤')` | This torpedo moves to the right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/torpedo_up.png" style="width:40px;" /> | `TORPEDO_UP('ø')` | This torpedo moves to the up. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/torpedo_down.png" style="width:40px;" /> | `TORPEDO_DOWN('×')` | This torpedo moves to the down. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/hero_left.png" style="width:40px;" /> | `HERO_LEFT('◄')` | Your hero is pointing left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/hero_right.png" style="width:40px;" /> | `HERO_RIGHT('►')` | Your hero is pointing right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/hero_up.png" style="width:40px;" /> | `HERO_UP('▲')` | Your hero is pointing up. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/hero_down.png" style="width:40px;" /> | `HERO_DOWN('▼')` | Your hero is pointing down. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/other_hero_left.png" style="width:40px;" /> | `OTHER_HERO_LEFT('˂')` | Other hero is pointing left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/other_hero_right.png" style="width:40px;" /> | `OTHER_HERO_RIGHT('˃')` | Other hero is pointing right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/other_hero_up.png" style="width:40px;" /> | `OTHER_HERO_UP('˄')` | Other hero is pointing up. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/other_hero_down.png" style="width:40px;" /> | `OTHER_HERO_DOWN('˅')` | Other hero is pointing down. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/enemy_hero_left.png" style="width:40px;" /> | `ENEMY_HERO_LEFT('Ð')` | Enemy hero is pointing left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/enemy_hero_right.png" style="width:40px;" /> | `ENEMY_HERO_RIGHT('£')` | Enemy hero is pointing right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/enemy_hero_up.png" style="width:40px;" /> | `ENEMY_HERO_UP('Ô')` | Enemy hero is pointing up. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/enemy_hero_down.png" style="width:40px;" /> | `ENEMY_HERO_DOWN('Ç')` | Enemy hero is pointing down. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_left.png" style="width:40px;" /> | `AI_LEFT('«')` | AI is pointing left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_right.png" style="width:40px;" /> | `AI_RIGHT('»')` | AI is pointing right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_up.png" style="width:40px;" /> | `AI_UP('?')` | AI is pointing up. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_down.png" style="width:40px;" /> | `AI_DOWN('¿')` | AI is pointing down. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_prize_left.png" style="width:40px;" /> | `AI_PRIZE_LEFT('{')` | AI with prize is pointing left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_prize_right.png" style="width:40px;" /> | `AI_PRIZE_RIGHT('}')` | AI with prize is pointing right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_prize_up.png" style="width:40px;" /> | `AI_PRIZE_UP('î')` | AI with prize is pointing up. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_prize_down.png" style="width:40px;" /> | `AI_PRIZE_DOWN('w')` | AI with prize is pointing down. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/torpedo_side_left.png" style="width:40px;" /> | `TORPEDO_SIDE_LEFT('t')` | Turn based mode. This torpedo moves to the left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/torpedo_side_right.png" style="width:40px;" /> | `TORPEDO_SIDE_RIGHT('T')` | Turn based mode. This torpedo moves to the right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/hero_side_left.png" style="width:40px;" /> | `HERO_SIDE_LEFT('h')` | Turn based mode. Your hero is pointing left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/hero_side_right.png" style="width:40px;" /> | `HERO_SIDE_RIGHT('H')` | Turn based mode. Your hero is pointing right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/other_hero_side_left.png" style="width:40px;" /> | `OTHER_HERO_SIDE_LEFT('o')` | Turn based mode. Other hero is pointing left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/other_hero_side_right.png" style="width:40px;" /> | `OTHER_HERO_SIDE_RIGHT('O')` | Turn based mode. Other hero is pointing right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/enemy_hero_side_left.png" style="width:40px;" /> | `ENEMY_HERO_SIDE_LEFT('e')` | Turn based mode. Enemy hero is pointing left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/enemy_hero_side_right.png" style="width:40px;" /> | `ENEMY_HERO_SIDE_RIGHT('E')` | Turn based mode. Enemy hero is pointing right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_side_left.png" style="width:40px;" /> | `AI_SIDE_LEFT('a')` | Turn based mode. AI is pointing left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_side_right.png" style="width:40px;" /> | `AI_SIDE_RIGHT('A')` | Turn based mode. AI is pointing right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_prize_side_left.png" style="width:40px;" /> | `AI_PRIZE_SIDE_LEFT('p')` | Turn based mode. AI with prize is pointing left. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/ai_prize_side_right.png" style="width:40px;" /> | `AI_PRIZE_SIDE_RIGHT('P')` | Turn based mode. AI with prize is pointing right. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize.png" style="width:40px;" /> | `PRIZE('!')` | The dropped prize after the destruction of the prize AI flickers on the field every even tick of the game with this sprite. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_immortality.png" style="width:40px;" /> | `PRIZE_IMMORTALITY('1')` | A prize that gives the hero temporary invulnerability. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_breaking_bad.png" style="width:40px;" /> | `PRIZE_BREAKING_BAD('2')` | A prize that allows you to temporarily destroy any icebergs and underwater reefs (but not the border of the field) with 1 shot. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_walking_on_fishnet.png" style="width:40px;" /> | `PRIZE_WALKING_ON_FISHNET('3')` | A prize that allows the hero to temporarily walk on fishnet. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_visibility.png" style="width:40px;" /> | `PRIZE_VISIBILITY('4')` | A prize that allows the hero to temporarily see all enemies and their bullets under the seaweed. | 
-|<img src="https://github.com/codenjoyme/codenjoy-rawelbbub/raw/master/src/main/webapp/resources/rawelbbub/sprite/prize_no_sliding.png" style="width:40px;" /> | `PRIZE_NO_SLIDING('5')` | A prize that allows the hero to temporarily not slide on the ice. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/water.png" style="height:auto;" /> | `WATER(' ')` | An empty space where hero can move. If there was an iceberg in this place before, it can grow again  | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/reefs.png" style="height:auto;" /> | `REEFS('☼')` | Underwater reefs. They cannot be destroyed without prize PRIZE_BREAKING_BAD. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/explosion.png" style="height:auto;" /> | `EXPLOSION('Ѡ')` | Explosion site. It disappears in a second. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/oil.png" style="height:auto;" /> | `OIL('#')` | Oil leak, hitting which the hero partially loses control. During the passage, the field of view is limited and the hero will repeat the old commands for several ticks in a row, ignoring the current commands. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/seaweed.png" style="height:auto;" /> | `SEAWEED('%')` | Seaweed hide heroes which can continue to shoot at the same time. The fired shells are also not visible under the weed. Only prizes can be seen from behind seaweed. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/fishnet.png" style="height:auto;" /> | `FISHNET('~')` | Fishnet does not allow to pass through itself without the PRIZE_WALKING_ON_FISHNET prize, but the shells fly freely through the water. Hero stuck in the middle of the fishnet, after canceling the PRIZE_WALKING_ON_FISHNET prize, can move 1 cell in the fishnet only every N ticks. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_huge.png" style="height:auto;" /> | `ICEBERG_HUGE('╬')` | An iceberg that hasn't been shot yet. It takes 3 shots to completely destroy. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_medium_left.png" style="height:auto;" /> | `ICEBERG_MEDIUM_LEFT('╠')` | Partially destroyed iceberg. For complete destruction, 2 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_medium_right.png" style="height:auto;" /> | `ICEBERG_MEDIUM_RIGHT('╣')` | Partially destroyed iceberg. For complete destruction, 2 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_medium_up.png" style="height:auto;" /> | `ICEBERG_MEDIUM_UP('╦')` | Partially destroyed iceberg. For complete destruction, 2 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_medium_down.png" style="height:auto;" /> | `ICEBERG_MEDIUM_DOWN('╩')` | Partially destroyed iceberg. For complete destruction, 2 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_small_left_left.png" style="height:auto;" /> | `ICEBERG_SMALL_LEFT_LEFT('╞')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_small_right_right.png" style="height:auto;" /> | `ICEBERG_SMALL_RIGHT_RIGHT('╡')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_small_up_up.png" style="height:auto;" /> | `ICEBERG_SMALL_UP_UP('╥')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_small_down_down.png" style="height:auto;" /> | `ICEBERG_SMALL_DOWN_DOWN('╨')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_small_left_right.png" style="height:auto;" /> | `ICEBERG_SMALL_LEFT_RIGHT('│')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_small_up_down.png" style="height:auto;" /> | `ICEBERG_SMALL_UP_DOWN('─')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_small_up_left.png" style="height:auto;" /> | `ICEBERG_SMALL_UP_LEFT('┌')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_small_up_right.png" style="height:auto;" /> | `ICEBERG_SMALL_UP_RIGHT('┐')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_small_down_left.png" style="height:auto;" /> | `ICEBERG_SMALL_DOWN_LEFT('└')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/iceberg_small_down_right.png" style="height:auto;" /> | `ICEBERG_SMALL_DOWN_RIGHT('┘')` | Almost destroyed iceberg. For complete destruction, 1 shot is required. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/torpedo_left.png" style="height:auto;" /> | `TORPEDO_LEFT('•')` | Torpedo - is a self-propelled underwater missile designed to be fired from a submarine and to explode on reaching a target. The target can be an iceberg, another submarine and other elements under water. This torpedo moves to the left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/torpedo_right.png" style="height:auto;" /> | `TORPEDO_RIGHT('¤')` | This torpedo moves to the right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/torpedo_up.png" style="height:auto;" /> | `TORPEDO_UP('ø')` | This torpedo moves to the up. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/torpedo_down.png" style="height:auto;" /> | `TORPEDO_DOWN('×')` | This torpedo moves to the down. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/hero_left.png" style="height:auto;" /> | `HERO_LEFT('◄')` | Your hero is pointing left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/hero_right.png" style="height:auto;" /> | `HERO_RIGHT('►')` | Your hero is pointing right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/hero_up.png" style="height:auto;" /> | `HERO_UP('▲')` | Your hero is pointing up. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/hero_down.png" style="height:auto;" /> | `HERO_DOWN('▼')` | Your hero is pointing down. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/other_hero_left.png" style="height:auto;" /> | `OTHER_HERO_LEFT('˂')` | Other hero is pointing left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/other_hero_right.png" style="height:auto;" /> | `OTHER_HERO_RIGHT('˃')` | Other hero is pointing right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/other_hero_up.png" style="height:auto;" /> | `OTHER_HERO_UP('˄')` | Other hero is pointing up. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/other_hero_down.png" style="height:auto;" /> | `OTHER_HERO_DOWN('˅')` | Other hero is pointing down. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/enemy_hero_left.png" style="height:auto;" /> | `ENEMY_HERO_LEFT('Ð')` | Enemy hero is pointing left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/enemy_hero_right.png" style="height:auto;" /> | `ENEMY_HERO_RIGHT('£')` | Enemy hero is pointing right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/enemy_hero_up.png" style="height:auto;" /> | `ENEMY_HERO_UP('Ô')` | Enemy hero is pointing up. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/enemy_hero_down.png" style="height:auto;" /> | `ENEMY_HERO_DOWN('Ç')` | Enemy hero is pointing down. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_left.png" style="height:auto;" /> | `AI_LEFT('«')` | AI is pointing left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_right.png" style="height:auto;" /> | `AI_RIGHT('»')` | AI is pointing right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_up.png" style="height:auto;" /> | `AI_UP('?')` | AI is pointing up. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_down.png" style="height:auto;" /> | `AI_DOWN('¿')` | AI is pointing down. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_prize_left.png" style="height:auto;" /> | `AI_PRIZE_LEFT('{')` | AI with prize is pointing left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_prize_right.png" style="height:auto;" /> | `AI_PRIZE_RIGHT('}')` | AI with prize is pointing right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_prize_up.png" style="height:auto;" /> | `AI_PRIZE_UP('î')` | AI with prize is pointing up. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_prize_down.png" style="height:auto;" /> | `AI_PRIZE_DOWN('w')` | AI with prize is pointing down. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/torpedo_side_left.png" style="height:auto;" /> | `TORPEDO_SIDE_LEFT('t')` | Turn based mode. This torpedo moves to the left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/torpedo_side_right.png" style="height:auto;" /> | `TORPEDO_SIDE_RIGHT('T')` | Turn based mode. This torpedo moves to the right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/hero_side_left.png" style="height:auto;" /> | `HERO_SIDE_LEFT('h')` | Turn based mode. Your hero is pointing left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/hero_side_right.png" style="height:auto;" /> | `HERO_SIDE_RIGHT('H')` | Turn based mode. Your hero is pointing right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/other_hero_side_left.png" style="height:auto;" /> | `OTHER_HERO_SIDE_LEFT('o')` | Turn based mode. Other hero is pointing left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/other_hero_side_right.png" style="height:auto;" /> | `OTHER_HERO_SIDE_RIGHT('O')` | Turn based mode. Other hero is pointing right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/enemy_hero_side_left.png" style="height:auto;" /> | `ENEMY_HERO_SIDE_LEFT('e')` | Turn based mode. Enemy hero is pointing left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/enemy_hero_side_right.png" style="height:auto;" /> | `ENEMY_HERO_SIDE_RIGHT('E')` | Turn based mode. Enemy hero is pointing right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_side_left.png" style="height:auto;" /> | `AI_SIDE_LEFT('a')` | Turn based mode. AI is pointing left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_side_right.png" style="height:auto;" /> | `AI_SIDE_RIGHT('A')` | Turn based mode. AI is pointing right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_prize_side_left.png" style="height:auto;" /> | `AI_PRIZE_SIDE_LEFT('p')` | Turn based mode. AI with prize is pointing left. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/ai_prize_side_right.png" style="height:auto;" /> | `AI_PRIZE_SIDE_RIGHT('P')` | Turn based mode. AI with prize is pointing right. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/prize.png" style="height:auto;" /> | `PRIZE('!')` | The dropped prize after the destruction of the prize AI flickers on the field every even tick of the game with this sprite. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/prize_immortality.png" style="height:auto;" /> | `PRIZE_IMMORTALITY('1')` | A prize that gives the hero temporary invulnerability. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/prize_breaking_bad.png" style="height:auto;" /> | `PRIZE_BREAKING_BAD('2')` | A prize that allows you to temporarily destroy any icebergs and underwater reefs (but not the border of the field) with 1 shot. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/prize_walking_on_fishnet.png" style="height:auto;" /> | `PRIZE_WALKING_ON_FISHNET('3')` | A prize that allows the hero to temporarily walk on fishnet. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/prize_visibility.png" style="height:auto;" /> | `PRIZE_VISIBILITY('4')` | A prize that allows the hero to temporarily see all enemies and their bullets under the seaweed. | 
+|<img src="/codenjoy-contest/resources/rawelbbub/sprite/prize_no_sliding.png" style="height:auto;" /> | `PRIZE_NO_SLIDING('5')` | A prize that allows the hero to temporarily not slide on the ice. | 
 
 
 ## Как играть?
@@ -197,7 +204,7 @@ C помощью этого regexp можно выкусить строку до
 ## Команды управления
 
 Команд несколько и они зависят от выбранного Сенсеем на время 
-игры формата отображения/управления[*](#ask):
+игры формата отображения/управления[(?)](#ask):
 
 * В классическом режиме игры вид на поле сверху команда движения выполняет 
   именно то, что в ней указано:  
@@ -233,7 +240,7 @@ C помощью этого regexp можно выкусить строку до
   
 ## Настройки
 
-Параметры будут меняться[*](#ask) по ходу игры.
+Параметры будут меняться[(?)](#ask) по ходу игры.
 
 ## Кейзы
 
@@ -251,6 +258,8 @@ C помощью этого regexp можно выкусить строку до
 * Попробуй спрятаться от торпед.
 * Попробуй избежать вражеских субмарин и других героев.
 * Попробуй стрелять по другим героям.
+
+## FAQ
 
 ## <a id="ask"></a> Спроси Сенсея
 
@@ -296,8 +305,6 @@ C помощью этого regexp можно выкусить строку до
 * `Element getAt(Point point);`
   Элемент в текущей клетке.
 
-## FAQ
-
 ## Как провести такой же ивент самостоятельно?
 
 Перед тобой opensource проект. Для реализации своей новой игры, модификации этой игры,
@@ -306,8 +313,7 @@ C помощью этого regexp можно выкусить строку до
 Все инструкции ты найдешь в Readme.md файлах - они подскажут, что делать дальше.
 
 Если у тебя есть вопросы - прошу, задавай их мне 
-в [скайпе alexander.baglay](skype:alexander.baglay)
-или по почте [apofig@gmail.com](mailto:apofig@gmail.com).
+по почте [oleksandr_baglai@epam.com](mailto:oleksandr_baglai@epam.com).
 
 Удачной игры и пусть победит сильнейший! 
 

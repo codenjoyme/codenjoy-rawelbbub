@@ -119,7 +119,7 @@ and the torpedo (symbol `-`) is `[11, 7]`.
 
 What this field looks like in real life:
 
-<img src="/codenjoy-contest/resources/rawelbbub/help/board.png" style="height:auto;" />
+<img src="/codenjoy-contest/resources/rawelbbub/img/board/large.png" style="height:auto;" />
 
 <meta charset="UTF-8">
 

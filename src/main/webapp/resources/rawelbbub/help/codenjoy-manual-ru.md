@@ -129,7 +129,7 @@ C помощью этого regexp можно выкусить строку до
 
 Как это поле выглядит в реале:
 
-<img src="/codenjoy-contest/resources/rawelbbub/help/board.png" style="height:auto;" />
+<img src="/codenjoy-contest/resources/rawelbbub/img/board/large.png" style="height:auto;" />
 
 <meta charset="UTF-8">
 

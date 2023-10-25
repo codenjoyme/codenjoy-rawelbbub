@@ -345,8 +345,8 @@ the chat that the organizers have provided to discuss issues.
 
 ## Client and API
 
-The organizers provide players with prepared clients in the source 
-code in several languages. Each of these clients already knows how to communicate 
+The organizers provide players with prepared clients in the source
+code in several languages. Each of these clients already knows how to communicate
 with the server, receive and parse messages from the server (usually called a board)
 and send commands to the server.
 

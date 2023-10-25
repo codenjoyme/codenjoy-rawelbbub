@@ -287,6 +287,11 @@ If you don't know where to start, try implementing the following algorithms:
 * Try to avoid enemy submarines and other heroes.
 * Try to shoot at other heroes.
 
+## Settings
+
+The parameters will change[(?)](#ask) as the game progresses.
+The default values are shown in the table below:
+
 | Settings name | Action |
 |---------------|--------|
 | CHANCE_VISIBILITY | [Chance] Prize visibility |

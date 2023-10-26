@@ -24,185 +24,111 @@ package com.codenjoy.dojo.rawelbbub.services;
 
 
 import com.codenjoy.dojo.rawelbbub.TestGameSettings;
-import com.codenjoy.dojo.services.PlayerScores;
-import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.event.ScoresImpl;
-import org.junit.Before;
+import com.codenjoy.dojo.services.event.EventObject;
+import com.codenjoy.dojo.services.event.ScoresMap;
+import com.codenjoy.dojo.utils.scorestest.AbstractScoresTest;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.rawelbbub.services.GameSettings.Keys.*;
-import static org.junit.Assert.assertEquals;
 
-public class ScoresTest {
+public class ScoresTest extends AbstractScoresTest {
 
-    private PlayerScores scores;
-    private GameSettings settings;
-
-    public void heroDied() {
-        scores.event(Event.HERO_DIED);
+    @Override
+    public GameSettings settings() {
+        return new TestGameSettings()
+                .integer(KILL_OTHER_HERO_SCORE, 1)
+                .integer(KILL_ENEMY_HERO_SCORE, 2)
+                .integer(KILL_AI_SCORE, 3)
+                .integer(HERO_DIED_PENALTY, -1);
     }
 
-    public void killAI() {
-        scores.event(Event.KILL_AI);
+    @Override
+    protected Class<? extends ScoresMap> scores() {
+        return Scores.class;
     }
 
-    public void killOtherHero(int amount) {
-        scores.event(Event.KILL_OTHER_HERO.apply(amount));
+    @Override
+    protected Class<? extends EventObject> events() {
+        return Event.class;
     }
 
-    public void killEnemyHero(int amount) {
-        scores.event(Event.KILL_ENEMY_HERO.apply(amount));
-    }
-
-    @Before
-    public void setup() {
-        settings = new TestGameSettings();
-    }
-
-    private void givenScores(int score) {
-        scores = new ScoresImpl<>(score, new Calculator<>(new Scores(settings)));
+    @Override
+    protected Class<? extends Enum> eventTypes() {
+        return Event.Type.class;
     }
 
     @Test
     public void shouldCollectScores() {
-        // given
-        givenScores(140);
-
-        // when
-        killOtherHero(1);
-        killOtherHero(2);
-        killOtherHero(3);
-
-        killAI();
-        killAI();
-
-        heroDied();
-
-        killEnemyHero(1);
-        killEnemyHero(2);
-
-        // then
-        assertEquals(140
-                    + (1 + 2 + 3) * settings.integer(KILL_OTHER_HERO_SCORE)
-                    + (1 + 2) * settings.integer(KILL_ENEMY_HERO_SCORE)
-                    + 2 * settings.integer(KILL_AI_SCORE)
-                    + settings.integer(HERO_DIED_PENALTY),
-                scores.getScore());
+        assertEvents("100:\n" +
+                "KILL_OTHER_HERO,1 > +1 = 101\n" +
+                "KILL_OTHER_HERO,2 > +2 = 103\n" +
+                "KILL_OTHER_HERO,3 > +3 = 106\n" +
+                "KILL_AI > +3 = 109\n" +
+                "KILL_AI > +3 = 112\n" +
+                "HERO_DIED > -1 = 111\n" +
+                "KILL_ENEMY_HERO,1 > +2 = 113\n" +
+                "KILL_ENEMY_HERO,2 > +4 = 117");
     }
 
     @Test
     public void shouldNotBeLessThanZero() {
-        // given
-        givenScores(0);
-
-        // when
-        heroDied();
-
-        // then
-        assertEquals(0, scores.getScore());
+        assertEvents("1:\n" +
+                "HERO_DIED > -1 = 0\n" +
+                "HERO_DIED > +0 = 0\n" +
+                "HERO_DIED > +0 = 0");
     }
 
     @Test
     public void shouldCleanScore() {
-        // given
-        givenScores(0);
-
-        killOtherHero(1);
-
-        // when
-        scores.clear();
-
-        // then
-        assertEquals(0, scores.getScore());
+        assertEvents("0:\n" +
+                "KILL_OTHER_HERO,1 > +1 = 1\n" +
+                "(CLEAN) > -1 = 0\n" +
+                "KILL_ENEMY_HERO,2 > +4 = 4");
     }
 
     @Test
     public void shouldCollectScores_whenKillOtherHero() {
         // given
-        givenScores(140);
+        settings.integer(KILL_OTHER_HERO_SCORE, 1);
 
-        // when
-        killOtherHero(1);
-
-        // then
-        assertEquals(140
-                    + settings.integer(KILL_OTHER_HERO_SCORE),
-                scores.getScore());
-
-        // when
-        killOtherHero(2);
-
-        // then
-        assertEquals(140
-                    + (1 + 2) * settings.integer(KILL_OTHER_HERO_SCORE),
-                scores.getScore());
-
-        // when
-        killOtherHero(3);
-
-        // then
-        assertEquals(140
-                     + (1 + 2 + 3) * settings.integer(KILL_OTHER_HERO_SCORE),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "KILL_OTHER_HERO,1 > +1 = 101\n" +
+                "KILL_OTHER_HERO,2 > +2 = 103\n" +
+                "KILL_OTHER_HERO,3 > +3 = 106");
     }
 
     @Test
     public void shouldCollectScores_whenKillEnemyHero() {
         // given
-        givenScores(140);
+        settings.integer(KILL_ENEMY_HERO_SCORE, 1);
 
-        // when
-        killEnemyHero(1);
-
-        // then
-        assertEquals(140
-                    + settings.integer(KILL_ENEMY_HERO_SCORE),
-                scores.getScore());
-
-        // when
-        killEnemyHero(2);
-
-        // then
-        assertEquals(140
-                    + (1 + 2) * settings.integer(KILL_ENEMY_HERO_SCORE),
-                scores.getScore());
-
-        // when
-        killEnemyHero(3);
-
-        // then
-        assertEquals(140
-                    + (1 + 2 + 3) * settings.integer(KILL_ENEMY_HERO_SCORE),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "KILL_ENEMY_HERO,1 > +1 = 101\n" +
+                "KILL_ENEMY_HERO,2 > +2 = 103\n" +
+                "KILL_ENEMY_HERO,3 > +3 = 106");
     }
 
     @Test
     public void shouldCollectScores_whenHeroDied() {
         // given
-        givenScores(140);
+        settings.integer(HERO_DIED_PENALTY, -1);
 
-        // when
-        heroDied();
-        heroDied();
-
-        // then
-        assertEquals(140
-                    + 2 * settings.integer(HERO_DIED_PENALTY),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "HERO_DIED > -1 = 99\n" +
+                "HERO_DIED > -1 = 98");
     }
 
     @Test
     public void shouldCollectScores_whenKillAI() {
         // given
-        givenScores(140);
+        settings.integer(KILL_AI_SCORE, 1);
 
-        // when
-        killAI();
-        killAI();
-
-        // then
-        assertEquals(140
-                    + 2 * settings.integer(KILL_AI_SCORE),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "KILL_AI > +1 = 101\n" +
+                "KILL_AI > +1 = 102");
     }
 }
